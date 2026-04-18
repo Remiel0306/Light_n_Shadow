@@ -40,6 +40,8 @@
 *.sdf
 *.VC.db
 *.VC.opendb
+*.Log
+
 .vsconfig
 
 # Precompiled Assets
