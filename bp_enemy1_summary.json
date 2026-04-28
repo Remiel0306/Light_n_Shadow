@@ -1,0 +1,549 @@
+{
+  "success": true,
+  "path": "/Game/BluePrint/BP_Enemy1",
+  "graphName": "EventGraph",
+  "nodes": [
+    {
+      "id": "rnCCfUbtRVqou7uCdL6f5w",
+      "class": "K2Node_Event",
+      "title": "Event BeginPlay"
+    },
+    {
+      "id": "hY-o4EeRjDxkBY-CrX3cpw",
+      "class": "K2Node_Event",
+      "title": "Event ActorBeginOverlap"
+    },
+    {
+      "id": "tDW6Xkxdn98iwmyZuC34pQ",
+      "class": "K2Node_Event",
+      "title": "Event Tick"
+    },
+    {
+      "id": "kCeAXku2Xz37OKmQVsleuQ",
+      "class": "K2Node_ComponentBoundEvent",
+      "title": "On Component Begin Overlap (CapsuleComponent)"
+    },
+    {
+      "id": "e0667UL7Obx3gym7r2ntiQ",
+      "class": "K2Node_VariableGet",
+      "title": "Get ShadowCollider"
+    },
+    {
+      "id": "6fm-K0NCMx0BRNi_iHWsKw",
+      "class": "K2Node_CallFunction",
+      "title": "Set Collision Enabled"
+    },
+    {
+      "id": "aRdk8kgsawUCvbmotHN5yg",
+      "class": "K2Node_IfThenElse",
+      "title": "Branch"
+    },
+    {
+      "id": "Yy3JDkEtF7V2iMC7SPjTlg",
+      "class": "K2Node_VariableGet",
+      "title": "Get isInChecker"
+    },
+    {
+      "id": "9lDxkUwx5roK4cy_SLouCQ",
+      "class": "K2Node_CustomEvent",
+      "title": "Shadow Collision Change"
+    },
+    {
+      "id": "kPl2V0SfDPIMukOP7lIP_A",
+      "class": "K2Node_VariableGet",
+      "title": "Get Top"
+    },
+    {
+      "id": "ywsHeU5Z333kmaqL5Iyj3A",
+      "class": "K2Node_CallFunction",
+      "title": "Get World Location"
+    },
+    {
+      "id": "nKCLHECZm8GUnhOtMrnQ1g",
+      "class": "K2Node_ComponentBoundEvent",
+      "title": "On Component End Overlap (CapsuleComponent)"
+    },
+    {
+      "id": "js5YkULyKJO5JLunztUrBw",
+      "class": "K2Node_VariableSet",
+      "title": "Set isInChecker"
+    },
+    {
+      "id": "nlwGpEu8MFTGTCSUJxfrPA",
+      "class": "K2Node_DynamicCast",
+      "title": "Cast To BP_LightBall"
+    },
+    {
+      "id": "WEvLMUHMOew-_fi_tWwDbQ",
+      "class": "K2Node_CallFunction",
+      "title": "Print String"
+    },
+    {
+      "id": "LREi_kMZI4LU7myyLdhVtQ",
+      "class": "K2Node_VariableSet",
+      "title": "Set isInChecker"
+    },
+    {
+      "id": "9r3y60GZcqze2DCfQL14xw",
+      "class": "K2Node_VariableSet",
+      "title": "Set Active Ball"
+    },
+    {
+      "id": "NxtyIE-Ga5COUzeGuShCMA",
+      "class": "K2Node_VariableGet",
+      "title": "Get Active Ball"
+    },
+    {
+      "id": "v0ss2E_wc74cr5WRrHAxnQ",
+      "class": "K2Node_CallArrayFunction",
+      "title": "Add"
+    },
+    {
+      "id": "ksB-fUEY3BjgQmSLEJeOFg",
+      "class": "K2Node_VariableGet",
+      "title": "Get Active Ball"
+    },
+    {
+      "id": "dF5eBkVl36rrSTOQOWvCeQ",
+      "class": "K2Node_GetArrayItem",
+      "title": "Get (a copy)"
+    },
+    {
+      "id": "fZK8201rUXdK6eaEXmwMeQ",
+      "class": "K2Node_CallFunction",
+      "title": "Get Actor Location"
+    },
+    {
+      "id": "VxJ39kgEfk9pH7mAv8kV7Q",
+      "class": "K2Node_PromotableOperator",
+      "title": "vector - vector"
+    },
+    {
+      "id": "N4lZY0IiE7Fx8Vy4rVMYHQ",
+      "class": "K2Node_CallFunction",
+      "title": "Normalize"
+    },
+    {
+      "id": "sfFoNk8icJGtHU2-pIUNTg",
+      "class": "K2Node_CallFunction",
+      "title": "Line Trace By Channel"
+    },
+    {
+      "id": "51XraES3z5-GkpOubQXjWQ",
+      "class": "K2Node_Knot",
+      "title": "Reroute Node"
+    },
+    {
+      "id": "wscuHEAyKSB24Q-A06mZ0A",
+      "class": "K2Node_PromotableOperator",
+      "title": "vector * vector"
+    },
+    {
+      "id": "nVvyOEKOIUrwqvWmX30AEg",
+      "class": "K2Node_IfThenElse",
+      "title": "Branch"
+    },
+    {
+      "id": "LuDvzUdFYf3j_2uQTvAILg",
+      "class": "K2Node_CallFunction",
+      "title": "Break Hit Result"
+    },
+    {
+      "id": "FC97YEOfVoT20meNoOpNmg",
+      "class": "K2Node_PromotableOperator",
+      "title": "vector + vector"
+    },
+    {
+      "id": "SehwWUGZKgk2_H6AvkoLTA",
+      "class": "K2Node_VariableSet",
+      "title": "Set Shadow farthest location"
+    },
+    {
+      "id": "RZ5jDk6Cn7kWtMa6W4tAzg",
+      "class": "K2Node_VariableSet",
+      "title": "Set Shadow farthest location"
+    },
+    {
+      "id": "P3q7jEvbSOY87PWPXUMm5A",
+      "class": "K2Node_VariableSet",
+      "title": "Set Shadow farthest location"
+    },
+    {
+      "id": "Tj2ehkMunWf7A6q32Meh2g",
+      "class": "K2Node_VariableGet",
+      "title": "Get ShaodwColliderRoot"
+    },
+    {
+      "id": "hk4wdkvTSQx6JQWNwoAeyQ",
+      "class": "K2Node_CallFunction",
+      "title": "Get World Location"
+    },
+    {
+      "id": "NNJ1DUojvHPFc_uQ2JgEUw",
+      "class": "K2Node_CallFunction",
+      "title": "vector - vector"
+    },
+    {
+      "id": "juG_A0eG54QHTjmk91aGGw",
+      "class": "K2Node_CallFunction",
+      "title": "Vector Length"
+    },
+    {
+      "id": "w6OeCkVSWJP2TLuIdKSyyg",
+      "class": "K2Node_VariableSet",
+      "title": "Set Shadow colision distance"
+    },
+    {
+      "id": "ukGF7EUIUrWXOQGQ4-sYLQ",
+      "class": "K2Node_CallFunction",
+      "title": "Make Vector"
+    },
+    {
+      "id": "YeTb6ErtiO_v5NOUdA_CPg",
+      "class": "K2Node_VariableGet",
+      "title": "Get Shadow colision distance"
+    },
+    {
+      "id": "Vln-gULsIPqPBHmAlHb-LQ",
+      "class": "K2Node_CallFunction",
+      "title": "Make Vector"
+    },
+    {
+      "id": "8lGPJkrSM1DTHfqvupkliw",
+      "class": "K2Node_VariableGet",
+      "title": "Get ShadowCollider"
+    },
+    {
+      "id": "INWCLUgIcVwNWOCoLVwzJw",
+      "class": "K2Node_CallFunction",
+      "title": "Set Box Extent"
+    },
+    {
+      "id": "jpIs6konDQtHVMqzwLx-2w",
+      "class": "K2Node_CallFunction",
+      "title": "Shadow Collision Change"
+    },
+    {
+      "id": "gzqMJ0fdgKsBA9O9pYijNw",
+      "class": "K2Node_VariableGet",
+      "title": "Get CapsuleComponent"
+    },
+    {
+      "id": "qmO2kUBuQvZOW7Otzo-RWw",
+      "class": "K2Node_CallFunction",
+      "title": "Get Overlapping Actors"
+    },
+    {
+      "id": "jJbwdk7ygBo1U6mM9tSkqw",
+      "class": "K2Node_MacroInstance",
+      "title": "For Each Loop"
+    },
+    {
+      "id": "GtqyR0hkjJ0MsSuwaC03zA",
+      "class": "K2Node_VariableGet",
+      "title": "Get Active Ball"
+    },
+    {
+      "id": "0dEry0IZDYxdt5GjWmB2lQ",
+      "class": "K2Node_CallArrayFunction",
+      "title": "Add"
+    },
+    {
+      "id": "c7sPLEb8cfWOTHeSHpXUMg",
+      "class": "K2Node_CallFunction",
+      "title": "Shadow Collision Change"
+    },
+    {
+      "id": "Dy03XE87UQGzTZyO7Tu7oQ",
+      "class": "EdGraphNode_Comment",
+      "title": "Comment"
+    }
+  ],
+  "execEdges": [
+    {
+      "from": "rnCCfUbtRVqou7uCdL6f5w",
+      "fromPin": "then",
+      "to": "6fm-K0NCMx0BRNi_iHWsKw",
+      "toPin": "execute"
+    },
+    {
+      "from": "tDW6Xkxdn98iwmyZuC34pQ",
+      "fromPin": "then",
+      "to": "jJbwdk7ygBo1U6mM9tSkqw",
+      "toPin": "Exec"
+    },
+    {
+      "from": "kCeAXku2Xz37OKmQVsleuQ",
+      "fromPin": "then",
+      "to": "nlwGpEu8MFTGTCSUJxfrPA",
+      "toPin": "execute"
+    },
+    {
+      "from": "aRdk8kgsawUCvbmotHN5yg",
+      "fromPin": "then",
+      "to": "jpIs6konDQtHVMqzwLx-2w",
+      "toPin": "execute"
+    },
+    {
+      "from": "9lDxkUwx5roK4cy_SLouCQ",
+      "fromPin": "then",
+      "to": "sfFoNk8icJGtHU2-pIUNTg",
+      "toPin": "execute"
+    },
+    {
+      "from": "nKCLHECZm8GUnhOtMrnQ1g",
+      "fromPin": "then",
+      "to": "WEvLMUHMOew-_fi_tWwDbQ",
+      "toPin": "execute"
+    },
+    {
+      "from": "nlwGpEu8MFTGTCSUJxfrPA",
+      "fromPin": "then",
+      "to": "v0ss2E_wc74cr5WRrHAxnQ",
+      "toPin": "execute"
+    },
+    {
+      "from": "9r3y60GZcqze2DCfQL14xw",
+      "fromPin": "then",
+      "to": "LREi_kMZI4LU7myyLdhVtQ",
+      "toPin": "execute"
+    },
+    {
+      "from": "v0ss2E_wc74cr5WRrHAxnQ",
+      "fromPin": "then",
+      "to": "js5YkULyKJO5JLunztUrBw",
+      "toPin": "execute"
+    },
+    {
+      "from": "sfFoNk8icJGtHU2-pIUNTg",
+      "fromPin": "then",
+      "to": "P3q7jEvbSOY87PWPXUMm5A",
+      "toPin": "execute"
+    },
+    {
+      "from": "P3q7jEvbSOY87PWPXUMm5A",
+      "fromPin": "then",
+      "to": "w6OeCkVSWJP2TLuIdKSyyg",
+      "toPin": "execute"
+    },
+    {
+      "from": "w6OeCkVSWJP2TLuIdKSyyg",
+      "fromPin": "then",
+      "to": "INWCLUgIcVwNWOCoLVwzJw",
+      "toPin": "execute"
+    },
+    {
+      "from": "jJbwdk7ygBo1U6mM9tSkqw",
+      "fromPin": "LoopBody",
+      "to": "c7sPLEb8cfWOTHeSHpXUMg",
+      "toPin": "execute"
+    }
+  ],
+  "dataEdges": [
+    {
+      "from": "kCeAXku2Xz37OKmQVsleuQ",
+      "fromPin": "OtherActor",
+      "to": "nlwGpEu8MFTGTCSUJxfrPA",
+      "toPin": "Object"
+    },
+    {
+      "from": "e0667UL7Obx3gym7r2ntiQ",
+      "fromPin": "ShadowCollider",
+      "to": "6fm-K0NCMx0BRNi_iHWsKw",
+      "toPin": "self"
+    },
+    {
+      "from": "Yy3JDkEtF7V2iMC7SPjTlg",
+      "fromPin": "isInChecker",
+      "to": "aRdk8kgsawUCvbmotHN5yg",
+      "toPin": "Condition"
+    },
+    {
+      "from": "kPl2V0SfDPIMukOP7lIP_A",
+      "fromPin": "Top",
+      "to": "ywsHeU5Z333kmaqL5Iyj3A",
+      "toPin": "self"
+    },
+    {
+      "from": "ywsHeU5Z333kmaqL5Iyj3A",
+      "fromPin": "ReturnValue",
+      "to": "VxJ39kgEfk9pH7mAv8kV7Q",
+      "toPin": "A"
+    },
+    {
+      "from": "ywsHeU5Z333kmaqL5Iyj3A",
+      "fromPin": "ReturnValue",
+      "to": "51XraES3z5-GkpOubQXjWQ",
+      "toPin": "InputPin"
+    },
+    {
+      "from": "ywsHeU5Z333kmaqL5Iyj3A",
+      "fromPin": "ReturnValue",
+      "to": "FC97YEOfVoT20meNoOpNmg",
+      "toPin": "A"
+    },
+    {
+      "from": "nlwGpEu8MFTGTCSUJxfrPA",
+      "fromPin": "AsBP Light Ball",
+      "to": "v0ss2E_wc74cr5WRrHAxnQ",
+      "toPin": "NewItem"
+    },
+    {
+      "from": "NxtyIE-Ga5COUzeGuShCMA",
+      "fromPin": "Active Ball",
+      "to": "v0ss2E_wc74cr5WRrHAxnQ",
+      "toPin": "TargetArray"
+    },
+    {
+      "from": "ksB-fUEY3BjgQmSLEJeOFg",
+      "fromPin": "Active Ball",
+      "to": "dF5eBkVl36rrSTOQOWvCeQ",
+      "toPin": "Array"
+    },
+    {
+      "from": "dF5eBkVl36rrSTOQOWvCeQ",
+      "fromPin": "Output",
+      "to": "fZK8201rUXdK6eaEXmwMeQ",
+      "toPin": "self"
+    },
+    {
+      "from": "fZK8201rUXdK6eaEXmwMeQ",
+      "fromPin": "ReturnValue",
+      "to": "VxJ39kgEfk9pH7mAv8kV7Q",
+      "toPin": "B"
+    },
+    {
+      "from": "VxJ39kgEfk9pH7mAv8kV7Q",
+      "fromPin": "ReturnValue",
+      "to": "N4lZY0IiE7Fx8Vy4rVMYHQ",
+      "toPin": "A"
+    },
+    {
+      "from": "N4lZY0IiE7Fx8Vy4rVMYHQ",
+      "fromPin": "ReturnValue",
+      "to": "wscuHEAyKSB24Q-A06mZ0A",
+      "toPin": "A"
+    },
+    {
+      "from": "sfFoNk8icJGtHU2-pIUNTg",
+      "fromPin": "OutHit",
+      "to": "LuDvzUdFYf3j_2uQTvAILg",
+      "toPin": "Hit"
+    },
+    {
+      "from": "sfFoNk8icJGtHU2-pIUNTg",
+      "fromPin": "ReturnValue",
+      "to": "nVvyOEKOIUrwqvWmX30AEg",
+      "toPin": "Condition"
+    },
+    {
+      "from": "51XraES3z5-GkpOubQXjWQ",
+      "fromPin": "OutputPin",
+      "to": "sfFoNk8icJGtHU2-pIUNTg",
+      "toPin": "Start"
+    },
+    {
+      "from": "wscuHEAyKSB24Q-A06mZ0A",
+      "fromPin": "ReturnValue",
+      "to": "FC97YEOfVoT20meNoOpNmg",
+      "toPin": "B"
+    },
+    {
+      "from": "LuDvzUdFYf3j_2uQTvAILg",
+      "fromPin": "Location",
+      "to": "SehwWUGZKgk2_H6AvkoLTA",
+      "toPin": "Shadow farthest location"
+    },
+    {
+      "from": "LuDvzUdFYf3j_2uQTvAILg",
+      "fromPin": "Location",
+      "to": "RZ5jDk6Cn7kWtMa6W4tAzg",
+      "toPin": "Shadow farthest location"
+    },
+    {
+      "from": "LuDvzUdFYf3j_2uQTvAILg",
+      "fromPin": "Location",
+      "to": "P3q7jEvbSOY87PWPXUMm5A",
+      "toPin": "Shadow farthest location"
+    },
+    {
+      "from": "LuDvzUdFYf3j_2uQTvAILg",
+      "fromPin": "Location",
+      "to": "NNJ1DUojvHPFc_uQ2JgEUw",
+      "toPin": "A"
+    },
+    {
+      "from": "FC97YEOfVoT20meNoOpNmg",
+      "fromPin": "ReturnValue",
+      "to": "sfFoNk8icJGtHU2-pIUNTg",
+      "toPin": "End"
+    },
+    {
+      "from": "Tj2ehkMunWf7A6q32Meh2g",
+      "fromPin": "ShaodwColliderRoot",
+      "to": "hk4wdkvTSQx6JQWNwoAeyQ",
+      "toPin": "self"
+    },
+    {
+      "from": "hk4wdkvTSQx6JQWNwoAeyQ",
+      "fromPin": "ReturnValue",
+      "to": "NNJ1DUojvHPFc_uQ2JgEUw",
+      "toPin": "B"
+    },
+    {
+      "from": "NNJ1DUojvHPFc_uQ2JgEUw",
+      "fromPin": "ReturnValue",
+      "to": "juG_A0eG54QHTjmk91aGGw",
+      "toPin": "A"
+    },
+    {
+      "from": "juG_A0eG54QHTjmk91aGGw",
+      "fromPin": "ReturnValue",
+      "to": "w6OeCkVSWJP2TLuIdKSyyg",
+      "toPin": "Shadow colision distance"
+    },
+    {
+      "from": "juG_A0eG54QHTjmk91aGGw",
+      "fromPin": "ReturnValue",
+      "to": "ukGF7EUIUrWXOQGQ4-sYLQ",
+      "toPin": "X"
+    },
+    {
+      "from": "YeTb6ErtiO_v5NOUdA_CPg",
+      "fromPin": "Shadow colision distance",
+      "to": "Vln-gULsIPqPBHmAlHb-LQ",
+      "toPin": "X"
+    },
+    {
+      "from": "Vln-gULsIPqPBHmAlHb-LQ",
+      "fromPin": "ReturnValue",
+      "to": "INWCLUgIcVwNWOCoLVwzJw",
+      "toPin": "InBoxExtent"
+    },
+    {
+      "from": "8lGPJkrSM1DTHfqvupkliw",
+      "fromPin": "ShadowCollider",
+      "to": "INWCLUgIcVwNWOCoLVwzJw",
+      "toPin": "self"
+    },
+    {
+      "from": "gzqMJ0fdgKsBA9O9pYijNw",
+      "fromPin": "CapsuleComponent",
+      "to": "qmO2kUBuQvZOW7Otzo-RWw",
+      "toPin": "self"
+    },
+    {
+      "from": "qmO2kUBuQvZOW7Otzo-RWw",
+      "fromPin": "OverlappingActors",
+      "to": "jJbwdk7ygBo1U6mM9tSkqw",
+      "toPin": "Array"
+    },
+    {
+      "from": "GtqyR0hkjJ0MsSuwaC03zA",
+      "fromPin": "Active Ball",
+      "to": "0dEry0IZDYxdt5GjWmB2lQ",
+      "toPin": "TargetArray"
+    }
+  ],
+  "nodeCount": 51
+}
