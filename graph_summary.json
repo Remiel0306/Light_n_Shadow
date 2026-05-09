@@ -834,134 +834,9 @@
       "title": "Shadow Collision 2"
     },
     {
-      "id": "QRmuNUCYqOjf9A2trpeFsg",
-      "class": "K2Node_IfThenElse",
-      "title": "Branch"
-    },
-    {
-      "id": "EZxs1UkTWHAjIwuu4v_nCw",
-      "class": "K2Node_VariableGet",
-      "title": "Get"
-    },
-    {
-      "id": "pX57AUidlC13cmew4CXOsw",
-      "class": "K2Node_GetArrayItem",
-      "title": "Get (a ref)"
-    },
-    {
-      "id": "tcIyfkcsomekB5SY64AzMA",
-      "class": "K2Node_CallFunction",
-      "title": "None"
-    },
-    {
-      "id": "5bW8IUGuZrHEHvyXjyJUxw",
-      "class": "K2Node_IfThenElse",
-      "title": "Branch"
-    },
-    {
-      "id": "D5ARiUOkduinUpOLme826A",
-      "class": "K2Node_VariableGet",
-      "title": "Get"
-    },
-    {
-      "id": "-iknPEHOIJEqVqaT_WohDA",
-      "class": "K2Node_GetArrayItem",
-      "title": "Get (a ref)"
-    },
-    {
-      "id": "pX122E-YmQL9ELW3Wby_Ow",
-      "class": "K2Node_CallFunction",
-      "title": "None"
-    },
-    {
-      "id": "c5mqXUNzImzybh29E3stUg",
-      "class": "K2Node_CallArrayFunction",
-      "title": "None"
-    },
-    {
-      "id": "2gOPcUS_k6DiyjWgluVdCw",
-      "class": "K2Node_VariableGet",
-      "title": "Get"
-    },
-    {
-      "id": "S6tMnkt5f6w2DXirEoHt-Q",
-      "class": "K2Node_CallArrayFunction",
-      "title": "None"
-    },
-    {
-      "id": "IFPJBkBdJzvqGIGoc5YyhQ",
-      "class": "K2Node_VariableGet",
-      "title": "Get"
-    },
-    {
-      "id": "VOIFmkNqD9h8humHoHBH9w",
-      "class": "K2Node_IfThenElse",
-      "title": "Branch"
-    },
-    {
-      "id": "0oTflkFGS5rDEPqZp5UNnw",
-      "class": "K2Node_VariableGet",
-      "title": "Get"
-    },
-    {
-      "id": "xYe5wkpYABJId2eJ30HHaQ",
-      "class": "K2Node_GetArrayItem",
-      "title": "Get (a ref)"
-    },
-    {
-      "id": "QDvILkplfvkGQ66FP4S4eg",
-      "class": "K2Node_CallFunction",
-      "title": "None"
-    },
-    {
-      "id": "AIoXQ0dSv1N1PJyIWp8XGA",
-      "class": "K2Node_CallArrayFunction",
-      "title": "None"
-    },
-    {
-      "id": "rcc0d0NLkjq6i0qo1BHT6g",
-      "class": "K2Node_VariableGet",
-      "title": "Get"
-    },
-    {
-      "id": "Y0CCrEbzvCe6z8yQ5liXYA",
-      "class": "K2Node_IfThenElse",
-      "title": "Branch"
-    },
-    {
-      "id": "4sH9v0EuZQKLDQ63UGZWdA",
-      "class": "K2Node_VariableGet",
-      "title": "Get"
-    },
-    {
-      "id": "LMfvr0c0coQhu32yPPTDCQ",
-      "class": "K2Node_GetArrayItem",
-      "title": "Get (a ref)"
-    },
-    {
-      "id": "StZk9kTICOKwjregntgakw",
-      "class": "K2Node_CallFunction",
-      "title": "None"
-    },
-    {
-      "id": "SMO9GkvIP3g2EkmmiZFoVA",
-      "class": "K2Node_CallArrayFunction",
-      "title": "None"
-    },
-    {
-      "id": "lPvzaUgPcU6gvaO3f-qFrQ",
-      "class": "K2Node_VariableGet",
-      "title": "Get"
-    },
-    {
-      "id": "i4j9wUPcMO9gWhSwXSSc-w",
-      "class": "K2Node_IfThenElse",
-      "title": "Branch"
-    },
-    {
       "id": "b8k8e0MJ0hWLqvGchjLEjA",
       "class": "K2Node_GetArrayItem",
-      "title": "Get (a ref)"
+      "title": "Get (a copy)"
     },
     {
       "id": "d07nUkRS8v-bsVqZF5t4Eg",
@@ -1017,6 +892,101 @@
       "id": "cS3_VUQvwBdgcI6bKJPtww",
       "class": "K2Node_CallArrayFunction",
       "title": "Set Array Elem"
+    },
+    {
+      "id": "IQMzx05rwZq9qbOdcizwYQ",
+      "class": "K2Node_CustomEvent",
+      "title": "Shadow Collision 3"
+    },
+    {
+      "id": "B4bI7koo8mILSa2SRJXHwQ",
+      "class": "K2Node_CallFunction",
+      "title": "Shadow Collision Compute"
+    },
+    {
+      "id": "6t8Zs0stvtvqdZK2AWb40g",
+      "class": "K2Node_VariableGet",
+      "title": "Get Slot Owners"
+    },
+    {
+      "id": "NI9f1ULsgj5GJwm93y1PgA",
+      "class": "K2Node_GetArrayItem",
+      "title": "Get (a copy)"
+    },
+    {
+      "id": "bVsIYE4j1MDI-tSNELOydQ",
+      "class": "K2Node_PromotableOperator",
+      "title": "Equal (Object)"
+    },
+    {
+      "id": "Eb5oW07lg4epEUKjy_fH6w",
+      "class": "K2Node_IfThenElse",
+      "title": "Branch"
+    },
+    {
+      "id": "0e0uZ0uj3lsrSgW6WZkbkQ",
+      "class": "K2Node_CallFunction",
+      "title": "Shadow Collision 3"
+    },
+    {
+      "id": "YIkvQkXuZQ889gy30aMRjA",
+      "class": "K2Node_IfThenElse",
+      "title": "Branch"
+    },
+    {
+      "id": "nEhy-EJqUVABT52ziIjQ8w",
+      "class": "K2Node_CallArrayFunction",
+      "title": "Set Array Elem"
+    },
+    {
+      "id": "PoW5D0QNeEyclMyHDHT7WQ",
+      "class": "K2Node_GetArrayItem",
+      "title": "Get (a copy)"
+    },
+    {
+      "id": "z8zplElVdh661p6EGkA3bA",
+      "class": "K2Node_VariableGet",
+      "title": "Get Slot Owners"
+    },
+    {
+      "id": "MpZ5YkCaUZPlM6C66I-gEA",
+      "class": "K2Node_CallFunction",
+      "title": "Is Valid"
+    },
+    {
+      "id": "KYBDsEYDpGRjeguZT0WJ8w",
+      "class": "K2Node_VariableGet",
+      "title": "Get Slot Owners"
+    },
+    {
+      "id": "3b2DTUBzizU0Ef2koYhnxw",
+      "class": "K2Node_VariableGet",
+      "title": "Get ShaodwColliderRoot3"
+    },
+    {
+      "id": "dyMl_E0iMypCSmelkiMxLg",
+      "class": "K2Node_VariableGet",
+      "title": "Get ShadowCollider3"
+    },
+    {
+      "id": "VciBVU3r34vIG-OrzXLVfA",
+      "class": "K2Node_Knot",
+      "title": "Reroute Node"
+    },
+    {
+      "id": "sjSONEFMQvel4lCh-H-E9A",
+      "class": "K2Node_Knot",
+      "title": "Reroute Node"
+    },
+    {
+      "id": "uQM-GUM_1dcnu-uaa4TehQ",
+      "class": "K2Node_VariableGet",
+      "title": "Get ShaodwColliderRoot3"
+    },
+    {
+      "id": "F37KIE1mNm3r0AmoUMxEVg",
+      "class": "K2Node_VariableGet",
+      "title": "Get ShadowCollider3"
     }
   ],
   "execEdges": [
@@ -1273,9 +1243,51 @@
       "toPin": "execute"
     },
     {
+      "from": "C24G7EO98NXVXhyd0PVy4Q",
+      "fromPin": "else",
+      "to": "Eb5oW07lg4epEUKjy_fH6w",
+      "toPin": "execute"
+    },
+    {
       "from": "d07nUkRS8v-bsVqZF5t4Eg",
       "fromPin": "then",
       "to": "Z_2KkUj0FV6WX3uDsunn0Q",
+      "toPin": "execute"
+    },
+    {
+      "from": "d07nUkRS8v-bsVqZF5t4Eg",
+      "fromPin": "else",
+      "to": "EqSoQ0iUGPopZfS5JH5g1Q",
+      "toPin": "execute"
+    },
+    {
+      "from": "Z_2KkUj0FV6WX3uDsunn0Q",
+      "fromPin": "then",
+      "to": "YIkvQkXuZQ889gy30aMRjA",
+      "toPin": "execute"
+    },
+    {
+      "from": "Z_2KkUj0FV6WX3uDsunn0Q",
+      "fromPin": "else",
+      "to": "cS3_VUQvwBdgcI6bKJPtww",
+      "toPin": "execute"
+    },
+    {
+      "from": "IQMzx05rwZq9qbOdcizwYQ",
+      "fromPin": "then",
+      "to": "B4bI7koo8mILSa2SRJXHwQ",
+      "toPin": "execute"
+    },
+    {
+      "from": "Eb5oW07lg4epEUKjy_fH6w",
+      "fromPin": "then",
+      "to": "0e0uZ0uj3lsrSgW6WZkbkQ",
+      "toPin": "execute"
+    },
+    {
+      "from": "YIkvQkXuZQ889gy30aMRjA",
+      "fromPin": "else",
+      "to": "nEhy-EJqUVABT52ziIjQ8w",
       "toPin": "execute"
     }
   ],
@@ -1285,6 +1297,12 @@
       "fromPin": "OtherActor",
       "to": "nlwGpEu8MFTGTCSUJxfrPA",
       "toPin": "Object"
+    },
+    {
+      "from": "kCeAXku2Xz37OKmQVsleuQ",
+      "fromPin": "OtherActor",
+      "to": "VciBVU3r34vIG-OrzXLVfA",
+      "toPin": "InputPin"
     },
     {
       "from": "e0667UL7Obx3gym7r2ntiQ",
@@ -1482,6 +1500,18 @@
       "from": "jJbwdk7ygBo1U6mM9tSkqw",
       "fromPin": "Array Element",
       "to": "gnGcyUVFY7VdBI2vEoWwPQ",
+      "toPin": "Ball"
+    },
+    {
+      "from": "jJbwdk7ygBo1U6mM9tSkqw",
+      "fromPin": "Array Element",
+      "to": "bVsIYE4j1MDI-tSNELOydQ",
+      "toPin": "B"
+    },
+    {
+      "from": "jJbwdk7ygBo1U6mM9tSkqw",
+      "fromPin": "Array Element",
+      "to": "0e0uZ0uj3lsrSgW6WZkbkQ",
       "toPin": "Ball"
     },
     {
@@ -1777,6 +1807,12 @@
       "fromPin": "ReturnValue",
       "to": "TV78uUHgmrOybp-BHccHvw",
       "toPin": "Dir"
+    },
+    {
+      "from": "40a-dEiDarH4qJqvix-hGA",
+      "fromPin": "Index",
+      "to": "BPJIIkDNQ6rwJV2r-Nsg_w",
+      "toPin": "Dimension 1"
     },
     {
       "from": "tX-sRkB1rtAaoe22ZgAuww",
@@ -2199,6 +2235,24 @@
       "toPin": "Condition"
     },
     {
+      "from": "b8k8e0MJ0hWLqvGchjLEjA",
+      "fromPin": "Output",
+      "to": "gxCV4U_jB7ERlW2yLZ4hiA",
+      "toPin": "Object"
+    },
+    {
+      "from": "d4xSQ07-yM94CzeJ3q3H4w",
+      "fromPin": "Slot Owners",
+      "to": "b8k8e0MJ0hWLqvGchjLEjA",
+      "toPin": "Array"
+    },
+    {
+      "from": "gxCV4U_jB7ERlW2yLZ4hiA",
+      "fromPin": "ReturnValue",
+      "to": "d07nUkRS8v-bsVqZF5t4Eg",
+      "toPin": "Condition"
+    },
+    {
       "from": "ybVP_U4DJ9iXSxW1WUGGHQ",
       "fromPin": "Slot Owners",
       "to": "EqSoQ0iUGPopZfS5JH5g1Q",
@@ -2217,11 +2271,113 @@
       "toPin": "Array"
     },
     {
+      "from": "9ByVJEa66QWUkVmzTTaZug",
+      "fromPin": "ReturnValue",
+      "to": "Z_2KkUj0FV6WX3uDsunn0Q",
+      "toPin": "Condition"
+    },
+    {
       "from": "I1OSrUKT_qMXJ-Sr-bgdEQ",
       "fromPin": "Slot Owners",
       "to": "cS3_VUQvwBdgcI6bKJPtww",
       "toPin": "TargetArray"
+    },
+    {
+      "from": "IQMzx05rwZq9qbOdcizwYQ",
+      "fromPin": "Ball",
+      "to": "B4bI7koo8mILSa2SRJXHwQ",
+      "toPin": "Ball"
+    },
+    {
+      "from": "6t8Zs0stvtvqdZK2AWb40g",
+      "fromPin": "Slot Owners",
+      "to": "NI9f1ULsgj5GJwm93y1PgA",
+      "toPin": "Array"
+    },
+    {
+      "from": "NI9f1ULsgj5GJwm93y1PgA",
+      "fromPin": "Output",
+      "to": "bVsIYE4j1MDI-tSNELOydQ",
+      "toPin": "A"
+    },
+    {
+      "from": "bVsIYE4j1MDI-tSNELOydQ",
+      "fromPin": "ReturnValue",
+      "to": "Eb5oW07lg4epEUKjy_fH6w",
+      "toPin": "Condition"
+    },
+    {
+      "from": "PoW5D0QNeEyclMyHDHT7WQ",
+      "fromPin": "Output",
+      "to": "MpZ5YkCaUZPlM6C66I-gEA",
+      "toPin": "Object"
+    },
+    {
+      "from": "z8zplElVdh661p6EGkA3bA",
+      "fromPin": "Slot Owners",
+      "to": "PoW5D0QNeEyclMyHDHT7WQ",
+      "toPin": "Array"
+    },
+    {
+      "from": "MpZ5YkCaUZPlM6C66I-gEA",
+      "fromPin": "ReturnValue",
+      "to": "YIkvQkXuZQ889gy30aMRjA",
+      "toPin": "Condition"
+    },
+    {
+      "from": "KYBDsEYDpGRjeguZT0WJ8w",
+      "fromPin": "Slot Owners",
+      "to": "nEhy-EJqUVABT52ziIjQ8w",
+      "toPin": "TargetArray"
+    },
+    {
+      "from": "3b2DTUBzizU0Ef2koYhnxw",
+      "fromPin": "ShaodwColliderRoot3",
+      "to": "yee_u0a_xxnvvV296dNHVQ",
+      "toPin": "Option 2"
+    },
+    {
+      "from": "dyMl_E0iMypCSmelkiMxLg",
+      "fromPin": "ShadowCollider3",
+      "to": "h5oEkktrINgfmJyX0LazVQ",
+      "toPin": "Option 2"
+    },
+    {
+      "from": "VciBVU3r34vIG-OrzXLVfA",
+      "fromPin": "OutputPin",
+      "to": "sjSONEFMQvel4lCh-H-E9A",
+      "toPin": "InputPin"
+    },
+    {
+      "from": "sjSONEFMQvel4lCh-H-E9A",
+      "fromPin": "OutputPin",
+      "to": "EqSoQ0iUGPopZfS5JH5g1Q",
+      "toPin": "Item"
+    },
+    {
+      "from": "sjSONEFMQvel4lCh-H-E9A",
+      "fromPin": "OutputPin",
+      "to": "cS3_VUQvwBdgcI6bKJPtww",
+      "toPin": "Item"
+    },
+    {
+      "from": "sjSONEFMQvel4lCh-H-E9A",
+      "fromPin": "OutputPin",
+      "to": "nEhy-EJqUVABT52ziIjQ8w",
+      "toPin": "Item"
+    },
+    {
+      "from": "uQM-GUM_1dcnu-uaa4TehQ",
+      "fromPin": "ShaodwColliderRoot3",
+      "to": "B4bI7koo8mILSa2SRJXHwQ",
+      "toPin": "Target Root"
+    },
+    {
+      "from": "F37KIE1mNm3r0AmoUMxEVg",
+      "fromPin": "ShadowCollider3",
+      "to": "B4bI7koo8mILSa2SRJXHwQ",
+      "toPin": "Target Collider"
     }
   ],
-  "nodeCount": 203
+  "nodeCount": 197
 }
