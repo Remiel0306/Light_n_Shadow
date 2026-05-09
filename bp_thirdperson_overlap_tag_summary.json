@@ -1,0 +1,93 @@
+{
+  "success": true,
+  "path": "/Game/BluePrint/BP_ThirdPersonCharacter",
+  "graphName": "EventGraph",
+  "nodes": [
+    {
+      "id": "AS_By0bs0A7-FVG_IL7ing",
+      "class": "K2Node_CallFunction",
+      "title": "Destroy Component"
+    },
+    {
+      "id": "Y687vE-iUcC00C-lxjGbPw",
+      "class": "K2Node_PlayMontage",
+      "title": "Play Montage"
+    },
+    {
+      "id": "uRlAYUBn3202ly6WQGS-9A",
+      "class": "K2Node_PlayMontage",
+      "title": "Play Montage"
+    },
+    {
+      "id": "g4hBEEOV98-7SD2AZZtspg",
+      "class": "K2Node_AddComponent",
+      "title": "Add Spline Mesh Component [Static Mesh Cylinder_0A79CD72]"
+    },
+    {
+      "id": "C-nw10v9MXB4y5qh_zu3lw",
+      "class": "K2Node_IfThenElse",
+      "title": "Branch"
+    },
+    {
+      "id": "9FKtm04R27gYBYqCKoj6HQ",
+      "class": "K2Node_IfThenElse",
+      "title": "Branch"
+    },
+    {
+      "id": "gs4-00PZAKLIq2KCLOJdUg",
+      "class": "K2Node_IfThenElse",
+      "title": "Branch"
+    },
+    {
+      "id": "BlB1M0TzA51JTg209cKV9A",
+      "class": "K2Node_ComponentBoundEvent",
+      "title": "On Component Begin Overlap (CapsuleComponent)"
+    },
+    {
+      "id": "V5UcD0ZM1JormJ6vKCLNXA",
+      "class": "K2Node_CallFunction",
+      "title": "Actor Has Tag"
+    },
+    {
+      "id": "84aZkEBKt2htJri_RzVm9g",
+      "class": "K2Node_IfThenElse",
+      "title": "Branch"
+    },
+    {
+      "id": "kpAsD0nXmOdQVmuAISUFyg",
+      "class": "K2Node_CallFunction",
+      "title": "Print String"
+    },
+    {
+      "id": "pajApE9XQlXZONKGmsXLaA",
+      "class": "K2Node_ComponentBoundEvent",
+      "title": "On Component End Overlap (CapsuleComponent)"
+    },
+    {
+      "id": "B4ia2UapDrm7OEqHgfc2qA",
+      "class": "K2Node_CallFunction",
+      "title": "Actor Has Tag"
+    },
+    {
+      "id": "-UqG9UQ88eMLgFmthlW4Zg",
+      "class": "K2Node_IfThenElse",
+      "title": "Branch"
+    },
+    {
+      "id": "EtN_-EfzGRTUStOE5DwQXA",
+      "class": "K2Node_CallFunction",
+      "title": "Print String"
+    },
+    {
+      "id": "cVl420VkA3mf_JiByBoM7w",
+      "class": "K2Node_IfThenElse",
+      "title": "Branch"
+    },
+    {
+      "id": "XV-0L0nBeAHK8aubOI2UZw",
+      "class": "K2Node_IfThenElse",
+      "title": "Branch"
+    }
+  ],
+  "allCount": 163
+}

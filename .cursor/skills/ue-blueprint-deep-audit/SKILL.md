@@ -38,6 +38,7 @@ Cover all of the following unless the user narrows the graph or event:
 4. **Overlap / lifecycle**
    - **BeginOverlap** vs **EndOverlap**: clearing the **same index** that was assigned on enter (`Array_Set` to `None` with correct **Index**).
    - Cast filter (e.g. LightBall vs Character): ensure the right actor type drives the right branch so non-target actors do not corrupt flags.
+   - **Tag checks:** if the graph uses **`Actor Has Tag`** with **`Other Actor`**, tags must live on the **actor root**; tags only on **`Other Comp`** require **`Component Has Tag`** (or move tag to actor).
 
 5. **Reset / restore**
    - Reset functions: **target component** pins match the slot; location/rotation/extent use **per-slot stored defaults**, not accidental `0,0,0` unless that is truly the design.
@@ -52,12 +53,27 @@ Cover all of the following unless the user narrows the graph or event:
 
 If the bridge or export fails, state that limitation and still give a **checklist** the user can run manually in-editor (search all `Set Array Elem`, sort by Index, etc.).
 
+## User requirement (verbatim)
+
+> 我其實要的是你直接幫我偵測出確定的原因告訴我 而不是題一個讓我檢查的方法 我要的是你檢查好
+
+## Definitive diagnosis (required)
+
+The agent **performs** inspection (MCP `read_graph_summary` / `export_nodes_t3d`, repo T3D/JSON, engine API semantics) and **states the determined root cause first**, with evidence (file path + pin `DefaultValue` / `LinkedTo` / node title).
+
+- **Do not** lead with “請你檢查…” or a generic in-editor checklist as the main answer when exports or graph text are available.
+- **Do** name the failure mode (e.g. wrong API for tag placement, wrong pin wired to `Actor Has Tag` Target, cast filter blocking exec).
+- **UE tag rule (deterministic):** `Actor Has Tag` on an `Actor` reference only tests **`AActor::Tags`**. Tags on a **component** (Component Tags on the collision primitive) are **not** read by `Actor Has Tag`. If the graph wires **`Other Actor`** into `Actor Has Tag` but the user only tagged the **collision component**, the Branch condition is **provably false** relative to that API — report that as the determined cause unless exports show `Component Has Tag` on **`Other Comp`** or the same literal exists on the actor’s Tags.
+
+If and only if **no** graph export or summary is available after trying project scripts / MCP, then give a short **inspection blocked** note and the minimum manual step needed to unblock (e.g. open BP and export).
+
 ## Output format
 
-1. **Findings** — ordered by severity (broken exec / wrong index / unwired Condition / wrong cast).
-2. **Evidence** — pin name + literal or “unwired”.
-3. **Fix** — one sentence per item: what to rewire or what value to set.
-4. **Residual risk** — what could not be verified without PIE or without export.
+1. **Root cause (determined)** — one or two sentences: what is wrong and why it follows from evidence or engine rules.
+2. **Findings** — ordered by severity (broken exec / wrong index / unwired Condition / wrong cast / API mismatch).
+3. **Evidence** — pin name + literal or “unwired”; cite `path:line` or T3D pin lines when possible.
+4. **Fix** — one sentence per item: what to rewire or what value to set.
+5. **Residual uncertainty** — only if something truly cannot be inferred from artifacts (e.g. runtime-only collision); keep brief.
 
 ## Anti-patterns to call out by name
 
