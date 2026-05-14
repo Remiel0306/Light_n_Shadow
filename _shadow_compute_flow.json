@@ -1,0 +1,71 @@
+{
+  "success": true,
+  "path": "/Game/BluePrint/BP_Enemy1",
+  "graphName": "EventGraph",
+  "entryPoint": "Event BeginPlay",
+  "entryId": "rnCCfUbtRVqou7uCdL6f5w",
+  "steps": [
+    {
+      "id": "rnCCfUbtRVqou7uCdL6f5w",
+      "class": "K2Node_Event",
+      "title": "Event BeginPlay",
+      "branches": [
+        {
+          "pin": "then",
+          "toId": "6fm-K0NCMx0BRNi_iHWsKw"
+        }
+      ]
+    },
+    {
+      "id": "6fm-K0NCMx0BRNi_iHWsKw",
+      "class": "K2Node_CallFunction",
+      "title": "Set Collision Enabled",
+      "branches": [
+        {
+          "pin": "then",
+          "toId": "mw6tJUlYTQfvXpuOLYJUPw"
+        }
+      ]
+    },
+    {
+      "id": "mw6tJUlYTQfvXpuOLYJUPw",
+      "class": "K2Node_CallArrayFunction",
+      "title": "Clear",
+      "branches": [
+        {
+          "pin": "then",
+          "toId": "k6-TTkMpr234B3WrKGnWfA"
+        }
+      ]
+    },
+    {
+      "id": "k6-TTkMpr234B3WrKGnWfA",
+      "class": "K2Node_CallArrayFunction",
+      "title": "Add",
+      "branches": [
+        {
+          "pin": "then",
+          "toId": "xK4jIketwxt6nMmRudATew"
+        }
+      ]
+    },
+    {
+      "id": "xK4jIketwxt6nMmRudATew",
+      "class": "K2Node_CallArrayFunction",
+      "title": "Add",
+      "branches": [
+        {
+          "pin": "then",
+          "toId": "fvk2Lkx68bxGF-Su2wU5Rw"
+        }
+      ]
+    },
+    {
+      "id": "fvk2Lkx68bxGF-Su2wU5Rw",
+      "class": "K2Node_CallArrayFunction",
+      "title": "Add",
+      "branches": []
+    }
+  ],
+  "stepCount": 6
+}
