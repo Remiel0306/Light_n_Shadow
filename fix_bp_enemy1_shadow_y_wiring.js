@@ -1,5 +1,5 @@
 /**
- * BP_Enemy1 — shadow length on Y: repair half-distance divide + extent/offset MakeVector literals.
+ * BP_EnemyShadowLogic — shadow length on Y: repair half-distance divide + extent/offset MakeVector literals.
  *
  * Live graph had: VectorLength -> Divide A only (B unwired); half -> MakeVector Y -> SetBoxExtent / SetRelLoc (OK).
  * Missing B=2 breaks half-length. Optionally set cross-section on extent MakeVector X,Z and zero X,Z on offset vector.
@@ -10,7 +10,7 @@ const fs = require('fs');
 const { spawn } = require('child_process');
 
 const PROJECT = 'D:/Unreal Engine/Light_n_Shadow/Light_and_Shadow.uproject';
-const BP = '/Game/BluePrint/BP_Enemy1';
+const BP = '/Game/BluePrint/BP_EnemyShadowLogic';
 const GRAPH = 'EventGraph';
 
 const DIVIDE_HALF = 'ddIBTUrp1cVr6xi_Lw5N_w';
@@ -99,7 +99,7 @@ async function main() {
   fs.writeFileSync(`${__dirname}/_bp_enemy1_summary_live.json`, JSON.stringify(sum, null, 2), 'utf8');
 
   const divide = sum.nodes.find((n) => n.id === DIVIDE_HALF);
-  if (!divide) throw new Error(`Divide node ${DIVIDE_HALF} not found — open BP_Enemy1 and re-export summary.`);
+  if (!divide) throw new Error(`Divide node ${DIVIDE_HALF} not found — open BP_EnemyShadowLogic and re-export summary.`);
 
   // Half of trace distance for box half-extent along Y and collider center offset along Y
   await setPin(DIVIDE_HALF, 'B', '2.0');

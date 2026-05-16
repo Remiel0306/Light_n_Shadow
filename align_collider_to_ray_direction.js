@@ -1,12 +1,12 @@
 /**
- * BP_Enemy1: Make shadow collider root rotation parallel to the trace ray.
+ * BP_EnemyShadowLogic: Make shadow collider root rotation parallel to the trace ray.
  * FindLookAtRotation was using (RootWorldLocation -> Farthest) which diverges
  * from the actual ray (TraceStart -> Farthest). Rewire Start to Trace Start.
  */
 const { spawn } = require('child_process');
 
 const PROJECT = 'D:/Unreal Engine/Light_n_Shadow/Light_and_Shadow.uproject';
-const BP = '/Game/BluePrint/BP_Enemy1';
+const BP = '/Game/BluePrint/BP_EnemyShadowLogic';
 
 const TRACE_START_REROUTE = '51XraES3z5-GkpOubQXjWQ';
 const FIND_LOOK_AT = '-si6kUZiZMFtrOqJSL44mA';

@@ -1,6 +1,6 @@
 import unreal
 
-path = "/Game/BluePrint/BP_Enemy1"
+path = "/Game/BluePrint/BP_EnemyShadowLogic"
 bp = unreal.load_asset(path)
 graph = unreal.BlueprintEditorLibrary.get_all_graphs(bp)[0]
 

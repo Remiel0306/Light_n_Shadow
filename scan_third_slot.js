@@ -69,7 +69,7 @@ function parseSetNodes(t3d) {
 }
 
 async function main() {
-  const BP = '/Game/BluePrint/BP_Enemy1';
+  const BP = '/Game/BluePrint/BP_EnemyShadowLogic';
   const { rpc, call, kill } = mk();
   await rpc('initialize', {
     protocolVersion: '2024-11-05',

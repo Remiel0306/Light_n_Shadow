@@ -16,7 +16,7 @@ function hexToB64url(hex) {
   return Buffer.from(hex, 'hex').toString('base64url');
 }
 
-const BP = '/Game/BluePrint/BP_Enemy1';
+const BP = '/Game/BluePrint/BP_EnemyShadowLogic';
 // branch1 hex GUID from fix_final.js
 const BRANCH1_HEX = '67FD8A9148F4155E965F7B83B2E9E7D1';
 

@@ -29,9 +29,9 @@ mcp.stdout.on('data', (data) => {
                     name: 'blueprint',
                     arguments: {
                         action: 'read_graph',
-                        blueprintPath: '/Game/BluePrint/BP_Enemy1',
-                        assetPath: '/Game/BluePrint/BP_Enemy1',
-                        path: '/Game/BluePrint/BP_Enemy1',
+                        blueprintPath: '/Game/BluePrint/BP_EnemyShadowLogic',
+                        assetPath: '/Game/BluePrint/BP_EnemyShadowLogic',
+                        path: '/Game/BluePrint/BP_EnemyShadowLogic',
                         graphName: 'EventGraph'
                     }
                 });
@@ -63,9 +63,9 @@ mcp.stdout.on('data', (data) => {
                         name: 'blueprint',
                         arguments: {
                             action: 'set_node_property',
-                            blueprintPath: '/Game/BluePrint/BP_Enemy1',
-                            assetPath: '/Game/BluePrint/BP_Enemy1',
-                            path: '/Game/BluePrint/BP_Enemy1',
+                            blueprintPath: '/Game/BluePrint/BP_EnemyShadowLogic',
+                            assetPath: '/Game/BluePrint/BP_EnemyShadowLogic',
+                            path: '/Game/BluePrint/BP_EnemyShadowLogic',
                             nodeName: printNodeId,
                             propertyName: 'InString',
                             value: 'MCP is Work'
@@ -83,7 +83,7 @@ mcp.stdout.on('data', (data) => {
                     name: 'blueprint',
                     arguments: {
                         action: 'compile',
-                        path: '/Game/BluePrint/BP_Enemy1'
+                        path: '/Game/BluePrint/BP_EnemyShadowLogic'
                     }
                 });
             } else if (res.id === 4) {

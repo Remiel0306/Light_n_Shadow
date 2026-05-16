@@ -1,5 +1,5 @@
 /**
- * BP_Enemy1:
+ * BP_EnemyShadowLogic:
  * - BeginPlay (after Set Collision Enabled): cache ShadowCollider default
  *   relative translation via GetRelativeTransform -> Break Transform -> Set Root Location.
  * - On Component End Overlap: after Clear + Set Box Extent (Origin colision size),
@@ -9,7 +9,7 @@
 const { spawn } = require('child_process');
 
 const PROJECT = 'D:/Unreal Engine/Light_n_Shadow/Light_and_Shadow.uproject';
-const BP = '/Game/BluePrint/BP_Enemy1';
+const BP = '/Game/BluePrint/BP_EnemyShadowLogic';
 
 const SET_COLLISION = '6fm-K0NCMx0BRNi_iHWsKw';
 const GET_SHADOW_COLLIDER_BEGIN = 'e0667UL7Obx3gym7r2ntiQ';

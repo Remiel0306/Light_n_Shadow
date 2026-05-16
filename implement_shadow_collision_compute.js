@@ -6,7 +6,7 @@ const { spawn } = require("child_process");
 const fs = require("fs");
 
 const PROJECT = "D:/Unreal Engine/Light_n_Shadow/Light_and_Shadow.uproject";
-const BP = "/Game/BluePrint/BP_Enemy1";
+const BP = "/Game/BluePrint/BP_EnemyShadowLogic";
 const GRAPH = "EventGraph";
 
 function mkMCP() {

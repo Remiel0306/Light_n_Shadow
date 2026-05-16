@@ -5,7 +5,7 @@ description: >-
   Verifies pin defaults (including Array_Set Index, GetArrayItem dimension literals), literal
   constants on data pins, variable default values, broken exec chains, cast targets, and
   mismatches between slot indices and Select/Branch wiring. Use when the user asks to check
-  Blueprints for bugs, verify BP_Enemy1 or other BPs, audit EventGraph or functions, or mentions
+  Blueprints for bugs, verify BP_EnemyShadowLogic or other BPs, audit EventGraph or functions, or mentions
   array index, Slot Owners, overlap, reset, or ue-mcp / T3D export.
 disable-model-invocation: true
 ---

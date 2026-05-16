@@ -13,7 +13,7 @@ async function runMCP(nodeIds, label) {
     
     (async()=>{
       await rpc('initialize',{protocolVersion:'2024-11-05',capabilities:{},clientInfo:{name:'t3d',version:'1'}});
-      const BP='/Game/BluePrint/BP_Enemy1';
+      const BP='/Game/BluePrint/BP_EnemyShadowLogic';
       const r=await bp({action:'export_nodes_t3d',path:BP,assetPath:BP,graphName:'EventGraph',nodeIds:nodeIds});
       mcp.kill();
       resolve(r);

@@ -1,7 +1,7 @@
 /** Insert K2_SetWorldRotation(0,0,0) on ShaodwColliderRoot between AZFN1 and sf73. */
 const { spawn } = require('child_process');
 const PROJECT = 'D:/Unreal Engine/Light_n_Shadow/Light_and_Shadow.uproject';
-const BP = '/Game/BluePrint/BP_Enemy1';
+const BP = '/Game/BluePrint/BP_EnemyShadowLogic';
 const AZFN1 = 'AZFN1EnJQhkffi249IreUw';
 const SF73 = 'sf73WUuf06e6TS2Xuc51tg';
 const GET_ROOT = '_ppbJE67Vh-wNnexoqzseg';

@@ -1,6 +1,6 @@
 const { spawn } = require('child_process');
 
-const BP = '/Game/BluePrint/BP_Enemy1';
+const BP = '/Game/BluePrint/BP_EnemyShadowLogic';
 const PROJECT = 'D:/Unreal Engine/Light_n_Shadow/Light_and_Shadow.uproject';
 
 const BAD_NODE_IDS = ['CDqHsk3GqT0Q9XiHbyhL1g', 'J0B2mk-dKKXMAHG500QyDQ', 'WCGle0eDqQdLluuBqCwguw'];

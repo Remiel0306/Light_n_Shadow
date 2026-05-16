@@ -1,6 +1,6 @@
 import unreal
 
-BP_PATH = "/Game/BluePrint/BP_Enemy1"
+BP_PATH = "/Game/BluePrint/BP_EnemyShadowLogic"
 
 
 def add_call(graph, func_name, x, y):

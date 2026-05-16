@@ -25,7 +25,7 @@ async function runMCP(fn) {
   });
 }
 
-const BP = '/Game/BluePrint/BP_Enemy1';
+const BP = '/Game/BluePrint/BP_EnemyShadowLogic';
 
 // Pre-existing node IDs (base64url → hex GUID)
 const SET_ISINCHECKER  = toHex('js5YkULyKJO5JLunztUrBw'); // K2Node_VariableSet_8

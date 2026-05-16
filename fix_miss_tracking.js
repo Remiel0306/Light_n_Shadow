@@ -2,7 +2,7 @@ const { spawn } = require('child_process');
 const fs = require('fs');
 
 const PROJECT = 'D:/Unreal Engine/Light_n_Shadow/Light_and_Shadow.uproject';
-const BP = '/Game/BluePrint/BP_Enemy1';
+const BP = '/Game/BluePrint/BP_EnemyShadowLogic';
 const SNAPSHOT_PATH = 'D:/Unreal Engine/Light_n_Shadow/bp_enemy1_summary.json';
 
 const snapshot = JSON.parse(fs.readFileSync(SNAPSHOT_PATH, 'utf8'));

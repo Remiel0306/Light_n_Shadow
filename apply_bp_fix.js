@@ -3,7 +3,7 @@ const mcp = spawn('npx.cmd', ['ue-mcp', 'D:/Unreal Engine/Light_n_Shadow/Light_a
 let reqId = 1;
 function send(method, params) { mcp.stdin.write(JSON.stringify({ jsonrpc: '2.0', id: reqId++, method, params }) + '\n'); }
 
-const BP_PATH = '/Game/BluePrint/BP_Enemy1';
+const BP_PATH = '/Game/BluePrint/BP_EnemyShadowLogic';
 
 let buffer = '';
 mcp.stdout.on('data', async (data) => {

@@ -54,7 +54,7 @@ function mkMCP() {
 }
 
 async function main() {
-  const BP = "/Game/BluePrint/BP_Enemy1";
+  const BP = "/Game/BluePrint/BP_EnemyShadowLogic";
   const { rpc, bp, kill } = mkMCP();
   await rpc("initialize", { protocolVersion: "2024-11-05", capabilities: {}, clientInfo: { name: "diagnose-reset", version: "1" } });
 

@@ -11,7 +11,7 @@ function mkMCP() {
   return {rpc, bp, kill:()=>mcp.kill()};
 }
 
-const BP = '/Game/BluePrint/BP_Enemy1';
+const BP = '/Game/BluePrint/BP_EnemyShadowLogic';
 
 (async()=>{
   const {rpc, bp, kill} = mkMCP();

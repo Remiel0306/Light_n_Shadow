@@ -9,7 +9,7 @@ function mkMCP(){
   async function call(name,args){const r=await rpc('tools/call',{name,arguments:args});const t=r?.result?.content?.[0]?.text;try{return JSON.parse(t);}catch{return {raw:(t||'').substring(0,400)};}}
   return {rpc, call, kill:()=>mcp.kill()};
 }
-const BP='/Game/BluePrint/BP_Enemy1';
+const BP='/Game/BluePrint/BP_EnemyShadowLogic';
 (async()=>{
   const {rpc,call,kill}=mkMCP();
   await rpc('initialize',{protocolVersion:'2024-11-05',capabilities:{},clientInfo:{name:'save3',version:'1'}});

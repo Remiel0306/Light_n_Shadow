@@ -2,7 +2,7 @@ const { spawn } = require('child_process');
 
 const mcp = spawn('npx.cmd', ['ue-mcp', 'D:/Unreal Engine/Light_n_Shadow/Light_and_Shadow.uproject'], { shell: true });
 let id = 1;
-const bp = '/Game/BluePrint/BP_Enemy1';
+const bp = '/Game/BluePrint/BP_EnemyShadowLogic';
 const send = (method, params) => mcp.stdin.write(JSON.stringify({ jsonrpc: '2.0', id: id++, method, params }) + '\n');
 
 mcp.stdout.on('data', (d) => {

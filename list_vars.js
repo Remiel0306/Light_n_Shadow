@@ -8,7 +8,7 @@ mcp.stdout.on('data', (data) => {
         if (!line.trim()) continue;
         try {
             const res = JSON.parse(line);
-            if (res.id === 1) send('tools/call', { name: 'blueprint', arguments: { action: 'list_variables', path: '/Game/BluePrint/BP_Enemy1', assetPath: '/Game/BluePrint/BP_Enemy1', blueprintPath: '/Game/BluePrint/BP_Enemy1' } });
+            if (res.id === 1) send('tools/call', { name: 'blueprint', arguments: { action: 'list_variables', path: '/Game/BluePrint/BP_EnemyShadowLogic', assetPath: '/Game/BluePrint/BP_EnemyShadowLogic', blueprintPath: '/Game/BluePrint/BP_EnemyShadowLogic' } });
             else if (res.id === 2) { console.log(res.result.content[0].text); process.exit(0); }
         } catch (e) {}
     }

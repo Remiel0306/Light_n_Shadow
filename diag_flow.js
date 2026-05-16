@@ -9,7 +9,7 @@ async function bp(args){const r=await rpc('tools/call',{name:'blueprint',argumen
 
 (async()=>{
   await rpc('initialize',{protocolVersion:'2024-11-05',capabilities:{},clientInfo:{name:'diag',version:'1'}});
-  const BP='/Game/BluePrint/BP_Enemy1';
+  const BP='/Game/BluePrint/BP_EnemyShadowLogic';
   
   // Try get_execution_flow with nodeId
   const r=await bp({action:'get_execution_flow',path:BP,assetPath:BP,graphName:'EventGraph',nodeId:'kCeAXku2Xz37OKmQVsleuQ'});

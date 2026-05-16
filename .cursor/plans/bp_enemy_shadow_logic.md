@@ -1,9 +1,9 @@
 ---
 name: BP_Enemy Shadow Logic
-overview: **僅**在 **BP_Enemy1** 的自訂事件 **`Shadow Collision Compute`** 內修改：影子 **Box** 沿射線軸長度 = 當前線段長——**有命中** = Start→Hit；**沒命中** = Start→**Line Trace End**。**Set Box Extent** 長軸半徑 = **Distance × 0.5**。不改其他事件或函式圖。
+overview: **僅**在 **BP_EnemyShadowLogic** 的自訂事件 **`Shadow Collision Compute`** 內修改：影子 **Box** 沿射線軸長度 = 當前線段長——**有命中** = Start→Hit；**沒命中** = Start→**Line Trace End**。**Set Box Extent** 長軸半徑 = **Distance × 0.5**。不改其他事件或函式圖。
 todos:
   - id: locate-compute
-    content: 在 BP_Enemy1 EventGraph 打開自訂事件 **Shadow Collision Compute**，定位 Line Trace → Break Hit → Set Shadow farthest location / colision distance / Set Box Extent 整條 exec 鏈
+    content: 在 BP_EnemyShadowLogic EventGraph 打開自訂事件 **Shadow Collision Compute**，定位 Line Trace → Break Hit → Set Shadow farthest location / colision distance / Set Box Extent 整條 exec 鏈
     status: pending
   - id: distance-select
     content: 在 Compute 內用同一變數 Distance：Branch(bBlockingHit)；True 用 VectorLength(HitLoc - TraceStart)，False 用 VectorLength(TraceEnd - TraceStart)；Trace End 須與 Line Trace 節點的 End 同一來源
@@ -23,7 +23,7 @@ todos:
 isProject: true
 ---
 
-# BP_Enemy1 Shadow Logic 修改計劃（修訂版）
+# BP_EnemyShadowLogic Shadow Logic 修改計劃（修訂版）
 
 ## 目標行為（你已確認的規格）
 
@@ -52,7 +52,7 @@ flowchart TD
 
 ## 現況（依 repo 快照）
 
-[graph_summary.json](graph_summary.json) 顯示 **BP_Enemy1** 內已有 **`Shadow Collision Compute`** 及相關節點（**`Line Trace By Channel`**、**`Break Hit Result`**、**`Set Box Extent`** 等）。圖裡另可見 **`UpdateOneShadowCollider`**、**`ResetOneShadowCollider`**、**`Shadow Collision 1/2/3`** 等——**僅供你對照依賴與執行順序**；**本計劃不修改那些圖**。
+[graph_summary.json](graph_summary.json) 顯示 **BP_EnemyShadowLogic** 內已有 **`Shadow Collision Compute`** 及相關節點（**`Line Trace By Channel`**、**`Break Hit Result`**、**`Set Box Extent`** 等）。圖裡另可見 **`UpdateOneShadowCollider`**、**`ResetOneShadowCollider`**、**`Shadow Collision 1/2/3`** 等——**僅供你對照依賴與執行順序**；**本計劃不修改那些圖**。
 
 ## UE 實作要點
 
@@ -67,7 +67,7 @@ flowchart TD
 
 ### 1. 打開 `Shadow Collision Compute`
 
-1. 開啟 **BP_Enemy1**。
+1. 開啟 **BP_EnemyShadowLogic**。
 2. 在 EventGraph 找到 **`Shadow Collision Compute`** 自訂事件節點，從它的 **`then`** 往下追 **Line Trace By Channel**。
 
 ### 2. 接上「有打／沒打」的距離選擇

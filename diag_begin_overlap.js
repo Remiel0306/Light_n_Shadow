@@ -9,7 +9,7 @@ async function bp(args){const r=await rpc('tools/call',{name:'blueprint',argumen
 
 (async()=>{
   await rpc('initialize',{protocolVersion:'2024-11-05',capabilities:{},clientInfo:{name:'diag',version:'1'}});
-  const BP='/Game/BluePrint/BP_Enemy1';
+  const BP='/Game/BluePrint/BP_EnemyShadowLogic';
   
   // Use read_graph_summary which is lighter
   const data=await bp({action:'read_graph_summary',path:BP,assetPath:BP,graphName:'EventGraph'});

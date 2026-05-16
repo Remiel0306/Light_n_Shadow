@@ -1,6 +1,6 @@
 const { spawn } = require('child_process');
 
-const BP = '/Game/BluePrint/BP_Enemy1';
+const BP = '/Game/BluePrint/BP_EnemyShadowLogic';
 const PROJECT = 'D:/Unreal Engine/Light_n_Shadow/Light_and_Shadow.uproject';
 
 const mcp = spawn('npx.cmd', ['ue-mcp', PROJECT], { shell: true });

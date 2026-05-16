@@ -24,7 +24,7 @@ mcp.stdout.on('data', (data) => {
                     name: 'blueprint',
                     arguments: {
                         action: 'read_graph',
-                        path: '/Game/BluePrint/BP_Enemy1',
+                        path: '/Game/BluePrint/BP_EnemyShadowLogic',
                         graphName: 'EventGraph'
                     }
                 });

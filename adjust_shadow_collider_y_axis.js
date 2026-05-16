@@ -1,5 +1,5 @@
 /**
- * BP_Enemy1: Shadow lengthens on local Y; wire (distance/2) into:
+ * BP_EnemyShadowLogic: Shadow lengthens on local Y; wire (distance/2) into:
  * - Make Vector for Set Box Extent Y (already wired)
  * - Make Vector for Set Relative Location Y (was missing — offset followed wrong axis / none)
  * Set rel-loc X,Z to 0; keep extent cross-section X,Z literals on extent Make Vector.
@@ -7,7 +7,7 @@
 const { spawn } = require('child_process');
 
 const PROJECT = 'D:/Unreal Engine/Light_n_Shadow/Light_and_Shadow.uproject';
-const BP = '/Game/BluePrint/BP_Enemy1';
+const BP = '/Game/BluePrint/BP_EnemyShadowLogic';
 
 const HALF_DIST = 'ddIBTUrp1cVr6xi_Lw5N_w';
 const MAKE_EXTENT = 'CWzIa0MoTpQW0LWbfxUt9Q';

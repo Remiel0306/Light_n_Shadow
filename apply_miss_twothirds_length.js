@@ -1,12 +1,12 @@
 /**
- * BP_Enemy1: When line trace misses floor, use 2/3 along the ray for
+ * BP_EnemyShadowLogic: When line trace misses floor, use 2/3 along the ray for
  * Shadow farthest location (instead of full trace End).
  * Hit case unchanged (SelectVector A = hit location).
  */
 const { spawn } = require('child_process');
 
 const PROJECT = 'D:/Unreal Engine/Light_n_Shadow/Light_and_Shadow.uproject';
-const BP = '/Game/BluePrint/BP_Enemy1';
+const BP = '/Game/BluePrint/BP_EnemyShadowLogic';
 
 const TRACE_START = '51XraES3z5-GkpOubQXjWQ';
 const TRACE_END_VEC = 'FC97YEOfVoT20meNoOpNmg';

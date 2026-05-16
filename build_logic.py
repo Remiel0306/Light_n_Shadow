@@ -2,7 +2,7 @@ import unreal
 import sys
 
 def run():
-    path = "/Game/BluePrint/BP_Enemy1"
+    path = "/Game/BluePrint/BP_EnemyShadowLogic"
     bp = unreal.load_asset(path)
     if not bp:
         print("BP NOT FOUND")

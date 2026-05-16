@@ -16,7 +16,7 @@ function hexToB64url(hex) {
   return Buffer.from(hex, 'hex').toString('base64url');
 }
 
-const BP = '/Game/BluePrint/BP_Enemy1';
+const BP = '/Game/BluePrint/BP_EnemyShadowLogic';
 
 // Node IDs from fix_final.js run
 const nodeHexIds = {

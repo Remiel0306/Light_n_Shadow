@@ -9,7 +9,7 @@ function mkMCP(){
   async function bp(args){const r=await rpc('tools/call',{name:'blueprint',arguments:args});const t=r?.result?.content?.[0]?.text;try{return JSON.parse(t);}catch{return {raw:(t||'').substring(0,600)};}}
   return {rpc, bp, kill:()=>mcp.kill()};
 }
-const BP = '/Game/BluePrint/BP_Enemy1';
+const BP = '/Game/BluePrint/BP_EnemyShadowLogic';
 const nodes_to_check=[
   'K2Node_ComponentBoundEvent_0',
   'K2Node_IfThenElse_10','K2Node_IfThenElse_11',

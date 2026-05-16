@@ -10,7 +10,7 @@ async function bp(args){const r=await rpc('tools/call',{name:'blueprint',argumen
 
 (async()=>{
   await rpc('initialize',{protocolVersion:'2024-11-05',capabilities:{},clientInfo:{name:'t3d',version:'1'}});
-  const BP='/Game/BluePrint/BP_Enemy1';
+  const BP='/Game/BluePrint/BP_EnemyShadowLogic';
   
   const nodeIds=[
     'kCeAXku2Xz37OKmQVsleuQ', // On Component Begin Overlap

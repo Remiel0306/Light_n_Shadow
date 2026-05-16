@@ -1,6 +1,6 @@
 {
   "success": true,
-  "path": "/Game/BluePrint/BP_Enemy1",
+  "path": "/Game/BluePrint/BP_EnemyShadowLogic",
   "graphName": "EventGraph",
   "entryPoint": "Event BeginPlay",
   "entryId": "rnCCfUbtRVqou7uCdL6f5w",

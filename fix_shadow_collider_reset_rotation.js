@@ -1,5 +1,5 @@
 /**
- * BP_Enemy1: End-overlap reset used Set Relative Rotation on ShadowCollider with default (0,0,0),
+ * BP_EnemyShadowLogic: End-overlap reset used Set Relative Rotation on ShadowCollider with default (0,0,0),
  * but ShadowCollider's authored relative rotation is Yaw -90 (see component defaults).
  * Wire Make Rotator (0, 0, -90) -> Set Relative Rotation NewRotation.
  * Also wire Get Root Location -> Set Relative Location NewLocation on the reset chain if missing.
@@ -7,7 +7,7 @@
 const { spawn } = require('child_process');
 
 const PROJECT = 'D:/Unreal Engine/Light_n_Shadow/Light_and_Shadow.uproject';
-const BP = '/Game/BluePrint/BP_Enemy1';
+const BP = '/Game/BluePrint/BP_EnemyShadowLogic';
 
 const SET_REL_ROT = '0Nd0IUuyqD3aasGqnU4fZQ';
 const SET_REL_LOC = 'sf73WUuf06e6TS2Xuc51tg';

@@ -11,7 +11,7 @@ mcp.stdout.on('data', (data) => {
         if (!line.trim()) continue;
         try {
             const res = JSON.parse(line);
-            if (res.id === 1) send('tools/call', { name: 'blueprint', arguments: { action: 'read_graph', path: '/Game/BluePrint/BP_Enemy1', graphName: 'EventGraph' } });
+            if (res.id === 1) send('tools/call', { name: 'blueprint', arguments: { action: 'read_graph', path: '/Game/BluePrint/BP_EnemyShadowLogic', graphName: 'EventGraph' } });
             else if (res.id === 2) {
                 const content = JSON.parse(res.result.content[0].text);
                 const linetrace = content.nodes.find(n => n.title.includes('LineTrace'));

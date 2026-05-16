@@ -24,7 +24,7 @@ async function runMCP(fn) {
   });
 }
 
-const BP = '/Game/BluePrint/BP_Enemy1';
+const BP = '/Game/BluePrint/BP_EnemyShadowLogic';
 
 // ====== STEP 1: Delete broken ForLoop cluster ======
 // Node IDs from T3D analysis:

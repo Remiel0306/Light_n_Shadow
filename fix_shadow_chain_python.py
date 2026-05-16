@@ -1,6 +1,6 @@
 import unreal
 
-BP_PATH = "/Game/BluePrint/BP_Enemy1"
+BP_PATH = "/Game/BluePrint/BP_EnemyShadowLogic"
 bp = unreal.load_asset(BP_PATH)
 if not bp:
     print("ERR: BP not found")

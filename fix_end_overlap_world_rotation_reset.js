@@ -1,5 +1,5 @@
 /**
- * BP_Enemy1:
+ * BP_EnemyShadowLogic:
  * - BeginPlay: after Set Root Location, cache ShaodwColliderRoot world rotation (Roll/Pitch/Yaw floats).
  * - End overlap reset: wire Set Relative Location NewLocation from Root Location; replace
  *   Set Relative Rotation on ShadowCollider with K2_SetWorldRotation on ShaodwColliderRoot
@@ -8,7 +8,7 @@
 const { spawn } = require('child_process');
 
 const PROJECT = 'D:/Unreal Engine/Light_n_Shadow/Light_and_Shadow.uproject';
-const BP = '/Game/BluePrint/BP_Enemy1';
+const BP = '/Game/BluePrint/BP_EnemyShadowLogic';
 
 const SET_ROOT_LOC = '0mcqikEqnqmWzGK1Vu_WzA';
 // Same variable get used by runtime Set World Rotation on shadow root.
