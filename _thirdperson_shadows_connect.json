@@ -1,0 +1,83 @@
+{
+  "path": "/Game/BluePrint/BP_ThirdPersonCharacter",
+  "eventGraphHits": [
+    {
+      "id": "BlB1M0TzA51JTg209cKV9A",
+      "class": "K2Node_ComponentBoundEvent",
+      "title": "On Component Begin Overlap (CapsuleComponent)"
+    },
+    {
+      "id": "pajApE9XQlXZONKGmsXLaA",
+      "class": "K2Node_ComponentBoundEvent",
+      "title": "On Component End Overlap (CapsuleComponent)"
+    },
+    {
+      "id": "hbcr8kwqJYG8rU2jYP5zkA",
+      "class": "K2Node_EnhancedInputAction",
+      "title": "EnhancedInputAction IA_StompC"
+    },
+    {
+      "id": "kzjCJEDZHJZHBNaxG1MD4w",
+      "class": "K2Node_VariableSet",
+      "title": "Set isOnShadow?"
+    },
+    {
+      "id": "jGFz9kivBeXmjoOKm-4b2g",
+      "class": "K2Node_VariableSet",
+      "title": "Set isOnShadow?"
+    },
+    {
+      "id": "mi07w0PvmQXnd9ykUySJIw",
+      "class": "K2Node_VariableGet",
+      "title": "Get isOnShadow?"
+    }
+  ],
+  "listGraphs": [
+    {
+      "name": "UserConstructionScript",
+      "class": "EdGraph",
+      "nodeCount": 1
+    },
+    {
+      "name": "Move",
+      "class": "EdGraph",
+      "nodeCount": 13
+    },
+    {
+      "name": "Aim",
+      "class": "EdGraph",
+      "nodeCount": 7
+    },
+    {
+      "name": "CheckWatchBall",
+      "class": "EdGraph",
+      "nodeCount": 21
+    },
+    {
+      "name": "Shadows Connect",
+      "class": "EdGraph",
+      "nodeCount": 20
+    },
+    {
+      "name": "EventGraph",
+      "class": "EdGraph",
+      "nodeCount": 167
+    },
+    {
+      "name": "IsShadowLinkActive",
+      "class": "EdGraph",
+      "nodeCount": 2
+    },
+    {
+      "name": "GetShadowRole",
+      "class": "EdGraph",
+      "nodeCount": 3
+    },
+    {
+      "name": "GetShadowOwner",
+      "class": "EdGraph",
+      "nodeCount": 3
+    }
+  ],
+  "allEventCount": 167
+}

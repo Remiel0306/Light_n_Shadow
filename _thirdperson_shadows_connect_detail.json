@@ -1,0 +1,287 @@
+{
+  "summary": {
+    "success": true,
+    "path": "/Game/BluePrint/BP_ThirdPersonCharacter",
+    "graphName": "Shadows Connect",
+    "nodes": [
+      {
+        "id": "JOmldk9hb0ORbJ2aTfPNCA",
+        "class": "K2Node_FunctionEntry",
+        "title": "Shadows Connect"
+      },
+      {
+        "id": "4lwoO0d9K5lwQLSVf8U0bQ",
+        "class": "K2Node_CallArrayFunction",
+        "title": "Clear"
+      },
+      {
+        "id": "Rpl4wk0_xOXa9GC5yyfSOQ",
+        "class": "K2Node_VariableGet",
+        "title": "Get Queue"
+      },
+      {
+        "id": "gedt7UiT2x6g2veC0EEAUw",
+        "class": "K2Node_VariableGet",
+        "title": "Get ConnectedEnemies"
+      },
+      {
+        "id": "OA-dHUfAZO6V8UG2-zbAYA",
+        "class": "K2Node_CallArrayFunction",
+        "title": "Clear"
+      },
+      {
+        "id": "o7JzPU9rGtjuePy4JUYkDA",
+        "class": "K2Node_CallArrayFunction",
+        "title": "Clear"
+      },
+      {
+        "id": "WMThY0KzWhPSfACUeP4YlQ",
+        "class": "K2Node_CallFunction",
+        "title": "Does Object Implement Interface"
+      },
+      {
+        "id": "v_uZ9kfhcO_btrmBJux2cQ",
+        "class": "K2Node_VariableGet",
+        "title": "Get Visted"
+      },
+      {
+        "id": "1XUTTE1eApoi4jygB83KNQ",
+        "class": "K2Node_CallFunction",
+        "title": "Get Owner"
+      },
+      {
+        "id": "C67q80CCGxNYDRi49nHUew",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "CySgMktlhSEMJpqtq2B08Q",
+        "class": "K2Node_FunctionResult",
+        "title": "Return Node"
+      },
+      {
+        "id": "tYpIFkLNOs1jPsex6w9tfA",
+        "class": "K2Node_CallFunction",
+        "title": "IsShadowLinkActive"
+      },
+      {
+        "id": "_TdwzE2869oHsXqP6M_A4A",
+        "class": "K2Node_MacroInstance",
+        "title": "While Loop"
+      },
+      {
+        "id": "glG8eUMcRGwvkvGUKa2BBw",
+        "class": "K2Node_VariableGet",
+        "title": "Get Queue"
+      },
+      {
+        "id": "CNXzykq0-vTxKEaGICXwWw",
+        "class": "K2Node_CallArrayFunction",
+        "title": "Length"
+      },
+      {
+        "id": "z9fSRET_lCfIOhCEbTs-Hw",
+        "class": "K2Node_PromotableOperator",
+        "title": "integer > integer"
+      },
+      {
+        "id": "zwxO3UpJGKTjuVGWz7NtIA",
+        "class": "K2Node_VariableGet",
+        "title": "Get Queue"
+      },
+      {
+        "id": "Jig_QUIzuQcy496JEl3lDw",
+        "class": "K2Node_GetArrayItem",
+        "title": "Get (a copy)"
+      },
+      {
+        "id": "-Iuq8EzAo76gdZucOcsYtg",
+        "class": "K2Node_VariableSet",
+        "title": "Set Curren"
+      },
+      {
+        "id": "eezSOE0YBzv2RIqups8xSw",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "Zn-KY0U-TZJh5Dev7QeV4Q",
+        "class": "K2Node_CallArrayFunction",
+        "title": "Remove Index"
+      },
+      {
+        "id": "im6NJEO6bgfDqL-5RMFRnA",
+        "class": "K2Node_Knot",
+        "title": "Reroute Node"
+      },
+      {
+        "id": "O3NC4UboDUzbiueWKkQfiw",
+        "class": "K2Node_VariableGet",
+        "title": "Get Visted"
+      },
+      {
+        "id": "bFPZDUz6Vp5QR46js5QIpg",
+        "class": "K2Node_CallArrayFunction",
+        "title": "Contains Item"
+      },
+      {
+        "id": "I0D4zk2N-rUbEyqlahrWYA",
+        "class": "K2Node_VariableGet",
+        "title": "Get Curren"
+      }
+    ],
+    "execEdges": [
+      {
+        "from": "JOmldk9hb0ORbJ2aTfPNCA",
+        "fromPin": "then",
+        "to": "4lwoO0d9K5lwQLSVf8U0bQ",
+        "toPin": "execute"
+      },
+      {
+        "from": "4lwoO0d9K5lwQLSVf8U0bQ",
+        "fromPin": "then",
+        "to": "OA-dHUfAZO6V8UG2-zbAYA",
+        "toPin": "execute"
+      },
+      {
+        "from": "OA-dHUfAZO6V8UG2-zbAYA",
+        "fromPin": "then",
+        "to": "o7JzPU9rGtjuePy4JUYkDA",
+        "toPin": "execute"
+      },
+      {
+        "from": "o7JzPU9rGtjuePy4JUYkDA",
+        "fromPin": "then",
+        "to": "C67q80CCGxNYDRi49nHUew",
+        "toPin": "execute"
+      },
+      {
+        "from": "C67q80CCGxNYDRi49nHUew",
+        "fromPin": "then",
+        "to": "tYpIFkLNOs1jPsex6w9tfA",
+        "toPin": "execute"
+      },
+      {
+        "from": "C67q80CCGxNYDRi49nHUew",
+        "fromPin": "else",
+        "to": "CySgMktlhSEMJpqtq2B08Q",
+        "toPin": "execute"
+      },
+      {
+        "from": "tYpIFkLNOs1jPsex6w9tfA",
+        "fromPin": "then",
+        "to": "_TdwzE2869oHsXqP6M_A4A",
+        "toPin": "execute"
+      },
+      {
+        "from": "-Iuq8EzAo76gdZucOcsYtg",
+        "fromPin": "then",
+        "to": "Zn-KY0U-TZJh5Dev7QeV4Q",
+        "toPin": "execute"
+      }
+    ],
+    "dataEdges": [
+      {
+        "from": "JOmldk9hb0ORbJ2aTfPNCA",
+        "fromPin": "Start Shadow",
+        "to": "1XUTTE1eApoi4jygB83KNQ",
+        "toPin": "self"
+      },
+      {
+        "from": "Rpl4wk0_xOXa9GC5yyfSOQ",
+        "fromPin": "Queue",
+        "to": "4lwoO0d9K5lwQLSVf8U0bQ",
+        "toPin": "TargetArray"
+      },
+      {
+        "from": "gedt7UiT2x6g2veC0EEAUw",
+        "fromPin": "ConnectedEnemies",
+        "to": "o7JzPU9rGtjuePy4JUYkDA",
+        "toPin": "TargetArray"
+      },
+      {
+        "from": "WMThY0KzWhPSfACUeP4YlQ",
+        "fromPin": "ReturnValue",
+        "to": "C67q80CCGxNYDRi49nHUew",
+        "toPin": "Condition"
+      },
+      {
+        "from": "v_uZ9kfhcO_btrmBJux2cQ",
+        "fromPin": "Visted",
+        "to": "OA-dHUfAZO6V8UG2-zbAYA",
+        "toPin": "TargetArray"
+      },
+      {
+        "from": "1XUTTE1eApoi4jygB83KNQ",
+        "fromPin": "ReturnValue",
+        "to": "WMThY0KzWhPSfACUeP4YlQ",
+        "toPin": "TestObject"
+      },
+      {
+        "from": "glG8eUMcRGwvkvGUKa2BBw",
+        "fromPin": "Queue",
+        "to": "CNXzykq0-vTxKEaGICXwWw",
+        "toPin": "TargetArray"
+      },
+      {
+        "from": "CNXzykq0-vTxKEaGICXwWw",
+        "fromPin": "ReturnValue",
+        "to": "z9fSRET_lCfIOhCEbTs-Hw",
+        "toPin": "A"
+      },
+      {
+        "from": "z9fSRET_lCfIOhCEbTs-Hw",
+        "fromPin": "ReturnValue",
+        "to": "_TdwzE2869oHsXqP6M_A4A",
+        "toPin": "Condition"
+      },
+      {
+        "from": "zwxO3UpJGKTjuVGWz7NtIA",
+        "fromPin": "Queue",
+        "to": "Jig_QUIzuQcy496JEl3lDw",
+        "toPin": "Array"
+      },
+      {
+        "from": "zwxO3UpJGKTjuVGWz7NtIA",
+        "fromPin": "Queue",
+        "to": "im6NJEO6bgfDqL-5RMFRnA",
+        "toPin": "InputPin"
+      },
+      {
+        "from": "Jig_QUIzuQcy496JEl3lDw",
+        "fromPin": "Output",
+        "to": "-Iuq8EzAo76gdZucOcsYtg",
+        "toPin": "Curren"
+      },
+      {
+        "from": "im6NJEO6bgfDqL-5RMFRnA",
+        "fromPin": "OutputPin",
+        "to": "Zn-KY0U-TZJh5Dev7QeV4Q",
+        "toPin": "TargetArray"
+      },
+      {
+        "from": "O3NC4UboDUzbiueWKkQfiw",
+        "fromPin": "Visted",
+        "to": "bFPZDUz6Vp5QR46js5QIpg",
+        "toPin": "TargetArray"
+      },
+      {
+        "from": "I0D4zk2N-rUbEyqlahrWYA",
+        "fromPin": "Curren",
+        "to": "bFPZDUz6Vp5QR46js5QIpg",
+        "toPin": "ItemToFind"
+      }
+    ],
+    "nodeCount": 25
+  },
+  "flow": {
+    "raw": "MCP error -32602: Input validation error: Invalid arguments for tool blueprint: [\n  {\n    \"received\": \"get_blueprint_execution_flow\",\n    \"code\": \"invalid_enum_value\",\n    \"options\": [\n      \"read\",\n      \"list_variables\",\n      \"list_functions\",\n      \"read_graph\",\n      \"read_graph_summary\",\n      \"get_execution_flow\",\n      \"get_dependencies\",\n      \"create\",\n      \"add_variable\",\n      \"set_variable_properties\",\n      \"create_function\",\n      \"delete_function\",\n      \"rename_function\",\n      \"add_node\",\n      \"delete_node\",\n      \"set_node_property\",\n      \"connect_pins\",\n      \"add_component\",\n      \"remove_component\",\n      \"set_component_property\",\n      \"set_capsule_size\",\n      \"get_component_property\",\n      \"set_class_default\",\n      \"delete_variable\",\n      \"add_function_parameter\",\n      \"set_variable_default\",\n      \"compile\",\n      \"list_node_types\",\n      \"search_node_types\",\n      \"create_interface\",\n      \"add_interface\",\n      \"list_graphs\",\n      \"add_event_dispatcher\",\n      \"duplicate\",\n      \"add_local_variable\",\n      \"list_local_variables\",\n      \"validate\",\n      \"read_component_properties\",\n      \"read_node_property\",\n      \"reparent_component\",\n      \"reparent\",\n      \"set_actor_tick_settings\",\n      \"export_nodes_t3d\",\n      \"import_nodes_t3d\",\n      \"set_cdo_property\",\n      \"get_cdo_properties\",\n      \"run_construction_script\",\n      \"compile_all\",\n      \"cleanup_graph\",\n      \"connect_pins_batch\",\n      \"set_node_position\",\n      \"auto_layout\"\n    ],\n    \"path\": [\n      \"action\"\n    ],\n    \"message\": \"Invalid enum value. Expected 'read' | 'list_variables' | 'list_functions' | 'read_graph' | 'read_graph_summary' | 'get_execution_flow' | 'get_dependencies' | 'create' | 'add_variable' | 'set_variable_properties' | 'create_function' | 'delete_function' | 'rename_function' | 'add_node' | 'delete_node' | 'set_node_property' | 'connect_pins' | 'add_component' | 'remove_component' | 'set_component_property' | 'set_capsule_size' | 'get_component_property' | 'set_class_default' | 'delete_variable' | 'add_function_parameter' | 'set_variable_default' | 'compile' | 'list_node_types' | 'search_node_types' | 'create_interface' | 'add_interface' | 'list_graphs' | 'add_event_dispatcher' | 'duplicate' | 'add_local_variable' | 'list_local_variables' | 'validate' | 'read_component_properties' | 'read_node_property' | 'reparent_component' | 'reparent' | 'set_actor_tick_settings' | 'export_nodes_t3d' | 'import_nodes_t3d' | 'set_cdo_property' | 'get_cdo_properties' | 'run_construction_script' | 'compile_all' | 'cleanup_graph' | 'connect_pins_batch' | 'set_node_position' | 'auto_layout', received 'get_blueprint_execution_flow'\"\n  }\n]"
+  },
+  "locals": {
+    "success": false,
+    "error": "Missing required parameter 'functionName'"
+  },
+  "stompFlow": {
+    "raw": "MCP error -32602: Input validation error: Invalid arguments for tool blueprint: [\n  {\n    \"received\": \"get_blueprint_execution_flow\",\n    \"code\": \"invalid_enum_value\",\n    \"options\": [\n      \"read\",\n      \"list_variables\",\n      \"list_functions\",\n      \"read_graph\",\n      \"read_graph_summary\",\n      \"get_execution_flow\",\n      \"get_dependencies\",\n      \"create\",\n      \"add_variable\",\n      \"set_variable_properties\",\n      \"create_function\",\n      \"delete_function\",\n      \"rename_function\",\n      \"add_node\",\n      \"delete_node\",\n      \"set_node_property\",\n      \"connect_pins\",\n      \"add_component\",\n      \"remove_component\",\n      \"set_component_property\",\n      \"set_capsule_size\",\n      \"get_component_property\",\n      \"set_class_default\",\n      \"delete_variable\",\n      \"add_function_parameter\",\n      \"set_variable_default\",\n      \"compile\",\n      \"list_node_types\",\n      \"search_node_types\",\n      \"create_interface\",\n      \"add_interface\",\n      \"list_graphs\",\n      \"add_event_dispatcher\",\n      \"duplicate\",\n      \"add_local_variable\",\n      \"list_local_variables\",\n      \"validate\",\n      \"read_component_properties\",\n      \"read_node_property\",\n      \"reparent_component\",\n      \"reparent\",\n      \"set_actor_tick_settings\",\n      \"export_nodes_t3d\",\n      \"import_nodes_t3d\",\n      \"set_cdo_property\",\n      \"get_cdo_properties\",\n      \"run_construction_script\",\n      \"compile_all\",\n      \"cleanup_graph\",\n      \"connect_pins_batch\",\n      \"set_node_position\",\n      \"auto_layout\"\n    ],\n    \"path\": [\n      \"action\"\n    ],\n    \"message\": \"Invalid enum value. Expected 'read' | 'list_variables' | 'list_functions' | 'read_graph' | 'read_graph_summary' | 'get_execution_flow' | 'get_dependencies' | 'create' | 'add_variable' | 'set_variable_properties' | 'create_function' | 'delete_function' | 'rename_function' | 'add_node' | 'delete_node' | 'set_node_property' | 'connect_pins' | 'add_component' | 'remove_component' | 'set_component_property' | 'set_capsule_size' | 'get_component_property' | 'set_class_default' | 'delete_variable' | 'add_function_parameter' | 'set_variable_default' | 'compile' | 'list_node_types' | 'search_node_types' | 'create_interface' | 'add_interface' | 'list_graphs' | 'add_event_dispatcher' | 'duplicate' | 'add_local_variable' | 'list_local_variables' | 'validate' | 'read_component_properties' | 'read_node_property' | 'reparent_component' | 'reparent' | 'set_actor_tick_settings' | 'export_nodes_t3d' | 'import_nodes_t3d' | 'set_cdo_property' | 'get_cdo_properties' | 'run_construction_script' | 'compile_all' | 'cleanup_graph' | 'connect_pins_batch' | 'set_node_position' | 'auto_layout', received 'get_blueprint_execution_flow'\"\n  }\n]"
+  }
+}

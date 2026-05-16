@@ -1,0 +1,503 @@
+{
+  "success": true,
+  "path": "/Game/BluePrint/BP_ThirdPersonCharacter",
+  "graphName": "Shadows Connect",
+  "nodes": [
+    {
+      "id": "JOmldk9hb0ORbJ2aTfPNCA",
+      "class": "K2Node_FunctionEntry",
+      "title": "Shadows Connect"
+    },
+    {
+      "id": "4lwoO0d9K5lwQLSVf8U0bQ",
+      "class": "K2Node_CallArrayFunction",
+      "title": "Clear"
+    },
+    {
+      "id": "Rpl4wk0_xOXa9GC5yyfSOQ",
+      "class": "K2Node_VariableGet",
+      "title": "Get Queue"
+    },
+    {
+      "id": "gedt7UiT2x6g2veC0EEAUw",
+      "class": "K2Node_VariableGet",
+      "title": "Get ConnectedEnemies"
+    },
+    {
+      "id": "OA-dHUfAZO6V8UG2-zbAYA",
+      "class": "K2Node_CallArrayFunction",
+      "title": "Clear"
+    },
+    {
+      "id": "o7JzPU9rGtjuePy4JUYkDA",
+      "class": "K2Node_CallArrayFunction",
+      "title": "Clear"
+    },
+    {
+      "id": "WMThY0KzWhPSfACUeP4YlQ",
+      "class": "K2Node_CallFunction",
+      "title": "Does Object Implement Interface"
+    },
+    {
+      "id": "v_uZ9kfhcO_btrmBJux2cQ",
+      "class": "K2Node_VariableGet",
+      "title": "Get Visted"
+    },
+    {
+      "id": "1XUTTE1eApoi4jygB83KNQ",
+      "class": "K2Node_CallFunction",
+      "title": "Get Owner"
+    },
+    {
+      "id": "C67q80CCGxNYDRi49nHUew",
+      "class": "K2Node_IfThenElse",
+      "title": "Branch"
+    },
+    {
+      "id": "CySgMktlhSEMJpqtq2B08Q",
+      "class": "K2Node_FunctionResult",
+      "title": "Return Node"
+    },
+    {
+      "id": "tYpIFkLNOs1jPsex6w9tfA",
+      "class": "K2Node_CallFunction",
+      "title": "IsShadowLinkActive"
+    },
+    {
+      "id": "_TdwzE2869oHsXqP6M_A4A",
+      "class": "K2Node_MacroInstance",
+      "title": "While Loop"
+    },
+    {
+      "id": "glG8eUMcRGwvkvGUKa2BBw",
+      "class": "K2Node_VariableGet",
+      "title": "Get Queue"
+    },
+    {
+      "id": "CNXzykq0-vTxKEaGICXwWw",
+      "class": "K2Node_CallArrayFunction",
+      "title": "Length"
+    },
+    {
+      "id": "z9fSRET_lCfIOhCEbTs-Hw",
+      "class": "K2Node_PromotableOperator",
+      "title": "integer > integer"
+    },
+    {
+      "id": "zwxO3UpJGKTjuVGWz7NtIA",
+      "class": "K2Node_VariableGet",
+      "title": "Get Queue"
+    },
+    {
+      "id": "Jig_QUIzuQcy496JEl3lDw",
+      "class": "K2Node_GetArrayItem",
+      "title": "Get (a copy)"
+    },
+    {
+      "id": "-Iuq8EzAo76gdZucOcsYtg",
+      "class": "K2Node_VariableSet",
+      "title": "Set Curren"
+    },
+    {
+      "id": "Zn-KY0U-TZJh5Dev7QeV4Q",
+      "class": "K2Node_CallArrayFunction",
+      "title": "Remove Index"
+    },
+    {
+      "id": "im6NJEO6bgfDqL-5RMFRnA",
+      "class": "K2Node_Knot",
+      "title": "Reroute Node"
+    },
+    {
+      "id": "O3NC4UboDUzbiueWKkQfiw",
+      "class": "K2Node_VariableGet",
+      "title": "Get Visted"
+    },
+    {
+      "id": "bFPZDUz6Vp5QR46js5QIpg",
+      "class": "K2Node_CallArrayFunction",
+      "title": "Contains Item"
+    },
+    {
+      "id": "I0D4zk2N-rUbEyqlahrWYA",
+      "class": "K2Node_VariableGet",
+      "title": "Get Curren"
+    },
+    {
+      "id": "0GYNU0zXgUlw2sGqtBmhdg",
+      "class": "K2Node_VariableGet",
+      "title": "Get Visted"
+    },
+    {
+      "id": "Bp77T036e_KztDyv1c-vZw",
+      "class": "K2Node_VariableGet",
+      "title": "Get Curren"
+    },
+    {
+      "id": "rAvD9ku2-0aZ0IOZAjUUvg",
+      "class": "K2Node_CallArrayFunction",
+      "title": "Add"
+    },
+    {
+      "id": "HrOIO0hdn-bfF6WizQwpFQ",
+      "class": "K2Node_VariableGet",
+      "title": "Get Queue"
+    },
+    {
+      "id": "b2N_EEgKzXhd3sWn4fDcnw",
+      "class": "K2Node_CallArrayFunction",
+      "title": "Add"
+    },
+    {
+      "id": "cu-c_0CkyxFNdRaPWWWmgw",
+      "class": "K2Node_Knot",
+      "title": "Reroute Node"
+    },
+    {
+      "id": "wY-DhEoJNuiOazae7NTF1w",
+      "class": "K2Node_Knot",
+      "title": "Reroute Node"
+    },
+    {
+      "id": "lXCQeEr9qCu6xeW_2b8A7Q",
+      "class": "K2Node_IfThenElse",
+      "title": "Branch"
+    },
+    {
+      "id": "bCV410G1Vn8SjwShZ96kyw",
+      "class": "K2Node_FunctionResult",
+      "title": "Return Node"
+    },
+    {
+      "id": "DVO4PEtdbUNAgoesgYYfHw",
+      "class": "K2Node_IfThenElse",
+      "title": "Branch"
+    },
+    {
+      "id": "6IvK3kZ-JGoPev-F7ErqnA",
+      "class": "K2Node_CallArrayFunction",
+      "title": "Add"
+    },
+    {
+      "id": "4_jmMkdL7-Un_CyvqvA6Lg",
+      "class": "K2Node_VariableGet",
+      "title": "Get Visted"
+    },
+    {
+      "id": "EMIK30e7YnbAJK2nwrcbLg",
+      "class": "K2Node_VariableGet",
+      "title": "Get Curren"
+    },
+    {
+      "id": "IdIfek2D99nOXA-0o1w-Jg",
+      "class": "K2Node_CallFunction",
+      "title": "Does Object Implement Interface"
+    },
+    {
+      "id": "RQXytUF1LuFeiiW8j5_Enw",
+      "class": "K2Node_VariableGet",
+      "title": "Get Curren"
+    },
+    {
+      "id": "5HFKNUzZ9tP6vgS93htKEg",
+      "class": "K2Node_Message",
+      "title": "GetShadowOwner"
+    },
+    {
+      "id": "0xuqnU6YapTaB_K0JR861A",
+      "class": "K2Node_IfThenElse",
+      "title": "Branch"
+    },
+    {
+      "id": "HHOookTIyC4gYH-TauhImA",
+      "class": "K2Node_CallFunction",
+      "title": "GetShadowRole"
+    },
+    {
+      "id": "FMhafUBbgpCPfmmkqC0Yww",
+      "class": "K2Node_PromotableOperator",
+      "title": "Equal (Byte)"
+    }
+  ],
+  "execEdges": [
+    {
+      "from": "JOmldk9hb0ORbJ2aTfPNCA",
+      "fromPin": "then",
+      "to": "4lwoO0d9K5lwQLSVf8U0bQ",
+      "toPin": "execute"
+    },
+    {
+      "from": "4lwoO0d9K5lwQLSVf8U0bQ",
+      "fromPin": "then",
+      "to": "OA-dHUfAZO6V8UG2-zbAYA",
+      "toPin": "execute"
+    },
+    {
+      "from": "OA-dHUfAZO6V8UG2-zbAYA",
+      "fromPin": "then",
+      "to": "o7JzPU9rGtjuePy4JUYkDA",
+      "toPin": "execute"
+    },
+    {
+      "from": "o7JzPU9rGtjuePy4JUYkDA",
+      "fromPin": "then",
+      "to": "C67q80CCGxNYDRi49nHUew",
+      "toPin": "execute"
+    },
+    {
+      "from": "C67q80CCGxNYDRi49nHUew",
+      "fromPin": "then",
+      "to": "tYpIFkLNOs1jPsex6w9tfA",
+      "toPin": "execute"
+    },
+    {
+      "from": "C67q80CCGxNYDRi49nHUew",
+      "fromPin": "else",
+      "to": "CySgMktlhSEMJpqtq2B08Q",
+      "toPin": "execute"
+    },
+    {
+      "from": "tYpIFkLNOs1jPsex6w9tfA",
+      "fromPin": "then",
+      "to": "lXCQeEr9qCu6xeW_2b8A7Q",
+      "toPin": "execute"
+    },
+    {
+      "from": "_TdwzE2869oHsXqP6M_A4A",
+      "fromPin": "LoopBody",
+      "to": "-Iuq8EzAo76gdZucOcsYtg",
+      "toPin": "execute"
+    },
+    {
+      "from": "-Iuq8EzAo76gdZucOcsYtg",
+      "fromPin": "then",
+      "to": "Zn-KY0U-TZJh5Dev7QeV4Q",
+      "toPin": "execute"
+    },
+    {
+      "from": "Zn-KY0U-TZJh5Dev7QeV4Q",
+      "fromPin": "then",
+      "to": "DVO4PEtdbUNAgoesgYYfHw",
+      "toPin": "execute"
+    },
+    {
+      "from": "b2N_EEgKzXhd3sWn4fDcnw",
+      "fromPin": "then",
+      "to": "_TdwzE2869oHsXqP6M_A4A",
+      "toPin": "execute"
+    },
+    {
+      "from": "lXCQeEr9qCu6xeW_2b8A7Q",
+      "fromPin": "then",
+      "to": "b2N_EEgKzXhd3sWn4fDcnw",
+      "toPin": "execute"
+    },
+    {
+      "from": "lXCQeEr9qCu6xeW_2b8A7Q",
+      "fromPin": "else",
+      "to": "bCV410G1Vn8SjwShZ96kyw",
+      "toPin": "execute"
+    },
+    {
+      "from": "DVO4PEtdbUNAgoesgYYfHw",
+      "fromPin": "else",
+      "to": "6IvK3kZ-JGoPev-F7ErqnA",
+      "toPin": "execute"
+    },
+    {
+      "from": "6IvK3kZ-JGoPev-F7ErqnA",
+      "fromPin": "then",
+      "to": "5HFKNUzZ9tP6vgS93htKEg",
+      "toPin": "execute"
+    },
+    {
+      "from": "5HFKNUzZ9tP6vgS93htKEg",
+      "fromPin": "then",
+      "to": "0xuqnU6YapTaB_K0JR861A",
+      "toPin": "execute"
+    },
+    {
+      "from": "0xuqnU6YapTaB_K0JR861A",
+      "fromPin": "then",
+      "to": "HHOookTIyC4gYH-TauhImA",
+      "toPin": "execute"
+    }
+  ],
+  "dataEdges": [
+    {
+      "from": "JOmldk9hb0ORbJ2aTfPNCA",
+      "fromPin": "Start Shadow",
+      "to": "1XUTTE1eApoi4jygB83KNQ",
+      "toPin": "self"
+    },
+    {
+      "from": "JOmldk9hb0ORbJ2aTfPNCA",
+      "fromPin": "Start Shadow",
+      "to": "cu-c_0CkyxFNdRaPWWWmgw",
+      "toPin": "InputPin"
+    },
+    {
+      "from": "Rpl4wk0_xOXa9GC5yyfSOQ",
+      "fromPin": "Queue",
+      "to": "4lwoO0d9K5lwQLSVf8U0bQ",
+      "toPin": "TargetArray"
+    },
+    {
+      "from": "gedt7UiT2x6g2veC0EEAUw",
+      "fromPin": "ConnectedEnemies",
+      "to": "o7JzPU9rGtjuePy4JUYkDA",
+      "toPin": "TargetArray"
+    },
+    {
+      "from": "WMThY0KzWhPSfACUeP4YlQ",
+      "fromPin": "ReturnValue",
+      "to": "C67q80CCGxNYDRi49nHUew",
+      "toPin": "Condition"
+    },
+    {
+      "from": "v_uZ9kfhcO_btrmBJux2cQ",
+      "fromPin": "Visted",
+      "to": "OA-dHUfAZO6V8UG2-zbAYA",
+      "toPin": "TargetArray"
+    },
+    {
+      "from": "1XUTTE1eApoi4jygB83KNQ",
+      "fromPin": "ReturnValue",
+      "to": "WMThY0KzWhPSfACUeP4YlQ",
+      "toPin": "TestObject"
+    },
+    {
+      "from": "tYpIFkLNOs1jPsex6w9tfA",
+      "fromPin": "IsShadowLinkActive",
+      "to": "lXCQeEr9qCu6xeW_2b8A7Q",
+      "toPin": "Condition"
+    },
+    {
+      "from": "glG8eUMcRGwvkvGUKa2BBw",
+      "fromPin": "Queue",
+      "to": "CNXzykq0-vTxKEaGICXwWw",
+      "toPin": "TargetArray"
+    },
+    {
+      "from": "CNXzykq0-vTxKEaGICXwWw",
+      "fromPin": "ReturnValue",
+      "to": "z9fSRET_lCfIOhCEbTs-Hw",
+      "toPin": "A"
+    },
+    {
+      "from": "z9fSRET_lCfIOhCEbTs-Hw",
+      "fromPin": "ReturnValue",
+      "to": "_TdwzE2869oHsXqP6M_A4A",
+      "toPin": "Condition"
+    },
+    {
+      "from": "zwxO3UpJGKTjuVGWz7NtIA",
+      "fromPin": "Queue",
+      "to": "Jig_QUIzuQcy496JEl3lDw",
+      "toPin": "Array"
+    },
+    {
+      "from": "zwxO3UpJGKTjuVGWz7NtIA",
+      "fromPin": "Queue",
+      "to": "im6NJEO6bgfDqL-5RMFRnA",
+      "toPin": "InputPin"
+    },
+    {
+      "from": "Jig_QUIzuQcy496JEl3lDw",
+      "fromPin": "Output",
+      "to": "-Iuq8EzAo76gdZucOcsYtg",
+      "toPin": "Curren"
+    },
+    {
+      "from": "im6NJEO6bgfDqL-5RMFRnA",
+      "fromPin": "OutputPin",
+      "to": "Zn-KY0U-TZJh5Dev7QeV4Q",
+      "toPin": "TargetArray"
+    },
+    {
+      "from": "O3NC4UboDUzbiueWKkQfiw",
+      "fromPin": "Visted",
+      "to": "bFPZDUz6Vp5QR46js5QIpg",
+      "toPin": "TargetArray"
+    },
+    {
+      "from": "bFPZDUz6Vp5QR46js5QIpg",
+      "fromPin": "ReturnValue",
+      "to": "DVO4PEtdbUNAgoesgYYfHw",
+      "toPin": "Condition"
+    },
+    {
+      "from": "I0D4zk2N-rUbEyqlahrWYA",
+      "fromPin": "Curren",
+      "to": "bFPZDUz6Vp5QR46js5QIpg",
+      "toPin": "ItemToFind"
+    },
+    {
+      "from": "0GYNU0zXgUlw2sGqtBmhdg",
+      "fromPin": "Visted",
+      "to": "rAvD9ku2-0aZ0IOZAjUUvg",
+      "toPin": "TargetArray"
+    },
+    {
+      "from": "Bp77T036e_KztDyv1c-vZw",
+      "fromPin": "Curren",
+      "to": "rAvD9ku2-0aZ0IOZAjUUvg",
+      "toPin": "NewItem"
+    },
+    {
+      "from": "HrOIO0hdn-bfF6WizQwpFQ",
+      "fromPin": "Queue",
+      "to": "b2N_EEgKzXhd3sWn4fDcnw",
+      "toPin": "TargetArray"
+    },
+    {
+      "from": "cu-c_0CkyxFNdRaPWWWmgw",
+      "fromPin": "OutputPin",
+      "to": "wY-DhEoJNuiOazae7NTF1w",
+      "toPin": "InputPin"
+    },
+    {
+      "from": "wY-DhEoJNuiOazae7NTF1w",
+      "fromPin": "OutputPin",
+      "to": "b2N_EEgKzXhd3sWn4fDcnw",
+      "toPin": "NewItem"
+    },
+    {
+      "from": "4_jmMkdL7-Un_CyvqvA6Lg",
+      "fromPin": "Visted",
+      "to": "6IvK3kZ-JGoPev-F7ErqnA",
+      "toPin": "TargetArray"
+    },
+    {
+      "from": "EMIK30e7YnbAJK2nwrcbLg",
+      "fromPin": "Curren",
+      "to": "6IvK3kZ-JGoPev-F7ErqnA",
+      "toPin": "NewItem"
+    },
+    {
+      "from": "IdIfek2D99nOXA-0o1w-Jg",
+      "fromPin": "ReturnValue",
+      "to": "0xuqnU6YapTaB_K0JR861A",
+      "toPin": "Condition"
+    },
+    {
+      "from": "RQXytUF1LuFeiiW8j5_Enw",
+      "fromPin": "Curren",
+      "to": "5HFKNUzZ9tP6vgS93htKEg",
+      "toPin": "self"
+    },
+    {
+      "from": "5HFKNUzZ9tP6vgS93htKEg",
+      "fromPin": "ShadowOwner",
+      "to": "IdIfek2D99nOXA-0o1w-Jg",
+      "toPin": "TestObject"
+    },
+    {
+      "from": "HHOookTIyC4gYH-TauhImA",
+      "fromPin": "ShadowRole",
+      "to": "FMhafUBbgpCPfmmkqC0Yww",
+      "toPin": "A"
+    }
+  ],
+  "nodeCount": 43
+}
