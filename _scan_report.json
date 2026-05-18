@@ -1,0 +1,46 @@
+{
+  "summary": {
+    "blueprintValid": true,
+    "bfsLogicOk": false,
+    "canRunInGame": false,
+    "verdict": "BFS 函式仍有邏輯問題，需再修"
+  },
+  "issues": [
+    "Start Shadow 沒加入 Queue",
+    "EventGraph 還沒呼叫 Shadows Connect（踩了也不會跑 BFS）"
+  ],
+  "ok": [
+    "Blueprint Validate 通過",
+    "有 Clear",
+    "有 While Loop",
+    "有 Get Overlapping Components",
+    "有 For Each Loop",
+    "有 Get Owner",
+    "While Completed → Return",
+    "Current → Get Overlapping → ForEach Array",
+    "ForEach 沒有接回 While",
+    "ForEach 有 1 條 exec 入口",
+    "敵人/擴展路徑 0xuqnU6Y else → ForEach 匯流",
+    "敵人/擴展路徑 Ojp9vULh else → ForEach 匯流",
+    "敵人/擴展路徑 UY_v70dK then → ForEach 匯流",
+    "有 IA_StompC",
+    "有 isOnShadow? 變數"
+  ],
+  "warnings": [
+    "變數仍在角色上: Queue, Visted, ConnectedEnemies, Current"
+  ],
+  "nodeCount": 76,
+  "eventGraph": {
+    "callsShadowsConnect": false,
+    "hasStomp": true,
+    "hasOnShadow": true
+  },
+  "validate": {
+    "success": true,
+    "path": "/Game/BluePrint/BP_ThirdPersonCharacter",
+    "errorCount": 0,
+    "warningCount": 0,
+    "valid": true,
+    "messages": []
+  }
+}

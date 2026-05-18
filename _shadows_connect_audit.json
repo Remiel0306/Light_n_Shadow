@@ -1,7 +1,7 @@
 {
   "audit": {
     "nodeCount": 81,
-    "execCount": 39,
+    "execCount": 36,
     "branchAudit": [
       {
         "id": "C67q80CCGxNYDRi49nHUew",
@@ -83,24 +83,6 @@
         "trueTo": [],
         "falseTo": [],
         "hasCondition": true
-      },
-      {
-        "id": "CeYhJk9KbXTxS1erFwWOUg",
-        "title": "Branch",
-        "trueWired": false,
-        "falseWired": false,
-        "trueTo": [],
-        "falseTo": [],
-        "hasCondition": true
-      },
-      {
-        "id": "dROvRUGkXTxCmyy2yrp-zQ",
-        "title": "Branch",
-        "trueWired": false,
-        "falseWired": false,
-        "trueTo": [],
-        "falseTo": [],
-        "hasCondition": true
       }
     ],
     "issues": [
@@ -122,10 +104,6 @@
       "Branch 9d4uGklK: False 沒有白線",
       "Branch UoYHZkTn: True 沒有白線",
       "Branch UoYHZkTn: False 沒有白線",
-      "Branch CeYhJk9K: True 沒有白線",
-      "Branch CeYhJk9K: False 沒有白線",
-      "Branch dROvRUGk: True 沒有白線",
-      "Branch dROvRUGk: False 沒有白線",
       "Start Shadow 可能沒加入 Queue（檢查 reroute）"
     ],
     "ok": [
@@ -147,9 +125,6 @@
       "Add",
       "Add",
       "Add",
-      "Add",
-      "Branch",
-      "Branch",
       "Branch",
       "Branch",
       "Branch",
@@ -198,13 +173,16 @@
       "Get Visted",
       "Get Visted",
       "GetShadowOwner",
-      "GetShadowOwner",
-      "GetShadowRole",
       "GetShadowRole",
       "IsShadowLinkActive",
       "IsShadowLinkActive",
       "Length",
       "Remove Index",
+      "Reroute Node",
+      "Reroute Node",
+      "Reroute Node",
+      "Reroute Node",
+      "Reroute Node",
       "Reroute Node",
       "Reroute Node",
       "Reroute Node",
@@ -313,8 +291,8 @@
       {
         "from": "DVO4PEtdbUNAgoesgYYfHw",
         "fromPin": "then",
-        "to": "Ttbvnkds0WT5zn-flvV3dw",
-        "toPin": "Exec"
+        "to": "dXm_wk2fJL1qc6mSrwtkEg",
+        "toPin": "InputPin"
       },
       {
         "from": "DVO4PEtdbUNAgoesgYYfHw",
@@ -335,6 +313,12 @@
         "toPin": "execute"
       },
       {
+        "from": "0xuqnU6YapTaB_K0JR861A",
+        "fromPin": "else",
+        "to": "M6HILELDDF38TWaRmq1rdQ",
+        "toPin": "InputPin"
+      },
+      {
         "from": "hIf3gk-8Gnh7TbqxKQXdtg",
         "fromPin": "then",
         "to": "Ojp9vULh0OCE4M6fmJYHrA",
@@ -347,6 +331,12 @@
         "toPin": "execute"
       },
       {
+        "from": "Ojp9vULh0OCE4M6fmJYHrA",
+        "fromPin": "else",
+        "to": "M6HILELDDF38TWaRmq1rdQ",
+        "toPin": "InputPin"
+      },
+      {
         "from": "kGxFc0yGmaQ_ZEWNgWGxGA",
         "fromPin": "then",
         "to": "UY_v70dK0wd-RwWhaw9aPw",
@@ -354,9 +344,21 @@
       },
       {
         "from": "UY_v70dK0wd-RwWhaw9aPw",
+        "fromPin": "then",
+        "to": "M6HILELDDF38TWaRmq1rdQ",
+        "toPin": "InputPin"
+      },
+      {
+        "from": "UY_v70dK0wd-RwWhaw9aPw",
         "fromPin": "else",
         "to": "6jBHtUMbdD_AT6aS7tlkRw",
         "toPin": "execute"
+      },
+      {
+        "from": "6jBHtUMbdD_AT6aS7tlkRw",
+        "fromPin": "then",
+        "to": "M6HILELDDF38TWaRmq1rdQ",
+        "toPin": "InputPin"
       },
       {
         "from": "Ttbvnkds0WT5zn-flvV3dw",
@@ -371,6 +373,12 @@
         "toPin": "execute"
       },
       {
+        "from": "b4_DJUYzQ51-W-GakjGaOA",
+        "fromPin": "else",
+        "to": "mZF5pEyub8vsUSux9fmFcQ",
+        "toPin": "InputPin"
+      },
+      {
         "from": "g_vkMELOu_LkrMSiWQP1vg",
         "fromPin": "then",
         "to": "9d4uGklKSbG9slKbngF1Kw",
@@ -378,14 +386,14 @@
       },
       {
         "from": "9d4uGklKSbG9slKbngF1Kw",
-        "fromPin": "else",
+        "fromPin": "then",
         "to": "UoYHZkTn7Hrfn2q5cE1_fw",
         "toPin": "execute"
       },
       {
-        "from": "UoYHZkTn7Hrfn2q5cE1_fw",
-        "fromPin": "then",
-        "to": "y1ZpS0lcJ7ZR_kSrQcpLXQ",
+        "from": "9d4uGklKSbG9slKbngF1Kw",
+        "fromPin": "else",
+        "to": "vQrIHEyvWvSI6fefvXfkhg",
         "toPin": "InputPin"
       },
       {
@@ -395,63 +403,9 @@
         "toPin": "execute"
       },
       {
-        "from": "wCKa_kwWd3HXtZW8GNrizw",
-        "fromPin": "then",
-        "to": "ssarQEhrtBUu8lSK1Qy4TQ",
-        "toPin": "execute"
-      },
-      {
-        "from": "oe37uUjnpNWJDdqHQge4Qw",
-        "fromPin": "OutputPin",
-        "to": "_TdwzE2869oHsXqP6M_A4A",
-        "toPin": "execute"
-      },
-      {
-        "from": "y1ZpS0lcJ7ZR_kSrQcpLXQ",
-        "fromPin": "OutputPin",
-        "to": "oe37uUjnpNWJDdqHQge4Qw",
-        "toPin": "InputPin"
-      },
-      {
-        "from": "ssarQEhrtBUu8lSK1Qy4TQ",
-        "fromPin": "then",
-        "to": "CeYhJk9KbXTxS1erFwWOUg",
-        "toPin": "execute"
-      },
-      {
-        "from": "CeYhJk9KbXTxS1erFwWOUg",
-        "fromPin": "then",
-        "to": "cDrYqk4-e8qFHLy7AiFqMQ",
-        "toPin": "execute"
-      },
-      {
-        "from": "cDrYqk4-e8qFHLy7AiFqMQ",
-        "fromPin": "then",
-        "to": "dROvRUGkXTxCmyy2yrp-zQ",
-        "toPin": "execute"
-      },
-      {
-        "from": "dROvRUGkXTxCmyy2yrp-zQ",
-        "fromPin": "then",
-        "to": "M6HILELDDF38TWaRmq1rdQ",
-        "toPin": "InputPin"
-      },
-      {
-        "from": "dROvRUGkXTxCmyy2yrp-zQ",
-        "fromPin": "else",
-        "to": "0Srl8EHFp7a1AFakh_lirA",
-        "toPin": "execute"
-      },
-      {
-        "from": "0Srl8EHFp7a1AFakh_lirA",
-        "fromPin": "then",
-        "to": "M6HILELDDF38TWaRmq1rdQ",
-        "toPin": "InputPin"
-      },
-      {
         "from": "M6HILELDDF38TWaRmq1rdQ",
         "fromPin": "OutputPin",
-        "to": "4NCGYUhi-13IExSTlU2Dbg",
+        "to": "mZF5pEyub8vsUSux9fmFcQ",
         "toPin": "InputPin"
       },
       {
@@ -459,6 +413,12 @@
         "fromPin": "OutputPin",
         "to": "Ttbvnkds0WT5zn-flvV3dw",
         "toPin": "Exec"
+      },
+      {
+        "from": "mZF5pEyub8vsUSux9fmFcQ",
+        "fromPin": "OutputPin",
+        "to": "4NCGYUhi-13IExSTlU2Dbg",
+        "toPin": "InputPin"
       }
     ],
     "data": [
@@ -637,6 +597,12 @@
         "toPin": "ItemToFind"
       },
       {
+        "from": "kGxFc0yGmaQ_ZEWNgWGxGA",
+        "fromPin": "ShadowOwner",
+        "to": "6jBHtUMbdD_AT6aS7tlkRw",
+        "toPin": "NewItem"
+      },
+      {
         "from": "Aju45El0h7DhWiihds5JqQ",
         "fromPin": "ConnectedEnemies",
         "to": "wi0HBU-X4vyqw-qBpZwY7Q",
@@ -769,57 +735,9 @@
         "toPin": "InputPin"
       },
       {
-        "from": "ssarQEhrtBUu8lSK1Qy4TQ",
-        "fromPin": "ShadowRole",
-        "to": "4JIh30l2Yy-q0T6H9ypSkg",
-        "toPin": "A"
-      },
-      {
-        "from": "4JIh30l2Yy-q0T6H9ypSkg",
-        "fromPin": "ReturnValue",
-        "to": "CeYhJk9KbXTxS1erFwWOUg",
-        "toPin": "Condition"
-      },
-      {
-        "from": "cDrYqk4-e8qFHLy7AiFqMQ",
-        "fromPin": "ShadowOwner",
-        "to": "Ppify0YZUKavovuX2qYrGA",
-        "toPin": "ItemToFind"
-      },
-      {
-        "from": "cDrYqk4-e8qFHLy7AiFqMQ",
-        "fromPin": "ShadowOwner",
-        "to": "0Srl8EHFp7a1AFakh_lirA",
-        "toPin": "NewItem"
-      },
-      {
-        "from": "yY5Y-E6TnebB4rKyNK5qhQ",
-        "fromPin": "OutputPin",
-        "to": "ssarQEhrtBUu8lSK1Qy4TQ",
-        "toPin": "self"
-      },
-      {
-        "from": "yY5Y-E6TnebB4rKyNK5qhQ",
-        "fromPin": "OutputPin",
-        "to": "cDrYqk4-e8qFHLy7AiFqMQ",
-        "toPin": "self"
-      },
-      {
         "from": "Bzaf6EapuXOz32eTdMCpTA",
         "fromPin": "ConnectedEnemies",
         "to": "Ppify0YZUKavovuX2qYrGA",
-        "toPin": "TargetArray"
-      },
-      {
-        "from": "Ppify0YZUKavovuX2qYrGA",
-        "fromPin": "ReturnValue",
-        "to": "dROvRUGkXTxCmyy2yrp-zQ",
-        "toPin": "Condition"
-      },
-      {
-        "from": "1PxZmE8NT8O1Pt6AEb2w8A",
-        "fromPin": "ConnectedEnemies",
-        "to": "0Srl8EHFp7a1AFakh_lirA",
         "toPin": "TargetArray"
       },
       {
@@ -1162,34 +1080,9 @@
         "title": "Get Owner"
       },
       {
-        "id": "oe37uUjnpNWJDdqHQge4Qw",
-        "class": "K2Node_Knot",
-        "title": "Reroute Node"
-      },
-      {
-        "id": "y1ZpS0lcJ7ZR_kSrQcpLXQ",
-        "class": "K2Node_Knot",
-        "title": "Reroute Node"
-      },
-      {
-        "id": "ssarQEhrtBUu8lSK1Qy4TQ",
-        "class": "K2Node_Message",
-        "title": "GetShadowRole"
-      },
-      {
         "id": "4JIh30l2Yy-q0T6H9ypSkg",
         "class": "K2Node_EnumEquality",
         "title": "Equal (Enum)"
-      },
-      {
-        "id": "CeYhJk9KbXTxS1erFwWOUg",
-        "class": "K2Node_IfThenElse",
-        "title": "Branch"
-      },
-      {
-        "id": "cDrYqk4-e8qFHLy7AiFqMQ",
-        "class": "K2Node_Message",
-        "title": "GetShadowOwner"
       },
       {
         "id": "yY5Y-E6TnebB4rKyNK5qhQ",
@@ -1207,19 +1100,9 @@
         "title": "Contains Item"
       },
       {
-        "id": "dROvRUGkXTxCmyy2yrp-zQ",
-        "class": "K2Node_IfThenElse",
-        "title": "Branch"
-      },
-      {
         "id": "1PxZmE8NT8O1Pt6AEb2w8A",
         "class": "K2Node_VariableGet",
         "title": "Get ConnectedEnemies"
-      },
-      {
-        "id": "0Srl8EHFp7a1AFakh_lirA",
-        "class": "K2Node_CallArrayFunction",
-        "title": "Add"
       },
       {
         "id": "s8PQWU8U0HxF33SUyc3YgQ",
@@ -1238,6 +1121,41 @@
       },
       {
         "id": "4NCGYUhi-13IExSTlU2Dbg",
+        "class": "K2Node_Knot",
+        "title": "Reroute Node"
+      },
+      {
+        "id": "mZF5pEyub8vsUSux9fmFcQ",
+        "class": "K2Node_Knot",
+        "title": "Reroute Node"
+      },
+      {
+        "id": "A98F-khmlXBG66q0_0hO_A",
+        "class": "K2Node_Knot",
+        "title": "Reroute Node"
+      },
+      {
+        "id": "QL-0N0AwRGg5nVeGz3nbtg",
+        "class": "K2Node_Knot",
+        "title": "Reroute Node"
+      },
+      {
+        "id": "9sOPJ0vef-jj-ZClUPrpxw",
+        "class": "K2Node_Knot",
+        "title": "Reroute Node"
+      },
+      {
+        "id": "TH_juEypXwAwKuCwUiGXag",
+        "class": "K2Node_Knot",
+        "title": "Reroute Node"
+      },
+      {
+        "id": "dXm_wk2fJL1qc6mSrwtkEg",
+        "class": "K2Node_Knot",
+        "title": "Reroute Node"
+      },
+      {
+        "id": "vQrIHEyvWvSI6fefvXfkhg",
         "class": "K2Node_Knot",
         "title": "Reroute Node"
       }
