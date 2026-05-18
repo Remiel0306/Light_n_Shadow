@@ -1,0 +1,28 @@
+{
+  "ok": true,
+  "validate": {
+    "success": true,
+    "path": "/Game/BluePrint/BP_ThirdPersonCharacter",
+    "errorCount": 2,
+    "warningCount": 1,
+    "valid": false,
+    "messages": [
+      {
+        "severity": "Error",
+        "message": "Could not find a function named \"None\" in 'BP_ThirdPersonCharacter'.\nMake sure 'BP_ThirdPersonCharacter' has been compiled for  None"
+      },
+      {
+        "severity": "Warning",
+        "message": "Node  None . The node won't be pruned as isolated one. The node is not pure, but it has no exec pin(s). Verify IsNodePure implementation in K2Node Call Function."
+      },
+      {
+        "severity": "Error",
+        "message": "The type of  Target Array  is undetermined.  Connect something to  Length  to imply a specific type."
+      }
+    ]
+  },
+  "foreachId": "5DADBDD64F91551B74DB03B565C14DD7",
+  "callSC": "19904FAD430E0A429DBDD5883DE15D8F",
+  "setCurrent": "84258D744FD303DFE2ED7EA77016B3C3",
+  "getCurrent": "67B1215C4FAD0CBFEFB367868A284D09"
+}
