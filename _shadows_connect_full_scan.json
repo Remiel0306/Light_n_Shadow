@@ -1,0 +1,28 @@
+{
+  "fn": "Shadows Connect",
+  "nodeCount": 0,
+  "execChain": [],
+  "report": {
+    "issues": [
+      "MISSING: Get Overlapping Components",
+      "MISSING: For Each Loop",
+      "MISSING or WRONG: While Completed -> Return Node (function must return ConnectedEnemies)",
+      "MISSING: Queue.Add(Start Shadow) before While",
+      "MISSING: EventGraph does not call Shadows Connect (wire IA_StompC + StompedShadow)"
+    ],
+    "ok": [],
+    "warnings": [
+      "IsShadowLinkActive may only use exec chain (bool not checked)"
+    ],
+    "nodes": 0,
+    "execCount": 0
+  },
+  "locals": {
+    "raw": "Error [TASK_FAILED]: Not connected to editor bridge. Is Unreal Editor running with the MCP bridge plugin?"
+  },
+  "validate": {
+    "raw": "Error [TASK_FAILED]: Not connected to editor bridge. Is Unreal Editor running with the MCP bridge plugin?"
+  },
+  "egShadowRelated": [],
+  "allTitles": []
+}
