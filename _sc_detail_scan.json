@@ -1,0 +1,131 @@
+{
+  "titles": [
+    "Add",
+    "Add",
+    "Add",
+    "Add",
+    "Branch",
+    "Branch",
+    "Branch",
+    "Branch",
+    "Branch",
+    "Branch",
+    "Branch",
+    "Branch",
+    "Branch",
+    "Branch",
+    "Clear",
+    "Clear",
+    "Clear",
+    "Contains Item",
+    "Contains Item",
+    "Contains Item",
+    "Contains Item",
+    "Does Object Implement Interface",
+    "Does Object Implement Interface",
+    "Does Object Implement Interface",
+    "Equal (Enum)",
+    "Equal (Enum)",
+    "For Each Loop",
+    "Get (a copy)",
+    "Get ConnectedEnemies",
+    "Get ConnectedEnemies",
+    "Get ConnectedEnemies",
+    "Get ConnectedEnemies",
+    "Get ConnectedEnemies",
+    "Get Current",
+    "Get Current",
+    "Get Current",
+    "Get Current",
+    "Get Current",
+    "Get Current",
+    "Get Overlapping Components",
+    "Get Owner",
+    "Get Owner",
+    "Get Owner",
+    "Get Owner",
+    "Get Owner",
+    "Get Queue",
+    "Get Queue",
+    "Get Queue",
+    "Get Queue",
+    "Get Queue",
+    "Get Visted",
+    "Get Visted",
+    "Get Visted",
+    "Get Visted",
+    "GetShadowOwner",
+    "GetShadowRole",
+    "Is Valid",
+    "IsShadowLinkActive",
+    "IsShadowLinkActive",
+    "IsShadowLinkActive",
+    "Length",
+    "Print String",
+    "Print String",
+    "Print String",
+    "Print String",
+    "Remove Index",
+    "Reroute Node",
+    "Reroute Node",
+    "Reroute Node",
+    "Reroute Node",
+    "Reroute Node",
+    "Reroute Node",
+    "Reroute Node",
+    "Reroute Node",
+    "Reroute Node",
+    "Return Node",
+    "Return Node",
+    "Return Node",
+    "Return Node",
+    "Set Current",
+    "Shadows Connect",
+    "While Loop",
+    "integer > integer"
+  ],
+  "checks": {},
+  "startShadowWires": [
+    {
+      "from": "Shadows Connect",
+      "to": "Get Owner",
+      "pins": "Start Shadow -> self"
+    },
+    {
+      "from": "Shadows Connect",
+      "to": "Reroute Node",
+      "pins": "Start Shadow -> InputPin"
+    },
+    {
+      "from": "Shadows Connect",
+      "to": "Is Valid",
+      "pins": "Start Shadow -> Object"
+    }
+  ],
+  "connectedEnemiesAddNodes": 0,
+  "getShadowRole": 1,
+  "equalEnemy": 2,
+  "roleToAdd": [
+    {
+      "id": "hIf3gk-8",
+      "execTo": [
+        "Branch"
+      ],
+      "dataTo": [
+        "Equal (Enum).A"
+      ]
+    }
+  ],
+  "entryExec": [
+    {
+      "pin": "then",
+      "to": "Branch"
+    }
+  ],
+  "isValid": [
+    {
+      "title": "Is Valid",
+      "execOut": []
+    }
+  ]
+}

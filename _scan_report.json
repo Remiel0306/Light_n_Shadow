@@ -7,7 +7,7 @@
   },
   "issues": [
     "Start Shadow 沒加入 Queue",
-    "EventGraph 還沒呼叫 Shadows Connect（踩了也不會跑 BFS）"
+    "ForEach 沒有 exec 入口"
   ],
   "ok": [
     "Blueprint Validate 通過",
@@ -19,21 +19,20 @@
     "While Completed → Return",
     "Current → Get Overlapping → ForEach Array",
     "ForEach 沒有接回 While",
-    "ForEach 有 1 條 exec 入口",
     "敵人/擴展路徑 0xuqnU6Y else → ForEach 匯流",
     "敵人/擴展路徑 Ojp9vULh else → ForEach 匯流",
     "敵人/擴展路徑 UY_v70dK then → ForEach 匯流",
-    "有 IA_StompC",
-    "有 isOnShadow? 變數"
+    "EventGraph 有呼叫 Shadows Connect",
+    "有 IA_StompC"
   ],
   "warnings": [
     "變數仍在角色上: Queue, Visted, ConnectedEnemies, Current"
   ],
-  "nodeCount": 76,
+  "nodeCount": 84,
   "eventGraph": {
-    "callsShadowsConnect": false,
+    "callsShadowsConnect": true,
     "hasStomp": true,
-    "hasOnShadow": true
+    "hasOnShadow": false
   },
   "validate": {
     "success": true,
