@@ -8,6 +8,13 @@
 - `SlotIndex = SideIndex × 3 + BallIndex`
 - 偵測：`Collision For All`（可保留 `Light Checkers` Gizmo Box 做別用）
 
+## 窗框四邊長度（A→B、B→C…）
+
+- 變數 **`Edge Lengths`**（Float Array ×4），BeginPlay 算兩角距離
+- **`ApplyShadowAlongEdge(SideIndex, Root, Collider)`** → 中點 + LookAt + Extent
+- 手動步驟：[bp_wall_shadow_edges_manual.md](bp_wall_shadow_edges_manual.md)
+- 腳本：`implement_wall_window_edges.py`（Tools → Execute Python Script）
+
 ## 既有變數（不用新建 ActiveBalls）
 
 | 變數 | 用途 |
@@ -23,6 +30,7 @@
 - [ ] `SlotIndex = SideIndex*3 + BallIndex`，Light 用 **SideIndex** GET
 - [ ] Set Array Elem 寫 `Active Ball`；停用舊 Slot Onwers(12) Add/Clear
 - [ ] Shadow 陣列 12 格 + Compute 的 Light Point 輸入
+- [ ] Edge Lengths + ApplyShadowAlongEdge；**Ball** 必接；勿 Hit→Set Box Extent
 
 ## 流程
 
