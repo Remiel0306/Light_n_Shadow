@@ -1,0 +1,5 @@
+{
+  "enemy": "/Game/BluePrint/Enemy/BP_EnemyShadowLogic",
+  "aic": "/Game/BluePrint/System/BP_EnemyAIController",
+  "valid": true
+}

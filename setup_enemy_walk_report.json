@@ -1,0 +1,10 @@
+{
+  "completedAt": "2026-05-31",
+  "enemy": "/Game/BluePrint/Enemy/BP_EnemyShadowLogic",
+  "aic": "/Game/BluePrint/System/BP_EnemyAIController",
+  "animClass": "/Game/Characters/Mannequins/Anims/Unarmed/ABP_Unarmed.ABP_Unarmed_C",
+  "aicValid": true,
+  "eventGraph": "BeginPlay -> StartPatrol -> Set Timer by Function Name (StartPatrol, 5s, Looping)",
+  "startPatrol": "GetPawn -> Cast Enemy -> SetMaxWalkSpeed 200 -> Random point radius 600 -> MoveToLocation",
+  "levelReminder": "Nav Mesh Bounds Volume + Build Paths; press P for green nav mesh"
+}
