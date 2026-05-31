@@ -1,0 +1,353 @@
+{
+  "enemy_vars": {
+    "success": true,
+    "path": "/Game/BluePrint/BP_EnemyShadowLogic",
+    "variables": [
+      {
+        "name": "isInChecker",
+        "type": "bool",
+        "guid": "481036E24B1A4CFF653EACBF1DC66839",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Active Ball",
+        "type": "object",
+        "guid": "C2FD7E7245C2DB495F65628DFF5BE9B7",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Shadow farthest location",
+        "type": "struct",
+        "guid": "F400B64E4C8C56BB852DF8BB31BA1BEC",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Shadow colision distance",
+        "type": "real",
+        "guid": "C134DD5F4BD5A1A389830994D993395C",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Origin colision size",
+        "type": "struct",
+        "guid": "8976AC264B2A78A2AD56C6A56EAC55C3",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Root Location",
+        "type": "struct",
+        "guid": "B492AE6B4A261244052D0C82AB37A931",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Target Collider",
+        "type": "object",
+        "guid": "AD58AFCE4DB9CD72B8E119BEC2DFA991",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Start",
+        "type": "struct",
+        "guid": "7784BC5E46932F474DEAC39DFF56B19F",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Slot Owners",
+        "type": "object",
+        "guid": "DF77495C4CCE8C0B3645158CFCD4D326",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Connect OBJ",
+        "type": "bool",
+        "guid": "17EC749A425B57DA70552EAC72AA80AB",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "PatrolOriginActor",
+        "type": "object",
+        "guid": "9FBA4F044D246DA9861B759DC2760653",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "PatrolRadius",
+        "type": "real",
+        "guid": "D6FB55B441A7E008C9D420BEB401E191",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "ChaseDuration",
+        "type": "real",
+        "guid": "305D856045592A0CC81512A7B77E73F6",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "WalkSpeed",
+        "type": "real",
+        "guid": "D7A8D47941F263BC34DF44814D01A906",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "RunSpeed",
+        "type": "real",
+        "guid": "F4120A91428C36D43A7CF4A28E75877E",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      }
+    ],
+    "count": 15
+  },
+  "enemy_defaults": {
+    "success": false,
+    "raw": "MCP error -32602: Input validation error: Invalid arguments for tool blueprint: [\n  {\n    \"received\": \"get_class_defaults\",\n    \"code\": \"invalid_enum_value\",\n    \"options\": [\n      \"read\",\n      \"list_variables\",\n      \"list_functions\",\n      \"read_graph\",\n      \"read_graph_summary\",\n      \"get_execution_flow\",\n      \"get_dependencies\",\n      \"create\",\n      \"add_variable\",\n      \"set_variable_properties\",\n      \"create_function\",\n      \"delete_function\",\n      \"rename_function\",\n      \"add_node\",\n      \"delete_node\",\n      \"set_node_property\",\n      \"connect_pins\",\n      \"add_component\",\n      \"remove_component\",\n      \"set_component_property\",\n      \"set_component_override_materials\",\n      \"add_timeline_track\",\n      \"set_capsule_size\",\n      \"get_component_property\",\n      \"set_class_default\",\n      \"delete_variable\",\n      \"add_function_parameter\",\n      \"set_variable_default\",\n      \"compile\",\n      \"list_node_types\",\n      \"search_node_types\",\n      \"create_interface\",\n      \"add_interface\",\n      \"list_graphs\",\n      \"add_event_dispatcher\",\n      \"duplicate\",\n      \"add_local_variable\",\n      \"list_local_variables\",\n      \"validate\",\n      \"read_component_properties\",\n      \"read_node_property\",\n      \"reparent_component\",\n      \"reparent\",\n      \"set_actor_tick_settings\",\n      \"export_nodes_t3d\",\n      \"import_nodes_t3d\",\n      \"set_cdo_property\",\n      \"get_cdo_properties\",\n      \"run_construction_script\",\n      \"compile_all\",\n      \"cleanup_graph\",\n      \"connect_pins_batch\",\n      \"set_node_position\",\n      \"auto_layout\"\n    ],\n    \"path\": [\n      \"action\"\n    ],\n    \"message\": \"Invalid enum value. Expected 'read' | 'list_variables' | 'list_functions' | 'read_graph' | 'read_graph_summary' | 'get_execution_flow' | 'get_dependencies' | 'create' | 'add_variable' | 'set_variable_properties' | 'create_function' | 'delete_function' | 'rename_function' | 'add_node' | 'delete_node' | 'set_node_property' | 'connect_pins' | 'add_component' | 'remove_component' | 'set_component_property' | 'set_component_override_materials' | 'add_timeline_track' | 'set_capsule_size' | 'get_component_property' | 'set_class_default' | 'delete_variable' | 'add_function_parameter' | 'set_variable_default' | 'compile' | 'list_node_types' | 'search_node_types' | 'create_interface' | 'add_interface' | 'list_graphs' | 'add_event_dispatcher' | 'duplicate' | 'add_local_variable' | 'list_local_variables' | 'validate' | 'read_component_properties' | 'read_node_property' | 'reparent_component' | 'reparent' | 'set_actor_tick_settings' | 'export_nodes_t3d' | 'import_nodes_t3d' | 'set_cdo_property' | 'get_cdo_properties' | 'run_construction_script' | 'compile_all' | 'cleanup_graph' | 'connect_pins_batch' | 'set_node_position' | 'auto_layout', received 'get_class_defaults'\"\n  }\n]"
+  },
+  "aic_vars": {
+    "success": true,
+    "path": "/Game/BluePrint/Enemy/BP_EnemyAIController",
+    "variables": [
+      {
+        "name": "PatrolCenter",
+        "type": "struct",
+        "guid": "C69CB280477E47C2F312C784A4C4A619",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "PatrolRadius",
+        "type": "real",
+        "guid": "81E4D11C45AEEB534A87478853887F48",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "ChaseDuration",
+        "type": "real",
+        "guid": "E2E97EE3401B8A14A81ADC987E1311B1",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "WalkSpeed",
+        "type": "real",
+        "guid": "8924D1DC4BD08DB941F4A4972DDC7CF7",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "RunSpeed",
+        "type": "real",
+        "guid": "E79C58E04A723FAD7C5D7C8758E07CC5",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "ChaseTimerHandle",
+        "type": "struct",
+        "guid": "91895E9E48443F0A36EB9A86FAB694DF",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "CurrentState",
+        "type": "byte",
+        "guid": "D3A0EE574006C6C0FD2A37ACBDD31E6F",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "PatrolOriginActor",
+        "type": "object",
+        "guid": "3DC18872448408676645BFB57DAF206D",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      }
+    ],
+    "count": 8
+  },
+  "aic_defaults": {
+    "success": false,
+    "raw": "MCP error -32602: Input validation error: Invalid arguments for tool blueprint: [\n  {\n    \"received\": \"get_class_defaults\",\n    \"code\": \"invalid_enum_value\",\n    \"options\": [\n      \"read\",\n      \"list_variables\",\n      \"list_functions\",\n      \"read_graph\",\n      \"read_graph_summary\",\n      \"get_execution_flow\",\n      \"get_dependencies\",\n      \"create\",\n      \"add_variable\",\n      \"set_variable_properties\",\n      \"create_function\",\n      \"delete_function\",\n      \"rename_function\",\n      \"add_node\",\n      \"delete_node\",\n      \"set_node_property\",\n      \"connect_pins\",\n      \"add_component\",\n      \"remove_component\",\n      \"set_component_property\",\n      \"set_component_override_materials\",\n      \"add_timeline_track\",\n      \"set_capsule_size\",\n      \"get_component_property\",\n      \"set_class_default\",\n      \"delete_variable\",\n      \"add_function_parameter\",\n      \"set_variable_default\",\n      \"compile\",\n      \"list_node_types\",\n      \"search_node_types\",\n      \"create_interface\",\n      \"add_interface\",\n      \"list_graphs\",\n      \"add_event_dispatcher\",\n      \"duplicate\",\n      \"add_local_variable\",\n      \"list_local_variables\",\n      \"validate\",\n      \"read_component_properties\",\n      \"read_node_property\",\n      \"reparent_component\",\n      \"reparent\",\n      \"set_actor_tick_settings\",\n      \"export_nodes_t3d\",\n      \"import_nodes_t3d\",\n      \"set_cdo_property\",\n      \"get_cdo_properties\",\n      \"run_construction_script\",\n      \"compile_all\",\n      \"cleanup_graph\",\n      \"connect_pins_batch\",\n      \"set_node_position\",\n      \"auto_layout\"\n    ],\n    \"path\": [\n      \"action\"\n    ],\n    \"message\": \"Invalid enum value. Expected 'read' | 'list_variables' | 'list_functions' | 'read_graph' | 'read_graph_summary' | 'get_execution_flow' | 'get_dependencies' | 'create' | 'add_variable' | 'set_variable_properties' | 'create_function' | 'delete_function' | 'rename_function' | 'add_node' | 'delete_node' | 'set_node_property' | 'connect_pins' | 'add_component' | 'remove_component' | 'set_component_property' | 'set_component_override_materials' | 'add_timeline_track' | 'set_capsule_size' | 'get_component_property' | 'set_class_default' | 'delete_variable' | 'add_function_parameter' | 'set_variable_default' | 'compile' | 'list_node_types' | 'search_node_types' | 'create_interface' | 'add_interface' | 'list_graphs' | 'add_event_dispatcher' | 'duplicate' | 'add_local_variable' | 'list_local_variables' | 'validate' | 'read_component_properties' | 'read_node_property' | 'reparent_component' | 'reparent' | 'set_actor_tick_settings' | 'export_nodes_t3d' | 'import_nodes_t3d' | 'set_cdo_property' | 'get_cdo_properties' | 'run_construction_script' | 'compile_all' | 'cleanup_graph' | 'connect_pins_batch' | 'set_node_position' | 'auto_layout', received 'get_class_defaults'\"\n  }\n]"
+  },
+  "startPatrol": {
+    "nodes": [
+      {
+        "id": "9009ADC74D0321601601579C8E0B44E3",
+        "title": "StartPatrol",
+        "class": "K2Node_FunctionEntry"
+      },
+      {
+        "id": "5A4FC5A7436EB239E40C9E99F2843CD7",
+        "title": "Get Controlled Pawn\nTarget is Controller",
+        "class": "K2Node_CallFunction"
+      },
+      {
+        "id": "DC89C17C49A331548BA27FB05C29BC77",
+        "title": "Cast To BP_EnemyShadowLogic",
+        "class": "K2Node_DynamicCast"
+      },
+      {
+        "id": "3CF46E8D4117AB21B561BEABDF4E3413",
+        "title": "Move to Location\nTarget is AIController",
+        "class": "K2Node_CallFunction"
+      },
+      {
+        "id": "F4D346DD45DFC7E268F6E5A1261954B8",
+        "title": "Get PatrolOriginActor",
+        "class": "K2Node_VariableGet"
+      },
+      {
+        "id": "675F2CE04D80953C5840AD9DE8F5EA52",
+        "title": "Is Valid",
+        "class": "K2Node_CallFunction"
+      },
+      {
+        "id": "ED7EF3D6491510DEEB30FBB7DC976E90",
+        "title": "Branch",
+        "class": "K2Node_IfThenElse"
+      },
+      {
+        "id": "9B5825E94CDEAF02708F7497A91EDB4B",
+        "title": "Get PatrolOriginActor",
+        "class": "K2Node_VariableGet"
+      },
+      {
+        "id": "7402140F43FDBA0D88EC83BB2623C793",
+        "title": "Get Random Reachable Point in Radius",
+        "class": "K2Node_CallFunction"
+      },
+      {
+        "id": "6693F3544DD18F435A2670849C416627",
+        "title": "Get Actor Location\nTarget is Actor",
+        "class": "K2Node_CallFunction"
+      },
+      {
+        "id": "69C9A34F484046D3D27394B79CAE7137",
+        "title": "Get PatrolRadius",
+        "class": "K2Node_VariableGet"
+      },
+      {
+        "id": "83A632AB451DFFD00FFF1F9C944BD060",
+        "title": "Self-Reference",
+        "class": "K2Node_Self"
+      },
+      {
+        "id": "01A5D76F4A60BEF409B13B82C59746F4",
+        "title": "Branch",
+        "class": "K2Node_IfThenElse"
+      },
+      {
+        "id": "89E6998544EFDBF929A4BD90AAD90C62",
+        "title": "Get PatrolRadius",
+        "class": "K2Node_VariableGet"
+      },
+      {
+        "id": "08AC24A642108A444045D79C346D3806",
+        "title": "Print String",
+        "class": "K2Node_CallFunction"
+      },
+      {
+        "id": "6C595CCC413E97F8B557A69173AAA987",
+        "title": "Get Actor Location\nTarget is Actor",
+        "class": "K2Node_CallFunction"
+      }
+    ],
+    "execEdges": [],
+    "dataEdges": [],
+    "analysis": [
+      {
+        "node": "Get PatrolOriginActor",
+        "id": "F4D346DD45DFC7E268F6E5A1261954B8",
+        "target": {
+          "wired": false,
+          "hint": "PatrolOriginActor Get has NO target/self — reads wrong object!"
+        }
+      },
+      {
+        "node": "Get PatrolOriginActor",
+        "id": "9B5825E94CDEAF02708F7497A91EDB4B",
+        "target": {
+          "wired": false,
+          "hint": "PatrolOriginActor Get has NO target/self — reads wrong object!"
+        }
+      }
+    ],
+    "castExec": {
+      "in": 0,
+      "thenOut": 0
+    },
+    "move": {
+      "execIn": 0,
+      "destWired": 0,
+      "targetWired": 0
+    },
+    "random": {
+      "origin": 0,
+      "radius": 0,
+      "successBoolOut": 0
+    }
+  },
+  "eventGraph": {
+    "nodes": [
+      {
+        "title": "Event BeginPlay",
+        "class": "K2Node_Event"
+      },
+      {
+        "title": "Print String",
+        "class": "K2Node_CallFunction"
+      },
+      {
+        "title": "Start Patrol\nTarget is BP Enemy AIController",
+        "class": "K2Node_CallFunction"
+      }
+    ],
+    "execEdges": []
+  },
+  "enemyPatrolVar": {
+    "name": "PatrolOriginActor",
+    "type": "object",
+    "guid": "9FBA4F044D246DA9861B759DC2760653",
+    "instanceEditable": true,
+    "exposeOnSpawn": false
+  },
+  "enemyDefaults": {
+    "success": false,
+    "raw": "MCP error -32602: Input validation error: Invalid arguments for tool blueprint: [\n  {\n    \"received\": \"get_blueprint_defaults\",\n    \"code\": \"invalid_enum_value\",\n    \"options\": [\n      \"read\",\n      \"list_variables\",\n      \"list_functions\",\n      \"read_graph\",\n      \"read_graph_summary\",\n      \"get_execution_flow\",\n      \"get_dependencies\",\n      \"create\",\n      \"add_variable\",\n      \"set_variable_properties\",\n      \"create_function\",\n      \"delete_function\",\n      \"rename_function\",\n      \"add_node\",\n      \"delete_node\",\n      \"set_node_property\",\n      \"connect_pins\",\n      \"add_component\",\n      \"remove_component\",\n      \"set_component_property\",\n      \"set_component_override_materials\",\n      \"add_timeline_track\",\n      \"set_capsule_size\",\n      \"get_component_property\",\n      \"set_class_default\",\n      \"delete_variable\",\n      \"add_function_parameter\",\n      \"set_variable_default\",\n      \"compile\",\n      \"list_node_types\",\n      \"search_node_types\",\n      \"create_interface\",\n      \"add_interface\",\n      \"list_graphs\",\n      \"add_event_dispatcher\",\n      \"duplicate\",\n      \"add_local_variable\",\n      \"list_local_variables\",\n      \"validate\",\n      \"read_component_properties\",\n      \"read_node_property\",\n      \"reparent_component\",\n      \"reparent\",\n      \"set_actor_tick_settings\",\n      \"export_nodes_t3d\",\n      \"import_nodes_t3d\",\n      \"set_cdo_property\",\n      \"get_cdo_properties\",\n      \"run_construction_script\",\n      \"compile_all\",\n      \"cleanup_graph\",\n      \"connect_pins_batch\",\n      \"set_node_position\",\n      \"auto_layout\"\n    ],\n    \"path\": [\n      \"action\"\n    ],\n    \"message\": \"Invalid enum value. Expected 'read' | 'list_variables' | 'list_functions' | 'read_graph' | 'read_graph_summary' | 'get_execution_flow' | 'get_dependencies' | 'create' | 'add_variable' | 'set_variable_properties' | 'create_function' | 'delete_function' | 'rename_function' | 'add_node' | 'delete_node' | 'set_node_property' | 'connect_pins' | 'add_component' | 'remove_component' | 'set_component_property' | 'set_component_override_materials' | 'add_timeline_track' | 'set_capsule_size' | 'get_component_property' | 'set_class_default' | 'delete_variable' | 'add_function_parameter' | 'set_variable_default' | 'compile' | 'list_node_types' | 'search_node_types' | 'create_interface' | 'add_interface' | 'list_graphs' | 'add_event_dispatcher' | 'duplicate' | 'add_local_variable' | 'list_local_variables' | 'validate' | 'read_component_properties' | 'read_node_property' | 'reparent_component' | 'reparent' | 'set_actor_tick_settings' | 'export_nodes_t3d' | 'import_nodes_t3d' | 'set_cdo_property' | 'get_cdo_properties' | 'run_construction_script' | 'compile_all' | 'cleanup_graph' | 'connect_pins_batch' | 'set_node_position' | 'auto_layout', received 'get_blueprint_defaults'\"\n  }\n]"
+  },
+  "enemyComponents": {
+    "success": false,
+    "raw": "MCP error -32602: Input validation error: Invalid arguments for tool blueprint: [\n  {\n    \"received\": \"list_components\",\n    \"code\": \"invalid_enum_value\",\n    \"options\": [\n      \"read\",\n      \"list_variables\",\n      \"list_functions\",\n      \"read_graph\",\n      \"read_graph_summary\",\n      \"get_execution_flow\",\n      \"get_dependencies\",\n      \"create\",\n      \"add_variable\",\n      \"set_variable_properties\",\n      \"create_function\",\n      \"delete_function\",\n      \"rename_function\",\n      \"add_node\",\n      \"delete_node\",\n      \"set_node_property\",\n      \"connect_pins\",\n      \"add_component\",\n      \"remove_component\",\n      \"set_component_property\",\n      \"set_component_override_materials\",\n      \"add_timeline_track\",\n      \"set_capsule_size\",\n      \"get_component_property\",\n      \"set_class_default\",\n      \"delete_variable\",\n      \"add_function_parameter\",\n      \"set_variable_default\",\n      \"compile\",\n      \"list_node_types\",\n      \"search_node_types\",\n      \"create_interface\",\n      \"add_interface\",\n      \"list_graphs\",\n      \"add_event_dispatcher\",\n      \"duplicate\",\n      \"add_local_variable\",\n      \"list_local_variables\",\n      \"validate\",\n      \"read_component_properties\",\n      \"read_node_property\",\n      \"reparent_component\",\n      \"reparent\",\n      \"set_actor_tick_settings\",\n      \"export_nodes_t3d\",\n      \"import_nodes_t3d\",\n      \"set_cdo_property\",\n      \"get_cdo_properties\",\n      \"run_construction_script\",\n      \"compile_all\",\n      \"cleanup_graph\",\n      \"connect_pins_batch\",\n      \"set_node_position\",\n      \"auto_layout\"\n    ],\n    \"path\": [\n      \"action\"\n    ],\n    \"message\": \"Invalid enum value. Expected 'read' | 'list_variables' | 'list_functions' | 'read_graph' | 'read_graph_summary' | 'get_execution_flow' | 'get_dependencies' | 'create' | 'add_variable' | 'set_variable_properties' | 'create_function' | 'delete_function' | 'rename_function' | 'add_node' | 'delete_node' | 'set_node_property' | 'connect_pins' | 'add_component' | 'remove_component' | 'set_component_property' | 'set_component_override_materials' | 'add_timeline_track' | 'set_capsule_size' | 'get_component_property' | 'set_class_default' | 'delete_variable' | 'add_function_parameter' | 'set_variable_default' | 'compile' | 'list_node_types' | 'search_node_types' | 'create_interface' | 'add_interface' | 'list_graphs' | 'add_event_dispatcher' | 'duplicate' | 'add_local_variable' | 'list_local_variables' | 'validate' | 'read_component_properties' | 'read_node_property' | 'reparent_component' | 'reparent' | 'set_actor_tick_settings' | 'export_nodes_t3d' | 'import_nodes_t3d' | 'set_cdo_property' | 'get_cdo_properties' | 'run_construction_script' | 'compile_all' | 'cleanup_graph' | 'connect_pins_batch' | 'set_node_position' | 'auto_layout', received 'list_components'\"\n  }\n]"
+  },
+  "validate": {
+    "aic": {
+      "success": true,
+      "path": "/Game/BluePrint/Enemy/BP_EnemyAIController",
+      "errorCount": 0,
+      "warningCount": 0,
+      "valid": true,
+      "messages": []
+    },
+    "enemy": {
+      "success": true,
+      "path": "/Game/BluePrint/BP_EnemyShadowLogic",
+      "errorCount": 0,
+      "warningCount": 0,
+      "valid": true,
+      "messages": []
+    }
+  }
+}

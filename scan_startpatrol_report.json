@@ -1,0 +1,333 @@
+{
+  "scannedAt": "2026-05-31T08:54:05.963Z",
+  "graphs": {
+    "EventGraph": {
+      "name": "EventGraph",
+      "nodeCount": 3,
+      "checks": [
+        {
+          "item": "Has Move to Location",
+          "ok": false
+        },
+        {
+          "item": "Has Get Random Reachable Point",
+          "ok": false
+        },
+        {
+          "item": "Has Cast to EnemyShadowLogic",
+          "ok": false
+        }
+      ],
+      "issues": [],
+      "nodes": [
+        {
+          "title": "Event BeginPlay",
+          "class": "K2Node_Event",
+          "id": "CF11A9714821822DE8ED2AADE1155078"
+        },
+        {
+          "title": "Print String",
+          "class": "K2Node_CallFunction",
+          "id": "EAACF78E49B394A67CDBEAADBE9FA7B4"
+        },
+        {
+          "title": "Start Patrol\nTarget is BP Enemy AIController",
+          "class": "K2Node_CallFunction",
+          "id": "C4211237401E52E1594C6E925EFB7BDC"
+        }
+      ],
+      "execEdges": [
+        {
+          "from": "zxGpcUghgi3o7Sqt4RVQeA",
+          "fromPin": "then",
+          "to": "6qz3jkmzlKZ82-qtvp-ntA",
+          "toPin": "execute"
+        },
+        {
+          "from": "6qz3jkmzlKZ82-qtvp-ntA",
+          "fromPin": "then",
+          "to": "xCESN0AeUuFZTG6SXvt73A",
+          "toPin": "execute"
+        }
+      ],
+      "dataEdges": []
+    },
+    "StartPatrol": {
+      "name": "StartPatrol",
+      "nodeCount": 15,
+      "checks": [
+        {
+          "item": "Has Move to Location",
+          "ok": true
+        },
+        {
+          "item": "Has Get Random Reachable Point",
+          "ok": true
+        },
+        {
+          "item": "Has Cast to EnemyShadowLogic",
+          "ok": true
+        }
+      ],
+      "issues": [
+        "Move to Location (3CF46E8D4117AB21B561BEABDF4E3413) has NO incoming exec wire - enemy won't move",
+        "Move to Location Dest not connected - may move to (0,0,0) or fail",
+        "Random Point Radius not wired - may be 0",
+        "Random Point Origin not wired",
+        "Random Point success bool not connected to Branch - may never reach Move To",
+        "Cast success (then) not connected - patrol logic never runs after cast"
+      ],
+      "nodes": [
+        {
+          "title": "StartPatrol",
+          "class": "K2Node_FunctionEntry",
+          "id": "9009ADC74D0321601601579C8E0B44E3"
+        },
+        {
+          "title": "Get Controlled Pawn\nTarget is Controller",
+          "class": "K2Node_CallFunction",
+          "id": "5A4FC5A7436EB239E40C9E99F2843CD7"
+        },
+        {
+          "title": "Cast To BP_EnemyShadowLogic",
+          "class": "K2Node_DynamicCast",
+          "id": "DC89C17C49A331548BA27FB05C29BC77"
+        },
+        {
+          "title": "Move to Location\nTarget is AIController",
+          "class": "K2Node_CallFunction",
+          "id": "3CF46E8D4117AB21B561BEABDF4E3413"
+        },
+        {
+          "title": "Get PatrolOriginActor",
+          "class": "K2Node_VariableGet",
+          "id": "F4D346DD45DFC7E268F6E5A1261954B8"
+        },
+        {
+          "title": "Is Valid",
+          "class": "K2Node_CallFunction",
+          "id": "675F2CE04D80953C5840AD9DE8F5EA52"
+        },
+        {
+          "title": "Branch",
+          "class": "K2Node_IfThenElse",
+          "id": "ED7EF3D6491510DEEB30FBB7DC976E90"
+        },
+        {
+          "title": "Get PatrolOriginActor",
+          "class": "K2Node_VariableGet",
+          "id": "9B5825E94CDEAF02708F7497A91EDB4B"
+        },
+        {
+          "title": "Get Actor Location\nTarget is Actor",
+          "class": "K2Node_CallFunction",
+          "id": "B297CB764DCF73F300ED02917E3D86B8"
+        },
+        {
+          "title": "Get Random Reachable Point in Radius",
+          "class": "K2Node_CallFunction",
+          "id": "7402140F43FDBA0D88EC83BB2623C793"
+        },
+        {
+          "title": "Get Actor Location\nTarget is Actor",
+          "class": "K2Node_CallFunction",
+          "id": "6693F3544DD18F435A2670849C416627"
+        },
+        {
+          "title": "Get PatrolRadius",
+          "class": "K2Node_VariableGet",
+          "id": "69C9A34F484046D3D27394B79CAE7137"
+        },
+        {
+          "title": "Self-Reference",
+          "class": "K2Node_Self",
+          "id": "83A632AB451DFFD00FFF1F9C944BD060"
+        },
+        {
+          "title": "Branch",
+          "class": "K2Node_IfThenElse",
+          "id": "01A5D76F4A60BEF409B13B82C59746F4"
+        },
+        {
+          "title": "Get PatrolRadius",
+          "class": "K2Node_VariableGet",
+          "id": "89E6998544EFDBF929A4BD90AAD90C62"
+        }
+      ],
+      "execEdges": [
+        {
+          "from": "kAmtx00DIWAWAVecjgtE4w",
+          "fromPin": "then",
+          "to": "3InBfEmjMVSLon-wXCm8dw",
+          "toPin": "execute"
+        },
+        {
+          "from": "3InBfEmjMVSLon-wXCm8dw",
+          "fromPin": "then",
+          "to": "7X7z1kkVEN7rMPu33JdukA",
+          "toPin": "execute"
+        },
+        {
+          "from": "7X7z1kkVEN7rMPu33JdukA",
+          "fromPin": "then",
+          "to": "AaXXb0pgvvQJsTuCxZdG9A",
+          "toPin": "execute"
+        },
+        {
+          "from": "AaXXb0pgvvQJsTuCxZdG9A",
+          "fromPin": "then",
+          "to": "PPRujUEXqyG1Yb6r3040Ew",
+          "toPin": "execute"
+        }
+      ],
+      "dataEdges": [
+        {
+          "from": "Wk_Fp0NusjnkDJ6Z8oQ81w",
+          "fromPin": "ReturnValue",
+          "to": "3InBfEmjMVSLon-wXCm8dw",
+          "toPin": "Object"
+        },
+        {
+          "from": "3InBfEmjMVSLon-wXCm8dw",
+          "fromPin": "AsBP Enemy Shadow Logic",
+          "to": "ZpPzVE3Rj0NaJnCEnEFmJw",
+          "toPin": "self"
+        },
+        {
+          "from": "3InBfEmjMVSLon-wXCm8dw",
+          "fromPin": "AsBP Enemy Shadow Logic",
+          "to": "ieaZhUTv2_kppL2QqtkMYg",
+          "toPin": "self"
+        },
+        {
+          "from": "9NNG3UXfx-Jo9uWhJhlUuA",
+          "fromPin": "PatrolOriginActor",
+          "to": "Z18s4E2AlTxYQK2d6PXqUg",
+          "toPin": "Object"
+        },
+        {
+          "from": "Z18s4E2AlTxYQK2d6PXqUg",
+          "fromPin": "ReturnValue",
+          "to": "7X7z1kkVEN7rMPu33JdukA",
+          "toPin": "Condition"
+        },
+        {
+          "from": "m1gl6UzerwJwj3SXqR7bSw",
+          "fromPin": "PatrolOriginActor",
+          "to": "spfLdk3Pc_MA7QKRfj2GuA",
+          "toPin": "self"
+        },
+        {
+          "from": "spfLdk3Pc_MA7QKRfj2GuA",
+          "fromPin": "ReturnValue",
+          "to": "dAIUD0P9ug2I7IO7JiPHkw",
+          "toPin": "Origin"
+        },
+        {
+          "from": "dAIUD0P9ug2I7IO7JiPHkw",
+          "fromPin": "RandomLocation",
+          "to": "PPRujUEXqyG1Yb6r3040Ew",
+          "toPin": "Dest"
+        },
+        {
+          "from": "dAIUD0P9ug2I7IO7JiPHkw",
+          "fromPin": "ReturnValue",
+          "to": "AaXXb0pgvvQJsTuCxZdG9A",
+          "toPin": "Condition"
+        },
+        {
+          "from": "acmjT0hARtPSc5S3nK5xNw",
+          "fromPin": "PatrolRadius",
+          "to": "dAIUD0P9ug2I7IO7JiPHkw",
+          "toPin": "Radius"
+        },
+        {
+          "from": "g6Yyq0Ud_9AP_x-clEvQYA",
+          "fromPin": "self",
+          "to": "PPRujUEXqyG1Yb6r3040Ew",
+          "toPin": "self"
+        },
+        {
+          "from": "ieaZhUTv2_kppL2QqtkMYg",
+          "fromPin": "PatrolRadius",
+          "to": "PPRujUEXqyG1Yb6r3040Ew",
+          "toPin": "AcceptanceRadius"
+        }
+      ]
+    }
+  },
+  "summary": {
+    "issues": [
+      "[StartPatrol] Move to Location (3CF46E8D4117AB21B561BEABDF4E3413) has NO incoming exec wire - enemy won't move",
+      "[StartPatrol] Move to Location Dest not connected - may move to (0,0,0) or fail",
+      "[StartPatrol] Random Point Radius not wired - may be 0",
+      "[StartPatrol] Random Point Origin not wired",
+      "[StartPatrol] Random Point success bool not connected to Branch - may never reach Move To",
+      "[StartPatrol] Cast success (then) not connected - patrol logic never runs after cast",
+      "[EventGraph] StartPatrol node exists but no exec wire TO it",
+      "[EventGraph] BeginPlay may not reach Call StartPatrol (only Print?)"
+    ],
+    "likelyCauses": [
+      "Move To 沒有接到 Branch True 白線",
+      "Move To 的 Dest 沒接 Random Location",
+      "Random Point 半徑為 0 或未接 Patrol Radius",
+      "Cast 成功後 then 沒往下接",
+      "隨機點失敗時不會 Move（Condition 沒接 Return Value）"
+    ]
+  },
+  "validate": {
+    "AIC": {
+      "success": true,
+      "path": "/Game/BluePrint/Enemy/BP_EnemyAIController",
+      "errorCount": 0,
+      "warningCount": 0,
+      "valid": true,
+      "messages": []
+    },
+    "Enemy": {
+      "success": true,
+      "path": "/Game/BluePrint/BP_EnemyShadowLogic",
+      "errorCount": 0,
+      "warningCount": 0,
+      "valid": true,
+      "messages": []
+    }
+  },
+  "enemyVariables": [
+    {
+      "name": "PatrolOriginActor",
+      "type": "object",
+      "guid": "9FBA4F044D246DA9861B759DC2760653",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    },
+    {
+      "name": "PatrolRadius",
+      "type": "real",
+      "guid": "D6FB55B441A7E008C9D420BEB401E191",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    },
+    {
+      "name": "ChaseDuration",
+      "type": "real",
+      "guid": "305D856045592A0CC81512A7B77E73F6",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    },
+    {
+      "name": "WalkSpeed",
+      "type": "real",
+      "guid": "D7A8D47941F263BC34DF44814D01A906",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    },
+    {
+      "name": "RunSpeed",
+      "type": "real",
+      "guid": "F4120A91428C36D43A7CF4A28E75877E",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    }
+  ]
+}

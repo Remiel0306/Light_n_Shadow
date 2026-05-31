@@ -1,0 +1,39 @@
+{
+  "steps": [
+    {
+      "prop": "AIControllerClass",
+      "ok": true
+    },
+    {
+      "prop": "AutoPossessAI",
+      "ok": true
+    },
+    {
+      "fn": "buildCacheFromPawn",
+      "error": "CacheSettingsFromPawn: missing entry/result"
+    },
+    {
+      "fn": "buildStartPatrol",
+      "error": "Cannot read properties of undefined (reading 'id')"
+    },
+    {
+      "fn": "buildStartChase",
+      "error": "Cannot read properties of undefined (reading 'id')"
+    },
+    {
+      "fn": "buildStartReturn",
+      "error": "Cannot read properties of undefined (reading 'id')"
+    },
+    {
+      "fn": "buildOnChaseTimeout",
+      "ok": true
+    },
+    {
+      "fn": "buildOnPerception",
+      "ok": true
+    },
+    {
+      "wireBeginPlay": "BeginPlay chain nodes missing"
+    }
+  ]
+}

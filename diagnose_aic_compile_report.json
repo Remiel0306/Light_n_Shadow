@@ -1,0 +1,407 @@
+{
+  "graphs": {
+    "OnChaseTimeout": {
+      "nodeCount": 2,
+      "execEdgeCount": 0,
+      "issues": [],
+      "nodes": [
+        {
+          "id": "7C0E738B4CD7BF42FD8948B15FAA7B67",
+          "title": "OnChaseTimeout",
+          "class": "K2Node_FunctionEntry"
+        },
+        {
+          "id": "070FC2B5490973BAFBFFC4B3E229D77C",
+          "title": "Start Return\nTarget is BP Enemy AIController",
+          "class": "K2Node_CallFunction"
+        }
+      ],
+      "execEdges": []
+    },
+    "OnPerceptionUpdated": {
+      "nodeCount": 5,
+      "execEdgeCount": 0,
+      "issues": [
+        "OnPerceptionUpdated: Branch \"Branch\" no exec in",
+        "OnPerceptionUpdated: Branch has neither True nor False exec out"
+      ],
+      "nodes": [
+        {
+          "id": "69A603AF41428ED52D60BCA7755803FC",
+          "title": "OnPerceptionUpdated",
+          "class": "K2Node_FunctionEntry"
+        },
+        {
+          "id": "C98293714F791C2E8E2D4F89A785F4A3",
+          "title": "Get CurrentState",
+          "class": "K2Node_VariableGet"
+        },
+        {
+          "id": "6ECDAB9F445C6A4AF10849B6D7EE1BD9",
+          "title": "Equal (Byte)",
+          "class": "K2Node_CallFunction"
+        },
+        {
+          "id": "493777DD41C24F7E9BC42AA8ACE78281",
+          "title": "Branch",
+          "class": "K2Node_IfThenElse"
+        },
+        {
+          "id": "414FA87248185C8E04D8C98E54CDDE33",
+          "title": "Start Chase\nTarget is BP Enemy AIController",
+          "class": "K2Node_CallFunction"
+        }
+      ],
+      "execEdges": []
+    },
+    "CacheSettingsFromPawn": {
+      "nodeCount": 20,
+      "execEdgeCount": 0,
+      "issues": [
+        "CacheSettingsFromPawn: Cast has no exec input",
+        "CacheSettingsFromPawn: Cast has no exec output",
+        "CacheSettingsFromPawn: Branch \"Branch\" no exec in",
+        "CacheSettingsFromPawn: Branch has neither True nor False exec out"
+      ],
+      "nodes": [
+        {
+          "id": "12DEA6F64E7EB07AEFFC02AD623BAB82",
+          "title": "CacheSettingsFromPawn",
+          "class": "K2Node_FunctionEntry"
+        },
+        {
+          "id": "99A658F94797D4069D9350BA0A7F1DDA",
+          "title": "Get Controlled Pawn\nTarget is Controller",
+          "class": "K2Node_CallFunction"
+        },
+        {
+          "id": "0342B7D7465B82645491828E9F57E823",
+          "title": "Cast To BP_EnemyShadowLogic",
+          "class": "K2Node_DynamicCast"
+        },
+        {
+          "id": "6E3DE5B245145175163C3790E3221906",
+          "title": "Get PatrolOriginActor",
+          "class": "K2Node_VariableGet"
+        },
+        {
+          "id": "C2909FB3466753894754EFA1F3A09201",
+          "title": "Is Valid",
+          "class": "K2Node_CallFunction"
+        },
+        {
+          "id": "496644CE4980C9E95139F9837C649E88",
+          "title": "Branch",
+          "class": "K2Node_IfThenElse"
+        },
+        {
+          "id": "128B42224E0A4711294DC1962132C94C",
+          "title": "Get Actor Location\nTarget is Actor",
+          "class": "K2Node_CallFunction"
+        },
+        {
+          "id": "8784E93B40001DC1A5DE51A63CFF4174",
+          "title": "Set PatrolCenter",
+          "class": "K2Node_VariableSet"
+        },
+        {
+          "id": "F9A7F5424831A3333CCC5F9701BCAA04",
+          "title": "Get PatrolRadius",
+          "class": "K2Node_VariableGet"
+        },
+        {
+          "id": "A0B83F9240AE7B488E18F8A21159B697",
+          "title": "Get PatrolRadius",
+          "class": "K2Node_VariableGet"
+        },
+        {
+          "id": "9EEF3F554F82611DFEB869A7209E7B43",
+          "title": "Set PatrolRadius",
+          "class": "K2Node_VariableSet"
+        },
+        {
+          "id": "EAC0C21B48FEA5B3322973B3BE56ED83",
+          "title": "Get ChaseDuration",
+          "class": "K2Node_VariableGet"
+        },
+        {
+          "id": "DEDB65144C146D28FC2D47BD5DA8526D",
+          "title": "Get ChaseDuration",
+          "class": "K2Node_VariableGet"
+        },
+        {
+          "id": "19B259274A87B7A50CFD6AA882522850",
+          "title": "Set ChaseDuration",
+          "class": "K2Node_VariableSet"
+        },
+        {
+          "id": "A3EF9A374ADC544CF6BC139435A0449D",
+          "title": "Get WalkSpeed",
+          "class": "K2Node_VariableGet"
+        },
+        {
+          "id": "1A0DB3DB4499ADC987CC399FEC37DF93",
+          "title": "Get WalkSpeed",
+          "class": "K2Node_VariableGet"
+        },
+        {
+          "id": "66C76EAA41D1E2E6EED361AED0F63625",
+          "title": "Set WalkSpeed",
+          "class": "K2Node_VariableSet"
+        },
+        {
+          "id": "58CBA5EA48FBAF266DC72D89C635BE97",
+          "title": "Get RunSpeed",
+          "class": "K2Node_VariableGet"
+        },
+        {
+          "id": "E8CE51F54CEF1C19FE60E59E643136CB",
+          "title": "Get RunSpeed",
+          "class": "K2Node_VariableGet"
+        },
+        {
+          "id": "6CA71FB948BB60168B365F912E2C5EF0",
+          "title": "Set RunSpeed",
+          "class": "K2Node_VariableSet"
+        }
+      ],
+      "execEdges": []
+    },
+    "StartPatrol": {
+      "nodeCount": 16,
+      "execEdgeCount": 0,
+      "issues": [
+        "StartPatrol: Cast has no exec input",
+        "StartPatrol: Cast has no exec output",
+        "StartPatrol: Move to Location has NO exec input",
+        "StartPatrol: Move to Location has NO exec output (OK but note)",
+        "StartPatrol: Branch \"Branch\" no exec in",
+        "StartPatrol: Branch has neither True nor False exec out",
+        "StartPatrol: Branch \"Branch\" no exec in",
+        "StartPatrol: Branch has neither True nor False exec out"
+      ],
+      "nodes": [
+        {
+          "id": "9009ADC74D0321601601579C8E0B44E3",
+          "title": "StartPatrol",
+          "class": "K2Node_FunctionEntry"
+        },
+        {
+          "id": "5A4FC5A7436EB239E40C9E99F2843CD7",
+          "title": "Get Controlled Pawn\nTarget is Controller",
+          "class": "K2Node_CallFunction"
+        },
+        {
+          "id": "DC89C17C49A331548BA27FB05C29BC77",
+          "title": "Cast To BP_EnemyShadowLogic",
+          "class": "K2Node_DynamicCast"
+        },
+        {
+          "id": "3CF46E8D4117AB21B561BEABDF4E3413",
+          "title": "Move to Location\nTarget is AIController",
+          "class": "K2Node_CallFunction"
+        },
+        {
+          "id": "F4D346DD45DFC7E268F6E5A1261954B8",
+          "title": "Get PatrolOriginActor",
+          "class": "K2Node_VariableGet"
+        },
+        {
+          "id": "675F2CE04D80953C5840AD9DE8F5EA52",
+          "title": "Is Valid",
+          "class": "K2Node_CallFunction"
+        },
+        {
+          "id": "ED7EF3D6491510DEEB30FBB7DC976E90",
+          "title": "Branch",
+          "class": "K2Node_IfThenElse"
+        },
+        {
+          "id": "9B5825E94CDEAF02708F7497A91EDB4B",
+          "title": "Get PatrolOriginActor",
+          "class": "K2Node_VariableGet"
+        },
+        {
+          "id": "7402140F43FDBA0D88EC83BB2623C793",
+          "title": "Get Random Reachable Point in Radius",
+          "class": "K2Node_CallFunction"
+        },
+        {
+          "id": "6693F3544DD18F435A2670849C416627",
+          "title": "Get Actor Location\nTarget is Actor",
+          "class": "K2Node_CallFunction"
+        },
+        {
+          "id": "69C9A34F484046D3D27394B79CAE7137",
+          "title": "Get PatrolRadius",
+          "class": "K2Node_VariableGet"
+        },
+        {
+          "id": "83A632AB451DFFD00FFF1F9C944BD060",
+          "title": "Self-Reference",
+          "class": "K2Node_Self"
+        },
+        {
+          "id": "01A5D76F4A60BEF409B13B82C59746F4",
+          "title": "Branch",
+          "class": "K2Node_IfThenElse"
+        },
+        {
+          "id": "89E6998544EFDBF929A4BD90AAD90C62",
+          "title": "Get PatrolRadius",
+          "class": "K2Node_VariableGet"
+        },
+        {
+          "id": "08AC24A642108A444045D79C346D3806",
+          "title": "Print String",
+          "class": "K2Node_CallFunction"
+        },
+        {
+          "id": "6C595CCC413E97F8B557A69173AAA987",
+          "title": "Get Actor Location\nTarget is Actor",
+          "class": "K2Node_CallFunction"
+        }
+      ],
+      "execEdges": []
+    },
+    "StartChase": {
+      "nodeCount": 9,
+      "execEdgeCount": 0,
+      "issues": [
+        "StartChase: Cast has no exec input",
+        "StartChase: Cast has no exec output"
+      ],
+      "nodes": [
+        {
+          "id": "3CDF2915496F9D0B776FF8915790EF77",
+          "title": "StartChase",
+          "class": "K2Node_FunctionEntry"
+        },
+        {
+          "id": "5D4D91BB46C8752A4770B49F6328B759",
+          "title": "Get Controlled Pawn\nTarget is Controller",
+          "class": "K2Node_CallFunction"
+        },
+        {
+          "id": "4C1CCAB243E4E94BAEBCBE90BA2FC253",
+          "title": "Cast To BP_EnemyShadowLogic",
+          "class": "K2Node_DynamicCast"
+        },
+        {
+          "id": "765958C6453AECA654F6D3BF0B5275A6",
+          "title": "Get Movement Component\nTarget is Pawn",
+          "class": "K2Node_CallFunction"
+        },
+        {
+          "id": "631393CC44F03717F7DFAFBA74F7EB26",
+          "title": "Get RunSpeed",
+          "class": "K2Node_VariableGet"
+        },
+        {
+          "id": "E5A1E2C14F71072D37DA93B68EA6713E",
+          "title": "Get Player Character",
+          "class": "K2Node_CallFunction"
+        },
+        {
+          "id": "CCDBA2A7429C50D609A9A296B289BBC7",
+          "title": "Move to Actor\nTarget is AIController",
+          "class": "K2Node_CallFunction"
+        },
+        {
+          "id": "3FF2AED349293539B69FDFBE0E3934C1",
+          "title": "Get ChaseDuration",
+          "class": "K2Node_VariableGet"
+        },
+        {
+          "id": "B1680ADC4984DC6A0E156CA70CB7095D",
+          "title": "Set Timer by Function Name",
+          "class": "K2Node_CallFunction"
+        }
+      ],
+      "execEdges": []
+    },
+    "StartReturn": {
+      "nodeCount": 7,
+      "execEdgeCount": 0,
+      "issues": [
+        "StartReturn: Cast has no exec input",
+        "StartReturn: Cast has no exec output",
+        "StartReturn: Move to Location has NO exec input",
+        "StartReturn: Move to Location has NO exec output (OK but note)"
+      ],
+      "nodes": [
+        {
+          "id": "F41D6B984AD14062E889E2A6735D146D",
+          "title": "StartReturn",
+          "class": "K2Node_FunctionEntry"
+        },
+        {
+          "id": "C0C8D7FD45365858AC77508C8E079269",
+          "title": "Get Controlled Pawn\nTarget is Controller",
+          "class": "K2Node_CallFunction"
+        },
+        {
+          "id": "3E5A89BB404C28B17F94169A6A1ED0DE",
+          "title": "Cast To BP_EnemyShadowLogic",
+          "class": "K2Node_DynamicCast"
+        },
+        {
+          "id": "ECC751CA4A908A4BC025D29DD1D199C9",
+          "title": "Get Movement Component\nTarget is Pawn",
+          "class": "K2Node_CallFunction"
+        },
+        {
+          "id": "96DA10C9407711948CE4C0B6E81A75FA",
+          "title": "Get WalkSpeed",
+          "class": "K2Node_VariableGet"
+        },
+        {
+          "id": "3ADF05CB4C65180420E95ABB886786AB",
+          "title": "Get PatrolCenter",
+          "class": "K2Node_VariableGet"
+        },
+        {
+          "id": "DC4FD959499879D8625BC9814892EE22",
+          "title": "Move to Location\nTarget is AIController",
+          "class": "K2Node_CallFunction"
+        }
+      ],
+      "execEdges": []
+    },
+    "EventGraph": {
+      "nodeCount": 3,
+      "execEdgeCount": 0,
+      "issues": [],
+      "nodes": [
+        {
+          "id": "CF11A9714821822DE8ED2AADE1155078",
+          "title": "Event BeginPlay",
+          "class": "K2Node_Event"
+        },
+        {
+          "id": "EAACF78E49B394A67CDBEAADBE9FA7B4",
+          "title": "Print String",
+          "class": "K2Node_CallFunction"
+        },
+        {
+          "id": "C4211237401E52E1594C6E925EFB7BDC",
+          "title": "Start Patrol\nTarget is BP Enemy AIController",
+          "class": "K2Node_CallFunction"
+        }
+      ],
+      "execEdges": []
+    }
+  },
+  "compile": {
+    "success": true,
+    "path": "/Game/BluePrint/Enemy/BP_EnemyAIController"
+  },
+  "validate": {
+    "success": true,
+    "path": "/Game/BluePrint/Enemy/BP_EnemyAIController",
+    "errorCount": 0,
+    "warningCount": 0,
+    "valid": true,
+    "messages": []
+  }
+}
