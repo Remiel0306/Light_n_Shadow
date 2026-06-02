@@ -1,0 +1,788 @@
+{
+  "success": true,
+  "path": "/Game/BluePrint/BP_WindowShadowLogic",
+  "className": "BP_WindowShadowLogic",
+  "parentClass": "Actor",
+  "components": [
+    {
+      "name": "DefaultSceneRoot",
+      "class": "SceneComponent",
+      "relativeLocation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "relativeRotation": {
+        "pitch": 0,
+        "yaw": 0,
+        "roll": 0
+      },
+      "relativeScale3D": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      }
+    },
+    {
+      "name": "Top",
+      "class": "SceneComponent",
+      "parent": "DefaultSceneRoot",
+      "relativeLocation": {
+        "x": 0,
+        "y": 0,
+        "z": 300
+      },
+      "relativeRotation": {
+        "pitch": 0,
+        "yaw": 0,
+        "roll": 0
+      },
+      "relativeScale3D": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      }
+    },
+    {
+      "name": "Buttom",
+      "class": "SceneComponent",
+      "parent": "Top",
+      "relativeLocation": {
+        "x": 0,
+        "y": 0,
+        "z": -305
+      },
+      "relativeRotation": {
+        "pitch": 0,
+        "yaw": 0,
+        "roll": 0
+      },
+      "relativeScale3D": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      }
+    },
+    {
+      "name": "Cube1",
+      "class": "StaticMeshComponent",
+      "parent": "DefaultSceneRoot",
+      "relativeLocation": {
+        "x": 0,
+        "y": 0,
+        "z": 25
+      },
+      "relativeRotation": {
+        "pitch": 0,
+        "yaw": 0,
+        "roll": 0
+      },
+      "relativeScale3D": {
+        "x": 3,
+        "y": 0.25,
+        "z": 0.5
+      },
+      "staticMesh": "/Engine/BasicShapes/Cube.Cube",
+      "materials": [
+        "/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"
+      ]
+    },
+    {
+      "name": "ligth Through Point1",
+      "class": "SceneComponent",
+      "parent": "Cube1",
+      "relativeLocation": {
+        "x": 0,
+        "y": 0,
+        "z": 50
+      },
+      "relativeRotation": {
+        "pitch": 0,
+        "yaw": 0,
+        "roll": 0
+      },
+      "relativeScale3D": {
+        "x": 0.2857142857142857,
+        "y": 4,
+        "z": 2
+      }
+    },
+    {
+      "name": "Shadow Root1-1",
+      "class": "SceneComponent",
+      "parent": "Cube1",
+      "relativeLocation": {
+        "x": 0,
+        "y": 0,
+        "z": 10
+      },
+      "relativeRotation": {
+        "pitch": 0,
+        "yaw": 0,
+        "roll": 0
+      },
+      "relativeScale3D": {
+        "x": 0.2857142857142857,
+        "y": 4,
+        "z": 2
+      }
+    },
+    {
+      "name": "Shadow Collision1-1",
+      "class": "BoxComponent",
+      "parent": "Shadow Root1-1",
+      "relativeLocation": {
+        "x": 0,
+        "y": 0,
+        "z": -5
+      },
+      "relativeRotation": {
+        "pitch": 0,
+        "yaw": 0,
+        "roll": 0
+      },
+      "relativeScale3D": {
+        "x": 5.75,
+        "y": 0.75,
+        "z": 1
+      }
+    },
+    {
+      "name": "Cube2",
+      "class": "StaticMeshComponent",
+      "parent": "DefaultSceneRoot",
+      "relativeLocation": {
+        "x": 0,
+        "y": 0,
+        "z": 275
+      },
+      "relativeRotation": {
+        "pitch": 0,
+        "yaw": 0,
+        "roll": 0
+      },
+      "relativeScale3D": {
+        "x": 3,
+        "y": 0.25,
+        "z": 0.5
+      },
+      "staticMesh": "/Engine/BasicShapes/Cube.Cube",
+      "materials": [
+        "/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"
+      ]
+    },
+    {
+      "name": "Shadow Root2-1",
+      "class": "SceneComponent",
+      "parent": "Cube2",
+      "relativeLocation": {
+        "x": 0,
+        "y": 0,
+        "z": 10
+      },
+      "relativeRotation": {
+        "pitch": 0,
+        "yaw": 0,
+        "roll": 0
+      },
+      "relativeScale3D": {
+        "x": 0.285714,
+        "y": 4,
+        "z": 2
+      }
+    },
+    {
+      "name": "Shadow Collision2-1",
+      "class": "BoxComponent",
+      "parent": "Shadow Root2-1",
+      "relativeLocation": {
+        "x": 0,
+        "y": 0,
+        "z": -5
+      },
+      "relativeRotation": {
+        "pitch": 0,
+        "yaw": 0,
+        "roll": 0
+      },
+      "relativeScale3D": {
+        "x": 5.75,
+        "y": 0.75,
+        "z": 1
+      }
+    },
+    {
+      "name": "ligth Through Point2",
+      "class": "SceneComponent",
+      "parent": "Cube2",
+      "relativeLocation": {
+        "x": 0,
+        "y": 0,
+        "z": -50
+      },
+      "relativeRotation": {
+        "pitch": 0,
+        "yaw": 0,
+        "roll": 0
+      },
+      "relativeScale3D": {
+        "x": 0.285714,
+        "y": 4,
+        "z": 2
+      }
+    },
+    {
+      "name": "Cube3",
+      "class": "StaticMeshComponent",
+      "parent": "DefaultSceneRoot",
+      "relativeLocation": {
+        "x": -125,
+        "y": 3.0616169978683875e-14,
+        "z": 150
+      },
+      "relativeRotation": {
+        "pitch": -89.99999999999999,
+        "yaw": 180,
+        "roll": 180
+      },
+      "relativeScale3D": {
+        "x": 2,
+        "y": 0.25,
+        "z": 0.5
+      },
+      "staticMesh": "/Engine/BasicShapes/Cube.Cube",
+      "materials": [
+        "/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"
+      ]
+    },
+    {
+      "name": "Shadow Root3-1",
+      "class": "SceneComponent",
+      "parent": "Cube3",
+      "relativeLocation": {
+        "x": 0,
+        "y": 0,
+        "z": 10
+      },
+      "relativeRotation": {
+        "pitch": 0,
+        "yaw": 0,
+        "roll": 0
+      },
+      "relativeScale3D": {
+        "x": 0.285714,
+        "y": 4,
+        "z": 2
+      }
+    },
+    {
+      "name": "Shadow Collision3-1",
+      "class": "BoxComponent",
+      "parent": "Shadow Root3-1",
+      "relativeLocation": {
+        "x": 0,
+        "y": 0,
+        "z": -5
+      },
+      "relativeRotation": {
+        "pitch": 0,
+        "yaw": 0,
+        "roll": 0
+      },
+      "relativeScale3D": {
+        "x": 8.5,
+        "y": 0.75,
+        "z": 1
+      }
+    },
+    {
+      "name": "ligth Through Point3",
+      "class": "SceneComponent",
+      "parent": "Cube3",
+      "relativeLocation": {
+        "x": 0,
+        "y": -1.5777218104420236e-29,
+        "z": 49.99999999999997
+      },
+      "relativeRotation": {
+        "pitch": 0,
+        "yaw": 0,
+        "roll": 0
+      },
+      "relativeScale3D": {
+        "x": 0.285714,
+        "y": 4,
+        "z": 2
+      }
+    },
+    {
+      "name": "Left",
+      "class": "SceneComponent",
+      "parent": "Top",
+      "relativeLocation": {
+        "x": -155,
+        "y": 0,
+        "z": -155
+      },
+      "relativeRotation": {
+        "pitch": 0,
+        "yaw": 0,
+        "roll": 0
+      },
+      "relativeScale3D": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      }
+    },
+    {
+      "name": "Right",
+      "class": "SceneComponent",
+      "parent": "Top",
+      "relativeLocation": {
+        "x": 155,
+        "y": 0,
+        "z": -160
+      },
+      "relativeRotation": {
+        "pitch": 0,
+        "yaw": 0,
+        "roll": 0
+      },
+      "relativeScale3D": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      }
+    },
+    {
+      "name": "Collision For All",
+      "class": "BoxComponent",
+      "parent": "DefaultSceneRoot",
+      "relativeLocation": {
+        "x": 0,
+        "y": 0,
+        "z": 150
+      },
+      "relativeRotation": {
+        "pitch": 0,
+        "yaw": 0,
+        "roll": 0
+      },
+      "relativeScale3D": {
+        "x": 4.5,
+        "y": 0.5,
+        "z": 4.5
+      }
+    },
+    {
+      "name": "Shadow Root1-2",
+      "class": "SceneComponent",
+      "parent": "Cube1",
+      "relativeLocation": {
+        "x": 0,
+        "y": 0,
+        "z": 10
+      },
+      "relativeRotation": {
+        "pitch": 0,
+        "yaw": 0,
+        "roll": 0
+      },
+      "relativeScale3D": {
+        "x": 0.285714,
+        "y": 4,
+        "z": 2
+      }
+    },
+    {
+      "name": "Shadow Collision1-2",
+      "class": "BoxComponent",
+      "parent": "Shadow Root1-2",
+      "relativeLocation": {
+        "x": 0,
+        "y": 0,
+        "z": -5
+      },
+      "relativeRotation": {
+        "pitch": 0,
+        "yaw": 0,
+        "roll": 0
+      },
+      "relativeScale3D": {
+        "x": 5.75,
+        "y": 0.75,
+        "z": 1
+      }
+    },
+    {
+      "name": "Shadow Root1-3",
+      "class": "SceneComponent",
+      "parent": "Cube1",
+      "relativeLocation": {
+        "x": 0,
+        "y": 0,
+        "z": 10
+      },
+      "relativeRotation": {
+        "pitch": 0,
+        "yaw": 0,
+        "roll": 0
+      },
+      "relativeScale3D": {
+        "x": 0.285714,
+        "y": 4,
+        "z": 2
+      }
+    },
+    {
+      "name": "Shadow Collision1-3",
+      "class": "BoxComponent",
+      "parent": "Shadow Root1-3",
+      "relativeLocation": {
+        "x": 0,
+        "y": 0,
+        "z": -5
+      },
+      "relativeRotation": {
+        "pitch": 0,
+        "yaw": 0,
+        "roll": 0
+      },
+      "relativeScale3D": {
+        "x": 5.75,
+        "y": 0.75,
+        "z": 1
+      }
+    },
+    {
+      "name": "Shadow Root2-2",
+      "class": "SceneComponent",
+      "parent": "Cube2",
+      "relativeLocation": {
+        "x": 0,
+        "y": 0,
+        "z": 10
+      },
+      "relativeRotation": {
+        "pitch": 0,
+        "yaw": 0,
+        "roll": 0
+      },
+      "relativeScale3D": {
+        "x": 0.285714,
+        "y": 4,
+        "z": 2
+      }
+    },
+    {
+      "name": "Shadow Collision2-2",
+      "class": "BoxComponent",
+      "parent": "Shadow Root2-2",
+      "relativeLocation": {
+        "x": 0,
+        "y": 0,
+        "z": -5
+      },
+      "relativeRotation": {
+        "pitch": 0,
+        "yaw": 0,
+        "roll": 0
+      },
+      "relativeScale3D": {
+        "x": 5.75,
+        "y": 0.75,
+        "z": 1
+      }
+    },
+    {
+      "name": "Shadow Root2-3",
+      "class": "SceneComponent",
+      "parent": "Cube2",
+      "relativeLocation": {
+        "x": 0,
+        "y": 0,
+        "z": 10
+      },
+      "relativeRotation": {
+        "pitch": 0,
+        "yaw": 0,
+        "roll": 0
+      },
+      "relativeScale3D": {
+        "x": 0.285714,
+        "y": 4,
+        "z": 2
+      }
+    },
+    {
+      "name": "Shadow Collision2-3",
+      "class": "BoxComponent",
+      "parent": "Shadow Root2-3",
+      "relativeLocation": {
+        "x": 0,
+        "y": 0,
+        "z": -5
+      },
+      "relativeRotation": {
+        "pitch": 0,
+        "yaw": 0,
+        "roll": 0
+      },
+      "relativeScale3D": {
+        "x": 5.75,
+        "y": 0.75,
+        "z": 1
+      }
+    },
+    {
+      "name": "Shadow Root3-2",
+      "class": "SceneComponent",
+      "parent": "Cube3",
+      "relativeLocation": {
+        "x": 0,
+        "y": 0,
+        "z": 10
+      },
+      "relativeRotation": {
+        "pitch": 0,
+        "yaw": 0,
+        "roll": 0
+      },
+      "relativeScale3D": {
+        "x": 0.285714,
+        "y": 4,
+        "z": 2
+      }
+    },
+    {
+      "name": "Shadow Collision3-2",
+      "class": "BoxComponent",
+      "parent": "Shadow Root3-2",
+      "relativeLocation": {
+        "x": 0,
+        "y": 0,
+        "z": -5
+      },
+      "relativeRotation": {
+        "pitch": 0,
+        "yaw": 0,
+        "roll": 0
+      },
+      "relativeScale3D": {
+        "x": 8.5,
+        "y": 0.75,
+        "z": 1
+      }
+    },
+    {
+      "name": "Shadow Root3-3",
+      "class": "SceneComponent",
+      "parent": "Cube3",
+      "relativeLocation": {
+        "x": 0,
+        "y": 0,
+        "z": 10
+      },
+      "relativeRotation": {
+        "pitch": 0,
+        "yaw": 0,
+        "roll": 0
+      },
+      "relativeScale3D": {
+        "x": 0.285714,
+        "y": 4,
+        "z": 2
+      }
+    },
+    {
+      "name": "Shadow Collision3-3",
+      "class": "BoxComponent",
+      "parent": "Shadow Root3-3",
+      "relativeLocation": {
+        "x": 0,
+        "y": 0,
+        "z": -5
+      },
+      "relativeRotation": {
+        "pitch": 0,
+        "yaw": 0,
+        "roll": 0
+      },
+      "relativeScale3D": {
+        "x": 8.5,
+        "y": 0.75,
+        "z": 1
+      }
+    },
+    {
+      "name": "Cube4",
+      "class": "StaticMeshComponent",
+      "parent": "DefaultSceneRoot",
+      "relativeLocation": {
+        "x": 125,
+        "y": -6.123233995736762e-14,
+        "z": 150
+      },
+      "relativeRotation": {
+        "pitch": -90,
+        "yaw": 180,
+        "roll": 180
+      },
+      "relativeScale3D": {
+        "x": 2,
+        "y": 0.25,
+        "z": 0.5
+      },
+      "staticMesh": "/Engine/BasicShapes/Cube.Cube",
+      "materials": [
+        "/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"
+      ]
+    },
+    {
+      "name": "Shadow Root4-1",
+      "class": "SceneComponent",
+      "parent": "Cube4",
+      "relativeLocation": {
+        "x": 0,
+        "y": 0,
+        "z": 10
+      },
+      "relativeRotation": {
+        "pitch": 0,
+        "yaw": 0,
+        "roll": 0
+      },
+      "relativeScale3D": {
+        "x": 0.285714,
+        "y": 4,
+        "z": 2
+      }
+    },
+    {
+      "name": "Shadow Collision4-1",
+      "class": "BoxComponent",
+      "parent": "Shadow Root4-1",
+      "relativeLocation": {
+        "x": 0,
+        "y": 0,
+        "z": -5
+      },
+      "relativeRotation": {
+        "pitch": 0,
+        "yaw": 0,
+        "roll": 0
+      },
+      "relativeScale3D": {
+        "x": 8.5,
+        "y": 0.75,
+        "z": 1
+      }
+    },
+    {
+      "name": "Shadow Root4-2",
+      "class": "SceneComponent",
+      "parent": "Cube4",
+      "relativeLocation": {
+        "x": 0,
+        "y": 0,
+        "z": 10
+      },
+      "relativeRotation": {
+        "pitch": 0,
+        "yaw": 0,
+        "roll": 0
+      },
+      "relativeScale3D": {
+        "x": 0.285714,
+        "y": 4,
+        "z": 2
+      }
+    },
+    {
+      "name": "Shadow Collision4-2",
+      "class": "BoxComponent",
+      "parent": "Shadow Root4-2",
+      "relativeLocation": {
+        "x": 0,
+        "y": 0,
+        "z": -5
+      },
+      "relativeRotation": {
+        "pitch": 0,
+        "yaw": 0,
+        "roll": 0
+      },
+      "relativeScale3D": {
+        "x": 8.5,
+        "y": 0.75,
+        "z": 1
+      }
+    },
+    {
+      "name": "Shadow Root4-3",
+      "class": "SceneComponent",
+      "parent": "Cube4",
+      "relativeLocation": {
+        "x": 0,
+        "y": 0,
+        "z": 10
+      },
+      "relativeRotation": {
+        "pitch": 0,
+        "yaw": 0,
+        "roll": 0
+      },
+      "relativeScale3D": {
+        "x": 0.285714,
+        "y": 4,
+        "z": 2
+      }
+    },
+    {
+      "name": "Shadow Collision4-3",
+      "class": "BoxComponent",
+      "parent": "Shadow Root4-3",
+      "relativeLocation": {
+        "x": 0,
+        "y": 0,
+        "z": -5
+      },
+      "relativeRotation": {
+        "pitch": 0,
+        "yaw": 0,
+        "roll": 0
+      },
+      "relativeScale3D": {
+        "x": 8.5,
+        "y": 0.75,
+        "z": 1
+      }
+    },
+    {
+      "name": "ligth Through Point4",
+      "class": "SceneComponent",
+      "parent": "Cube4",
+      "relativeLocation": {
+        "x": 0,
+        "y": 1.5777218104420236e-29,
+        "z": -49.99999999999997
+      },
+      "relativeRotation": {
+        "pitch": 0,
+        "yaw": 0,
+        "roll": 0
+      },
+      "relativeScale3D": {
+        "x": 0.285714,
+        "y": 4,
+        "z": 2
+      }
+    }
+  ],
+  "actorTick": {
+    "bCanEverTick": true,
+    "bStartWithTickEnabled": true,
+    "TickInterval": 0
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "success": true,
+  "path": "/Game/BluePrint/BP_WindowShadowLogic",
+  "graphName": "ResetOneShadowCollider",
+  "nodes": [
+    {
+      "id": "pzpdYUj26DbYXF6jaxtgBA",
+      "class": "K2Node_FunctionEntry",
+      "title": "ResetOneShadowCollider"
+    },
+    {
+      "id": "pC2IyEpWxvPGSTuzFpFv8g",
+      "class": "K2Node_CallFunction",
+      "title": "Set Box Extent"
+    },
+    {
+      "id": "dywIx0upIx6NqqSAQjQDJA",
+      "class": "K2Node_CallFunction",
+      "title": "Set Collision Enabled"
+    },
+    {
+      "id": "vIYmD0Nzx0szL3mdQBDnxQ",
+      "class": "K2Node_CallFunction",
+      "title": "Set Relative Location"
+    },
+    {
+      "id": "B_Y4aU7XFLAooiOhE3jejA",
+      "class": "K2Node_CallFunction",
+      "title": "Set World Rotation"
+    },
+    {
+      "id": "JF8stk3riOJpCQmAbkbtKQ",
+      "class": "K2Node_VariableGet",
+      "title": "Get Origin Collision Size"
+    }
+  ],
+  "execEdges": [
+    {
+      "from": "pzpdYUj26DbYXF6jaxtgBA",
+      "fromPin": "then",
+      "to": "pC2IyEpWxvPGSTuzFpFv8g",
+      "toPin": "execute"
+    },
+    {
+      "from": "pC2IyEpWxvPGSTuzFpFv8g",
+      "fromPin": "then",
+      "to": "dywIx0upIx6NqqSAQjQDJA",
+      "toPin": "execute"
+    },
+    {
+      "from": "dywIx0upIx6NqqSAQjQDJA",
+      "fromPin": "then",
+      "to": "vIYmD0Nzx0szL3mdQBDnxQ",
+      "toPin": "execute"
+    },
+    {
+      "from": "vIYmD0Nzx0szL3mdQBDnxQ",
+      "fromPin": "then",
+      "to": "B_Y4aU7XFLAooiOhE3jejA",
+      "toPin": "execute"
+    }
+  ],
+  "dataEdges": [
+    {
+      "from": "pzpdYUj26DbYXF6jaxtgBA",
+      "fromPin": "Target Root",
+      "to": "B_Y4aU7XFLAooiOhE3jejA",
+      "toPin": "self"
+    },
+    {
+      "from": "pzpdYUj26DbYXF6jaxtgBA",
+      "fromPin": "Target Collider",
+      "to": "pC2IyEpWxvPGSTuzFpFv8g",
+      "toPin": "self"
+    },
+    {
+      "from": "pzpdYUj26DbYXF6jaxtgBA",
+      "fromPin": "Target Collider",
+      "to": "vIYmD0Nzx0szL3mdQBDnxQ",
+      "toPin": "self"
+    },
+    {
+      "from": "pzpdYUj26DbYXF6jaxtgBA",
+      "fromPin": "Target Collider",
+      "to": "dywIx0upIx6NqqSAQjQDJA",
+      "toPin": "self"
+    },
+    {
+      "from": "JF8stk3riOJpCQmAbkbtKQ",
+      "fromPin": "Origin Collision Size",
+      "to": "pC2IyEpWxvPGSTuzFpFv8g",
+      "toPin": "InBoxExtent"
+    }
+  ],
+  "nodeCount": 6
+}

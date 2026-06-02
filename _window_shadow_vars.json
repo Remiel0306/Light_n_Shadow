@@ -1,0 +1,126 @@
+{
+  "success": true,
+  "path": "/Game/BluePrint/BP_WindowShadowLogic",
+  "variables": [
+    {
+      "name": "Slot Onwers",
+      "type": "object",
+      "guid": "D309F4C74BE2CA7200E99D8349FE40FF",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    },
+    {
+      "name": "Shadow Farthest Location",
+      "type": "struct",
+      "guid": "0087C36844F3E0E216B9D1A268D85CB4",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    },
+    {
+      "name": "Shadow Colision Distance",
+      "type": "real",
+      "guid": "0DA8F13D4A19C03F9C2F35B96FE79CE4",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    },
+    {
+      "name": "isInChecker",
+      "type": "bool",
+      "guid": "525C457F4691ED2C8BCD6E9AF1D710A2",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    },
+    {
+      "name": "Active Ball",
+      "type": "object",
+      "guid": "77B0C6B24D0C12B1BF0A12AF49A82210",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    },
+    {
+      "name": "Origin Collision Size",
+      "type": "struct",
+      "guid": "3E0498D448CBE03B3556E69E072BADCE",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    },
+    {
+      "name": "Connect Enemy",
+      "type": "bool",
+      "guid": "0F31143D47C73ABF373A148B6A287219",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    },
+    {
+      "name": "Light Through Points",
+      "type": "object",
+      "guid": "2BE9D42D430A2F124E94E0A6E86FDA6B",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    },
+    {
+      "name": "Light Through Points_0",
+      "type": "object",
+      "guid": "4153C99A461C6E96A58DA6B664CECDCD",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    },
+    {
+      "name": "LT Point Loc 1",
+      "type": "struct",
+      "guid": "0E80AF6147159A3680773992209DD90C",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    },
+    {
+      "name": "LT Point Loc 2",
+      "type": "struct",
+      "guid": "E304459545763038E207F384B7E71C56",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    },
+    {
+      "name": "LT Point Loc 3",
+      "type": "struct",
+      "guid": "638ABD184EBF557250899FAA70FCC7E0",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    },
+    {
+      "name": "LT Point Loc 4",
+      "type": "struct",
+      "guid": "76A6A35144D6BDD17407D9B9769400CC",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    },
+    {
+      "name": "isLTP1Hit?",
+      "type": "bool",
+      "guid": "8A19BBD74562FF2D0FBB61B7832B1352",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    },
+    {
+      "name": "isLTP2Hit?",
+      "type": "bool",
+      "guid": "00AC58CB4E20319E5134CA8F7860672C",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    },
+    {
+      "name": "isLTP3Hit?",
+      "type": "bool",
+      "guid": "8895AF9D43E6941FF090A49F80053CE7",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    },
+    {
+      "name": "isLTP4Hit?",
+      "type": "bool",
+      "guid": "C284EC6E498AFAAC6D0DEA889BE8437E",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    }
+  ],
+  "count": 17
+}
