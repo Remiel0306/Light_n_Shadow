@@ -1,0 +1,861 @@
+{
+  "EventGraph": {
+    "raw": "Error [TASK_FAILED]: Bridge connection lost"
+  },
+  "Enter Ball Cam": {
+    "success": true,
+    "path": "/Game/BluePrint/Player/BP_ThirdPersonCharacter",
+    "graphName": "Enter Ball Cam",
+    "nodes": [
+      {
+        "id": "Q6RKuktwFmqGrkCcbZJ-6w",
+        "class": "K2Node_FunctionEntry",
+        "title": "Enter Ball Cam"
+      },
+      {
+        "id": "q3MQIknJW9X3onOp_SejXg",
+        "class": "K2Node_VariableSet",
+        "title": "Set isInBallCam?"
+      },
+      {
+        "id": "viI850sQKoHMibaoNlc02A",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "CLGLbUvSCPbpdwGVQCeqDg",
+        "class": "K2Node_VariableGet",
+        "title": "Get Active Thrown Ball"
+      },
+      {
+        "id": "y7lXHkzDlvmUjKSEnF2HlQ",
+        "class": "K2Node_CallFunction",
+        "title": "Is Valid"
+      },
+      {
+        "id": "Kd-NaEBvucHFd9SZBS1koQ",
+        "class": "K2Node_VariableSet",
+        "title": "Set Target Ball"
+      },
+      {
+        "id": "z3iSU0lg-nXvQtmaLHn34Q",
+        "class": "K2Node_VariableGet",
+        "title": "Get Active Thrown Ball"
+      },
+      {
+        "id": "j0Jh0U5s5cDCTvy7ukQYRg",
+        "class": "K2Node_CallFunction",
+        "title": "Get Player Controller"
+      },
+      {
+        "id": "LbaDWECaG_qq7wiXgI6uUw",
+        "class": "K2Node_GetSubsystemFromPC",
+        "title": "Get EnhancedInputLocalPlayerSubsystem"
+      },
+      {
+        "id": "SmAv8Ee9TPHjP3KZMrfBFw",
+        "class": "K2Node_CallFunction",
+        "title": "Add Mapping Context"
+      },
+      {
+        "id": "K_KJ7kZMB0o73hScZBZYXw",
+        "class": "K2Node_CallFunction",
+        "title": "Add Mapping Context"
+      },
+      {
+        "id": "6OXL0kSoTQqvH-6j7MrvMA",
+        "class": "K2Node_CallFunction",
+        "title": "Get Player Controller"
+      },
+      {
+        "id": "6GPwj0jZ5xOxMyiPopPstQ",
+        "class": "K2Node_CallFunction",
+        "title": "Set View Target with Blend"
+      },
+      {
+        "id": "nykA4U-cmEdOgG62dbI9ug",
+        "class": "K2Node_CallFunction",
+        "title": "Set View Target with Blend"
+      },
+      {
+        "id": "XEdG5kOllKDQ5HOZR5j9GA",
+        "class": "K2Node_VariableGet",
+        "title": "Get Target Ball"
+      },
+      {
+        "id": "C7ZSY0kDg6f2GoivHENb8w",
+        "class": "K2Node_DynamicCast",
+        "title": "Cast To BP_LightBall"
+      },
+      {
+        "id": "b2xp2UFjXC9-4DSiCaI_Ew",
+        "class": "K2Node_CallFunction",
+        "title": "Set Ignore Look Input"
+      },
+      {
+        "id": "9NW8cUSCcPtnSNmg6Xh9wg",
+        "class": "K2Node_CallFunction",
+        "title": "Get Player Controller"
+      },
+      {
+        "id": "kac630tt13HJYaCXwjhW2w",
+        "class": "K2Node_CallFunction",
+        "title": "Disable Movement"
+      },
+      {
+        "id": "SgG9REuoT9if1C6apGcQ5Q",
+        "class": "K2Node_VariableGet",
+        "title": "Get CharacterMovement"
+      },
+      {
+        "id": "QQH72k2WR5NVDCSYwrk3Jw",
+        "class": "K2Node_VariableGet",
+        "title": "Get Fly Dir"
+      },
+      {
+        "id": "tKo2vkHdAqupKdaZJb91jw",
+        "class": "K2Node_CallFunction",
+        "title": "Set Visibility"
+      },
+      {
+        "id": "xYEZBUuSmB34zqi-nusvjQ",
+        "class": "K2Node_VariableSet",
+        "title": "Set Current Ball"
+      },
+      {
+        "id": "lNU4O0SsswylglOOr7BnlQ",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "Plozi0PWOHDLlHC6t2-vlQ",
+        "class": "K2Node_VariableGet",
+        "title": "Get Target Ball"
+      },
+      {
+        "id": "Gu40B0IyDMgfGpGy57OGag",
+        "class": "K2Node_CallFunction",
+        "title": "Is Valid"
+      },
+      {
+        "id": "WSN8dk3T8oPjpbeYhYKZyw",
+        "class": "K2Node_FunctionResult",
+        "title": "Return Node"
+      }
+    ],
+    "execEdges": [
+      {
+        "from": "Q6RKuktwFmqGrkCcbZJ-6w",
+        "fromPin": "then",
+        "to": "q3MQIknJW9X3onOp_SejXg",
+        "toPin": "execute"
+      },
+      {
+        "from": "q3MQIknJW9X3onOp_SejXg",
+        "fromPin": "then",
+        "to": "viI850sQKoHMibaoNlc02A",
+        "toPin": "execute"
+      },
+      {
+        "from": "viI850sQKoHMibaoNlc02A",
+        "fromPin": "then",
+        "to": "Kd-NaEBvucHFd9SZBS1koQ",
+        "toPin": "execute"
+      },
+      {
+        "from": "viI850sQKoHMibaoNlc02A",
+        "fromPin": "else",
+        "to": "lNU4O0SsswylglOOr7BnlQ",
+        "toPin": "execute"
+      },
+      {
+        "from": "Kd-NaEBvucHFd9SZBS1koQ",
+        "fromPin": "then",
+        "to": "SmAv8Ee9TPHjP3KZMrfBFw",
+        "toPin": "execute"
+      },
+      {
+        "from": "SmAv8Ee9TPHjP3KZMrfBFw",
+        "fromPin": "then",
+        "to": "6GPwj0jZ5xOxMyiPopPstQ",
+        "toPin": "execute"
+      },
+      {
+        "from": "K_KJ7kZMB0o73hScZBZYXw",
+        "fromPin": "then",
+        "to": "nykA4U-cmEdOgG62dbI9ug",
+        "toPin": "execute"
+      },
+      {
+        "from": "6GPwj0jZ5xOxMyiPopPstQ",
+        "fromPin": "then",
+        "to": "b2xp2UFjXC9-4DSiCaI_Ew",
+        "toPin": "execute"
+      },
+      {
+        "from": "nykA4U-cmEdOgG62dbI9ug",
+        "fromPin": "then",
+        "to": "b2xp2UFjXC9-4DSiCaI_Ew",
+        "toPin": "execute"
+      },
+      {
+        "from": "C7ZSY0kDg6f2GoivHENb8w",
+        "fromPin": "then",
+        "to": "tKo2vkHdAqupKdaZJb91jw",
+        "toPin": "execute"
+      },
+      {
+        "from": "b2xp2UFjXC9-4DSiCaI_Ew",
+        "fromPin": "then",
+        "to": "kac630tt13HJYaCXwjhW2w",
+        "toPin": "execute"
+      },
+      {
+        "from": "kac630tt13HJYaCXwjhW2w",
+        "fromPin": "then",
+        "to": "C7ZSY0kDg6f2GoivHENb8w",
+        "toPin": "execute"
+      },
+      {
+        "from": "xYEZBUuSmB34zqi-nusvjQ",
+        "fromPin": "then",
+        "to": "K_KJ7kZMB0o73hScZBZYXw",
+        "toPin": "execute"
+      },
+      {
+        "from": "lNU4O0SsswylglOOr7BnlQ",
+        "fromPin": "then",
+        "to": "xYEZBUuSmB34zqi-nusvjQ",
+        "toPin": "execute"
+      },
+      {
+        "from": "lNU4O0SsswylglOOr7BnlQ",
+        "fromPin": "else",
+        "to": "WSN8dk3T8oPjpbeYhYKZyw",
+        "toPin": "execute"
+      }
+    ],
+    "dataEdges": [
+      {
+        "from": "CLGLbUvSCPbpdwGVQCeqDg",
+        "fromPin": "Active Thrown Ball",
+        "to": "y7lXHkzDlvmUjKSEnF2HlQ",
+        "toPin": "Object"
+      },
+      {
+        "from": "y7lXHkzDlvmUjKSEnF2HlQ",
+        "fromPin": "ReturnValue",
+        "to": "viI850sQKoHMibaoNlc02A",
+        "toPin": "Condition"
+      },
+      {
+        "from": "Kd-NaEBvucHFd9SZBS1koQ",
+        "fromPin": "Output_Get",
+        "to": "6GPwj0jZ5xOxMyiPopPstQ",
+        "toPin": "NewViewTarget"
+      },
+      {
+        "from": "z3iSU0lg-nXvQtmaLHn34Q",
+        "fromPin": "Active Thrown Ball",
+        "to": "Kd-NaEBvucHFd9SZBS1koQ",
+        "toPin": "Target Ball"
+      },
+      {
+        "from": "j0Jh0U5s5cDCTvy7ukQYRg",
+        "fromPin": "ReturnValue",
+        "to": "LbaDWECaG_qq7wiXgI6uUw",
+        "toPin": "PlayerController"
+      },
+      {
+        "from": "LbaDWECaG_qq7wiXgI6uUw",
+        "fromPin": "ReturnValue",
+        "to": "SmAv8Ee9TPHjP3KZMrfBFw",
+        "toPin": "self"
+      },
+      {
+        "from": "LbaDWECaG_qq7wiXgI6uUw",
+        "fromPin": "ReturnValue",
+        "to": "K_KJ7kZMB0o73hScZBZYXw",
+        "toPin": "self"
+      },
+      {
+        "from": "6OXL0kSoTQqvH-6j7MrvMA",
+        "fromPin": "ReturnValue",
+        "to": "6GPwj0jZ5xOxMyiPopPstQ",
+        "toPin": "self"
+      },
+      {
+        "from": "6OXL0kSoTQqvH-6j7MrvMA",
+        "fromPin": "ReturnValue",
+        "to": "nykA4U-cmEdOgG62dbI9ug",
+        "toPin": "self"
+      },
+      {
+        "from": "XEdG5kOllKDQ5HOZR5j9GA",
+        "fromPin": "Target Ball",
+        "to": "C7ZSY0kDg6f2GoivHENb8w",
+        "toPin": "Object"
+      },
+      {
+        "from": "C7ZSY0kDg6f2GoivHENb8w",
+        "fromPin": "AsBP Light Ball",
+        "to": "QQH72k2WR5NVDCSYwrk3Jw",
+        "toPin": "self"
+      },
+      {
+        "from": "9NW8cUSCcPtnSNmg6Xh9wg",
+        "fromPin": "ReturnValue",
+        "to": "b2xp2UFjXC9-4DSiCaI_Ew",
+        "toPin": "self"
+      },
+      {
+        "from": "SgG9REuoT9if1C6apGcQ5Q",
+        "fromPin": "CharacterMovement",
+        "to": "kac630tt13HJYaCXwjhW2w",
+        "toPin": "self"
+      },
+      {
+        "from": "QQH72k2WR5NVDCSYwrk3Jw",
+        "fromPin": "Fly Dir",
+        "to": "tKo2vkHdAqupKdaZJb91jw",
+        "toPin": "self"
+      },
+      {
+        "from": "xYEZBUuSmB34zqi-nusvjQ",
+        "fromPin": "Output_Get",
+        "to": "nykA4U-cmEdOgG62dbI9ug",
+        "toPin": "NewViewTarget"
+      },
+      {
+        "from": "Plozi0PWOHDLlHC6t2-vlQ",
+        "fromPin": "Target Ball",
+        "to": "Gu40B0IyDMgfGpGy57OGag",
+        "toPin": "Object"
+      },
+      {
+        "from": "Plozi0PWOHDLlHC6t2-vlQ",
+        "fromPin": "Target Ball",
+        "to": "xYEZBUuSmB34zqi-nusvjQ",
+        "toPin": "Current Ball"
+      },
+      {
+        "from": "Gu40B0IyDMgfGpGy57OGag",
+        "fromPin": "ReturnValue",
+        "to": "lNU4O0SsswylglOOr7BnlQ",
+        "toPin": "Condition"
+      }
+    ],
+    "nodeCount": 27
+  },
+  "Exit Ball Cam": {
+    "success": true,
+    "path": "/Game/BluePrint/Player/BP_ThirdPersonCharacter",
+    "graphName": "Exit Ball Cam",
+    "nodes": [
+      {
+        "id": "LkDRtE8P3vmWew6Qu6sI7A",
+        "class": "K2Node_FunctionEntry",
+        "title": "Exit Ball Cam"
+      },
+      {
+        "id": "xIX7WU4oTVAVCPqS7WKjYw",
+        "class": "K2Node_VariableSet",
+        "title": "Set isInBallCam?"
+      },
+      {
+        "id": "j15X1k6k-TarEc6TsjkYMg",
+        "class": "K2Node_CallFunction",
+        "title": "Get Player Controller"
+      },
+      {
+        "id": "_4WSH0T0OHWrzNqfAKzg0A",
+        "class": "K2Node_GetSubsystemFromPC",
+        "title": "Get EnhancedInputLocalPlayerSubsystem"
+      },
+      {
+        "id": "C9t7wUodtQFBuQazKDdypA",
+        "class": "K2Node_CallFunction",
+        "title": "Remove Mapping Context"
+      },
+      {
+        "id": "WGaFak4FmgWmpkudrhsvAQ",
+        "class": "K2Node_CallFunction",
+        "title": "Get Player Controller"
+      },
+      {
+        "id": "4PvFQ0ibWubntNGI0-9bNQ",
+        "class": "K2Node_CallFunction",
+        "title": "Set View Target with Blend"
+      },
+      {
+        "id": "yhLRUECSURT5mYS_WyXJ2w",
+        "class": "K2Node_Self",
+        "title": "Self-Reference"
+      },
+      {
+        "id": "GLcBa0kq7vQq2Qqh4KMnyg",
+        "class": "K2Node_CallFunction",
+        "title": "Set Ignore Look Input"
+      },
+      {
+        "id": "LVeE8k7VfNav9A2GMN_U-w",
+        "class": "K2Node_CallFunction",
+        "title": "Get Player Controller"
+      },
+      {
+        "id": "B6C5Ok3zjm0p6F6Gwvk5vQ",
+        "class": "K2Node_CallFunction",
+        "title": "Set Movement Mode"
+      },
+      {
+        "id": "BcmsnUl-1jzPvwWS6qcH5Q",
+        "class": "K2Node_VariableGet",
+        "title": "Get CharacterMovement"
+      },
+      {
+        "id": "dzrzrk9Q3cmDxCCZOITGnw",
+        "class": "K2Node_VariableGet",
+        "title": "Get Current Ball"
+      },
+      {
+        "id": "2u9f-kBMEPjKPYG7hd6fvQ",
+        "class": "K2Node_DynamicCast",
+        "title": "Cast To BP_LightBall"
+      },
+      {
+        "id": "5sbnYkzehht-KjC_baBVrw",
+        "class": "K2Node_VariableGet",
+        "title": "Get Fly Dir"
+      },
+      {
+        "id": "fKVQDEvVFGTUzJGF-IckyA",
+        "class": "K2Node_CallFunction",
+        "title": "Set Visibility"
+      },
+      {
+        "id": "kceRakUFLc62PTGoWO7JVg",
+        "class": "K2Node_VariableSet",
+        "title": "Set Current Ball"
+      },
+      {
+        "id": "6Hs7_ED_aFz4LlqM1o02Pw",
+        "class": "K2Node_VariableSet",
+        "title": "Set Target Ball"
+      },
+      {
+        "id": "p3ehWUlKbIsUHIazHdKypg",
+        "class": "K2Node_VariableSet",
+        "title": "Set Active Thrown Ball"
+      },
+      {
+        "id": "m0pNV05HCa1iBpiG5HwdDw",
+        "class": "K2Node_CallFunction",
+        "title": "Print String"
+      }
+    ],
+    "execEdges": [
+      {
+        "from": "LkDRtE8P3vmWew6Qu6sI7A",
+        "fromPin": "then",
+        "to": "xIX7WU4oTVAVCPqS7WKjYw",
+        "toPin": "execute"
+      },
+      {
+        "from": "xIX7WU4oTVAVCPqS7WKjYw",
+        "fromPin": "then",
+        "to": "C9t7wUodtQFBuQazKDdypA",
+        "toPin": "execute"
+      },
+      {
+        "from": "C9t7wUodtQFBuQazKDdypA",
+        "fromPin": "then",
+        "to": "4PvFQ0ibWubntNGI0-9bNQ",
+        "toPin": "execute"
+      },
+      {
+        "from": "4PvFQ0ibWubntNGI0-9bNQ",
+        "fromPin": "then",
+        "to": "kceRakUFLc62PTGoWO7JVg",
+        "toPin": "execute"
+      },
+      {
+        "from": "GLcBa0kq7vQq2Qqh4KMnyg",
+        "fromPin": "then",
+        "to": "B6C5Ok3zjm0p6F6Gwvk5vQ",
+        "toPin": "execute"
+      },
+      {
+        "from": "B6C5Ok3zjm0p6F6Gwvk5vQ",
+        "fromPin": "then",
+        "to": "2u9f-kBMEPjKPYG7hd6fvQ",
+        "toPin": "execute"
+      },
+      {
+        "from": "2u9f-kBMEPjKPYG7hd6fvQ",
+        "fromPin": "then",
+        "to": "m0pNV05HCa1iBpiG5HwdDw",
+        "toPin": "execute"
+      },
+      {
+        "from": "kceRakUFLc62PTGoWO7JVg",
+        "fromPin": "then",
+        "to": "6Hs7_ED_aFz4LlqM1o02Pw",
+        "toPin": "execute"
+      },
+      {
+        "from": "6Hs7_ED_aFz4LlqM1o02Pw",
+        "fromPin": "then",
+        "to": "p3ehWUlKbIsUHIazHdKypg",
+        "toPin": "execute"
+      },
+      {
+        "from": "p3ehWUlKbIsUHIazHdKypg",
+        "fromPin": "then",
+        "to": "GLcBa0kq7vQq2Qqh4KMnyg",
+        "toPin": "execute"
+      },
+      {
+        "from": "m0pNV05HCa1iBpiG5HwdDw",
+        "fromPin": "then",
+        "to": "fKVQDEvVFGTUzJGF-IckyA",
+        "toPin": "execute"
+      }
+    ],
+    "dataEdges": [
+      {
+        "from": "j15X1k6k-TarEc6TsjkYMg",
+        "fromPin": "ReturnValue",
+        "to": "_4WSH0T0OHWrzNqfAKzg0A",
+        "toPin": "PlayerController"
+      },
+      {
+        "from": "_4WSH0T0OHWrzNqfAKzg0A",
+        "fromPin": "ReturnValue",
+        "to": "C9t7wUodtQFBuQazKDdypA",
+        "toPin": "self"
+      },
+      {
+        "from": "WGaFak4FmgWmpkudrhsvAQ",
+        "fromPin": "ReturnValue",
+        "to": "4PvFQ0ibWubntNGI0-9bNQ",
+        "toPin": "self"
+      },
+      {
+        "from": "yhLRUECSURT5mYS_WyXJ2w",
+        "fromPin": "self",
+        "to": "4PvFQ0ibWubntNGI0-9bNQ",
+        "toPin": "NewViewTarget"
+      },
+      {
+        "from": "LVeE8k7VfNav9A2GMN_U-w",
+        "fromPin": "ReturnValue",
+        "to": "GLcBa0kq7vQq2Qqh4KMnyg",
+        "toPin": "self"
+      },
+      {
+        "from": "BcmsnUl-1jzPvwWS6qcH5Q",
+        "fromPin": "CharacterMovement",
+        "to": "B6C5Ok3zjm0p6F6Gwvk5vQ",
+        "toPin": "self"
+      },
+      {
+        "from": "dzrzrk9Q3cmDxCCZOITGnw",
+        "fromPin": "Current Ball",
+        "to": "2u9f-kBMEPjKPYG7hd6fvQ",
+        "toPin": "Object"
+      },
+      {
+        "from": "2u9f-kBMEPjKPYG7hd6fvQ",
+        "fromPin": "AsBP Light Ball",
+        "to": "5sbnYkzehht-KjC_baBVrw",
+        "toPin": "self"
+      },
+      {
+        "from": "5sbnYkzehht-KjC_baBVrw",
+        "fromPin": "Fly Dir",
+        "to": "fKVQDEvVFGTUzJGF-IckyA",
+        "toPin": "self"
+      }
+    ],
+    "nodeCount": 20
+  },
+  "CheckWatchBall": {
+    "success": true,
+    "path": "/Game/BluePrint/Player/BP_ThirdPersonCharacter",
+    "graphName": "CheckWatchBall",
+    "nodes": [
+      {
+        "id": "HgHJEkAbKBe_VmWl3G-2_w",
+        "class": "K2Node_FunctionEntry",
+        "title": "CheckWatchBall"
+      },
+      {
+        "id": "Rn1dOkXVhOw-7fe6Bfzwow",
+        "class": "K2Node_CallFunction",
+        "title": "Break Hit Result"
+      },
+      {
+        "id": "T7VMrUjALHfSiR6nBm9VBg",
+        "class": "K2Node_CallFunction",
+        "title": "Actor Has Tag"
+      },
+      {
+        "id": "0U_wwEOyL6O4aMC5HEFIyg",
+        "class": "K2Node_VariableGet",
+        "title": "Get FollowCamera"
+      },
+      {
+        "id": "aaTiQEv2Y62pnmCXFJZVpQ",
+        "class": "K2Node_CallFunction",
+        "title": "Get World Location"
+      },
+      {
+        "id": "7_Lu4UxGjMriRSqCUkdFng",
+        "class": "K2Node_VariableGet",
+        "title": "Get FollowCamera"
+      },
+      {
+        "id": "BFDVv0NqkR5IkViM0qUnwQ",
+        "class": "K2Node_CallFunction",
+        "title": "Get World Rotation"
+      },
+      {
+        "id": "D7KRlEQbFEAD8JOzdaDk5w",
+        "class": "K2Node_CallFunction",
+        "title": "Get Forward Vector"
+      },
+      {
+        "id": "DrYYmELVrf8_jWmVtJJusw",
+        "class": "K2Node_PromotableOperator",
+        "title": "vector * vector"
+      },
+      {
+        "id": "36vf2kgtqTLFuG-_kNzv3g",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "F5HjP0qzoIRPY_uzsPRU7w",
+        "class": "K2Node_VariableSet",
+        "title": "Set isWatchBall?"
+      },
+      {
+        "id": "TOVJtEKm-0o4H6ygZIfVuA",
+        "class": "K2Node_VariableSet",
+        "title": "Set isWatchBall?"
+      },
+      {
+        "id": "psSZ4kJa4vFPlyWB3unB3w",
+        "class": "K2Node_PromotableOperator",
+        "title": "vector + vector"
+      },
+      {
+        "id": "5tkdoksTWT1t8oKzVlWHJw",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "T4SuB0Wh4Z0B5OyPVbH4Eg",
+        "class": "K2Node_DynamicCast",
+        "title": "Cast To BP_LightBall"
+      },
+      {
+        "id": "Bw1WvUbzc0UxqvavQOZ5Kg",
+        "class": "K2Node_VariableSet",
+        "title": "Set Target Ball"
+      },
+      {
+        "id": "Drizs0B06p8ERUCzI0_VOA",
+        "class": "K2Node_VariableSet",
+        "title": "Set Target Ball"
+      },
+      {
+        "id": "yYx8JUymVICYNiSi2DRy5w",
+        "class": "K2Node_CallFunction",
+        "title": "Sphere Trace By Channel"
+      },
+      {
+        "id": "qqEaQk0uQ9OfSUGx_JYj_g",
+        "class": "K2Node_PromotableOperator",
+        "title": "vector + vector"
+      },
+      {
+        "id": "2a0H7EtN6VuqoMetXWGYAQ",
+        "class": "K2Node_CallFunction",
+        "title": "Combine Rotators"
+      },
+      {
+        "id": "BQRve07--U_KOBqunLkq_g",
+        "class": "K2Node_PromotableOperator",
+        "title": "float + float"
+      }
+    ],
+    "execEdges": [
+      {
+        "from": "HgHJEkAbKBe_VmWl3G-2_w",
+        "fromPin": "then",
+        "to": "yYx8JUymVICYNiSi2DRy5w",
+        "toPin": "execute"
+      },
+      {
+        "from": "36vf2kgtqTLFuG-_kNzv3g",
+        "fromPin": "then",
+        "to": "5tkdoksTWT1t8oKzVlWHJw",
+        "toPin": "execute"
+      },
+      {
+        "from": "36vf2kgtqTLFuG-_kNzv3g",
+        "fromPin": "else",
+        "to": "Drizs0B06p8ERUCzI0_VOA",
+        "toPin": "execute"
+      },
+      {
+        "from": "5tkdoksTWT1t8oKzVlWHJw",
+        "fromPin": "then",
+        "to": "T4SuB0Wh4Z0B5OyPVbH4Eg",
+        "toPin": "execute"
+      },
+      {
+        "from": "5tkdoksTWT1t8oKzVlWHJw",
+        "fromPin": "else",
+        "to": "Drizs0B06p8ERUCzI0_VOA",
+        "toPin": "execute"
+      },
+      {
+        "from": "T4SuB0Wh4Z0B5OyPVbH4Eg",
+        "fromPin": "then",
+        "to": "Bw1WvUbzc0UxqvavQOZ5Kg",
+        "toPin": "execute"
+      },
+      {
+        "from": "Bw1WvUbzc0UxqvavQOZ5Kg",
+        "fromPin": "then",
+        "to": "F5HjP0qzoIRPY_uzsPRU7w",
+        "toPin": "execute"
+      },
+      {
+        "from": "Drizs0B06p8ERUCzI0_VOA",
+        "fromPin": "then",
+        "to": "TOVJtEKm-0o4H6ygZIfVuA",
+        "toPin": "execute"
+      },
+      {
+        "from": "yYx8JUymVICYNiSi2DRy5w",
+        "fromPin": "then",
+        "to": "36vf2kgtqTLFuG-_kNzv3g",
+        "toPin": "execute"
+      }
+    ],
+    "dataEdges": [
+      {
+        "from": "Rn1dOkXVhOw-7fe6Bfzwow",
+        "fromPin": "HitActor",
+        "to": "T7VMrUjALHfSiR6nBm9VBg",
+        "toPin": "self"
+      },
+      {
+        "from": "Rn1dOkXVhOw-7fe6Bfzwow",
+        "fromPin": "HitActor",
+        "to": "T4SuB0Wh4Z0B5OyPVbH4Eg",
+        "toPin": "Object"
+      },
+      {
+        "from": "T7VMrUjALHfSiR6nBm9VBg",
+        "fromPin": "ReturnValue",
+        "to": "5tkdoksTWT1t8oKzVlWHJw",
+        "toPin": "Condition"
+      },
+      {
+        "from": "0U_wwEOyL6O4aMC5HEFIyg",
+        "fromPin": "FollowCamera",
+        "to": "aaTiQEv2Y62pnmCXFJZVpQ",
+        "toPin": "self"
+      },
+      {
+        "from": "aaTiQEv2Y62pnmCXFJZVpQ",
+        "fromPin": "ReturnValue",
+        "to": "psSZ4kJa4vFPlyWB3unB3w",
+        "toPin": "A"
+      },
+      {
+        "from": "aaTiQEv2Y62pnmCXFJZVpQ",
+        "fromPin": "ReturnValue",
+        "to": "qqEaQk0uQ9OfSUGx_JYj_g",
+        "toPin": "A"
+      },
+      {
+        "from": "7_Lu4UxGjMriRSqCUkdFng",
+        "fromPin": "FollowCamera",
+        "to": "BFDVv0NqkR5IkViM0qUnwQ",
+        "toPin": "self"
+      },
+      {
+        "from": "BFDVv0NqkR5IkViM0qUnwQ",
+        "fromPin": "ReturnValue_Roll",
+        "to": "D7KRlEQbFEAD8JOzdaDk5w",
+        "toPin": "InRot_Roll"
+      },
+      {
+        "from": "BFDVv0NqkR5IkViM0qUnwQ",
+        "fromPin": "ReturnValue_Pitch",
+        "to": "BQRve07--U_KOBqunLkq_g",
+        "toPin": "A"
+      },
+      {
+        "from": "BFDVv0NqkR5IkViM0qUnwQ",
+        "fromPin": "ReturnValue_Yaw",
+        "to": "D7KRlEQbFEAD8JOzdaDk5w",
+        "toPin": "InRot_Yaw"
+      },
+      {
+        "from": "D7KRlEQbFEAD8JOzdaDk5w",
+        "fromPin": "ReturnValue",
+        "to": "DrYYmELVrf8_jWmVtJJusw",
+        "toPin": "A"
+      },
+      {
+        "from": "DrYYmELVrf8_jWmVtJJusw",
+        "fromPin": "ReturnValue",
+        "to": "psSZ4kJa4vFPlyWB3unB3w",
+        "toPin": "B"
+      },
+      {
+        "from": "psSZ4kJa4vFPlyWB3unB3w",
+        "fromPin": "ReturnValue",
+        "to": "yYx8JUymVICYNiSi2DRy5w",
+        "toPin": "End"
+      },
+      {
+        "from": "T4SuB0Wh4Z0B5OyPVbH4Eg",
+        "fromPin": "AsBP Light Ball",
+        "to": "Bw1WvUbzc0UxqvavQOZ5Kg",
+        "toPin": "Target Ball"
+      },
+      {
+        "from": "yYx8JUymVICYNiSi2DRy5w",
+        "fromPin": "OutHit",
+        "to": "Rn1dOkXVhOw-7fe6Bfzwow",
+        "toPin": "Hit"
+      },
+      {
+        "from": "yYx8JUymVICYNiSi2DRy5w",
+        "fromPin": "ReturnValue",
+        "to": "36vf2kgtqTLFuG-_kNzv3g",
+        "toPin": "Condition"
+      },
+      {
+        "from": "qqEaQk0uQ9OfSUGx_JYj_g",
+        "fromPin": "ReturnValue",
+        "to": "yYx8JUymVICYNiSi2DRy5w",
+        "toPin": "Start"
+      },
+      {
+        "from": "BQRve07--U_KOBqunLkq_g",
+        "fromPin": "ReturnValue",
+        "to": "D7KRlEQbFEAD8JOzdaDk5w",
+        "toPin": "InRot_Pitch"
+      }
+    ],
+    "nodeCount": 21
+  }
+}
