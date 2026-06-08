@@ -25,7 +25,11 @@
 		},
 		{
 			"Name": "UE_MCP_Bridge",
-			"Enabled": true
+			"Enabled": false,
+			"Optional": true,
+			"SupportedTargetPlatforms": [
+				"Win64"
+			]
 		},
 		{
 			"Name": "Niagara",
