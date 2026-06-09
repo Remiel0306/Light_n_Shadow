@@ -1,0 +1,10 @@
+After you can open the project again, restore editor startup level in:
+  Config\DefaultEngine.ini
+
+Change:
+  EditorStartupMap=/Engine/Maps/Entry.Entry
+
+Back to:
+  EditorStartupMap=/Game/ThirdPerson/Lvl_ThirdPerson.Lvl_ThirdPerson
+
+(Only after you hid heavy scene / deleted extra lights / fixed materials.)
