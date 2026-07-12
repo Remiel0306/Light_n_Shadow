@@ -1,0 +1,480 @@
+{
+  "capsule": {
+    "id": "kCeAXku2Xz37OKmQVsleuQ",
+    "class": "K2Node_ComponentBoundEvent",
+    "title": "On Component Begin Overlap (CapsuleComponent)"
+  },
+  "edgesFromCapsule": [
+    {
+      "from": "kCeAXku2Xz37OKmQVsleuQ",
+      "fromPin": "then",
+      "to": "d7ZEIkocNUBrO_CAWUBZCg",
+      "toPin": "execute"
+    }
+  ],
+  "interestingEnemyEdges": [
+    {
+      "from": "tDW6Xkxdn98iwmyZuC34pQ",
+      "fromPin": "then",
+      "to": "kPnoFUimC8Zr7H6TXm62nQ",
+      "toPin": "execute",
+      "fromTitle": "Event Tick",
+      "toTitle": "Check Overlapping Light Checker"
+    },
+    {
+      "from": "kCeAXku2Xz37OKmQVsleuQ",
+      "fromPin": "then",
+      "to": "d7ZEIkocNUBrO_CAWUBZCg",
+      "toPin": "execute",
+      "fromTitle": "On Component Begin Overlap (CapsuleComponent)",
+      "toTitle": "Branch"
+    },
+    {
+      "from": "nKCLHECZm8GUnhOtMrnQ1g",
+      "fromPin": "then",
+      "to": "1gYPl0zWGfhjRcmh1vVWcA",
+      "toPin": "execute",
+      "fromTitle": "On Component End Overlap (CapsuleComponent)",
+      "toTitle": "Branch"
+    },
+    {
+      "from": "2xz7-UcVD_xxfYurxQMfmg",
+      "fromPin": "then",
+      "to": "jJbwdk7ygBo1U6mM9tSkqw",
+      "toPin": "Exec",
+      "fromTitle": "Check Overlapping Light Checker",
+      "toTitle": "For Each Loop"
+    },
+    {
+      "from": "kPnoFUimC8Zr7H6TXm62nQ",
+      "fromPin": "then",
+      "to": "as_E9UzAdpiiloaqLFqTAA",
+      "toPin": "execute",
+      "fromTitle": "Check Overlapping Light Checker",
+      "toTitle": "Branch"
+    },
+    {
+      "from": "Kp__7k2avg14eU-qNyRQPg",
+      "fromPin": "then",
+      "to": "i1ehn0MLStfL73GQsvVI3g",
+      "toPin": "execute",
+      "fromTitle": "Enemy Die",
+      "toTitle": "Print String"
+    },
+    {
+      "from": "i1ehn0MLStfL73GQsvVI3g",
+      "fromPin": "then",
+      "to": "VuMi40P-YlY1swWdSQqI6g",
+      "toPin": "execute",
+      "fromTitle": "Print String",
+      "toTitle": "Destroy Actor"
+    },
+    {
+      "from": "GnIbYU8uzZ3VASuwTJNkUA",
+      "fromPin": "then",
+      "to": "DUbuu0bXcADFhzuKyB__0w",
+      "toPin": "execute",
+      "fromTitle": "On Component Begin Overlap (ShadowCollider3)",
+      "toTitle": "Branch"
+    },
+    {
+      "from": "vwduSEmlEn2AwJ6Js_mtfw",
+      "fromPin": "then",
+      "to": "roRge0ZxQKldjaSUQV-g5Q",
+      "toPin": "execute",
+      "fromTitle": "On Component Begin Overlap (ShadowCollider2)",
+      "toTitle": "Branch"
+    },
+    {
+      "from": "-MdeM0nlqQNccZ6Vl6F3jA",
+      "fromPin": "then",
+      "to": "TPntjUsLgZ9DP8i2l0CWnw",
+      "toPin": "execute",
+      "fromTitle": "On Component Begin Overlap (ShadowCollider1)",
+      "toTitle": "Branch"
+    },
+    {
+      "from": "ti8yKUe5nxoJASWJbSnKvA",
+      "fromPin": "then",
+      "to": "rD-4GUbYsuexqCO6IfZt8Q",
+      "toPin": "execute",
+      "fromTitle": "On Component End Overlap (ShadowCollider1)",
+      "toTitle": "Branch"
+    },
+    {
+      "from": "ePh-QEyXX9Q-IsupwifhqA",
+      "fromPin": "then",
+      "to": "P2wRgEH1IENfcPO-J15-Fw",
+      "toPin": "execute",
+      "fromTitle": "On Component End Overlap (ShadowCollider2)",
+      "toTitle": "Branch"
+    },
+    {
+      "from": "98dRk0KsNXHMQxaMt2UIJw",
+      "fromPin": "then",
+      "to": "J4DipUWKDmWokbSjpfbeSw",
+      "toPin": "execute",
+      "fromTitle": "On Component End Overlap (ShadowCollider3)",
+      "toTitle": "Branch"
+    }
+  ],
+  "critical": {
+    "wanderEvent": {
+      "id": "67C5731F41CB90DFAD7B4F8612A8095E",
+      "x": 0,
+      "y": 384
+    },
+    "wanderCalls": [
+      {
+        "id": "67C5731F41CB90DFAD7B4F8612A8095E",
+        "x": 0,
+        "y": 384
+      },
+      {
+        "id": "528585E94555070A52A239BE03D5FA56",
+        "x": 1872,
+        "y": 416
+      },
+      {
+        "id": "42111A314340CC74B62951965B01BEE7",
+        "x": 832,
+        "y": -16
+      },
+      {
+        "id": "597CA2494FCC258A972C88B78A02BD9A",
+        "x": 1872,
+        "y": 560
+      },
+      {
+        "id": "C06A2BF6471F4A51A6BE27BF17124546",
+        "x": 1360,
+        "y": 1024
+      },
+      {
+        "id": "041627B44B5FF3E15E2AAA92ED0AFC92",
+        "x": 1408,
+        "y": 2112
+      }
+    ],
+    "setChase": [
+      {
+        "id": "53E4DFA64D5A774749C97FBC807FAB86",
+        "x": 2064,
+        "y": 960,
+        "val": "true"
+      },
+      {
+        "id": "2DF30BEE432BC1D8DB8409B0C1A7D352",
+        "x": 1120,
+        "y": 1056,
+        "val": "false"
+      },
+      {
+        "id": "48174803485C26908AD273B7D649A7E0",
+        "x": 912,
+        "y": 1792,
+        "val": "true"
+      },
+      {
+        "id": "2C32654B435E5055D12C07879BF9D574",
+        "x": 912,
+        "y": 2080,
+        "val": "false"
+      },
+      {
+        "id": "2700F5C6463106D686FC5BA1CBEE4B0E",
+        "x": 2144,
+        "y": 1824,
+        "val": "false"
+      }
+    ],
+    "delays": [
+      {
+        "id": "C8BC5F95476FE30DDA5CC5931DC602AC",
+        "x": 1568,
+        "y": 432,
+        "dur": "0.2"
+      },
+      {
+        "id": "69012D884036FF331D4626B8581E004E",
+        "x": 1568,
+        "y": 576,
+        "dur": "0.500000"
+      }
+    ],
+    "moveTos": [
+      {
+        "id": "B779CFDD4BB4B0A184E2BCA5D406B73C",
+        "x": 1152,
+        "y": 400,
+        "hasDest": true,
+        "hasTarget": false,
+        "onSuccess": true,
+        "onFail": true
+      },
+      {
+        "id": "591E841F447B22B3F0BDA19A24D75ACA",
+        "x": 1744,
+        "y": 1776,
+        "hasDest": false,
+        "hasTarget": true,
+        "onSuccess": true,
+        "onFail": false
+      }
+    ],
+    "firstWanderBranch": null
+  },
+  "resolveEdges": [
+    {
+      "from": "a26uQ0xcXMrpOXyTWrk6qQ",
+      "fromPin": "then",
+      "to": "QhEaMUNAzHS2KVGWWwG-5w",
+      "toPin": "execute",
+      "fromLong": "6B6EAE434C5C5CCAE9397C935AB93AA9",
+      "toLong": "42111A314340CC74B62951965B01BEE7",
+      "fromTitle": "Set Enemy Ref",
+      "toTitle": "Wander"
+    },
+    {
+      "from": "Z8VzH0HLkN-te0-GEqgJXg",
+      "fromPin": "then",
+      "to": "Ll5G8UM_1NF-Xnq5II-Tig",
+      "toPin": "execute",
+      "fromLong": "67C5731F41CB90DFAD7B4F8612A8095E",
+      "toLong": "2E5E46F1433FD4D17E5E7AB9208F938A",
+      "fromTitle": "Wander",
+      "toTitle": "Branch"
+    },
+    {
+      "from": "Ll5G8UM_1NF-Xnq5II-Tig",
+      "fromPin": "then",
+      "to": "6iH3bUQ_bB8XwoulAkLsOg",
+      "toPin": "execute",
+      "fromLong": "2E5E46F1433FD4D17E5E7AB9208F938A",
+      "toLong": "EA21F76D443F6C1F17C28BA50242EC3A",
+      "fromTitle": "Branch",
+      "toTitle": "Set MaxWalkSpeed"
+    },
+    {
+      "from": "6iH3bUQ_bB8XwoulAkLsOg",
+      "fromPin": "then",
+      "to": "BwJm2kXtfwONavmki6CkYQ",
+      "toPin": "execute",
+      "fromLong": "EA21F76D443F6C1F17C28BA50242EC3A",
+      "toLong": "070266DA45ED7F038D6AF9A48BA0A461",
+      "fromTitle": "Set MaxWalkSpeed",
+      "toTitle": "Branch"
+    },
+    {
+      "from": "BwJm2kXtfwONavmki6CkYQ",
+      "fromPin": "then",
+      "to": "t3nP3Uu0sKGE4ryl1Aa3PA",
+      "toPin": "execute",
+      "fromLong": "070266DA45ED7F038D6AF9A48BA0A461",
+      "toLong": "B779CFDD4BB4B0A184E2BCA5D406B73C",
+      "fromTitle": "Branch",
+      "toTitle": "AI MoveTo"
+    },
+    {
+      "from": "yLxflUdv4w3aXMWTHcYCrA",
+      "fromPin": "then",
+      "to": "UoWF6UVVBwpSojm-A9X6Vg",
+      "toPin": "execute",
+      "fromLong": "C8BC5F95476FE30DDA5CC5931DC602AC",
+      "toLong": "528585E94555070A52A239BE03D5FA56",
+      "fromTitle": "Delay",
+      "toTitle": "Wander"
+    },
+    {
+      "from": "aQEtiEA2_zMdRia4WB4ATg",
+      "fromPin": "then",
+      "to": "WXyiSU_MJYqXLIi3igK9mg",
+      "toPin": "execute",
+      "fromLong": "69012D884036FF331D4626B8581E004E",
+      "toLong": "597CA2494FCC258A972C88B78A02BD9A",
+      "fromTitle": "Delay",
+      "toTitle": "Wander"
+    },
+    {
+      "from": "t3nP3Uu0sKGE4ryl1Aa3PA",
+      "fromPin": "OnSuccess",
+      "to": "yLxflUdv4w3aXMWTHcYCrA",
+      "toPin": "execute",
+      "fromLong": "B779CFDD4BB4B0A184E2BCA5D406B73C",
+      "toLong": "C8BC5F95476FE30DDA5CC5931DC602AC",
+      "fromTitle": "AI MoveTo",
+      "toTitle": "Delay"
+    },
+    {
+      "from": "t3nP3Uu0sKGE4ryl1Aa3PA",
+      "fromPin": "OnFail",
+      "to": "aQEtiEA2_zMdRia4WB4ATg",
+      "toPin": "execute",
+      "fromLong": "B779CFDD4BB4B0A184E2BCA5D406B73C",
+      "toLong": "69012D884036FF331D4626B8581E004E",
+      "fromTitle": "AI MoveTo",
+      "toTitle": "Delay"
+    },
+    {
+      "from": "1tIfZkkDRgsIbLmV20IsYg",
+      "fromPin": "then",
+      "to": "NuVObU1K0mfro3CExtTIYw",
+      "toPin": "execute",
+      "fromLong": "D6D21F664903460B086CB995DB422C62",
+      "toLong": "36E54E6D4D4AD267EBA37084C6D4C863",
+      "fromTitle": "Check Sight",
+      "toTitle": "Branch"
+    },
+    {
+      "from": "NuVObU1K0mfro3CExtTIYw",
+      "fromPin": "then",
+      "to": "UOOv8Uvk6CsqOd2R4FFCrg",
+      "toPin": "execute",
+      "fromLong": "36E54E6D4D4AD267EBA37084C6D4C863",
+      "toLong": "50E3AFF14BE4E82B2A39DD91E05142AE",
+      "fromTitle": "Branch",
+      "toTitle": "Branch"
+    },
+    {
+      "from": "UOOv8Uvk6CsqOd2R4FFCrg",
+      "fromPin": "else",
+      "to": "LfML7kMrwdjbhAmwwafTUg",
+      "toPin": "execute",
+      "fromLong": "50E3AFF14BE4E82B2A39DD91E05142AE",
+      "toLong": "2DF30BEE432BC1D8DB8409B0C1A7D352",
+      "fromTitle": "Branch",
+      "toTitle": "Set isChasing"
+    },
+    {
+      "from": "37277E66xCwmMuyqF-iYbw",
+      "fromPin": "then",
+      "to": "U-Tfpk1ad0dJyX-8gH-rhg",
+      "toPin": "execute",
+      "fromLong": "DFBDBBEC4EBAC42C2632ECAA17E8986F",
+      "toLong": "53E4DFA64D5A774749C97FBC807FAB86",
+      "fromTitle": "Line Trace By Channel",
+      "toTitle": "Set isChasing"
+    },
+    {
+      "from": "LfML7kMrwdjbhAmwwafTUg",
+      "fromPin": "then",
+      "to": "wGor9kcfSlGmvie_FxJFRg",
+      "toPin": "execute",
+      "fromLong": "2DF30BEE432BC1D8DB8409B0C1A7D352",
+      "toLong": "C06A2BF6471F4A51A6BE27BF17124546",
+      "fromTitle": "Set isChasing",
+      "toTitle": "Wander"
+    },
+    {
+      "from": "uQaq5E-pz4Igb7uZv7n2PQ",
+      "fromPin": "then",
+      "to": "gl0l_kOGqRv6UGK6NixHCw",
+      "toPin": "execute",
+      "fromLong": "B906AAE44FA9CF82206FBB99BFB9F63D",
+      "toLong": "825D25FE4386A91BFA5062BA362C470B",
+      "fromTitle": "On Target Perception Updated (AIPerception)",
+      "toTitle": "Print String"
+    },
+    {
+      "from": "0ODvvkFhzYT104aw0zjApA",
+      "fromPin": "then",
+      "to": "NOFGQUslosrRfMSUCZEIIQ",
+      "toPin": "execute",
+      "fromLong": "D0E0EFBE4161CD84F5D386B0D338C0A4",
+      "toLong": "34E146414B25A2CAD17CC49409910821",
+      "fromTitle": "Branch",
+      "toTitle": "Branch"
+    },
+    {
+      "from": "NOFGQUslosrRfMSUCZEIIQ",
+      "fromPin": "then",
+      "to": "SBdIA0hcJpCK0nO31kmn4A",
+      "toPin": "execute",
+      "fromLong": "34E146414B25A2CAD17CC49409910821",
+      "toLong": "48174803485C26908AD273B7D649A7E0",
+      "fromTitle": "Branch",
+      "toTitle": "Set isChasing"
+    },
+    {
+      "from": "NOFGQUslosrRfMSUCZEIIQ",
+      "fromPin": "else",
+      "to": "LDJlS0NeUFXRLAeHm_nVdA",
+      "toPin": "execute",
+      "fromLong": "34E146414B25A2CAD17CC49409910821",
+      "toLong": "2C32654B435E5055D12C07879BF9D574",
+      "fromTitle": "Branch",
+      "toTitle": "Set isChasing"
+    },
+    {
+      "from": "SBdIA0hcJpCK0nO31kmn4A",
+      "fromPin": "then",
+      "to": "A-pAokRIgXUdH2uCv7cyYw",
+      "toPin": "execute",
+      "fromLong": "48174803485C26908AD273B7D649A7E0",
+      "toLong": "03EA40A2444881751D1F6B82BFB73263",
+      "fromTitle": "Set isChasing",
+      "toTitle": "Branch"
+    },
+    {
+      "from": "A-pAokRIgXUdH2uCv7cyYw",
+      "fromPin": "then",
+      "to": "dkRUW0ICgPl71dSo6aXGJA",
+      "toPin": "execute",
+      "fromLong": "03EA40A2444881751D1F6B82BFB73263",
+      "toLong": "7644545B420280F97BD5D4A8E9A5C624",
+      "fromTitle": "Branch",
+      "toTitle": "Set MaxWalkSpeed"
+    },
+    {
+      "from": "dkRUW0ICgPl71dSo6aXGJA",
+      "fromPin": "then",
+      "to": "WR6EH0R7IrPwvaGaJNdayg",
+      "toPin": "execute",
+      "fromLong": "7644545B420280F97BD5D4A8E9A5C624",
+      "toLong": "591E841F447B22B3F0BDA19A24D75ACA",
+      "fromTitle": "Set MaxWalkSpeed",
+      "toTitle": "AI MoveTo"
+    },
+    {
+      "from": "WR6EH0R7IrPwvaGaJNdayg",
+      "fromPin": "OnSuccess",
+      "to": "JwD1xkYxBtaG_Fuhy-5LDg",
+      "toPin": "execute",
+      "fromLong": "591E841F447B22B3F0BDA19A24D75ACA",
+      "toLong": "2700F5C6463106D686FC5BA1CBEE4B0E",
+      "fromTitle": "AI MoveTo",
+      "toTitle": "Set isChasing"
+    },
+    {
+      "from": "LDJlS0NeUFXRLAeHm_nVdA",
+      "fromPin": "then",
+      "to": "TV6ECU3OA3WiOqmfZ1oIrg",
+      "toPin": "execute",
+      "fromLong": "2C32654B435E5055D12C07879BF9D574",
+      "toLong": "4D5E84094DCE0375A23AA99F675A08AE",
+      "fromTitle": "Set isChasing",
+      "toTitle": "Branch"
+    },
+    {
+      "from": "TV6ECU3OA3WiOqmfZ1oIrg",
+      "fromPin": "else",
+      "to": "BBYntEtf8-FeKqqS7Qr8kg",
+      "toPin": "execute",
+      "fromLong": "4D5E84094DCE0375A23AA99F675A08AE",
+      "toLong": "041627B44B5FF3E15E2AAA92ED0AFC92",
+      "fromTitle": "Branch",
+      "toTitle": "Wander"
+    },
+    {
+      "from": "gl0l_kOGqRv6UGK6NixHCw",
+      "fromPin": "then",
+      "to": "0ODvvkFhzYT104aw0zjApA",
+      "toPin": "execute",
+      "fromLong": "825D25FE4386A91BFA5062BA362C470B",
+      "toLong": "D0E0EFBE4161CD84F5D386B0D338C0A4",
+      "fromTitle": "Print String",
+      "toTitle": "Branch"
+    }
+  ],
+  "ambiguous": {}
+}

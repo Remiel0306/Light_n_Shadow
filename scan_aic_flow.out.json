@@ -1,0 +1,2370 @@
+{
+  "flow": {
+    "success": true,
+    "path": "/Game/BluePrint/System/BP_EnemyAIController",
+    "graphName": "EventGraph",
+    "entryPoint": "Event BeginPlay",
+    "entryId": "C_FfC06SpRDJo2uhY1hEpA",
+    "steps": [
+      {
+        "id": "C_FfC06SpRDJo2uhY1hEpA",
+        "class": "K2Node_Event",
+        "title": "Event BeginPlay",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "INOltk_fMCLBcjOm0PPq8w"
+          }
+        ]
+      },
+      {
+        "id": "INOltk_fMCLBcjOm0PPq8w",
+        "class": "K2Node_CallFunction",
+        "title": "Set Active",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "kZG_dkjEN9EgdnqczVH-7g"
+          }
+        ]
+      },
+      {
+        "id": "kZG_dkjEN9EgdnqczVH-7g",
+        "class": "K2Node_CallFunction",
+        "title": "Request Stimuli Listener Update",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "yN1IIUOZ3FT0KuedXaRlhg"
+          }
+        ]
+      },
+      {
+        "id": "yN1IIUOZ3FT0KuedXaRlhg",
+        "class": "K2Node_DynamicCast",
+        "title": "Cast To BP_EnemyShadowLogic",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "a26uQ0xcXMrpOXyTWrk6qQ"
+          }
+        ]
+      },
+      {
+        "id": "a26uQ0xcXMrpOXyTWrk6qQ",
+        "class": "K2Node_VariableSet",
+        "title": "Set Enemy Ref",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "QhEaMUNAzHS2KVGWWwG-5w"
+          }
+        ]
+      },
+      {
+        "id": "QhEaMUNAzHS2KVGWWwG-5w",
+        "class": "K2Node_CallFunction",
+        "title": "Wander",
+        "branches": []
+      }
+    ],
+    "stepCount": 6
+  },
+  "summary": {
+    "success": true,
+    "path": "/Game/BluePrint/System/BP_EnemyAIController",
+    "graphName": "EventGraph",
+    "nodes": [
+      {
+        "id": "C_FfC06SpRDJo2uhY1hEpA",
+        "class": "K2Node_Event",
+        "title": "Event BeginPlay"
+      },
+      {
+        "id": "kssl8UIBvzvIHu-ezC79jA",
+        "class": "K2Node_CallFunction",
+        "title": "Get Controlled Pawn"
+      },
+      {
+        "id": "yN1IIUOZ3FT0KuedXaRlhg",
+        "class": "K2Node_DynamicCast",
+        "title": "Cast To BP_EnemyShadowLogic"
+      },
+      {
+        "id": "a26uQ0xcXMrpOXyTWrk6qQ",
+        "class": "K2Node_VariableSet",
+        "title": "Set Enemy Ref"
+      },
+      {
+        "id": "Z8VzH0HLkN-te0-GEqgJXg",
+        "class": "K2Node_CustomEvent",
+        "title": "Wander"
+      },
+      {
+        "id": "Ll5G8UM_1NF-Xnq5II-Tig",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "F_BMXERcy3fuATm50LTvHA",
+        "class": "K2Node_VariableGet",
+        "title": "Get Enemy Ref"
+      },
+      {
+        "id": "tv-TR0KKt_DN1eyKU3ljRw",
+        "class": "K2Node_CallFunction",
+        "title": "Is Valid"
+      },
+      {
+        "id": "a7kNL0X961pnj3mNYwGNWQ",
+        "class": "K2Node_VariableGet",
+        "title": "Get Enemy Ref"
+      },
+      {
+        "id": "J_Z75k_-ADozkJiaXkyqcA",
+        "class": "K2Node_VariableGet",
+        "title": "Get CharacterMovement"
+      },
+      {
+        "id": "6iH3bUQ_bB8XwoulAkLsOg",
+        "class": "K2Node_VariableSet",
+        "title": "Set MaxWalkSpeed"
+      },
+      {
+        "id": "5sn3n0fihzS2vJSRLLH4VQ",
+        "class": "K2Node_CallFunction",
+        "title": "Get Random Reachable Point in Radius"
+      },
+      {
+        "id": "BwJm2kXtfwONavmki6CkYQ",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "yLxflUdv4w3aXMWTHcYCrA",
+        "class": "K2Node_CallFunction",
+        "title": "Delay"
+      },
+      {
+        "id": "UoWF6UVVBwpSojm-A9X6Vg",
+        "class": "K2Node_CallFunction",
+        "title": "Wander"
+      },
+      {
+        "id": "aQEtiEA2_zMdRia4WB4ATg",
+        "class": "K2Node_CallFunction",
+        "title": "Delay"
+      },
+      {
+        "id": "QhEaMUNAzHS2KVGWWwG-5w",
+        "class": "K2Node_CallFunction",
+        "title": "Wander"
+      },
+      {
+        "id": "WXyiSU_MJYqXLIi3igK9mg",
+        "class": "K2Node_CallFunction",
+        "title": "Wander"
+      },
+      {
+        "id": "t3nP3Uu0sKGE4ryl1Aa3PA",
+        "class": "K2Node_AIMoveTo",
+        "title": "AI MoveTo"
+      },
+      {
+        "id": "NU4rxU94LSk8JsW599QeQA",
+        "class": "K2Node_CallFunction",
+        "title": "Get Actor Location"
+      },
+      {
+        "id": "bZhdlUPoFZxZ52y6JvIutQ",
+        "class": "K2Node_CallFunction",
+        "title": "Set Timer by Event"
+      },
+      {
+        "id": "1tIfZkkDRgsIbLmV20IsYg",
+        "class": "K2Node_CustomEvent",
+        "title": "Check Sight"
+      },
+      {
+        "id": "EdvIWUmnqNHcygO4ePRXOQ",
+        "class": "K2Node_CallFunction",
+        "title": "Get Player Character"
+      },
+      {
+        "id": "NuVObU1K0mfro3CExtTIYw",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "L97adUS6SbNodmCjUko7PQ",
+        "class": "K2Node_CallFunction",
+        "title": "Is Valid"
+      },
+      {
+        "id": "hPnXZkCD8LZ7IOCUtpsFfw",
+        "class": "K2Node_VariableGet",
+        "title": "Get Enemy Ref"
+      },
+      {
+        "id": "sjerVEIqXVZnz4-v3RVktQ",
+        "class": "K2Node_CallFunction",
+        "title": "Get Actor Location"
+      },
+      {
+        "id": "eUcfxkfYbzqnxvOXHPzPHw",
+        "class": "K2Node_CallFunction",
+        "title": "Distance (Vector)"
+      },
+      {
+        "id": "qaDSw0PuHUn4-A2qo-sHew",
+        "class": "K2Node_CallFunction",
+        "title": "Get Actor Location"
+      },
+      {
+        "id": "hkkh3U0zLpQSpHSnIQVzag",
+        "class": "K2Node_PromotableOperator",
+        "title": "float <= float"
+      },
+      {
+        "id": "UOOv8Uvk6CsqOd2R4FFCrg",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "bsRHP0VOF8BEsr6DoBjTvA",
+        "class": "K2Node_VariableGet",
+        "title": "Get Wander Radious"
+      },
+      {
+        "id": "K3m4JUghfnrOHKW-ExBlrw",
+        "class": "K2Node_VariableGet",
+        "title": "Get Normal Speed"
+      },
+      {
+        "id": "VUvXjEUhEob_KwazXd9dzg",
+        "class": "K2Node_VariableGet",
+        "title": "Get Sight Range"
+      },
+      {
+        "id": "U-Tfpk1ad0dJyX-8gH-rhg",
+        "class": "K2Node_VariableSet",
+        "title": "Set isChasing"
+      },
+      {
+        "id": "wGor9kcfSlGmvie_FxJFRg",
+        "class": "K2Node_CallFunction",
+        "title": "Wander"
+      },
+      {
+        "id": "37277E66xCwmMuyqF-iYbw",
+        "class": "K2Node_CallFunction",
+        "title": "Line Trace By Channel"
+      },
+      {
+        "id": "LfML7kMrwdjbhAmwwafTUg",
+        "class": "K2Node_VariableSet",
+        "title": "Set isChasing"
+      },
+      {
+        "id": "nvaEzk1CdMzs3W2az7x2kA",
+        "class": "K2Node_VariableGet",
+        "title": "Get Enemy Ref"
+      },
+      {
+        "id": "hqYOmkCfR_XbZY6YS5mURQ",
+        "class": "K2Node_CallFunction",
+        "title": "Get Actor Location"
+      },
+      {
+        "id": "3RvP0UtRcPVO-3W8UKgjpg",
+        "class": "K2Node_CallFunction",
+        "title": "Break Vector"
+      },
+      {
+        "id": "d3trfUfd1P_6z_qcf6Yu1g",
+        "class": "K2Node_PromotableOperator",
+        "title": "float + float"
+      },
+      {
+        "id": "kjtcRk7pGl5dnwiYULmBfw",
+        "class": "K2Node_VariableGet",
+        "title": "Get Enemy Ref"
+      },
+      {
+        "id": "UbKGC0FOXCpcNt6HOAFKVg",
+        "class": "K2Node_CallFunction",
+        "title": "Get Actor Forward Vector"
+      },
+      {
+        "id": "eBRY50IXBuFLaBe4wGOYfg",
+        "class": "K2Node_PromotableOperator",
+        "title": "Equal (Object)"
+      },
+      {
+        "id": "uQaq5E-pz4Igb7uZv7n2PQ",
+        "class": "K2Node_ComponentBoundEvent",
+        "title": "On Target Perception Updated (AIPerception)"
+      },
+      {
+        "id": "qvCwP0r2XkeWTzCsV67vkg",
+        "class": "K2Node_CallFunction",
+        "title": "Get Player Character"
+      },
+      {
+        "id": "0ODvvkFhzYT104aw0zjApA",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "Uxgqm0Ryf5MCqWK32XqMFw",
+        "class": "K2Node_BreakStruct",
+        "title": "Break AIStimulus"
+      },
+      {
+        "id": "NOFGQUslosrRfMSUCZEIIQ",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "SBdIA0hcJpCK0nO31kmn4A",
+        "class": "K2Node_VariableSet",
+        "title": "Set isChasing"
+      },
+      {
+        "id": "8NyaqU4SwNFP7uCaotorFA",
+        "class": "K2Node_VariableGet",
+        "title": "Get Enemy Ref"
+      },
+      {
+        "id": "vMK2wUyFKC7z1Q-cBDHvEw",
+        "class": "K2Node_CallFunction",
+        "title": "Is Valid"
+      },
+      {
+        "id": "A-pAokRIgXUdH2uCv7cyYw",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "BD4gKENxUP7m6qi2g9Yzpg",
+        "class": "K2Node_VariableGet",
+        "title": "Get CharacterMovement"
+      },
+      {
+        "id": "dkRUW0ICgPl71dSo6aXGJA",
+        "class": "K2Node_VariableSet",
+        "title": "Set MaxWalkSpeed"
+      },
+      {
+        "id": "n3Yn_0W-RziCpkSrgr3TLQ",
+        "class": "K2Node_VariableGet",
+        "title": "Get Chase Speed"
+      },
+      {
+        "id": "WR6EH0R7IrPwvaGaJNdayg",
+        "class": "K2Node_AIMoveTo",
+        "title": "AI MoveTo"
+      },
+      {
+        "id": "rWUg0kzjN_gUyh6L4KxFYw",
+        "class": "K2Node_VariableGet",
+        "title": "Get Enemy Ref"
+      },
+      {
+        "id": "YfB9UkI1uJHdu5SccRZcuQ",
+        "class": "K2Node_CallFunction",
+        "title": "Get Player Character"
+      },
+      {
+        "id": "LDJlS0NeUFXRLAeHm_nVdA",
+        "class": "K2Node_VariableSet",
+        "title": "Set isChasing"
+      },
+      {
+        "id": "BBYntEtf8-FeKqqS7Qr8kg",
+        "class": "K2Node_CallFunction",
+        "title": "Wander"
+      },
+      {
+        "id": "TV6ECU3OA3WiOqmfZ1oIrg",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "KU1y_0n7JDNP3CidySsDeQ",
+        "class": "K2Node_VariableGet",
+        "title": "Get isChasing"
+      },
+      {
+        "id": "9LMYNUvaeU5RfvSBgbYobQ",
+        "class": "K2Node_VariableGet",
+        "title": "Get AIPerception"
+      },
+      {
+        "id": "INOltk_fMCLBcjOm0PPq8w",
+        "class": "K2Node_CallFunction",
+        "title": "Set Active"
+      },
+      {
+        "id": "kZG_dkjEN9EgdnqczVH-7g",
+        "class": "K2Node_CallFunction",
+        "title": "Request Stimuli Listener Update"
+      },
+      {
+        "id": "6L7QSkAtYIHt5Zy9jwl7Lw",
+        "class": "K2Node_VariableGet",
+        "title": "Get AIPerception"
+      },
+      {
+        "id": "gl0l_kOGqRv6UGK6NixHCw",
+        "class": "K2Node_CallFunction",
+        "title": "Print String"
+      },
+      {
+        "id": "fguEXEJE0OkbeRCZwCSunQ",
+        "class": "K2Node_CallFunction",
+        "title": "Get Display Name"
+      },
+      {
+        "id": "JwD1xkYxBtaG_Fuhy-5LDg",
+        "class": "K2Node_VariableSet",
+        "title": "Set isChasing"
+      }
+    ],
+    "execEdges": [
+      {
+        "from": "C_FfC06SpRDJo2uhY1hEpA",
+        "fromPin": "then",
+        "to": "INOltk_fMCLBcjOm0PPq8w",
+        "toPin": "execute"
+      },
+      {
+        "from": "yN1IIUOZ3FT0KuedXaRlhg",
+        "fromPin": "then",
+        "to": "a26uQ0xcXMrpOXyTWrk6qQ",
+        "toPin": "execute"
+      },
+      {
+        "from": "a26uQ0xcXMrpOXyTWrk6qQ",
+        "fromPin": "then",
+        "to": "QhEaMUNAzHS2KVGWWwG-5w",
+        "toPin": "execute"
+      },
+      {
+        "from": "Z8VzH0HLkN-te0-GEqgJXg",
+        "fromPin": "then",
+        "to": "Ll5G8UM_1NF-Xnq5II-Tig",
+        "toPin": "execute"
+      },
+      {
+        "from": "Ll5G8UM_1NF-Xnq5II-Tig",
+        "fromPin": "then",
+        "to": "6iH3bUQ_bB8XwoulAkLsOg",
+        "toPin": "execute"
+      },
+      {
+        "from": "6iH3bUQ_bB8XwoulAkLsOg",
+        "fromPin": "then",
+        "to": "BwJm2kXtfwONavmki6CkYQ",
+        "toPin": "execute"
+      },
+      {
+        "from": "BwJm2kXtfwONavmki6CkYQ",
+        "fromPin": "then",
+        "to": "t3nP3Uu0sKGE4ryl1Aa3PA",
+        "toPin": "execute"
+      },
+      {
+        "from": "yLxflUdv4w3aXMWTHcYCrA",
+        "fromPin": "then",
+        "to": "UoWF6UVVBwpSojm-A9X6Vg",
+        "toPin": "execute"
+      },
+      {
+        "from": "aQEtiEA2_zMdRia4WB4ATg",
+        "fromPin": "then",
+        "to": "WXyiSU_MJYqXLIi3igK9mg",
+        "toPin": "execute"
+      },
+      {
+        "from": "t3nP3Uu0sKGE4ryl1Aa3PA",
+        "fromPin": "OnSuccess",
+        "to": "yLxflUdv4w3aXMWTHcYCrA",
+        "toPin": "execute"
+      },
+      {
+        "from": "t3nP3Uu0sKGE4ryl1Aa3PA",
+        "fromPin": "OnFail",
+        "to": "aQEtiEA2_zMdRia4WB4ATg",
+        "toPin": "execute"
+      },
+      {
+        "from": "1tIfZkkDRgsIbLmV20IsYg",
+        "fromPin": "then",
+        "to": "NuVObU1K0mfro3CExtTIYw",
+        "toPin": "execute"
+      },
+      {
+        "from": "NuVObU1K0mfro3CExtTIYw",
+        "fromPin": "then",
+        "to": "UOOv8Uvk6CsqOd2R4FFCrg",
+        "toPin": "execute"
+      },
+      {
+        "from": "UOOv8Uvk6CsqOd2R4FFCrg",
+        "fromPin": "else",
+        "to": "LfML7kMrwdjbhAmwwafTUg",
+        "toPin": "execute"
+      },
+      {
+        "from": "37277E66xCwmMuyqF-iYbw",
+        "fromPin": "then",
+        "to": "U-Tfpk1ad0dJyX-8gH-rhg",
+        "toPin": "execute"
+      },
+      {
+        "from": "LfML7kMrwdjbhAmwwafTUg",
+        "fromPin": "then",
+        "to": "wGor9kcfSlGmvie_FxJFRg",
+        "toPin": "execute"
+      },
+      {
+        "from": "uQaq5E-pz4Igb7uZv7n2PQ",
+        "fromPin": "then",
+        "to": "gl0l_kOGqRv6UGK6NixHCw",
+        "toPin": "execute"
+      },
+      {
+        "from": "0ODvvkFhzYT104aw0zjApA",
+        "fromPin": "then",
+        "to": "NOFGQUslosrRfMSUCZEIIQ",
+        "toPin": "execute"
+      },
+      {
+        "from": "NOFGQUslosrRfMSUCZEIIQ",
+        "fromPin": "then",
+        "to": "SBdIA0hcJpCK0nO31kmn4A",
+        "toPin": "execute"
+      },
+      {
+        "from": "NOFGQUslosrRfMSUCZEIIQ",
+        "fromPin": "else",
+        "to": "LDJlS0NeUFXRLAeHm_nVdA",
+        "toPin": "execute"
+      },
+      {
+        "from": "SBdIA0hcJpCK0nO31kmn4A",
+        "fromPin": "then",
+        "to": "A-pAokRIgXUdH2uCv7cyYw",
+        "toPin": "execute"
+      },
+      {
+        "from": "A-pAokRIgXUdH2uCv7cyYw",
+        "fromPin": "then",
+        "to": "dkRUW0ICgPl71dSo6aXGJA",
+        "toPin": "execute"
+      },
+      {
+        "from": "dkRUW0ICgPl71dSo6aXGJA",
+        "fromPin": "then",
+        "to": "WR6EH0R7IrPwvaGaJNdayg",
+        "toPin": "execute"
+      },
+      {
+        "from": "WR6EH0R7IrPwvaGaJNdayg",
+        "fromPin": "OnSuccess",
+        "to": "JwD1xkYxBtaG_Fuhy-5LDg",
+        "toPin": "execute"
+      },
+      {
+        "from": "LDJlS0NeUFXRLAeHm_nVdA",
+        "fromPin": "then",
+        "to": "TV6ECU3OA3WiOqmfZ1oIrg",
+        "toPin": "execute"
+      },
+      {
+        "from": "TV6ECU3OA3WiOqmfZ1oIrg",
+        "fromPin": "else",
+        "to": "BBYntEtf8-FeKqqS7Qr8kg",
+        "toPin": "execute"
+      },
+      {
+        "from": "INOltk_fMCLBcjOm0PPq8w",
+        "fromPin": "then",
+        "to": "kZG_dkjEN9EgdnqczVH-7g",
+        "toPin": "execute"
+      },
+      {
+        "from": "kZG_dkjEN9EgdnqczVH-7g",
+        "fromPin": "then",
+        "to": "yN1IIUOZ3FT0KuedXaRlhg",
+        "toPin": "execute"
+      },
+      {
+        "from": "gl0l_kOGqRv6UGK6NixHCw",
+        "fromPin": "then",
+        "to": "0ODvvkFhzYT104aw0zjApA",
+        "toPin": "execute"
+      }
+    ],
+    "dataEdges": [
+      {
+        "from": "kssl8UIBvzvIHu-ezC79jA",
+        "fromPin": "ReturnValue",
+        "to": "yN1IIUOZ3FT0KuedXaRlhg",
+        "toPin": "Object"
+      },
+      {
+        "from": "yN1IIUOZ3FT0KuedXaRlhg",
+        "fromPin": "AsBP Enemy Shadow Logic",
+        "to": "a26uQ0xcXMrpOXyTWrk6qQ",
+        "toPin": "Enemy Ref"
+      },
+      {
+        "from": "F_BMXERcy3fuATm50LTvHA",
+        "fromPin": "Enemy Ref",
+        "to": "t3nP3Uu0sKGE4ryl1Aa3PA",
+        "toPin": "Pawn"
+      },
+      {
+        "from": "tv-TR0KKt_DN1eyKU3ljRw",
+        "fromPin": "ReturnValue",
+        "to": "Ll5G8UM_1NF-Xnq5II-Tig",
+        "toPin": "Condition"
+      },
+      {
+        "from": "a7kNL0X961pnj3mNYwGNWQ",
+        "fromPin": "Enemy Ref",
+        "to": "J_Z75k_-ADozkJiaXkyqcA",
+        "toPin": "self"
+      },
+      {
+        "from": "a7kNL0X961pnj3mNYwGNWQ",
+        "fromPin": "Enemy Ref",
+        "to": "NU4rxU94LSk8JsW599QeQA",
+        "toPin": "self"
+      },
+      {
+        "from": "a7kNL0X961pnj3mNYwGNWQ",
+        "fromPin": "Enemy Ref",
+        "to": "tv-TR0KKt_DN1eyKU3ljRw",
+        "toPin": "Object"
+      },
+      {
+        "from": "J_Z75k_-ADozkJiaXkyqcA",
+        "fromPin": "CharacterMovement",
+        "to": "6iH3bUQ_bB8XwoulAkLsOg",
+        "toPin": "self"
+      },
+      {
+        "from": "5sn3n0fihzS2vJSRLLH4VQ",
+        "fromPin": "RandomLocation",
+        "to": "t3nP3Uu0sKGE4ryl1Aa3PA",
+        "toPin": "Destination"
+      },
+      {
+        "from": "5sn3n0fihzS2vJSRLLH4VQ",
+        "fromPin": "ReturnValue",
+        "to": "BwJm2kXtfwONavmki6CkYQ",
+        "toPin": "Condition"
+      },
+      {
+        "from": "NU4rxU94LSk8JsW599QeQA",
+        "fromPin": "ReturnValue",
+        "to": "5sn3n0fihzS2vJSRLLH4VQ",
+        "toPin": "Origin"
+      },
+      {
+        "from": "EdvIWUmnqNHcygO4ePRXOQ",
+        "fromPin": "ReturnValue",
+        "to": "L97adUS6SbNodmCjUko7PQ",
+        "toPin": "Object"
+      },
+      {
+        "from": "EdvIWUmnqNHcygO4ePRXOQ",
+        "fromPin": "ReturnValue",
+        "to": "qaDSw0PuHUn4-A2qo-sHew",
+        "toPin": "self"
+      },
+      {
+        "from": "L97adUS6SbNodmCjUko7PQ",
+        "fromPin": "ReturnValue",
+        "to": "NuVObU1K0mfro3CExtTIYw",
+        "toPin": "Condition"
+      },
+      {
+        "from": "hPnXZkCD8LZ7IOCUtpsFfw",
+        "fromPin": "Enemy Ref",
+        "to": "sjerVEIqXVZnz4-v3RVktQ",
+        "toPin": "self"
+      },
+      {
+        "from": "sjerVEIqXVZnz4-v3RVktQ",
+        "fromPin": "ReturnValue",
+        "to": "eUcfxkfYbzqnxvOXHPzPHw",
+        "toPin": "V1"
+      },
+      {
+        "from": "eUcfxkfYbzqnxvOXHPzPHw",
+        "fromPin": "ReturnValue",
+        "to": "hkkh3U0zLpQSpHSnIQVzag",
+        "toPin": "A"
+      },
+      {
+        "from": "qaDSw0PuHUn4-A2qo-sHew",
+        "fromPin": "ReturnValue",
+        "to": "eUcfxkfYbzqnxvOXHPzPHw",
+        "toPin": "V2"
+      },
+      {
+        "from": "hkkh3U0zLpQSpHSnIQVzag",
+        "fromPin": "ReturnValue",
+        "to": "UOOv8Uvk6CsqOd2R4FFCrg",
+        "toPin": "Condition"
+      },
+      {
+        "from": "bsRHP0VOF8BEsr6DoBjTvA",
+        "fromPin": "Wander Radious",
+        "to": "5sn3n0fihzS2vJSRLLH4VQ",
+        "toPin": "Radius"
+      },
+      {
+        "from": "K3m4JUghfnrOHKW-ExBlrw",
+        "fromPin": "Normal Speed",
+        "to": "6iH3bUQ_bB8XwoulAkLsOg",
+        "toPin": "MaxWalkSpeed"
+      },
+      {
+        "from": "VUvXjEUhEob_KwazXd9dzg",
+        "fromPin": "Sight Range",
+        "to": "hkkh3U0zLpQSpHSnIQVzag",
+        "toPin": "B"
+      },
+      {
+        "from": "nvaEzk1CdMzs3W2az7x2kA",
+        "fromPin": "Enemy Ref",
+        "to": "hqYOmkCfR_XbZY6YS5mURQ",
+        "toPin": "self"
+      },
+      {
+        "from": "hqYOmkCfR_XbZY6YS5mURQ",
+        "fromPin": "ReturnValue",
+        "to": "3RvP0UtRcPVO-3W8UKgjpg",
+        "toPin": "InVec"
+      },
+      {
+        "from": "3RvP0UtRcPVO-3W8UKgjpg",
+        "fromPin": "Z",
+        "to": "d3trfUfd1P_6z_qcf6Yu1g",
+        "toPin": "A"
+      },
+      {
+        "from": "kjtcRk7pGl5dnwiYULmBfw",
+        "fromPin": "Enemy Ref",
+        "to": "UbKGC0FOXCpcNt6HOAFKVg",
+        "toPin": "self"
+      },
+      {
+        "from": "eBRY50IXBuFLaBe4wGOYfg",
+        "fromPin": "ReturnValue",
+        "to": "0ODvvkFhzYT104aw0zjApA",
+        "toPin": "Condition"
+      },
+      {
+        "from": "uQaq5E-pz4Igb7uZv7n2PQ",
+        "fromPin": "Actor",
+        "to": "eBRY50IXBuFLaBe4wGOYfg",
+        "toPin": "A"
+      },
+      {
+        "from": "uQaq5E-pz4Igb7uZv7n2PQ",
+        "fromPin": "Stimulus",
+        "to": "Uxgqm0Ryf5MCqWK32XqMFw",
+        "toPin": "AIStimulus"
+      },
+      {
+        "from": "qvCwP0r2XkeWTzCsV67vkg",
+        "fromPin": "ReturnValue",
+        "to": "eBRY50IXBuFLaBe4wGOYfg",
+        "toPin": "B"
+      },
+      {
+        "from": "qvCwP0r2XkeWTzCsV67vkg",
+        "fromPin": "ReturnValue",
+        "to": "fguEXEJE0OkbeRCZwCSunQ",
+        "toPin": "Object"
+      },
+      {
+        "from": "Uxgqm0Ryf5MCqWK32XqMFw",
+        "fromPin": "bSuccessfullySensed",
+        "to": "NOFGQUslosrRfMSUCZEIIQ",
+        "toPin": "Condition"
+      },
+      {
+        "from": "8NyaqU4SwNFP7uCaotorFA",
+        "fromPin": "Enemy Ref",
+        "to": "vMK2wUyFKC7z1Q-cBDHvEw",
+        "toPin": "Object"
+      },
+      {
+        "from": "8NyaqU4SwNFP7uCaotorFA",
+        "fromPin": "Enemy Ref",
+        "to": "BD4gKENxUP7m6qi2g9Yzpg",
+        "toPin": "self"
+      },
+      {
+        "from": "vMK2wUyFKC7z1Q-cBDHvEw",
+        "fromPin": "ReturnValue",
+        "to": "A-pAokRIgXUdH2uCv7cyYw",
+        "toPin": "Condition"
+      },
+      {
+        "from": "BD4gKENxUP7m6qi2g9Yzpg",
+        "fromPin": "CharacterMovement",
+        "to": "dkRUW0ICgPl71dSo6aXGJA",
+        "toPin": "self"
+      },
+      {
+        "from": "n3Yn_0W-RziCpkSrgr3TLQ",
+        "fromPin": "Chase Speed",
+        "to": "dkRUW0ICgPl71dSo6aXGJA",
+        "toPin": "MaxWalkSpeed"
+      },
+      {
+        "from": "rWUg0kzjN_gUyh6L4KxFYw",
+        "fromPin": "Enemy Ref",
+        "to": "WR6EH0R7IrPwvaGaJNdayg",
+        "toPin": "Pawn"
+      },
+      {
+        "from": "YfB9UkI1uJHdu5SccRZcuQ",
+        "fromPin": "ReturnValue",
+        "to": "WR6EH0R7IrPwvaGaJNdayg",
+        "toPin": "TargetActor"
+      },
+      {
+        "from": "KU1y_0n7JDNP3CidySsDeQ",
+        "fromPin": "isChasing",
+        "to": "TV6ECU3OA3WiOqmfZ1oIrg",
+        "toPin": "Condition"
+      },
+      {
+        "from": "9LMYNUvaeU5RfvSBgbYobQ",
+        "fromPin": "AIPerception",
+        "to": "INOltk_fMCLBcjOm0PPq8w",
+        "toPin": "self"
+      },
+      {
+        "from": "6L7QSkAtYIHt5Zy9jwl7Lw",
+        "fromPin": "AIPerception",
+        "to": "kZG_dkjEN9EgdnqczVH-7g",
+        "toPin": "self"
+      },
+      {
+        "from": "fguEXEJE0OkbeRCZwCSunQ",
+        "fromPin": "ReturnValue",
+        "to": "gl0l_kOGqRv6UGK6NixHCw",
+        "toPin": "InString"
+      }
+    ],
+    "nodeCount": 71
+  },
+  "keyNodes": [
+    {
+      "id": "0BF15F0B4E92A510C9A36BA1635844A4",
+      "title": "Event BeginPlay",
+      "pins": [
+        {
+          "name": "OutputDelegate",
+          "type": "delegate",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": false
+        },
+        {
+          "name": "then",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": true
+        }
+      ]
+    },
+    {
+      "id": "67C5731F41CB90DFAD7B4F8612A8095E",
+      "title": "Wander | Custom Event",
+      "pins": [
+        {
+          "name": "OutputDelegate",
+          "type": "delegate",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": false
+        },
+        {
+          "name": "then",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": true
+        }
+      ]
+    },
+    {
+      "id": "2E5E46F1433FD4D17E5E7AB9208F938A",
+      "title": "Branch",
+      "pins": [
+        {
+          "name": "execute",
+          "type": "exec",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "Condition",
+          "type": "bool",
+          "direction": "Input",
+          "defaultValue": "true",
+          "connected": true
+        },
+        {
+          "name": "then",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "else",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": false
+        }
+      ]
+    },
+    {
+      "id": "070266DA45ED7F038D6AF9A48BA0A461",
+      "title": "Branch",
+      "pins": [
+        {
+          "name": "execute",
+          "type": "exec",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "Condition",
+          "type": "bool",
+          "direction": "Input",
+          "defaultValue": "true",
+          "connected": true
+        },
+        {
+          "name": "then",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "else",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": false
+        }
+      ]
+    },
+    {
+      "id": "C8BC5F95476FE30DDA5CC5931DC602AC",
+      "title": "Delay",
+      "pins": [
+        {
+          "name": "execute",
+          "type": "exec",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "then",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "self",
+          "type": "object",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": false
+        },
+        {
+          "name": "WorldContextObject",
+          "type": "object",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": false
+        },
+        {
+          "name": "Duration",
+          "type": "real",
+          "direction": "Input",
+          "defaultValue": "0.2",
+          "connected": false
+        },
+        {
+          "name": "LatentInfo",
+          "type": "struct",
+          "direction": "Input",
+          "defaultValue": "(Linkage=-1,UUID=-1,ExecutionFunction=\"\",CallbackTarget=None)",
+          "connected": false
+        }
+      ]
+    },
+    {
+      "id": "528585E94555070A52A239BE03D5FA56",
+      "title": "Wander | Target is BP Enemy AIController",
+      "pins": [
+        {
+          "name": "execute",
+          "type": "exec",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "then",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": false
+        },
+        {
+          "name": "self",
+          "type": "object",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": false
+        }
+      ]
+    },
+    {
+      "id": "69012D884036FF331D4626B8581E004E",
+      "title": "Delay",
+      "pins": [
+        {
+          "name": "execute",
+          "type": "exec",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "then",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "self",
+          "type": "object",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": false
+        },
+        {
+          "name": "WorldContextObject",
+          "type": "object",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": false
+        },
+        {
+          "name": "Duration",
+          "type": "real",
+          "direction": "Input",
+          "defaultValue": "0.500000",
+          "connected": false
+        },
+        {
+          "name": "LatentInfo",
+          "type": "struct",
+          "direction": "Input",
+          "defaultValue": "(Linkage=-1,UUID=-1,ExecutionFunction=\"\",CallbackTarget=None)",
+          "connected": false
+        }
+      ]
+    },
+    {
+      "id": "42111A314340CC74B62951965B01BEE7",
+      "title": "Wander | Target is BP Enemy AIController",
+      "pins": [
+        {
+          "name": "execute",
+          "type": "exec",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "then",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": false
+        },
+        {
+          "name": "self",
+          "type": "object",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": false
+        }
+      ]
+    },
+    {
+      "id": "597CA2494FCC258A972C88B78A02BD9A",
+      "title": "Wander | Target is BP Enemy AIController",
+      "pins": [
+        {
+          "name": "execute",
+          "type": "exec",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "then",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": false
+        },
+        {
+          "name": "self",
+          "type": "object",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": false
+        }
+      ]
+    },
+    {
+      "id": "B779CFDD4BB4B0A184E2BCA5D406B73C",
+      "title": "AI MoveTo",
+      "pins": [
+        {
+          "name": "execute",
+          "type": "exec",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "then",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": false
+        },
+        {
+          "name": "OnSuccess",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "OnFail",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "MovementResult",
+          "type": "byte",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": false
+        },
+        {
+          "name": "WorldContextObject",
+          "type": "object",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": false
+        },
+        {
+          "name": "Pawn",
+          "type": "object",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "Destination",
+          "type": "struct",
+          "direction": "Input",
+          "defaultValue": "0, 0, 0",
+          "connected": true
+        },
+        {
+          "name": "TargetActor",
+          "type": "object",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": false
+        },
+        {
+          "name": "AcceptanceRadius",
+          "type": "real",
+          "direction": "Input",
+          "defaultValue": "50.000000",
+          "connected": false
+        },
+        {
+          "name": "bStopOnOverlap",
+          "type": "bool",
+          "direction": "Input",
+          "defaultValue": "false",
+          "connected": false
+        }
+      ]
+    },
+    {
+      "id": "6D985D9543E8159C59E76CBA26F22EB5",
+      "title": "Set Timer by Event",
+      "pins": [
+        {
+          "name": "execute",
+          "type": "exec",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": false
+        },
+        {
+          "name": "then",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": false
+        },
+        {
+          "name": "self",
+          "type": "object",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": false
+        },
+        {
+          "name": "Delegate",
+          "type": "delegate",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": false
+        },
+        {
+          "name": "Time",
+          "type": "real",
+          "direction": "Input",
+          "defaultValue": "0.200000",
+          "connected": false
+        },
+        {
+          "name": "bLooping",
+          "type": "bool",
+          "direction": "Input",
+          "defaultValue": "true",
+          "connected": false
+        },
+        {
+          "name": "bMaxOncePerFrame",
+          "type": "bool",
+          "direction": "Input",
+          "defaultValue": "false",
+          "connected": false
+        },
+        {
+          "name": "InitialStartDelay",
+          "type": "real",
+          "direction": "Input",
+          "defaultValue": "0.000000",
+          "connected": false
+        },
+        {
+          "name": "InitialStartDelayVariance",
+          "type": "real",
+          "direction": "Input",
+          "defaultValue": "0.000000",
+          "connected": false
+        },
+        {
+          "name": "ReturnValue",
+          "type": "struct",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": false
+        }
+      ]
+    },
+    {
+      "id": "D6D21F664903460B086CB995DB422C62",
+      "title": "Check Sight | Custom Event",
+      "pins": [
+        {
+          "name": "OutputDelegate",
+          "type": "delegate",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": false
+        },
+        {
+          "name": "then",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": true
+        }
+      ]
+    },
+    {
+      "id": "36E54E6D4D4AD267EBA37084C6D4C863",
+      "title": "Branch",
+      "pins": [
+        {
+          "name": "execute",
+          "type": "exec",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "Condition",
+          "type": "bool",
+          "direction": "Input",
+          "defaultValue": "true",
+          "connected": true
+        },
+        {
+          "name": "then",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "else",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": false
+        }
+      ]
+    },
+    {
+      "id": "50E3AFF14BE4E82B2A39DD91E05142AE",
+      "title": "Branch",
+      "pins": [
+        {
+          "name": "execute",
+          "type": "exec",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "Condition",
+          "type": "bool",
+          "direction": "Input",
+          "defaultValue": "true",
+          "connected": true
+        },
+        {
+          "name": "then",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": false
+        },
+        {
+          "name": "else",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": true
+        }
+      ]
+    },
+    {
+      "id": "6EC4473F454E17C044B2BE83A018D3BC",
+      "title": "Get Wander Radious",
+      "pins": [
+        {
+          "name": "Wander Radious",
+          "type": "real",
+          "direction": "Output",
+          "defaultValue": "0.0",
+          "connected": true
+        },
+        {
+          "name": "self",
+          "type": "object",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": false
+        }
+      ]
+    },
+    {
+      "id": "53E4DFA64D5A774749C97FBC807FAB86",
+      "title": "Set isChasing",
+      "pins": [
+        {
+          "name": "execute",
+          "type": "exec",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "then",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": false
+        },
+        {
+          "name": "isChasing",
+          "type": "bool",
+          "direction": "Input",
+          "defaultValue": "true",
+          "connected": false
+        },
+        {
+          "name": "Output_Get",
+          "type": "bool",
+          "direction": "Output",
+          "defaultValue": "false",
+          "connected": false
+        },
+        {
+          "name": "self",
+          "type": "object",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": false
+        }
+      ]
+    },
+    {
+      "id": "C06A2BF6471F4A51A6BE27BF17124546",
+      "title": "Wander | Target is BP Enemy AIController",
+      "pins": [
+        {
+          "name": "execute",
+          "type": "exec",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "then",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": false
+        },
+        {
+          "name": "self",
+          "type": "object",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": false
+        }
+      ]
+    },
+    {
+      "id": "2DF30BEE432BC1D8DB8409B0C1A7D352",
+      "title": "Set isChasing",
+      "pins": [
+        {
+          "name": "execute",
+          "type": "exec",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "then",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "isChasing",
+          "type": "bool",
+          "direction": "Input",
+          "defaultValue": "false",
+          "connected": false
+        },
+        {
+          "name": "Output_Get",
+          "type": "bool",
+          "direction": "Output",
+          "defaultValue": "false",
+          "connected": false
+        },
+        {
+          "name": "self",
+          "type": "object",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": false
+        }
+      ]
+    },
+    {
+      "id": "B906AAE44FA9CF82206FBB99BFB9F63D",
+      "title": "On Target Perception Updated (AIPerception)",
+      "pins": [
+        {
+          "name": "OutputDelegate",
+          "type": "delegate",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": false
+        },
+        {
+          "name": "then",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "Actor",
+          "type": "object",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "Stimulus",
+          "type": "struct",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": true
+        }
+      ]
+    },
+    {
+      "id": "D0E0EFBE4161CD84F5D386B0D338C0A4",
+      "title": "Branch",
+      "pins": [
+        {
+          "name": "execute",
+          "type": "exec",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "Condition",
+          "type": "bool",
+          "direction": "Input",
+          "defaultValue": "true",
+          "connected": true
+        },
+        {
+          "name": "then",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "else",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": false
+        }
+      ]
+    },
+    {
+      "id": "34E146414B25A2CAD17CC49409910821",
+      "title": "Branch",
+      "pins": [
+        {
+          "name": "execute",
+          "type": "exec",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "Condition",
+          "type": "bool",
+          "direction": "Input",
+          "defaultValue": "true",
+          "connected": true
+        },
+        {
+          "name": "then",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "else",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": true
+        }
+      ]
+    },
+    {
+      "id": "48174803485C26908AD273B7D649A7E0",
+      "title": "Set isChasing",
+      "pins": [
+        {
+          "name": "execute",
+          "type": "exec",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "then",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "isChasing",
+          "type": "bool",
+          "direction": "Input",
+          "defaultValue": "true",
+          "connected": false
+        },
+        {
+          "name": "Output_Get",
+          "type": "bool",
+          "direction": "Output",
+          "defaultValue": "false",
+          "connected": false
+        },
+        {
+          "name": "self",
+          "type": "object",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": false
+        }
+      ]
+    },
+    {
+      "id": "03EA40A2444881751D1F6B82BFB73263",
+      "title": "Branch",
+      "pins": [
+        {
+          "name": "execute",
+          "type": "exec",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "Condition",
+          "type": "bool",
+          "direction": "Input",
+          "defaultValue": "true",
+          "connected": true
+        },
+        {
+          "name": "then",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "else",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": false
+        }
+      ]
+    },
+    {
+      "id": "591E841F447B22B3F0BDA19A24D75ACA",
+      "title": "AI MoveTo",
+      "pins": [
+        {
+          "name": "execute",
+          "type": "exec",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "then",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": false
+        },
+        {
+          "name": "OnSuccess",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "OnFail",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": false
+        },
+        {
+          "name": "MovementResult",
+          "type": "byte",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": false
+        },
+        {
+          "name": "WorldContextObject",
+          "type": "object",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": false
+        },
+        {
+          "name": "Pawn",
+          "type": "object",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "Destination",
+          "type": "struct",
+          "direction": "Input",
+          "defaultValue": "0, 0, 0",
+          "connected": false
+        },
+        {
+          "name": "TargetActor",
+          "type": "object",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "AcceptanceRadius",
+          "type": "real",
+          "direction": "Input",
+          "defaultValue": "100.000000",
+          "connected": false
+        },
+        {
+          "name": "bStopOnOverlap",
+          "type": "bool",
+          "direction": "Input",
+          "defaultValue": "false",
+          "connected": false
+        }
+      ]
+    },
+    {
+      "id": "2C32654B435E5055D12C07879BF9D574",
+      "title": "Set isChasing",
+      "pins": [
+        {
+          "name": "execute",
+          "type": "exec",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "then",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "isChasing",
+          "type": "bool",
+          "direction": "Input",
+          "defaultValue": "false",
+          "connected": false
+        },
+        {
+          "name": "Output_Get",
+          "type": "bool",
+          "direction": "Output",
+          "defaultValue": "false",
+          "connected": false
+        },
+        {
+          "name": "self",
+          "type": "object",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": false
+        }
+      ]
+    },
+    {
+      "id": "041627B44B5FF3E15E2AAA92ED0AFC92",
+      "title": "Wander | Target is BP Enemy AIController",
+      "pins": [
+        {
+          "name": "execute",
+          "type": "exec",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "then",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": false
+        },
+        {
+          "name": "self",
+          "type": "object",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": false
+        }
+      ]
+    },
+    {
+      "id": "4D5E84094DCE0375A23AA99F675A08AE",
+      "title": "Branch",
+      "pins": [
+        {
+          "name": "execute",
+          "type": "exec",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "Condition",
+          "type": "bool",
+          "direction": "Input",
+          "defaultValue": "true",
+          "connected": true
+        },
+        {
+          "name": "then",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": false
+        },
+        {
+          "name": "else",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": true
+        }
+      ]
+    },
+    {
+      "id": "294D72FF49FB24334FDC289DC92B0379",
+      "title": "Get isChasing",
+      "pins": [
+        {
+          "name": "isChasing",
+          "type": "bool",
+          "direction": "Output",
+          "defaultValue": "false",
+          "connected": true
+        },
+        {
+          "name": "self",
+          "type": "object",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": false
+        }
+      ]
+    },
+    {
+      "id": "F4B318354BDA794E517EF48181B6286D",
+      "title": "Get AIPerception",
+      "pins": [
+        {
+          "name": "AIPerception",
+          "type": "object",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "self",
+          "type": "object",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": false
+        }
+      ]
+    },
+    {
+      "id": "20D3A5B64FDF3022C17233A6D0F3EAF3",
+      "title": "Set Active | Target is Actor Component",
+      "pins": [
+        {
+          "name": "execute",
+          "type": "exec",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "then",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "self",
+          "type": "object",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "bNewActive",
+          "type": "bool",
+          "direction": "Input",
+          "defaultValue": "true",
+          "connected": false
+        },
+        {
+          "name": "bReset",
+          "type": "bool",
+          "direction": "Input",
+          "defaultValue": "false",
+          "connected": false
+        }
+      ]
+    },
+    {
+      "id": "9191BF7648C437D120767A9CCD51FEEE",
+      "title": "Request Stimuli Listener Update | Target is AIPerception Component",
+      "pins": [
+        {
+          "name": "execute",
+          "type": "exec",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "then",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "self",
+          "type": "object",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": true
+        }
+      ]
+    },
+    {
+      "id": "E8BED04A402D6081EDE59CBD8F097B2F",
+      "title": "Get AIPerception",
+      "pins": [
+        {
+          "name": "AIPerception",
+          "type": "object",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "self",
+          "type": "object",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": false
+        }
+      ]
+    },
+    {
+      "id": "825D25FE4386A91BFA5062BA362C470B",
+      "title": "Print String",
+      "pins": [
+        {
+          "name": "execute",
+          "type": "exec",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "then",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "self",
+          "type": "object",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": false
+        },
+        {
+          "name": "WorldContextObject",
+          "type": "object",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": false
+        },
+        {
+          "name": "InString",
+          "type": "string",
+          "direction": "Input",
+          "defaultValue": "Hello",
+          "connected": true
+        },
+        {
+          "name": "bPrintToScreen",
+          "type": "bool",
+          "direction": "Input",
+          "defaultValue": "true",
+          "connected": false
+        },
+        {
+          "name": "bPrintToLog",
+          "type": "bool",
+          "direction": "Input",
+          "defaultValue": "true",
+          "connected": false
+        },
+        {
+          "name": "TextColor",
+          "type": "struct",
+          "direction": "Input",
+          "defaultValue": "(R=0.000000,G=0.660000,B=1.000000,A=1.000000)",
+          "connected": false
+        },
+        {
+          "name": "Duration",
+          "type": "real",
+          "direction": "Input",
+          "defaultValue": "2.000000",
+          "connected": false
+        },
+        {
+          "name": "Key",
+          "type": "name",
+          "direction": "Input",
+          "defaultValue": "None",
+          "connected": false
+        }
+      ]
+    },
+    {
+      "id": "2700F5C6463106D686FC5BA1CBEE4B0E",
+      "title": "Set isChasing",
+      "pins": [
+        {
+          "name": "execute",
+          "type": "exec",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": true
+        },
+        {
+          "name": "then",
+          "type": "exec",
+          "direction": "Output",
+          "defaultValue": "",
+          "connected": false
+        },
+        {
+          "name": "isChasing",
+          "type": "bool",
+          "direction": "Input",
+          "defaultValue": "false",
+          "connected": false
+        },
+        {
+          "name": "Output_Get",
+          "type": "bool",
+          "direction": "Output",
+          "defaultValue": "false",
+          "connected": false
+        },
+        {
+          "name": "self",
+          "type": "object",
+          "direction": "Input",
+          "defaultValue": "",
+          "connected": false
+        }
+      ]
+    }
+  ],
+  "timerProps": {
+    "Time": {
+      "success": true,
+      "pinName": "Time",
+      "defaultValue": "0.200000"
+    },
+    "bLooping": {
+      "success": true,
+      "pinName": "bLooping",
+      "defaultValue": "true"
+    },
+    "bMaxOncePerFrame": {
+      "success": true,
+      "pinName": "bMaxOncePerFrame",
+      "defaultValue": "false"
+    }
+  },
+  "enemyNodeTitles": [
+    "Event BeginPlay",
+    "Event Tick",
+    "On Component Begin Overlap (CapsuleComponent)",
+    "Set Collision Enabled | Target is Primitive Component",
+    "Shadow Collision Compute | Custom Event",
+    "Get Shadow Point",
+    "Get World Location | Target is Scene Component",
+    "On Component End Overlap (CapsuleComponent)",
+    "Set isInChecker",
+    "Cast To BP_LightBall",
+    "Get Active Ball",
+    "Add",
+    "Get Actor Location | Target is Actor",
+    "vector - vector",
+    "Normalize",
+    "Line Trace By Channel",
+    "Reroute Node",
+    "vector * vector",
+    "Break Hit Result",
+    "vector + vector",
+    "Set Shadow farthest location",
+    "Get World Location | Target is Scene Component",
+    "vector - vector",
+    "Vector Length",
+    "Set Shadow colision distance",
+    "Set Box Extent | Target is Box Collision",
+    "Get CapsuleComponent",
+    "Get Overlapping Actors | Target is Primitive Component",
+    "For Each Loop",
+    "Get Active Ball",
+    "Clear",
+    "Check Overlapping Light Checker | Custom Event",
+    "Check Overlapping Light Checker | Target is BP Enemy Shadow Logic",
+    "Get World Location | Target is Scene Component",
+    "Get Shadow farthest location",
+    "Find Look at Rotation",
+    "Set World Rotation | Target is Scene Component",
+    "float / float",
+    "Set Relative Location | Target is Scene Component",
+    "Make Vector",
+    "Make Vector",
+    "Select Vector",
+    "Get Shadow Point",
+    "vector - vector",
+    "vector * float",
+    "vector + vector",
+    "Reroute Node",
+    "Reroute Node",
+    "Set Collision Enabled | Target is Primitive Component",
+    "Clear",
+    "Add",
+    "Get Slot Owners",
+    "Get Slot Owners",
+    "Add",
+    "Get Slot Owners",
+    "For Loop",
+    "Get Slot Owners",
+    "GET",
+    "Equal (Object)",
+    "Reroute Node",
+    "Branch",
+    "Reset One Shadow Collider | Target is BP Enemy Shadow Logic",
+    "Select",
+    "Get ShaodwColliderRoot1",
+    "Get ShaodwColliderRoot2",
+    "Get ShadowCollider2",
+    "Get ShadowCollider1",
+    "Select",
+    "Set Array Elem",
+    "Get Slot Owners",
+    "For Loop",
+    "Reroute Node",
+    "Reroute Node",
+    "Reroute Node",
+    "Reroute Node",
+    "Reroute Node",
+    "Shadow Collision 1 | Custom Event",
+    "Shadow Collision 2 | Custom Event",
+    "Get ShaodwColliderRoot1",
+    "Get ShadowCollider1",
+    "Get ShaodwColliderRoot2",
+    "Get ShadowCollider2",
+    "Branch",
+    "Get Slot Owners",
+    "GET",
+    "Equal (Object)",
+    "Shadow Collision 1 | Target is BP Enemy Shadow Logic",
+    "Get Slot Owners",
+    "GET",
+    "Equal (Object)",
+    "Branch",
+    "Shadow Collision 2 | Target is BP Enemy Shadow Logic",
+    "GET",
+    "Branch",
+    "Branch",
+    "Get Slot Owners",
+    "Is Valid",
+    "Get Slot Owners",
+    "Set Array Elem",
+    "GET",
+    "Get Slot Owners",
+    "Is Valid",
+    "Get Slot Owners",
+    "Set Array Elem",
+    "Shadow Collision 3 | Custom Event",
+    "Branch",
+    "Set Array Elem",
+    "GET",
+    "Get Slot Owners",
+    "Is Valid",
+    "Get Slot Owners",
+    "Get ShaodwColliderRoot3",
+    "Get ShadowCollider3",
+    "Reroute Node",
+    "Reroute Node",
+    "Get Slot Owners",
+    "GET",
+    "Equal (Object)",
+    "Branch",
+    "Shadow Collision 3 | Target is BP Enemy Shadow Logic",
+    "Get ShaodwColliderRoot3",
+    "Get ShadowCollider3",
+    "Get Slot Owners",
+    "Add",
+    "Get ShadowCollider2",
+    "Get ShadowCollider3",
+    "Get ShadowCollider1",
+    "Set Collision Enabled | Target is Primitive Component",
+    "Set Collision Enabled | Target is Primitive Component",
+    "Set Collision Enabled | Target is Primitive Component",
+    "Set isInChecker",
+    "Enemy Die | Custom Event",
+    "Print String",
+    "Component Has Tag | Target is Actor Component",
+    "Branch",
+    "Set Connect OBJ",
+    "Component Has Tag | Target is Actor Component",
+    "Branch",
+    "Set Connect OBJ",
+    "Branch",
+    "Get Connect OBJ",
+    "On Component Begin Overlap (ShadowCollider3)",
+    "On Component Begin Overlap (ShadowCollider2)",
+    "On Component Begin Overlap (ShadowCollider1)",
+    "On Component End Overlap (ShadowCollider1)",
+    "On Component End Overlap (ShadowCollider2)",
+    "On Component End Overlap (ShadowCollider3)",
+    "Actor Has Tag | Target is Actor",
+    "Actor Has Tag | Target is Actor",
+    "Branch",
+    "Branch",
+    "Destroy Actor | Target is Actor",
+    "Component Has Tag | Target is Actor Component",
+    "Branch",
+    "Actor Has Tag | Target is Actor",
+    "Component Has Tag | Target is Actor Component",
+    "Actor Has Tag | Target is Actor",
+    "OR Boolean",
+    "Set Connect OBJ",
+    "Component Has Tag | Target is Actor Component",
+    "Branch",
+    "Actor Has Tag | Target is Actor",
+    "Component Has Tag | Target is Actor Component",
+    "Actor Has Tag | Target is Actor",
+    "OR Boolean",
+    "Set Connect OBJ",
+    "Component Has Tag | Target is Actor Component",
+    "Branch",
+    "Actor Has Tag | Target is Actor",
+    "Component Has Tag | Target is Actor Component",
+    "Actor Has Tag | Target is Actor",
+    "OR Boolean",
+    "Set Connect OBJ",
+    "Component Has Tag | Target is Actor Component",
+    "Branch",
+    "Actor Has Tag | Target is Actor",
+    "Component Has Tag | Target is Actor Component",
+    "Actor Has Tag | Target is Actor",
+    "OR Boolean",
+    "Set Connect OBJ",
+    "Component Has Tag | Target is Actor Component",
+    "Branch",
+    "Actor Has Tag | Target is Actor",
+    "Component Has Tag | Target is Actor Component",
+    "Actor Has Tag | Target is Actor",
+    "OR Boolean",
+    "Set Connect OBJ",
+    "Component Has Tag | Target is Actor Component",
+    "Branch",
+    "Actor Has Tag | Target is Actor",
+    "Component Has Tag | Target is Actor Component",
+    "Actor Has Tag | Target is Actor",
+    "OR Boolean",
+    "Set Connect OBJ",
+    "Are Both Paths Blocked to Ball | Target is BP Enemy Shadow Logic",
+    "Branch",
+    "Shadow Collision Compute | Target is BP Enemy Shadow Logic",
+    "Reset One Shadow Collider | Target is BP Enemy Shadow Logic",
+    "Are Both Paths Blocked to Ball | Target is BP Enemy Shadow Logic",
+    "Branch",
+    "Shadow Collision Compute | Target is BP Enemy Shadow Logic",
+    "Reset One Shadow Collider | Target is BP Enemy Shadow Logic",
+    "Are Both Paths Blocked to Ball | Target is BP Enemy Shadow Logic",
+    "Branch",
+    "Shadow Collision Compute | Target is BP Enemy Shadow Logic",
+    "Reset One Shadow Collider | Target is BP Enemy Shadow Logic",
+    "Shadow Adjust Collision Check",
+    "Get ShaodwColliderRoot1",
+    "Get ShadowCollider1"
+  ]
+}

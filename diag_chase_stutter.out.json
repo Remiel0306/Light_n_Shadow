@@ -1,0 +1,803 @@
+{
+  "findings": [
+    {
+      "severity": "ok",
+      "issue": "Pawn = Enemy Ref",
+      "detail": {
+        "from": "Get Enemy Ref",
+        "fromPin": "Enemy Ref",
+        "toPin": "Pawn",
+        "fromTitleDetail": "Get Enemy Ref",
+        "toPos": [
+          1152,
+          400
+        ]
+      }
+    },
+    {
+      "severity": "ok",
+      "issue": "Pawn = Enemy Ref",
+      "detail": {
+        "from": "Get Enemy Ref",
+        "fromPin": "Enemy Ref",
+        "toPin": "Pawn",
+        "fromTitleDetail": "Get Enemy Ref",
+        "toPos": [
+          2064,
+          1808
+        ]
+      }
+    },
+    {
+      "severity": "ok",
+      "issue": "AI MoveTo TargetActor 接到 Player",
+      "detail": {
+        "from": "Get Player Character",
+        "fromPin": "ReturnValue",
+        "toPin": "TargetActor",
+        "fromTitleDetail": "Get Player Character",
+        "toPos": [
+          2064,
+          1808
+        ]
+      }
+    },
+    {
+      "severity": "ok",
+      "issue": "Pawn = Enemy Ref",
+      "detail": {
+        "from": "Get Enemy Ref",
+        "fromPin": "Enemy Ref",
+        "toPin": "Pawn",
+        "fromTitleDetail": "Get Enemy Ref",
+        "toPos": [
+          2432,
+          2576
+        ]
+      }
+    },
+    {
+      "severity": "ok",
+      "issue": "AI MoveTo TargetActor 接到 Player",
+      "detail": {
+        "from": "Get Player Character",
+        "fromPin": "ReturnValue",
+        "toPin": "TargetActor",
+        "fromTitleDetail": "Get Player Character",
+        "toPos": [
+          2432,
+          2576
+        ]
+      }
+    },
+    {
+      "severity": "warn",
+      "issue": "Acceptance Radius=100.000000 偏大，玩家在邊界晃會一直 Success/重追 → 跑跑停停",
+      "detail": {
+        "id": "50DCFF504B9DE169061620988FFBF432",
+        "x": 2432,
+        "y": 2576,
+        "pins": {
+          "execute": {
+            "connected": true,
+            "default": ""
+          },
+          "OnSuccess": {
+            "connected": false,
+            "default": ""
+          },
+          "OnFail": {
+            "connected": false,
+            "default": ""
+          },
+          "Pawn": {
+            "connected": true,
+            "default": ""
+          },
+          "Destination": {
+            "connected": false,
+            "default": "0, 0, 0"
+          },
+          "TargetActor": {
+            "connected": true,
+            "default": ""
+          },
+          "AcceptanceRadius": {
+            "connected": false,
+            "default": "100.000000"
+          },
+          "bStopOnOverlap": {
+            "connected": false,
+            "default": "false"
+          }
+        }
+      }
+    },
+    {
+      "severity": "warn",
+      "issue": "EventGraph 有 3 個 AI MoveTo，若 Wander+Chase 同時下指令會互相取消造成跑停",
+      "detail": [
+        {
+          "id": "B779CFDD4BB4B0A184E2BCA5D406B73C",
+          "pos": [
+            1152,
+            400
+          ],
+          "pins": {
+            "execute": {
+              "connected": true,
+              "default": ""
+            },
+            "OnSuccess": {
+              "connected": true,
+              "default": ""
+            },
+            "OnFail": {
+              "connected": true,
+              "default": ""
+            },
+            "Pawn": {
+              "connected": true,
+              "default": ""
+            },
+            "Destination": {
+              "connected": true,
+              "default": "0, 0, 0"
+            },
+            "TargetActor": {
+              "connected": false,
+              "default": ""
+            },
+            "AcceptanceRadius": {
+              "connected": false,
+              "default": "50.000000"
+            },
+            "bStopOnOverlap": {
+              "connected": false,
+              "default": "false"
+            }
+          }
+        },
+        {
+          "id": "591E841F447B22B3F0BDA19A24D75ACA",
+          "pos": [
+            2064,
+            1808
+          ],
+          "pins": {
+            "execute": {
+              "connected": true,
+              "default": ""
+            },
+            "OnSuccess": {
+              "connected": false,
+              "default": ""
+            },
+            "OnFail": {
+              "connected": true,
+              "default": ""
+            },
+            "Pawn": {
+              "connected": true,
+              "default": ""
+            },
+            "Destination": {
+              "connected": false,
+              "default": "0, 0, 0"
+            },
+            "TargetActor": {
+              "connected": true,
+              "default": ""
+            },
+            "AcceptanceRadius": {
+              "connected": false,
+              "default": "30.000000"
+            },
+            "bStopOnOverlap": {
+              "connected": false,
+              "default": "false"
+            }
+          }
+        },
+        {
+          "id": "50DCFF504B9DE169061620988FFBF432",
+          "pos": [
+            2432,
+            2576
+          ],
+          "pins": {
+            "execute": {
+              "connected": true,
+              "default": ""
+            },
+            "OnSuccess": {
+              "connected": false,
+              "default": ""
+            },
+            "OnFail": {
+              "connected": false,
+              "default": ""
+            },
+            "Pawn": {
+              "connected": true,
+              "default": ""
+            },
+            "Destination": {
+              "connected": false,
+              "default": "0, 0, 0"
+            },
+            "TargetActor": {
+              "connected": true,
+              "default": ""
+            },
+            "AcceptanceRadius": {
+              "connected": false,
+              "default": "100.000000"
+            },
+            "bStopOnOverlap": {
+              "connected": false,
+              "default": "false"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "severity": "warn",
+      "issue": "Delay=0.010000 太短，Success 後幾乎立刻重下 MoveTo，路徑一直被取消會頓挫",
+      "detail": {
+        "id": "24FC372141F9EE0FE47283B99CAF672B",
+        "pos": [
+          2768,
+          1456
+        ],
+        "duration": "0.010000"
+      }
+    }
+  ],
+  "moveTos": [
+    {
+      "id": "B779CFDD4BB4B0A184E2BCA5D406B73C",
+      "x": 1152,
+      "y": 400,
+      "pins": {
+        "execute": {
+          "connected": true,
+          "default": ""
+        },
+        "OnSuccess": {
+          "connected": true,
+          "default": ""
+        },
+        "OnFail": {
+          "connected": true,
+          "default": ""
+        },
+        "Pawn": {
+          "connected": true,
+          "default": ""
+        },
+        "Destination": {
+          "connected": true,
+          "default": "0, 0, 0"
+        },
+        "TargetActor": {
+          "connected": false,
+          "default": ""
+        },
+        "AcceptanceRadius": {
+          "connected": false,
+          "default": "50.000000"
+        },
+        "bStopOnOverlap": {
+          "connected": false,
+          "default": "false"
+        }
+      }
+    },
+    {
+      "id": "591E841F447B22B3F0BDA19A24D75ACA",
+      "x": 2064,
+      "y": 1808,
+      "pins": {
+        "execute": {
+          "connected": true,
+          "default": ""
+        },
+        "OnSuccess": {
+          "connected": false,
+          "default": ""
+        },
+        "OnFail": {
+          "connected": true,
+          "default": ""
+        },
+        "Pawn": {
+          "connected": true,
+          "default": ""
+        },
+        "Destination": {
+          "connected": false,
+          "default": "0, 0, 0"
+        },
+        "TargetActor": {
+          "connected": true,
+          "default": ""
+        },
+        "AcceptanceRadius": {
+          "connected": false,
+          "default": "30.000000"
+        },
+        "bStopOnOverlap": {
+          "connected": false,
+          "default": "false"
+        }
+      }
+    },
+    {
+      "id": "50DCFF504B9DE169061620988FFBF432",
+      "x": 2432,
+      "y": 2576,
+      "pins": {
+        "execute": {
+          "connected": true,
+          "default": ""
+        },
+        "OnSuccess": {
+          "connected": false,
+          "default": ""
+        },
+        "OnFail": {
+          "connected": false,
+          "default": ""
+        },
+        "Pawn": {
+          "connected": true,
+          "default": ""
+        },
+        "Destination": {
+          "connected": false,
+          "default": "0, 0, 0"
+        },
+        "TargetActor": {
+          "connected": true,
+          "default": ""
+        },
+        "AcceptanceRadius": {
+          "connected": false,
+          "default": "100.000000"
+        },
+        "bStopOnOverlap": {
+          "connected": false,
+          "default": "false"
+        }
+      }
+    }
+  ],
+  "moveData": [
+    {
+      "from": "Get Enemy Ref",
+      "fromPin": "Enemy Ref",
+      "toPin": "Pawn",
+      "fromTitleDetail": "Get Enemy Ref",
+      "toPos": [
+        1152,
+        400
+      ]
+    },
+    {
+      "from": "Get Random Reachable Point in Radius",
+      "fromPin": "RandomLocation",
+      "toPin": "Destination",
+      "fromTitleDetail": "Get Random Reachable Point in Radius",
+      "toPos": [
+        1152,
+        400
+      ]
+    },
+    {
+      "from": "Get Enemy Ref",
+      "fromPin": "Enemy Ref",
+      "toPin": "Pawn",
+      "fromTitleDetail": "Get Enemy Ref",
+      "toPos": [
+        2064,
+        1808
+      ]
+    },
+    {
+      "from": "Get Player Character",
+      "fromPin": "ReturnValue",
+      "toPin": "TargetActor",
+      "fromTitleDetail": "Get Player Character",
+      "toPos": [
+        2064,
+        1808
+      ]
+    },
+    {
+      "from": "Get Enemy Ref",
+      "fromPin": "Enemy Ref",
+      "toPin": "Pawn",
+      "fromTitleDetail": "Get Enemy Ref",
+      "toPos": [
+        2432,
+        2576
+      ]
+    },
+    {
+      "from": "Get Player Character",
+      "fromPin": "ReturnValue",
+      "toPin": "TargetActor",
+      "fromTitleDetail": "Get Player Character",
+      "toPos": [
+        2432,
+        2576
+      ]
+    }
+  ],
+  "delays": [
+    {
+      "id": "C8BC5F95476FE30DDA5CC5931DC602AC",
+      "pos": [
+        1568,
+        432
+      ],
+      "duration": "0.2"
+    },
+    {
+      "id": "69012D884036FF331D4626B8581E004E",
+      "pos": [
+        1568,
+        576
+      ],
+      "duration": "0.500000"
+    },
+    {
+      "id": "D8B080A947B3FFEBCD3CCB98C2AA7A05",
+      "pos": [
+        3168,
+        2064
+      ],
+      "duration": "0.2"
+    },
+    {
+      "id": "24FC372141F9EE0FE47283B99CAF672B",
+      "pos": [
+        2768,
+        1456
+      ],
+      "duration": "0.010000"
+    }
+  ],
+  "setChase": [
+    {
+      "id": "48174803485C26908AD273B7D649A7E0",
+      "pos": [
+        1232,
+        1824
+      ],
+      "val": "true"
+    },
+    {
+      "id": "ADC20E3C415AF8948F4260A12BB58314",
+      "pos": [
+        880,
+        2128
+      ],
+      "val": "false"
+    }
+  ],
+  "execInteresting": [
+    {
+      "from": "Set Enemy Ref",
+      "fromPin": "then",
+      "to": "Wander",
+      "toPin": "execute"
+    },
+    {
+      "from": "Wander",
+      "fromPin": "then",
+      "to": "Branch",
+      "toPin": "execute"
+    },
+    {
+      "from": "Branch",
+      "fromPin": "then",
+      "to": "Set MaxWalkSpeed",
+      "toPin": "execute"
+    },
+    {
+      "from": "Set MaxWalkSpeed",
+      "fromPin": "then",
+      "to": "Branch",
+      "toPin": "execute"
+    },
+    {
+      "from": "Branch",
+      "fromPin": "then",
+      "to": "AI MoveTo",
+      "toPin": "execute"
+    },
+    {
+      "from": "Delay",
+      "fromPin": "then",
+      "to": "Wander",
+      "toPin": "execute"
+    },
+    {
+      "from": "Delay",
+      "fromPin": "then",
+      "to": "Wander",
+      "toPin": "execute"
+    },
+    {
+      "from": "AI MoveTo",
+      "fromPin": "OnSuccess",
+      "to": "Delay",
+      "toPin": "execute"
+    },
+    {
+      "from": "AI MoveTo",
+      "fromPin": "OnFail",
+      "to": "Delay",
+      "toPin": "execute"
+    },
+    {
+      "from": "On Target Perception Updated (AIPerception)",
+      "fromPin": "then",
+      "to": "Branch",
+      "toPin": "execute"
+    },
+    {
+      "from": "Branch",
+      "fromPin": "then",
+      "to": "Branch",
+      "toPin": "execute"
+    },
+    {
+      "from": "Set isChasing",
+      "fromPin": "then",
+      "to": "Print String",
+      "toPin": "execute"
+    },
+    {
+      "from": "Branch",
+      "fromPin": "then",
+      "to": "Set MaxWalkSpeed",
+      "toPin": "execute"
+    },
+    {
+      "from": "Set MaxWalkSpeed",
+      "fromPin": "then",
+      "to": "AI MoveTo",
+      "toPin": "execute"
+    },
+    {
+      "from": "AI MoveTo",
+      "fromPin": "OnFail",
+      "to": "Print String",
+      "toPin": "execute"
+    },
+    {
+      "from": "Wander",
+      "fromPin": "then",
+      "to": "Print String",
+      "toPin": "execute"
+    },
+    {
+      "from": "Branch",
+      "fromPin": "else",
+      "to": "Branch",
+      "toPin": "execute"
+    },
+    {
+      "from": "Branch",
+      "fromPin": "else",
+      "to": "Print String",
+      "toPin": "execute"
+    },
+    {
+      "from": "Branch",
+      "fromPin": "then",
+      "to": "Branch",
+      "toPin": "execute"
+    },
+    {
+      "from": "Branch",
+      "fromPin": "else",
+      "to": "Wander",
+      "toPin": "execute"
+    },
+    {
+      "from": "Delay",
+      "fromPin": "then",
+      "to": "Wander",
+      "toPin": "execute"
+    },
+    {
+      "from": "Keep Chase",
+      "fromPin": "then",
+      "to": "Set MaxWalkSpeed",
+      "toPin": "execute"
+    },
+    {
+      "from": "Set MaxWalkSpeed",
+      "fromPin": "then",
+      "to": "AI MoveTo",
+      "toPin": "execute"
+    },
+    {
+      "from": "Branch",
+      "fromPin": "then",
+      "to": "Print String",
+      "toPin": "execute"
+    },
+    {
+      "from": "Branch",
+      "fromPin": "else",
+      "to": "Print String",
+      "toPin": "execute"
+    },
+    {
+      "from": "Keep Chase",
+      "fromPin": "then",
+      "to": "Print String",
+      "toPin": "execute"
+    },
+    {
+      "from": "Print String",
+      "fromPin": "then",
+      "to": "Set isChasing",
+      "toPin": "execute"
+    },
+    {
+      "from": "Print String",
+      "fromPin": "then",
+      "to": "Branch",
+      "toPin": "execute"
+    },
+    {
+      "from": "Print String",
+      "fromPin": "then",
+      "to": "Keep Chase",
+      "toPin": "execute"
+    },
+    {
+      "from": "Print String",
+      "fromPin": "then",
+      "to": "Delay",
+      "toPin": "execute"
+    },
+    {
+      "from": "Print String",
+      "fromPin": "then",
+      "to": "Branch",
+      "toPin": "execute"
+    },
+    {
+      "from": "Branch",
+      "fromPin": "then",
+      "to": "Delay",
+      "toPin": "execute"
+    },
+    {
+      "from": "Delay",
+      "fromPin": "then",
+      "to": "Keep Chase",
+      "toPin": "execute"
+    }
+  ],
+  "sightSummary": {
+    "success": true,
+    "keys": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+      "11",
+      "12",
+      "13",
+      "14",
+      "15",
+      "16",
+      "17",
+      "18",
+      "19",
+      "20",
+      "21",
+      "22",
+      "23",
+      "24",
+      "25",
+      "26",
+      "27"
+    ]
+  },
+  "nodeTitles": [
+    "Event BeginPlay",
+    "Get Controlled Pawn",
+    "Cast To BP_EnemyShadowLogic",
+    "Set Enemy Ref",
+    "Wander",
+    "Branch",
+    "Get Enemy Ref",
+    "Is Valid",
+    "Get Enemy Ref",
+    "Get CharacterMovement",
+    "Set MaxWalkSpeed",
+    "Get Random Reachable Point in Radius",
+    "Branch",
+    "Delay",
+    "Wander",
+    "Delay",
+    "Wander",
+    "Wander",
+    "AI MoveTo",
+    "Get Actor Location",
+    "Get Wander Radious",
+    "Get Normal Speed",
+    "Equal (Object)",
+    "On Target Perception Updated (AIPerception)",
+    "Get Player Character",
+    "Branch",
+    "Break AIStimulus",
+    "Set isChasing",
+    "Get Enemy Ref",
+    "Is Valid",
+    "Branch",
+    "Get CharacterMovement",
+    "Set MaxWalkSpeed",
+    "Get Chase Speed",
+    "AI MoveTo",
+    "Get Enemy Ref",
+    "Get Player Character",
+    "Wander",
+    "Get AIPerception",
+    "Set Active",
+    "Request Stimuli Listener Update",
+    "Get AIPerception",
+    "Branch",
+    "Get isChasing",
+    "Branch",
+    "Get isChasing",
+    "Branch",
+    "Delay",
+    "Keep Chase",
+    "AI MoveTo",
+    "Get Enemy Ref",
+    "Get Player Character",
+    "Set MaxWalkSpeed",
+    "Get Chase Speed",
+    "Get CharacterMovement",
+    "Branch",
+    "Get isChasing",
+    "Keep Chase",
+    "Print String",
+    "Print String",
+    "Print String",
+    "Print String",
+    "Wander",
+    "Set isChasing",
+    "Print String",
+    "Get isChasing",
+    "To String (Boolean)",
+    "Print String",
+    "Get isChasing",
+    "To String (Boolean)",
+    "Print String",
+    "Get isChasing",
+    "To String (Boolean)",
+    "Branch",
+    "Get isChasing",
+    "Keep Chase",
+    "Delay"
+  ]
+}

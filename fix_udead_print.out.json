@@ -1,0 +1,22 @@
+{
+  "log": [
+    "seq ok with K2Node_ExecutionSequence = F62739AF4E511897B464B7B9737580D9",
+    "capsule=9027805E4BB65F3DFB38A99056C95EB9 lightBranch=77B644224A1C35406B3BF0805940590A",
+    "seq title=Sequence",
+    "capsule->seq then->execute",
+    "seq0->light then_0->execute",
+    "seq1->br then_1->execute",
+    "eq cond ReturnValue->Condition",
+    "print then->execute",
+    "valid=true errors=0 []",
+    "capsule outs: [{\"from\":\"kCeAXku2Xz37OKmQVsleuQ\",\"fromPin\":\"then\",\"to\":\"9ic5r05RGJe0ZLe5c3WA2Q\",\"toPin\":\"execute\"},{\"from\":\"nKCLHECZm8GUnhOtMrnQ1g\",\"fromPin\":\"then\",\"to\":\"1gYPl0zWGfhjRcmh1vVWcA\",\"toPin\":\"execute\"}]"
+  ],
+  "v": {
+    "success": true,
+    "path": "/Game/BluePrint/Enemy/BP_EnemyShadowLogic",
+    "errorCount": 0,
+    "warningCount": 0,
+    "valid": true,
+    "messages": []
+  }
+}

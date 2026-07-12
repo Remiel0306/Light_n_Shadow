@@ -1,0 +1,61 @@
+{
+  "chaseGates": [
+    {
+      "id": "4D5E84094DCE0375A23AA99F675A08AE",
+      "pos": [
+        1168,
+        2064
+      ],
+      "outs": []
+    },
+    {
+      "id": "F30FA0CA408E73D43190A6A675B4ECA9",
+      "pos": [
+        0,
+        0
+      ],
+      "outs": [
+        "else->Branch"
+      ]
+    },
+    {
+      "id": "BB51424F44832D1A026AB988884411E5",
+      "pos": [
+        0,
+        0
+      ],
+      "outs": [
+        "else->Delay"
+      ]
+    },
+    {
+      "id": "A067F43E4630BC133DAD469693146DD2",
+      "pos": [
+        0,
+        0
+      ],
+      "outs": [
+        "else->Delay"
+      ]
+    },
+    {
+      "id": "F45DC15944B4B1BFC13A348639F6B484",
+      "pos": [
+        0,
+        0
+      ],
+      "outs": [
+        "else->Set isChasing"
+      ]
+    }
+  ],
+  "goesToValid": false,
+  "v": {
+    "success": true,
+    "path": "/Game/BluePrint/System/BP_EnemyAIController",
+    "errorCount": 0,
+    "warningCount": 0,
+    "valid": true,
+    "messages": []
+  }
+}

@@ -1,0 +1,2531 @@
+{
+  "aicVars": {
+    "success": true,
+    "path": "/Game/BluePrint/System/BP_EnemyAIController",
+    "variables": [
+      {
+        "name": "Enemy Ref",
+        "type": "object",
+        "guid": "CDC8FD2140B1C7EB074DD6A791CF92CF",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "isChasing",
+        "type": "bool",
+        "guid": "E3805BE847B6170561C03889D3D409CC",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Sight Range",
+        "type": "real",
+        "guid": "EDC6C44141791DDF68B6F5A90D67DCD3",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Wander Radious",
+        "type": "real",
+        "guid": "DD52DB514BF96D6372C58CB68C19FECC",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Normal Speed",
+        "type": "real",
+        "guid": "B7A61FEF47E892D6C66804B8DAD55F49",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Chase Speed",
+        "type": "real",
+        "guid": "21110D5E4FD30515DD5135B0755EC6D5",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      }
+    ],
+    "count": 6
+  },
+  "aicFuncs": {
+    "success": true,
+    "path": "/Game/BluePrint/System/BP_EnemyAIController",
+    "functions": [
+      {
+        "name": "UserConstructionScript",
+        "nodeCount": 1
+      }
+    ],
+    "count": 1
+  },
+  "aicComponents": {
+    "success": false,
+    "raw": {
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "MCP error -32602: Input validation error: Invalid arguments for tool blueprint: [\n  {\n    \"received\": \"list_components\",\n    \"code\": \"invalid_enum_value\",\n    \"options\": [\n      \"read\",\n      \"list_variables\",\n      \"list_functions\",\n      \"read_graph\",\n      \"read_graph_summary\",\n      \"get_execution_flow\",\n      \"get_dependencies\",\n      \"create\",\n      \"add_variable\",\n      \"set_variable_properties\",\n      \"create_function\",\n      \"delete_function\",\n      \"rename_function\",\n      \"add_node\",\n      \"delete_node\",\n      \"set_node_property\",\n      \"connect_pins\",\n      \"add_component\",\n      \"remove_component\",\n      \"set_component_property\",\n      \"set_component_override_materials\",\n      \"add_timeline_track\",\n      \"set_capsule_size\",\n      \"get_component_property\",\n      \"set_class_default\",\n      \"delete_variable\",\n      \"add_function_parameter\",\n      \"set_variable_default\",\n      \"compile\",\n      \"list_node_types\",\n      \"search_node_types\",\n      \"create_interface\",\n      \"add_interface\",\n      \"override_function\",\n      \"list_overridable_functions\",\n      \"list_graphs\",\n      \"add_event_dispatcher\",\n      \"duplicate\",\n      \"add_local_variable\",\n      \"list_local_variables\",\n      \"validate\",\n      \"read_component_properties\",\n      \"read_node_property\",\n      \"reparent_component\",\n      \"reparent\",\n      \"flush_ich\",\n      \"set_actor_tick_settings\",\n      \"export_nodes_t3d\",\n      \"import_nodes_t3d\",\n      \"set_cdo_property\",\n      \"get_cdo_properties\",\n      \"run_construction_script\",\n      \"compile_all\",\n      \"author\",\n      \"cleanup_graph\",\n      \"connect_pins_batch\",\n      \"set_node_position\",\n      \"auto_layout\"\n    ],\n    \"path\": [\n      \"action\"\n    ],\n    \"message\": \"Invalid enum value. Expected 'read' | 'list_variables' | 'list_functions' | 'read_graph' | 'read_graph_summary' | 'get_execution_flow' | 'get_dependencies' | 'create' | 'add_variable' | 'set_variable_properties' | 'create_function' | 'delete_function' | 'rename_function' | 'add_node' | 'delete_node' | 'set_node_property' | 'connect_pins' | 'add_component' | 'remove_component' | 'set_component_property' | 'set_component_override_materials' | 'add_timeline_track' | 'set_capsule_size' | 'get_component_property' | 'set_class_default' | 'delete_variable' | 'add_function_parameter' | 'set_variable_default' | 'compile' | 'list_node_types' | 'search_node_types' | 'create_interface' | 'add_interface' | 'override_function' | 'list_overridable_functions' | 'list_graphs' | 'add_event_dispatcher' | 'duplicate' | 'add_local_variable' | 'list_local_variables' | 'validate' | 'read_component_properties' | 'read_node_property' | 'reparent_component' | 'reparent' | 'flush_ich' | 'set_actor_tick_settings' | 'export_nodes_t3d' | 'import_nodes_t3d' | 'set_cdo_property' | 'get_cdo_properties' | 'run_construction_script' | 'compile_all' | 'author' | 'cleanup_graph' | 'connect_pins_batch' | 'set_node_position' | 'auto_layout', received 'list_components'\"\n  }\n]"
+          }
+        ],
+        "isError": true
+      },
+      "jsonrpc": "2.0",
+      "id": 4
+    }
+  },
+  "eventGraph": {
+    "nodeCount": 71,
+    "nodes": [
+      {
+        "id": "0BF15F0B4E92A510C9A36BA1635844A4",
+        "title": "Event BeginPlay",
+        "class": "K2Node_Event",
+        "x": -192,
+        "y": 0,
+        "pins": [
+          {
+            "name": "OutputDelegate",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "then",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "92CB25F14201BF3BC81EEF9ECC2EFD8C",
+        "title": "Get Controlled Pawn\nTarget is Controller",
+        "class": "K2Node_CallFunction",
+        "x": -80,
+        "y": 96,
+        "pins": [
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "ReturnValue",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "C8DD48214399DC54F42AE79D5DA46586",
+        "title": "Cast To BP_EnemyShadowLogic",
+        "class": "K2Node_DynamicCast",
+        "x": 256,
+        "y": 0,
+        "pins": [
+          {
+            "name": "execute",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "then",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "CastFailed",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Object",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "AsBP Enemy Shadow Logic",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "bSuccess",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "6B6EAE434C5C5CCAE9397C935AB93AA9",
+        "title": "Set Enemy Ref",
+        "class": "K2Node_VariableSet",
+        "x": 608,
+        "y": 16,
+        "pins": [
+          {
+            "name": "execute",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "then",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Enemy Ref",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Output_Get",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "67C5731F41CB90DFAD7B4F8612A8095E",
+        "title": "Wander\nCustom Event",
+        "class": "K2Node_CustomEvent",
+        "x": 0,
+        "y": 384,
+        "pins": [
+          {
+            "name": "OutputDelegate",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "then",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "2E5E46F1433FD4D17E5E7AB9208F938A",
+        "title": "Branch",
+        "class": "K2Node_IfThenElse",
+        "x": 240,
+        "y": 400,
+        "pins": [
+          {
+            "name": "execute",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Condition",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "then",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "else",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "17F04C5C445CCB77EE0139B9D0B4EF1C",
+        "title": "Get Enemy Ref",
+        "class": "K2Node_VariableGet",
+        "x": 912,
+        "y": 512,
+        "pins": [
+          {
+            "name": "Enemy Ref",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "B6FF9347428AB7F0CDD5EC8A53796347",
+        "title": "Is Valid",
+        "class": "K2Node_CallFunction",
+        "x": 0,
+        "y": 496,
+        "pins": [
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Object",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "ReturnValue",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "6BB90D2F45FDEB5A678F798D63018D59",
+        "title": "Get Enemy Ref",
+        "class": "K2Node_VariableGet",
+        "x": -160,
+        "y": 592,
+        "pins": [
+          {
+            "name": "Enemy Ref",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "27F67BE64FFE003A3390989A5E4CAA70",
+        "title": "Get CharacterMovement",
+        "class": "K2Node_VariableGet",
+        "x": 176,
+        "y": 592,
+        "pins": [
+          {
+            "name": "CharacterMovement",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "EA21F76D443F6C1F17C28BA50242EC3A",
+        "title": "Set MaxWalkSpeed",
+        "class": "K2Node_VariableSet",
+        "x": 496,
+        "y": 416,
+        "pins": [
+          {
+            "name": "execute",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "then",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "MaxWalkSpeed",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Output_Get",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "E6C9F79F47E28734B6BC94912CB1F855",
+        "title": "Get Random Reachable Point in Radius",
+        "class": "K2Node_CallFunction",
+        "x": 496,
+        "y": 624,
+        "pins": [
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "WorldContextObject",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Origin",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "RandomLocation",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Radius",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "NavData",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "FilterClass",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "ReturnValue",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "070266DA45ED7F038D6AF9A48BA0A461",
+        "title": "Branch",
+        "class": "K2Node_IfThenElse",
+        "x": 880,
+        "y": 400,
+        "pins": [
+          {
+            "name": "execute",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Condition",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "then",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "else",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "C8BC5F95476FE30DDA5CC5931DC602AC",
+        "title": "Delay",
+        "class": "K2Node_CallFunction",
+        "x": 1568,
+        "y": 432,
+        "pins": [
+          {
+            "name": "execute",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "then",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "WorldContextObject",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Duration",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "LatentInfo",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "528585E94555070A52A239BE03D5FA56",
+        "title": "Wander\nTarget is BP Enemy AIController",
+        "class": "K2Node_CallFunction",
+        "x": 1872,
+        "y": 416,
+        "pins": [
+          {
+            "name": "execute",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "then",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "69012D884036FF331D4626B8581E004E",
+        "title": "Delay",
+        "class": "K2Node_CallFunction",
+        "x": 1568,
+        "y": 576,
+        "pins": [
+          {
+            "name": "execute",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "then",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "WorldContextObject",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Duration",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "LatentInfo",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "42111A314340CC74B62951965B01BEE7",
+        "title": "Wander\nTarget is BP Enemy AIController",
+        "class": "K2Node_CallFunction",
+        "x": 832,
+        "y": -16,
+        "pins": [
+          {
+            "name": "execute",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "then",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "597CA2494FCC258A972C88B78A02BD9A",
+        "title": "Wander\nTarget is BP Enemy AIController",
+        "class": "K2Node_CallFunction",
+        "x": 1872,
+        "y": 560,
+        "pins": [
+          {
+            "name": "execute",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "then",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "B779CFDD4BB4B0A184E2BCA5D406B73C",
+        "title": "AI MoveTo",
+        "class": "K2Node_AIMoveTo",
+        "x": 1152,
+        "y": 400,
+        "pins": [
+          {
+            "name": "execute",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "then",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "OnSuccess",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "OnFail",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "MovementResult",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "WorldContextObject",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Pawn",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Destination",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "TargetActor",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "AcceptanceRadius",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "bStopOnOverlap",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "354E2BC54F782D293C26C5B9F7D41E40",
+        "title": "Get Actor Location\nTarget is Actor",
+        "class": "K2Node_CallFunction",
+        "x": 224,
+        "y": 656,
+        "pins": [
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "ReturnValue",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "6D985D9543E8159C59E76CBA26F22EB5",
+        "title": "Set Timer by Event",
+        "class": "K2Node_CallFunction",
+        "x": 1152,
+        "y": 0,
+        "pins": [
+          {
+            "name": "execute",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "then",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Delegate",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Time",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "bLooping",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "bMaxOncePerFrame",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "InitialStartDelay",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "InitialStartDelayVariance",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "ReturnValue",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "D6D21F664903460B086CB995DB422C62",
+        "title": "Check Sight\nCustom Event",
+        "class": "K2Node_CustomEvent",
+        "x": 16,
+        "y": 992,
+        "pins": [
+          {
+            "name": "OutputDelegate",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "then",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "11DBC85949A7A8D1DCCA03B878F45739",
+        "title": "Get Player Character",
+        "class": "K2Node_CallFunction",
+        "x": -288,
+        "y": 1200,
+        "pins": [
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "WorldContextObject",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "PlayerIndex",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "ReturnValue",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "36E54E6D4D4AD267EBA37084C6D4C863",
+        "title": "Branch",
+        "class": "K2Node_IfThenElse",
+        "x": 272,
+        "y": 1008,
+        "pins": [
+          {
+            "name": "execute",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Condition",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "then",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "else",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "2FDEDA7544BA49B3687660A3524A3B3D",
+        "title": "Is Valid",
+        "class": "K2Node_CallFunction",
+        "x": 16,
+        "y": 1120,
+        "pins": [
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Object",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "ReturnValue",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "84F9D7664083F0B67B20E094B69B057F",
+        "title": "Get Enemy Ref",
+        "class": "K2Node_VariableGet",
+        "x": 96,
+        "y": 1199,
+        "pins": [
+          {
+            "name": "Enemy Ref",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "B237AB54422A5D5667CF8FAFDD1564B5",
+        "title": "Get Actor Location\nTarget is Actor",
+        "class": "K2Node_CallFunction",
+        "x": 272,
+        "y": 1161,
+        "pins": [
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "ReturnValue",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "79471FC647D86F3AA7C6F3971CFCCF1F",
+        "title": "Distance (Vector)",
+        "class": "K2Node_CallFunction",
+        "x": 512,
+        "y": 1176,
+        "pins": [
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "V1",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "V2",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "ReturnValue",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "A9A0D2C343EE1D49F8F80DAAA3EB077B",
+        "title": "Get Actor Location\nTarget is Actor",
+        "class": "K2Node_CallFunction",
+        "x": 272,
+        "y": 1256,
+        "pins": [
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "ReturnValue",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "864921DD4D332E9412A474A72105736A",
+        "title": "float <= float",
+        "class": "K2Node_PromotableOperator",
+        "x": 736,
+        "y": 1152,
+        "pins": [
+          {
+            "name": "A",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "B",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "ReturnValue",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "ErrorTolerance",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "50E3AFF14BE4E82B2A39DD91E05142AE",
+        "title": "Branch",
+        "class": "K2Node_IfThenElse",
+        "x": 896,
+        "y": 1008,
+        "pins": [
+          {
+            "name": "execute",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Condition",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "then",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "else",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "6EC4473F454E17C044B2BE83A018D3BC",
+        "title": "Get Wander Radious",
+        "class": "K2Node_VariableGet",
+        "x": 288,
+        "y": 752,
+        "pins": [
+          {
+            "name": "Wander Radious",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "2B79B82548217E7ACE1CA5BE131065AF",
+        "title": "Get Normal Speed",
+        "class": "K2Node_VariableGet",
+        "x": 304,
+        "y": 512,
+        "pins": [
+          {
+            "name": "Normal Speed",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "554BD78C45211286FF2B06B35DDF5DCE",
+        "title": "Get Sight Range",
+        "class": "K2Node_VariableGet",
+        "x": 576,
+        "y": 1280,
+        "pins": [
+          {
+            "name": "Sight Range",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "53E4DFA64D5A774749C97FBC807FAB86",
+        "title": "Set isChasing",
+        "class": "K2Node_VariableSet",
+        "x": 2064,
+        "y": 960,
+        "pins": [
+          {
+            "name": "execute",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "then",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "isChasing",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Output_Get",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "C06A2BF6471F4A51A6BE27BF17124546",
+        "title": "Wander\nTarget is BP Enemy AIController",
+        "class": "K2Node_CallFunction",
+        "x": 1360,
+        "y": 1024,
+        "pins": [
+          {
+            "name": "execute",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "then",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "DFBDBBEC4EBAC42C2632ECAA17E8986F",
+        "title": "Line Trace By Channel",
+        "class": "K2Node_CallFunction",
+        "x": 1712,
+        "y": 1088,
+        "pins": [
+          {
+            "name": "execute",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "then",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "WorldContextObject",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Start",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "End",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "TraceChannel",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "bTraceComplex",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "ActorsToIgnore",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "DrawDebugType",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "OutHit",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "bIgnoreSelf",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "TraceColor",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "TraceHitColor",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "DrawTime",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "ReturnValue",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "2DF30BEE432BC1D8DB8409B0C1A7D352",
+        "title": "Set isChasing",
+        "class": "K2Node_VariableSet",
+        "x": 1120,
+        "y": 1056,
+        "pins": [
+          {
+            "name": "execute",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "then",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "isChasing",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Output_Get",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "9EF684CE4D4274CCECDD6D9ACFBC7690",
+        "title": "Get Enemy Ref",
+        "class": "K2Node_VariableGet",
+        "x": 2192,
+        "y": 1152,
+        "pins": [
+          {
+            "name": "Enemy Ref",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "86A60E9A409F47F5DB658E984B999445",
+        "title": "Get Actor Location\nTarget is Actor",
+        "class": "K2Node_CallFunction",
+        "x": 2352,
+        "y": 1104,
+        "pins": [
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "ReturnValue",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "DD1BCFD14B5170F54EFB75BC50A823A6",
+        "title": "Break Vector",
+        "class": "K2Node_CallFunction",
+        "x": 2640,
+        "y": 1136,
+        "pins": [
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "InVec",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "X",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Y",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Z",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "777B6B7D47DDD4FFFACFFA9C7FA62ED6",
+        "title": "float + float",
+        "class": "K2Node_PromotableOperator",
+        "x": 2816,
+        "y": 1200,
+        "pins": [
+          {
+            "name": "A",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "B",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "ReturnValue",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "923B5C464EE91A5E5D9F089850B9817F",
+        "title": "Get Enemy Ref",
+        "class": "K2Node_VariableGet",
+        "x": 944,
+        "y": 1312,
+        "pins": [
+          {
+            "name": "Enemy Ref",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "51B2860B414E5C2A5C36DE8738014A56",
+        "title": "Get Actor Forward Vector\nTarget is Actor",
+        "class": "K2Node_CallFunction",
+        "x": 1104,
+        "y": 1296,
+        "pins": [
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "ReturnValue",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "781458E7421706E14B6817B8C063987E",
+        "title": "Equal (Object)",
+        "class": "K2Node_PromotableOperator",
+        "x": 240,
+        "y": 1872,
+        "pins": [
+          {
+            "name": "A",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "B",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "ReturnValue",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "ErrorTolerance",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "B906AAE44FA9CF82206FBB99BFB9F63D",
+        "title": "On Target Perception Updated (AIPerception)",
+        "class": "K2Node_ComponentBoundEvent",
+        "x": -160,
+        "y": 1776,
+        "pins": [
+          {
+            "name": "OutputDelegate",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "then",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Actor",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Stimulus",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "AAF0B03F4AF65E47964F30AC57AEEF92",
+        "title": "Get Player Character",
+        "class": "K2Node_CallFunction",
+        "x": -80,
+        "y": 1936,
+        "pins": [
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "WorldContextObject",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "PlayerIndex",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "ReturnValue",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "D0E0EFBE4161CD84F5D386B0D338C0A4",
+        "title": "Branch",
+        "class": "K2Node_IfThenElse",
+        "x": 432,
+        "y": 1776,
+        "pins": [
+          {
+            "name": "execute",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Condition",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "then",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "else",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "53182A9B44727F9302A962B7D97A8C17",
+        "title": "Break AIStimulus",
+        "class": "K2Node_BreakStruct",
+        "x": 256,
+        "y": 1984,
+        "pins": [
+          {
+            "name": "AIStimulus",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Age",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "ExpirationAge",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Strength",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "StimulusLocation",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "ReceiverLocation",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Tag",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "bSuccessfullySensed",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "34E146414B25A2CAD17CC49409910821",
+        "title": "Branch",
+        "class": "K2Node_IfThenElse",
+        "x": 672,
+        "y": 1776,
+        "pins": [
+          {
+            "name": "execute",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Condition",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "then",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "else",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "48174803485C26908AD273B7D649A7E0",
+        "title": "Set isChasing",
+        "class": "K2Node_VariableSet",
+        "x": 912,
+        "y": 1792,
+        "pins": [
+          {
+            "name": "execute",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "then",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "isChasing",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Output_Get",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "F0DC9AA94E12C0D14FEEE09AA2DA2B14",
+        "title": "Get Enemy Ref",
+        "class": "K2Node_VariableGet",
+        "x": 736,
+        "y": 1968,
+        "pins": [
+          {
+            "name": "Enemy Ref",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "BCC2B6C14C85282EF3D50F9C0431EF13",
+        "title": "Is Valid",
+        "class": "K2Node_CallFunction",
+        "x": 944,
+        "y": 1904,
+        "pins": [
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Object",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "ReturnValue",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "03EA40A2444881751D1F6B82BFB73263",
+        "title": "Branch",
+        "class": "K2Node_IfThenElse",
+        "x": 1200,
+        "y": 1776,
+        "pins": [
+          {
+            "name": "execute",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Condition",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "then",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "else",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "043E2028437150FEE6EAA8B683D633A6",
+        "title": "Get CharacterMovement",
+        "class": "K2Node_VariableGet",
+        "x": 1152,
+        "y": 1968,
+        "pins": [
+          {
+            "name": "CharacterMovement",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "7644545B420280F97BD5D4A8E9A5C624",
+        "title": "Set MaxWalkSpeed",
+        "class": "K2Node_VariableSet",
+        "x": 1456,
+        "y": 1792,
+        "pins": [
+          {
+            "name": "execute",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "then",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "MaxWalkSpeed",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Output_Get",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "9F7627FF45BE473882A644AB82BDD32D",
+        "title": "Get Chase Speed",
+        "class": "K2Node_VariableGet",
+        "x": 1264,
+        "y": 1904,
+        "pins": [
+          {
+            "name": "Chase Speed",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "591E841F447B22B3F0BDA19A24D75ACA",
+        "title": "AI MoveTo",
+        "class": "K2Node_AIMoveTo",
+        "x": 1744,
+        "y": 1776,
+        "pins": [
+          {
+            "name": "execute",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "then",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "OnSuccess",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "OnFail",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "MovementResult",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "WorldContextObject",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Pawn",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Destination",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "TargetActor",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "AcceptanceRadius",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "bStopOnOverlap",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "AD6520D24CE337F814CA1E8BE0AC4563",
+        "title": "Get Enemy Ref",
+        "class": "K2Node_VariableGet",
+        "x": 1552,
+        "y": 1920,
+        "pins": [
+          {
+            "name": "Enemy Ref",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "61F07D524235B891DDBB949C71165CB9",
+        "title": "Get Player Character",
+        "class": "K2Node_CallFunction",
+        "x": 1440,
+        "y": 1968,
+        "pins": [
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "WorldContextObject",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "PlayerIndex",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "ReturnValue",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "2C32654B435E5055D12C07879BF9D574",
+        "title": "Set isChasing",
+        "class": "K2Node_VariableSet",
+        "x": 912,
+        "y": 2080,
+        "pins": [
+          {
+            "name": "execute",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "then",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "isChasing",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Output_Get",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "041627B44B5FF3E15E2AAA92ED0AFC92",
+        "title": "Wander\nTarget is BP Enemy AIController",
+        "class": "K2Node_CallFunction",
+        "x": 1408,
+        "y": 2112,
+        "pins": [
+          {
+            "name": "execute",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "then",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "4D5E84094DCE0375A23AA99F675A08AE",
+        "title": "Branch",
+        "class": "K2Node_IfThenElse",
+        "x": 1168,
+        "y": 2064,
+        "pins": [
+          {
+            "name": "execute",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Condition",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "then",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "else",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "294D72FF49FB24334FDC289DC92B0379",
+        "title": "Get isChasing",
+        "class": "K2Node_VariableGet",
+        "x": 992,
+        "y": 2192,
+        "pins": [
+          {
+            "name": "isChasing",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "F4B318354BDA794E517EF48181B6286D",
+        "title": "Get AIPerception",
+        "class": "K2Node_VariableGet",
+        "x": -208,
+        "y": -144,
+        "pins": [
+          {
+            "name": "AIPerception",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "20D3A5B64FDF3022C17233A6D0F3EAF3",
+        "title": "Set Active\nTarget is Actor Component",
+        "class": "K2Node_CallFunction",
+        "x": -32,
+        "y": -272,
+        "pins": [
+          {
+            "name": "execute",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "then",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "bNewActive",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "bReset",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "9191BF7648C437D120767A9CCD51FEEE",
+        "title": "Request Stimuli Listener Update\nTarget is AIPerception Component",
+        "class": "K2Node_CallFunction",
+        "x": 240,
+        "y": -272,
+        "pins": [
+          {
+            "name": "execute",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "then",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "E8BED04A402D6081EDE59CBD8F097B2F",
+        "title": "Get AIPerception",
+        "class": "K2Node_VariableGet",
+        "x": 208,
+        "y": -144,
+        "pins": [
+          {
+            "name": "AIPerception",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "825D25FE4386A91BFA5062BA362C470B",
+        "title": "Print String",
+        "class": "K2Node_CallFunction",
+        "x": 208,
+        "y": 1648,
+        "pins": [
+          {
+            "name": "execute",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "then",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "WorldContextObject",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "InString",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "bPrintToScreen",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "bPrintToLog",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "TextColor",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Duration",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Key",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "7E0B845C4244D0E91B791099C024AE9D",
+        "title": "Get Display Name",
+        "class": "K2Node_CallFunction",
+        "x": -128,
+        "y": 1632,
+        "pins": [
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Object",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "ReturnValue",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "2700F5C6463106D686FC5BA1CBEE4B0E",
+        "title": "Set isChasing",
+        "class": "K2Node_VariableSet",
+        "x": 2144,
+        "y": 1824,
+        "pins": [
+          {
+            "name": "execute",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "then",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "isChasing",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "Output_Get",
+            "direction": "Output",
+            "connected": false,
+            "links": []
+          },
+          {
+            "name": "self",
+            "direction": "Input",
+            "connected": false,
+            "links": []
+          }
+        ]
+      }
+    ]
+  },
+  "enemyDefaults": {
+    "success": false,
+    "raw": {
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "MCP error -32602: Input validation error: Invalid arguments for tool blueprint: [\n  {\n    \"received\": \"get_class_defaults\",\n    \"code\": \"invalid_enum_value\",\n    \"options\": [\n      \"read\",\n      \"list_variables\",\n      \"list_functions\",\n      \"read_graph\",\n      \"read_graph_summary\",\n      \"get_execution_flow\",\n      \"get_dependencies\",\n      \"create\",\n      \"add_variable\",\n      \"set_variable_properties\",\n      \"create_function\",\n      \"delete_function\",\n      \"rename_function\",\n      \"add_node\",\n      \"delete_node\",\n      \"set_node_property\",\n      \"connect_pins\",\n      \"add_component\",\n      \"remove_component\",\n      \"set_component_property\",\n      \"set_component_override_materials\",\n      \"add_timeline_track\",\n      \"set_capsule_size\",\n      \"get_component_property\",\n      \"set_class_default\",\n      \"delete_variable\",\n      \"add_function_parameter\",\n      \"set_variable_default\",\n      \"compile\",\n      \"list_node_types\",\n      \"search_node_types\",\n      \"create_interface\",\n      \"add_interface\",\n      \"override_function\",\n      \"list_overridable_functions\",\n      \"list_graphs\",\n      \"add_event_dispatcher\",\n      \"duplicate\",\n      \"add_local_variable\",\n      \"list_local_variables\",\n      \"validate\",\n      \"read_component_properties\",\n      \"read_node_property\",\n      \"reparent_component\",\n      \"reparent\",\n      \"flush_ich\",\n      \"set_actor_tick_settings\",\n      \"export_nodes_t3d\",\n      \"import_nodes_t3d\",\n      \"set_cdo_property\",\n      \"get_cdo_properties\",\n      \"run_construction_script\",\n      \"compile_all\",\n      \"author\",\n      \"cleanup_graph\",\n      \"connect_pins_batch\",\n      \"set_node_position\",\n      \"auto_layout\"\n    ],\n    \"path\": [\n      \"action\"\n    ],\n    \"message\": \"Invalid enum value. Expected 'read' | 'list_variables' | 'list_functions' | 'read_graph' | 'read_graph_summary' | 'get_execution_flow' | 'get_dependencies' | 'create' | 'add_variable' | 'set_variable_properties' | 'create_function' | 'delete_function' | 'rename_function' | 'add_node' | 'delete_node' | 'set_node_property' | 'connect_pins' | 'add_component' | 'remove_component' | 'set_component_property' | 'set_component_override_materials' | 'add_timeline_track' | 'set_capsule_size' | 'get_component_property' | 'set_class_default' | 'delete_variable' | 'add_function_parameter' | 'set_variable_default' | 'compile' | 'list_node_types' | 'search_node_types' | 'create_interface' | 'add_interface' | 'override_function' | 'list_overridable_functions' | 'list_graphs' | 'add_event_dispatcher' | 'duplicate' | 'add_local_variable' | 'list_local_variables' | 'validate' | 'read_component_properties' | 'read_node_property' | 'reparent_component' | 'reparent' | 'flush_ich' | 'set_actor_tick_settings' | 'export_nodes_t3d' | 'import_nodes_t3d' | 'set_cdo_property' | 'get_cdo_properties' | 'run_construction_script' | 'compile_all' | 'author' | 'cleanup_graph' | 'connect_pins_batch' | 'set_node_position' | 'auto_layout', received 'get_class_defaults'\"\n  }\n]"
+          }
+        ],
+        "isError": true
+      },
+      "jsonrpc": "2.0",
+      "id": 12
+    }
+  },
+  "enemyComponents": {
+    "success": false,
+    "raw": {
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "MCP error -32602: Input validation error: Invalid arguments for tool blueprint: [\n  {\n    \"received\": \"list_components\",\n    \"code\": \"invalid_enum_value\",\n    \"options\": [\n      \"read\",\n      \"list_variables\",\n      \"list_functions\",\n      \"read_graph\",\n      \"read_graph_summary\",\n      \"get_execution_flow\",\n      \"get_dependencies\",\n      \"create\",\n      \"add_variable\",\n      \"set_variable_properties\",\n      \"create_function\",\n      \"delete_function\",\n      \"rename_function\",\n      \"add_node\",\n      \"delete_node\",\n      \"set_node_property\",\n      \"connect_pins\",\n      \"add_component\",\n      \"remove_component\",\n      \"set_component_property\",\n      \"set_component_override_materials\",\n      \"add_timeline_track\",\n      \"set_capsule_size\",\n      \"get_component_property\",\n      \"set_class_default\",\n      \"delete_variable\",\n      \"add_function_parameter\",\n      \"set_variable_default\",\n      \"compile\",\n      \"list_node_types\",\n      \"search_node_types\",\n      \"create_interface\",\n      \"add_interface\",\n      \"override_function\",\n      \"list_overridable_functions\",\n      \"list_graphs\",\n      \"add_event_dispatcher\",\n      \"duplicate\",\n      \"add_local_variable\",\n      \"list_local_variables\",\n      \"validate\",\n      \"read_component_properties\",\n      \"read_node_property\",\n      \"reparent_component\",\n      \"reparent\",\n      \"flush_ich\",\n      \"set_actor_tick_settings\",\n      \"export_nodes_t3d\",\n      \"import_nodes_t3d\",\n      \"set_cdo_property\",\n      \"get_cdo_properties\",\n      \"run_construction_script\",\n      \"compile_all\",\n      \"author\",\n      \"cleanup_graph\",\n      \"connect_pins_batch\",\n      \"set_node_position\",\n      \"auto_layout\"\n    ],\n    \"path\": [\n      \"action\"\n    ],\n    \"message\": \"Invalid enum value. Expected 'read' | 'list_variables' | 'list_functions' | 'read_graph' | 'read_graph_summary' | 'get_execution_flow' | 'get_dependencies' | 'create' | 'add_variable' | 'set_variable_properties' | 'create_function' | 'delete_function' | 'rename_function' | 'add_node' | 'delete_node' | 'set_node_property' | 'connect_pins' | 'add_component' | 'remove_component' | 'set_component_property' | 'set_component_override_materials' | 'add_timeline_track' | 'set_capsule_size' | 'get_component_property' | 'set_class_default' | 'delete_variable' | 'add_function_parameter' | 'set_variable_default' | 'compile' | 'list_node_types' | 'search_node_types' | 'create_interface' | 'add_interface' | 'override_function' | 'list_overridable_functions' | 'list_graphs' | 'add_event_dispatcher' | 'duplicate' | 'add_local_variable' | 'list_local_variables' | 'validate' | 'read_component_properties' | 'read_node_property' | 'reparent_component' | 'reparent' | 'flush_ich' | 'set_actor_tick_settings' | 'export_nodes_t3d' | 'import_nodes_t3d' | 'set_cdo_property' | 'get_cdo_properties' | 'run_construction_script' | 'compile_all' | 'author' | 'cleanup_graph' | 'connect_pins_batch' | 'set_node_position' | 'auto_layout', received 'list_components'\"\n  }\n]"
+          }
+        ],
+        "isError": true
+      },
+      "jsonrpc": "2.0",
+      "id": 13
+    }
+  },
+  "enemyInterestingNodes": [
+    {
+      "id": "AE70827D46ED455AA8BBBB8274BE9FE7",
+      "title": "Event BeginPlay",
+      "class": "K2Node_Event"
+    },
+    {
+      "id": "9027805E4BB65F3DFB38A99056C95EB9",
+      "title": "On Component Begin Overlap (CapsuleComponent)",
+      "class": "K2Node_ComponentBoundEvent"
+    },
+    {
+      "id": "9CA08B1C40999BC1949E13AD32B9D0D6",
+      "title": "On Component End Overlap (CapsuleComponent)",
+      "class": "K2Node_ComponentBoundEvent"
+    },
+    {
+      "id": "AA63B691406E42F64E5BB3ADCE8F915B",
+      "title": "Get Overlapping Actors\nTarget is Primitive Component",
+      "class": "K2Node_CallFunction"
+    },
+    {
+      "id": "DB1CFBF947150FFC717D8BABC5031F9A",
+      "title": "Check Overlapping Light Checker\nCustom Event",
+      "class": "K2Node_CustomEvent"
+    },
+    {
+      "id": "90F9E81548A60BC66BEC7E935E6EB69D",
+      "title": "Check Overlapping Light Checker\nTarget is BP Enemy Shadow Logic",
+      "class": "K2Node_CallFunction"
+    },
+    {
+      "id": "8B57A19F430B4AD7CBEF7190B2F548DE",
+      "title": "Print String",
+      "class": "K2Node_CallFunction"
+    },
+    {
+      "id": "1A721B614F2ECD9DD5012BB04C936450",
+      "title": "On Component Begin Overlap (ShadowCollider3)",
+      "class": "K2Node_ComponentBoundEvent"
+    },
+    {
+      "id": "BF076E4849A5127D80C09E89B3F9AD7F",
+      "title": "On Component Begin Overlap (ShadowCollider2)",
+      "class": "K2Node_ComponentBoundEvent"
+    },
+    {
+      "id": "F8C75E3349E5A9035C719E9597A1778C",
+      "title": "On Component Begin Overlap (ShadowCollider1)",
+      "class": "K2Node_ComponentBoundEvent"
+    },
+    {
+      "id": "B62F322947B99F1A090125896D29CABC",
+      "title": "On Component End Overlap (ShadowCollider1)",
+      "class": "K2Node_ComponentBoundEvent"
+    },
+    {
+      "id": "78F87E404C975FD43E22CBA9C227E1A8",
+      "title": "On Component End Overlap (ShadowCollider2)",
+      "class": "K2Node_ComponentBoundEvent"
+    },
+    {
+      "id": "F7C7519342AC3571CC43168CB7650827",
+      "title": "On Component End Overlap (ShadowCollider3)",
+      "class": "K2Node_ComponentBoundEvent"
+    }
+  ]
+}
