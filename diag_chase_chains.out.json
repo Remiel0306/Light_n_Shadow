@@ -1,0 +1,415 @@
+{
+  "moveChains": {
+    "MoveTo@1152,400": [
+      {
+        "depth": 0,
+        "from": "AI MoveTo",
+        "fromPos": [
+          1152,
+          400
+        ],
+        "pin": "OnSuccess",
+        "to": "Delay",
+        "toPos": [
+          1568,
+          432
+        ]
+      },
+      {
+        "depth": 0,
+        "from": "AI MoveTo",
+        "fromPos": [
+          1152,
+          400
+        ],
+        "pin": "OnFail",
+        "to": "Delay",
+        "toPos": [
+          1568,
+          576
+        ]
+      },
+      {
+        "depth": 1,
+        "from": "Delay",
+        "fromPos": [
+          1568,
+          432
+        ],
+        "pin": "then",
+        "to": "Wander",
+        "toPos": [
+          1872,
+          416
+        ]
+      },
+      {
+        "depth": 1,
+        "from": "Delay",
+        "fromPos": [
+          1568,
+          576
+        ],
+        "pin": "then",
+        "to": "Wander",
+        "toPos": [
+          1872,
+          560
+        ]
+      }
+    ],
+    "MoveTo@2064,1808": [
+      {
+        "depth": 0,
+        "from": "AI MoveTo",
+        "fromPos": [
+          2064,
+          1808
+        ],
+        "pin": "OnSuccess",
+        "to": "Print String",
+        "toPos": [
+          2512,
+          1680
+        ]
+      },
+      {
+        "depth": 0,
+        "from": "AI MoveTo",
+        "fromPos": [
+          2064,
+          1808
+        ],
+        "pin": "OnFail",
+        "to": "Branch",
+        "toPos": [
+          2480,
+          1872
+        ]
+      },
+      {
+        "depth": 1,
+        "from": "Branch",
+        "fromPos": [
+          2480,
+          1872
+        ],
+        "pin": "then",
+        "to": "Delay",
+        "toPos": [
+          2720,
+          1872
+        ]
+      },
+      {
+        "depth": 1,
+        "from": "Branch",
+        "fromPos": [
+          2480,
+          1872
+        ],
+        "pin": "else",
+        "to": "Wander",
+        "toPos": [
+          2720,
+          2032
+        ]
+      },
+      {
+        "depth": 2,
+        "from": "Delay",
+        "fromPos": [
+          2720,
+          1872
+        ],
+        "pin": "then",
+        "to": "Keep Chase",
+        "toPos": [
+          2992,
+          1856
+        ]
+      }
+    ],
+    "MoveTo@2432,2576": [
+      {
+        "depth": 0,
+        "from": "AI MoveTo",
+        "fromPos": [
+          2432,
+          2576
+        ],
+        "pin": "OnSuccess",
+        "to": "Print String",
+        "toPos": [
+          2896,
+          2608
+        ]
+      },
+      {
+        "depth": 0,
+        "from": "AI MoveTo",
+        "fromPos": [
+          2432,
+          2576
+        ],
+        "pin": "OnFail",
+        "to": "Branch",
+        "toPos": [
+          2896,
+          2768
+        ]
+      },
+      {
+        "depth": 1,
+        "from": "Branch",
+        "fromPos": [
+          2896,
+          2768
+        ],
+        "pin": "then",
+        "to": "Delay",
+        "toPos": [
+          3120,
+          2768
+        ]
+      },
+      {
+        "depth": 1,
+        "from": "Branch",
+        "fromPos": [
+          2896,
+          2768
+        ],
+        "pin": "else",
+        "to": "Wander",
+        "toPos": [
+          3136,
+          2944
+        ]
+      },
+      {
+        "depth": 2,
+        "from": "Delay",
+        "fromPos": [
+          3120,
+          2768
+        ],
+        "pin": "then",
+        "to": "Keep Chase",
+        "toPos": [
+          3408,
+          2752
+        ]
+      }
+    ]
+  },
+  "keepEvShort": "VB6SJEIu1KdLIvyjH0M9QA",
+  "keepChain": [
+    {
+      "depth": 0,
+      "from": "Keep Chase",
+      "fromPos": [
+        1904,
+        2560
+      ],
+      "pin": "then",
+      "to": "Set MaxWalkSpeed",
+      "toPos": [
+        2112,
+        2592
+      ]
+    },
+    {
+      "depth": 1,
+      "from": "Set MaxWalkSpeed",
+      "fromPos": [
+        2112,
+        2592
+      ],
+      "pin": "then",
+      "to": "AI MoveTo",
+      "toPos": [
+        2432,
+        2576
+      ]
+    },
+    {
+      "depth": 2,
+      "from": "AI MoveTo",
+      "fromPos": [
+        2432,
+        2576
+      ],
+      "pin": "OnSuccess",
+      "to": "Print String",
+      "toPos": [
+        2896,
+        2608
+      ]
+    },
+    {
+      "depth": 2,
+      "from": "AI MoveTo",
+      "fromPos": [
+        2432,
+        2576
+      ],
+      "pin": "OnFail",
+      "to": "Branch",
+      "toPos": [
+        2896,
+        2768
+      ]
+    },
+    {
+      "depth": 3,
+      "from": "Branch",
+      "fromPos": [
+        2896,
+        2768
+      ],
+      "pin": "then",
+      "to": "Delay",
+      "toPos": [
+        3120,
+        2768
+      ]
+    },
+    {
+      "depth": 3,
+      "from": "Branch",
+      "fromPos": [
+        2896,
+        2768
+      ],
+      "pin": "else",
+      "to": "Wander",
+      "toPos": [
+        3136,
+        2944
+      ]
+    },
+    {
+      "depth": 4,
+      "from": "Delay",
+      "fromPos": [
+        3120,
+        2768
+      ],
+      "pin": "then",
+      "to": "Keep Chase",
+      "toPos": [
+        3408,
+        2752
+      ]
+    }
+  ],
+  "callers": [
+    "Delay@2720,1872 -then-> Keep Chase@2992,1856",
+    "Print String@1136,1600 -then-> Set isChasing@1232,1824",
+    "Delay@3120,2768 -then-> Keep Chase@3408,2752"
+  ],
+  "predictiveData": [
+    "Get Enemy Ref.Enemy Ref -> AI MoveTo.Pawn @2432,2576",
+    "Get Enemy Ref.Enemy Ref -> Get CharacterMovement.self @1808,2720",
+    "Get Player Character.ReturnValue -> Get Actor Location.self @1856,2880",
+    "Get Player Character.ReturnValue -> Get Velocity.self @1712,3008",
+    "Get Chase Speed.Chase Speed -> Set MaxWalkSpeed.MaxWalkSpeed @2112,2592",
+    "Get CharacterMovement.CharacterMovement -> Set MaxWalkSpeed.self @2112,2592",
+    "Get isChasing.isChasing -> Branch.Condition @2896,2768",
+    "vector + vector.ReturnValue -> AI MoveTo.Destination @2432,2576",
+    "Get Actor Location.ReturnValue -> vector + vector.A @2256,2736",
+    "Get Velocity.ReturnValue -> Normalize.A @1984,3008",
+    "Normalize.ReturnValue -> vector * vector.A @2240,2944",
+    "vector * vector.ReturnValue -> vector + vector.B @2256,2736",
+    "Normalize.ReturnValue -> vector * vector.A @1792,2320",
+    "vector * vector.ReturnValue -> vector + vector.B @1808,2112",
+    "Get Player Character.ReturnValue -> Get Actor Location.self @1408,2256",
+    "Get Player Character.ReturnValue -> Get Velocity.self @1264,2384",
+    "Get Actor Location.ReturnValue -> vector + vector.A @1808,2112",
+    "Get Velocity.ReturnValue -> Normalize.A @1536,2384"
+  ],
+  "prints": [
+    {
+      "pos": [
+        1136,
+        1600
+      ],
+      "str": "11"
+    },
+    {
+      "pos": [
+        1520,
+        1632
+      ],
+      "str": "Hello"
+    },
+    {
+      "pos": [
+        2512,
+        1680
+      ],
+      "str": "Player Dead"
+    },
+    {
+      "pos": [
+        2896,
+        2608
+      ],
+      "str": "Player Dead"
+    }
+  ],
+  "varList": {
+    "success": true,
+    "path": "/Game/BluePrint/System/BP_EnemyAIController",
+    "variables": [
+      {
+        "name": "Enemy Ref",
+        "type": "object",
+        "guid": "CDC8FD2140B1C7EB074DD6A791CF92CF",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "isChasing",
+        "type": "bool",
+        "guid": "E3805BE847B6170561C03889D3D409CC",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Sight Range",
+        "type": "real",
+        "guid": "EDC6C44141791DDF68B6F5A90D67DCD3",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Wander Radious",
+        "type": "real",
+        "guid": "DD52DB514BF96D6372C58CB68C19FECC",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Normal Speed",
+        "type": "real",
+        "guid": "B7A61FEF47E892D6C66804B8DAD55F49",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Chase Speed",
+        "type": "real",
+        "guid": "21110D5E4FD30515DD5135B0755EC6D5",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      }
+    ],
+    "count": 6
+  },
+  "defaults": {
+    "success": false,
+    "error": "Missing required parameter 'className'"
+  }
+}

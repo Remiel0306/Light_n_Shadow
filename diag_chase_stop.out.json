@@ -1,0 +1,678 @@
+{
+  "findings": [
+    {
+      "sev": "info",
+      "msg": "MoveTo@1152,400 是亂走（Random point） AR=50"
+    },
+    {
+      "sev": "ok",
+      "msg": "MoveTo@2064,1808 TargetActor 有接。inputs=[Get Enemy Ref.Enemy Ref->Pawn; Get Player Character.ReturnValue->TargetActor] outs=[OnSuccess->Print String; OnFail->Branch] AR=10"
+    },
+    {
+      "sev": "ok",
+      "msg": "MoveTo@2432,2576 似乎有前方點/速度偏移 inputs=[Get Enemy Ref.Enemy Ref->Pawn; vector + vector.ReturnValue->Destination] outs=[OnSuccess->Print String; OnFail->Branch] AR=10"
+    }
+  ],
+  "classified": [
+    {
+      "id": "B779CFDD4BB4B0A184E2BCA5D406B73C",
+      "pos": [
+        1152,
+        400
+      ],
+      "AcceptanceRadius": {
+        "name": "AcceptanceRadius",
+        "type": "real",
+        "direction": "Input",
+        "defaultValue": "50.000000",
+        "connected": false
+      },
+      "TargetActor": {
+        "name": "TargetActor",
+        "type": "object",
+        "direction": "Input",
+        "defaultValue": "",
+        "connected": false
+      },
+      "Destination": {
+        "name": "Destination",
+        "type": "struct",
+        "direction": "Input",
+        "defaultValue": "0, 0, 0",
+        "connected": true
+      },
+      "Pawn": {
+        "name": "Pawn",
+        "type": "object",
+        "direction": "Input",
+        "defaultValue": "",
+        "connected": true
+      },
+      "OnSuccess": {
+        "name": "OnSuccess",
+        "type": "exec",
+        "direction": "Output",
+        "defaultValue": "",
+        "connected": true
+      },
+      "OnFail": {
+        "name": "OnFail",
+        "type": "exec",
+        "direction": "Output",
+        "defaultValue": "",
+        "connected": true
+      },
+      "bStopOnOverlap": {
+        "name": "bStopOnOverlap",
+        "type": "bool",
+        "direction": "Input",
+        "defaultValue": "false",
+        "connected": false
+      },
+      "inputs": [
+        {
+          "from": "Get Enemy Ref",
+          "fromPin": "Enemy Ref",
+          "to": "AI MoveTo",
+          "toPin": "Pawn",
+          "fromPos": [
+            912,
+            512
+          ],
+          "toPos": [
+            1152,
+            400
+          ]
+        },
+        {
+          "from": "Get Random Reachable Point in Radius",
+          "fromPin": "RandomLocation",
+          "to": "AI MoveTo",
+          "toPin": "Destination",
+          "fromPos": [
+            496,
+            624
+          ],
+          "toPos": [
+            1152,
+            400
+          ]
+        }
+      ],
+      "outs": [
+        {
+          "from": {
+            "title": "AI MoveTo",
+            "pos": [
+              1152,
+              400
+            ],
+            "id": "B779CFDD4BB4B0A184E2BCA5D406B73C"
+          },
+          "fromPin": "OnSuccess",
+          "to": {
+            "title": "Delay",
+            "pos": [
+              1568,
+              432
+            ],
+            "id": "C8BC5F95476FE30DDA5CC5931DC602AC"
+          },
+          "toPin": "execute"
+        },
+        {
+          "from": {
+            "title": "AI MoveTo",
+            "pos": [
+              1152,
+              400
+            ],
+            "id": "B779CFDD4BB4B0A184E2BCA5D406B73C"
+          },
+          "fromPin": "OnFail",
+          "to": {
+            "title": "Delay",
+            "pos": [
+              1568,
+              576
+            ],
+            "id": "69012D884036FF331D4626B8581E004E"
+          },
+          "toPin": "execute"
+        }
+      ]
+    },
+    {
+      "id": "591E841F447B22B3F0BDA19A24D75ACA",
+      "pos": [
+        2064,
+        1808
+      ],
+      "AcceptanceRadius": {
+        "name": "AcceptanceRadius",
+        "type": "real",
+        "direction": "Input",
+        "defaultValue": "10.000000",
+        "connected": false
+      },
+      "TargetActor": {
+        "name": "TargetActor",
+        "type": "object",
+        "direction": "Input",
+        "defaultValue": "",
+        "connected": true
+      },
+      "Destination": {
+        "name": "Destination",
+        "type": "struct",
+        "direction": "Input",
+        "defaultValue": "0, 0, 0",
+        "connected": false
+      },
+      "Pawn": {
+        "name": "Pawn",
+        "type": "object",
+        "direction": "Input",
+        "defaultValue": "",
+        "connected": true
+      },
+      "OnSuccess": {
+        "name": "OnSuccess",
+        "type": "exec",
+        "direction": "Output",
+        "defaultValue": "",
+        "connected": true
+      },
+      "OnFail": {
+        "name": "OnFail",
+        "type": "exec",
+        "direction": "Output",
+        "defaultValue": "",
+        "connected": true
+      },
+      "bStopOnOverlap": {
+        "name": "bStopOnOverlap",
+        "type": "bool",
+        "direction": "Input",
+        "defaultValue": "false",
+        "connected": false
+      },
+      "inputs": [
+        {
+          "from": "Get Enemy Ref",
+          "fromPin": "Enemy Ref",
+          "to": "AI MoveTo",
+          "toPin": "Pawn",
+          "fromPos": [
+            1840,
+            1952
+          ],
+          "toPos": [
+            2064,
+            1808
+          ]
+        },
+        {
+          "from": "Get Player Character",
+          "fromPin": "ReturnValue",
+          "to": "AI MoveTo",
+          "toPin": "TargetActor",
+          "fromPos": [
+            960,
+            2272
+          ],
+          "toPos": [
+            2064,
+            1808
+          ]
+        }
+      ],
+      "outs": [
+        {
+          "from": {
+            "title": "AI MoveTo",
+            "pos": [
+              2064,
+              1808
+            ],
+            "id": "591E841F447B22B3F0BDA19A24D75ACA"
+          },
+          "fromPin": "OnSuccess",
+          "to": {
+            "title": "Print String",
+            "pos": [
+              2512,
+              1680
+            ],
+            "id": "439F2BA6455943E100B47D978DDF5517"
+          },
+          "toPin": "execute"
+        },
+        {
+          "from": {
+            "title": "AI MoveTo",
+            "pos": [
+              2064,
+              1808
+            ],
+            "id": "591E841F447B22B3F0BDA19A24D75ACA"
+          },
+          "fromPin": "OnFail",
+          "to": {
+            "title": "Branch",
+            "pos": [
+              2480,
+              1872
+            ],
+            "id": "62E0D93C4AD19972E8DFA7800EE96D03"
+          },
+          "toPin": "execute"
+        }
+      ]
+    },
+    {
+      "id": "50DCFF504B9DE169061620988FFBF432",
+      "pos": [
+        2432,
+        2576
+      ],
+      "AcceptanceRadius": {
+        "name": "AcceptanceRadius",
+        "type": "real",
+        "direction": "Input",
+        "defaultValue": "10.000000",
+        "connected": false
+      },
+      "TargetActor": {
+        "name": "TargetActor",
+        "type": "object",
+        "direction": "Input",
+        "defaultValue": "",
+        "connected": false
+      },
+      "Destination": {
+        "name": "Destination",
+        "type": "struct",
+        "direction": "Input",
+        "defaultValue": "0, 0, 0",
+        "connected": true
+      },
+      "Pawn": {
+        "name": "Pawn",
+        "type": "object",
+        "direction": "Input",
+        "defaultValue": "",
+        "connected": true
+      },
+      "OnSuccess": {
+        "name": "OnSuccess",
+        "type": "exec",
+        "direction": "Output",
+        "defaultValue": "",
+        "connected": true
+      },
+      "OnFail": {
+        "name": "OnFail",
+        "type": "exec",
+        "direction": "Output",
+        "defaultValue": "",
+        "connected": true
+      },
+      "bStopOnOverlap": {
+        "name": "bStopOnOverlap",
+        "type": "bool",
+        "direction": "Input",
+        "defaultValue": "false",
+        "connected": false
+      },
+      "inputs": [
+        {
+          "from": "Get Enemy Ref",
+          "fromPin": "Enemy Ref",
+          "to": "AI MoveTo",
+          "toPin": "Pawn",
+          "fromPos": [
+            1680,
+            2784
+          ],
+          "toPos": [
+            2432,
+            2576
+          ]
+        },
+        {
+          "from": "vector + vector",
+          "fromPin": "ReturnValue",
+          "to": "AI MoveTo",
+          "toPin": "Destination",
+          "fromPos": [
+            2256,
+            2736
+          ],
+          "toPos": [
+            2432,
+            2576
+          ]
+        }
+      ],
+      "outs": [
+        {
+          "from": {
+            "title": "AI MoveTo",
+            "pos": [
+              2432,
+              2576
+            ],
+            "id": "50DCFF504B9DE169061620988FFBF432"
+          },
+          "fromPin": "OnSuccess",
+          "to": {
+            "title": "Print String",
+            "pos": [
+              2896,
+              2608
+            ],
+            "id": "0EFB915C49954C6542832CB73E9EF25B"
+          },
+          "toPin": "execute"
+        },
+        {
+          "from": {
+            "title": "AI MoveTo",
+            "pos": [
+              2432,
+              2576
+            ],
+            "id": "50DCFF504B9DE169061620988FFBF432"
+          },
+          "fromPin": "OnFail",
+          "to": {
+            "title": "Branch",
+            "pos": [
+              2896,
+              2768
+            ],
+            "id": "C12473D14B39D87AF0B80E8627CCB2F4"
+          },
+          "toPin": "execute"
+        }
+      ]
+    }
+  ],
+  "keepEdges": [
+    "Delay@2720,1872 -then-> Keep Chase@2992,1856",
+    "Keep Chase@1904,2560 -then-> Set MaxWalkSpeed@2112,2592",
+    "Delay@3120,2768 -then-> Keep Chase@3408,2752"
+  ],
+  "chaseRelated": [
+    "Set Enemy Ref@608,16 -then-> Wander@832,-16",
+    "Wander@-208,352 -then-> Branch@0,368",
+    "Branch@240,400 -then-> Set MaxWalkSpeed@496,416",
+    "Set MaxWalkSpeed@496,416 -then-> Branch@880,400",
+    "Branch@880,400 -then-> AI MoveTo@1152,400",
+    "Delay@1568,432 -then-> Wander@1872,416",
+    "Delay@1568,576 -then-> Wander@1872,560",
+    "AI MoveTo@1152,400 -OnSuccess-> Delay@1568,432",
+    "AI MoveTo@1152,400 -OnFail-> Delay@1568,576",
+    "On Target Perception Updated (AIPerception)@-160,1776 -then-> Branch@432,1776",
+    "Set isChasing@1232,1824 -then-> Print String@1520,1632",
+    "Branch@1520,1808 -then-> Set MaxWalkSpeed@1776,1824",
+    "Set MaxWalkSpeed@1776,1824 -then-> AI MoveTo@2064,1808",
+    "AI MoveTo@2064,1808 -OnSuccess-> Print String@2512,1680",
+    "AI MoveTo@2064,1808 -OnFail-> Branch@2480,1872",
+    "Branch@688,1776 -else-> Wander@1232,2096",
+    "Delay@2720,1872 -then-> Keep Chase@2992,1856",
+    "Keep Chase@1904,2560 -then-> Set MaxWalkSpeed@2112,2592",
+    "AI MoveTo@2432,2576 -OnSuccess-> Print String@2896,2608",
+    "AI MoveTo@2432,2576 -OnFail-> Branch@2896,2768",
+    "Set MaxWalkSpeed@2112,2592 -then-> AI MoveTo@2432,2576",
+    "Branch@2480,1872 -then-> Delay@2720,1872",
+    "Branch@2480,1872 -else-> Wander@2720,2032",
+    "Print String@1136,1600 -then-> Set isChasing@1232,1824",
+    "Delay@3120,2768 -then-> Keep Chase@3408,2752",
+    "Branch@2896,2768 -then-> Delay@3120,2768",
+    "Branch@2896,2768 -else-> Wander@3136,2944"
+  ],
+  "velocityRelated": [
+    {
+      "title": "Get Actor Location | Target is Actor",
+      "pos": [
+        224,
+        656
+      ],
+      "class": "K2Node_CallFunction"
+    },
+    {
+      "title": "Keep Chase | Custom Event",
+      "pos": [
+        1904,
+        2560
+      ],
+      "class": "K2Node_CustomEvent"
+    },
+    {
+      "title": "Keep Chase | Target is BP Enemy AIController",
+      "pos": [
+        2992,
+        1856
+      ],
+      "class": "K2Node_CallFunction"
+    },
+    {
+      "title": "Keep Chase | Target is BP Enemy AIController",
+      "pos": [
+        3408,
+        2752
+      ],
+      "class": "K2Node_CallFunction"
+    },
+    {
+      "title": "vector + vector",
+      "pos": [
+        2256,
+        2736
+      ],
+      "class": "K2Node_PromotableOperator"
+    },
+    {
+      "title": "Get Actor Location | Target is Actor",
+      "pos": [
+        1856,
+        2880
+      ],
+      "class": "K2Node_CallFunction"
+    },
+    {
+      "title": "Get Velocity | Target is Actor",
+      "pos": [
+        1712,
+        3008
+      ],
+      "class": "K2Node_CallFunction"
+    },
+    {
+      "title": "Normalize",
+      "pos": [
+        1984,
+        3008
+      ],
+      "class": "K2Node_CallFunction"
+    },
+    {
+      "title": "vector + vector",
+      "pos": [
+        1808,
+        2112
+      ],
+      "class": "K2Node_PromotableOperator"
+    },
+    {
+      "title": "Normalize",
+      "pos": [
+        1536,
+        2384
+      ],
+      "class": "K2Node_CallFunction"
+    },
+    {
+      "title": "Get Actor Location | Target is Actor",
+      "pos": [
+        1408,
+        2256
+      ],
+      "class": "K2Node_CallFunction"
+    },
+    {
+      "title": "Get Velocity | Target is Actor",
+      "pos": [
+        1264,
+        2384
+      ],
+      "class": "K2Node_CallFunction"
+    }
+  ],
+  "moveInputs": [
+    {
+      "from": "Get Enemy Ref",
+      "fromPin": "Enemy Ref",
+      "to": "AI MoveTo",
+      "toPin": "Pawn",
+      "fromPos": [
+        912,
+        512
+      ],
+      "toPos": [
+        1152,
+        400
+      ]
+    },
+    {
+      "from": "Get Random Reachable Point in Radius",
+      "fromPin": "RandomLocation",
+      "to": "AI MoveTo",
+      "toPin": "Destination",
+      "fromPos": [
+        496,
+        624
+      ],
+      "toPos": [
+        1152,
+        400
+      ]
+    },
+    {
+      "from": "Get Enemy Ref",
+      "fromPin": "Enemy Ref",
+      "to": "AI MoveTo",
+      "toPin": "Pawn",
+      "fromPos": [
+        1840,
+        1952
+      ],
+      "toPos": [
+        2064,
+        1808
+      ]
+    },
+    {
+      "from": "Get Enemy Ref",
+      "fromPin": "Enemy Ref",
+      "to": "AI MoveTo",
+      "toPin": "Pawn",
+      "fromPos": [
+        1680,
+        2784
+      ],
+      "toPos": [
+        2432,
+        2576
+      ]
+    },
+    {
+      "from": "vector + vector",
+      "fromPin": "ReturnValue",
+      "to": "AI MoveTo",
+      "toPin": "Destination",
+      "fromPos": [
+        2256,
+        2736
+      ],
+      "toPos": [
+        2432,
+        2576
+      ]
+    },
+    {
+      "from": "Get Player Character",
+      "fromPin": "ReturnValue",
+      "to": "AI MoveTo",
+      "toPin": "TargetActor",
+      "fromPos": [
+        960,
+        2272
+      ],
+      "toPos": [
+        2064,
+        1808
+      ]
+    }
+  ],
+  "vars": [
+    {
+      "name": "Enemy Ref",
+      "type": "object",
+      "guid": "CDC8FD2140B1C7EB074DD6A791CF92CF",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    },
+    {
+      "name": "isChasing",
+      "type": "bool",
+      "guid": "E3805BE847B6170561C03889D3D409CC",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    },
+    {
+      "name": "Sight Range",
+      "type": "real",
+      "guid": "EDC6C44141791DDF68B6F5A90D67DCD3",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    },
+    {
+      "name": "Wander Radious",
+      "type": "real",
+      "guid": "DD52DB514BF96D6372C58CB68C19FECC",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    },
+    {
+      "name": "Normal Speed",
+      "type": "real",
+      "guid": "B7A61FEF47E892D6C66804B8DAD55F49",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    },
+    {
+      "name": "Chase Speed",
+      "type": "real",
+      "guid": "21110D5E4FD30515DD5135B0755EC6D5",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    }
+  ],
+  "enemyMaxWalkSpeed": {
+    "success": true,
+    "path": "/Game/BluePrint/Enemy/BP_EnemyShadowLogic",
+    "componentName": "CharMoveComp",
+    "propertyName": "MaxWalkSpeed",
+    "type": "float",
+    "value": "200.000000",
+    "inherited": false,
+    "templateClass": "CharacterMovementComponent"
+  },
+  "cdoSnippet": {
+    "success": false,
+    "error": "Missing required parameter 'className'"
+  }
+}
