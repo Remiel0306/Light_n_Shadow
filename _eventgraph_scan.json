@@ -1,6 +1,0 @@
-{
-  "vars": {
-    "success": false,
-    "error": "Blueprint not found: /Game/BluePrint/BP_ThirdPersonCharacter"
-  }
-}
