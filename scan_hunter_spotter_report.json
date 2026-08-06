@@ -1,0 +1,850 @@
+{
+  "spotter": {
+    "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+    "graphName": "EventGraph",
+    "validate": {
+      "success": true,
+      "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+      "errorCount": 0,
+      "warningCount": 0,
+      "valid": true,
+      "messages": []
+    },
+    "graphs": {
+      "success": true,
+      "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+      "graphs": [
+        {
+          "name": "UserConstructionScript",
+          "class": "EdGraph",
+          "nodeCount": 2
+        },
+        {
+          "name": "EventGraph",
+          "class": "EdGraph",
+          "nodeCount": 26
+        }
+      ]
+    },
+    "variables": {
+      "success": true,
+      "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+      "variables": [
+        {
+          "name": "Follow Target",
+          "type": "object",
+          "guid": "EAA9F8184669A3700E11099738D0ED50",
+          "instanceEditable": true,
+          "exposeOnSpawn": false
+        },
+        {
+          "name": "IsFollowing",
+          "type": "bool",
+          "guid": "4E6786E84FDE5F2CD74F239D10C871EF",
+          "instanceEditable": true,
+          "exposeOnSpawn": false
+        },
+        {
+          "name": "Hunter Ref",
+          "type": "object",
+          "guid": "BE94DE3F4C2F077ADA34AD8FFC3BE43A",
+          "instanceEditable": true,
+          "exposeOnSpawn": false
+        }
+      ],
+      "count": 3
+    },
+    "defaults": {
+      "success": true,
+      "text": "MCP error -32602: Input validation error: Invalid arguments for tool blueprint: [\n  {\n    \"received\": \"get_class_defaults\",\n    \"code\": \"invalid_enum_value\",\n    \"options\": [\n      \"read\",\n      \"list_variables\",\n      \"list_functions\",\n      \"read_graph\",\n      \"read_graph_summary\",\n      \"get_execution_flow\",\n      \"get_dependencies\",\n      \"diff\",\n      \"create\",\n      \"add_variable\",\n      \"set_variable_properties\",\n      \"create_function\",\n      \"delete_function\",\n      \"rename_function\",\n      \"add_node\",\n      \"delete_node\",\n      \"set_node_property\",\n      \"connect_pins\",\n      \"add_component\",\n      \"remove_component\",\n      \"set_component_property\",\n      \"set_component_override_materials\",\n      \"add_timeline_track\",\n      \"set_capsule_size\",\n      \"get_component_property\",\n      \"set_class_default\",\n      \"delete_variable\",\n      \"add_function_parameter\",\n      \"set_variable_default\",\n      \"compile\",\n      \"list_node_types\",\n      \"search_node_types\",\n      \"create_interface\",\n      \"add_interface\",\n      \"override_function\",\n      \"list_overridable_functions\",\n      \"list_graphs\",\n      \"resolve_graph\",\n      \"add_event_dispatcher\",\n      \"duplicate\",\n      \"add_local_variable\",\n      \"list_local_variables\",\n      \"validate\",\n      \"read_component_properties\",\n      \"read_node_property\",\n      \"reparent_component\",\n      \"reparent\",\n      \"flush_ich\",\n      \"set_actor_tick_settings\",\n      \"export_nodes_t3d\",\n      \"import_nodes_t3d\",\n      \"set_cdo_property\",\n      \"get_cdo_properties\",\n      \"run_construction_script\",\n      \"compile_all\",\n      \"author\",\n      \"cleanup_graph\",\n      \"connect_pins_batch\",\n      \"set_node_position\",\n      \"auto_layout\"\n    ],\n    \"path\": [\n      \"action\"\n    ],\n    \"message\": \"Invalid enum value. Expected 'read' | 'list_variables' | 'list_functions' | 'read_graph' | 'read_graph_summary' | 'get_execution_flow' | 'get_dependencies' | 'diff' | 'create' | 'add_variable' | 'set_variable_properties' | 'create_function' | 'delete_function' | 'rename_function' | 'add_node' | 'delete_node' | 'set_node_property' | 'connect_pins' | 'add_component' | 'remove_component' | 'set_component_property' | 'set_component_override_materials' | 'add_timeline_track' | 'set_capsule_size' | 'get_component_property' | 'set_class_default' | 'delete_variable' | 'add_function_parameter' | 'set_variable_default' | 'compile' | 'list_node_types' | 'search_node_types' | 'create_interface' | 'add_interface' | 'override_function' | 'list_overridable_functions' | 'list_graphs' | 'resolve_graph' | 'add_event_dispatcher' | 'duplicate' | 'add_local_variable' | 'list_local_variables' | 'validate' | 'read_component_properties' | 'read_node_property' | 'reparent_component' | 'reparent' | 'flush_ich' | 'set_actor_tick_settings' | 'export_nodes_t3d' | 'import_nodes_t3d' | 'set_cdo_property' | 'get_cdo_properties' | 'run_construction_script' | 'compile_all' | 'author' | 'cleanup_graph' | 'connect_pins_batch' | 'set_node_position' | 'auto_layout', received 'get_class_defaults'\"\n  }\n]"
+    },
+    "nodes": {
+      "success": true,
+      "text": "MCP error -32602: Input validation error: Invalid arguments for tool blueprint: [\n  {\n    \"received\": \"list_nodes\",\n    \"code\": \"invalid_enum_value\",\n    \"options\": [\n      \"read\",\n      \"list_variables\",\n      \"list_functions\",\n      \"read_graph\",\n      \"read_graph_summary\",\n      \"get_execution_flow\",\n      \"get_dependencies\",\n      \"diff\",\n      \"create\",\n      \"add_variable\",\n      \"set_variable_properties\",\n      \"create_function\",\n      \"delete_function\",\n      \"rename_function\",\n      \"add_node\",\n      \"delete_node\",\n      \"set_node_property\",\n      \"connect_pins\",\n      \"add_component\",\n      \"remove_component\",\n      \"set_component_property\",\n      \"set_component_override_materials\",\n      \"add_timeline_track\",\n      \"set_capsule_size\",\n      \"get_component_property\",\n      \"set_class_default\",\n      \"delete_variable\",\n      \"add_function_parameter\",\n      \"set_variable_default\",\n      \"compile\",\n      \"list_node_types\",\n      \"search_node_types\",\n      \"create_interface\",\n      \"add_interface\",\n      \"override_function\",\n      \"list_overridable_functions\",\n      \"list_graphs\",\n      \"resolve_graph\",\n      \"add_event_dispatcher\",\n      \"duplicate\",\n      \"add_local_variable\",\n      \"list_local_variables\",\n      \"validate\",\n      \"read_component_properties\",\n      \"read_node_property\",\n      \"reparent_component\",\n      \"reparent\",\n      \"flush_ich\",\n      \"set_actor_tick_settings\",\n      \"export_nodes_t3d\",\n      \"import_nodes_t3d\",\n      \"set_cdo_property\",\n      \"get_cdo_properties\",\n      \"run_construction_script\",\n      \"compile_all\",\n      \"author\",\n      \"cleanup_graph\",\n      \"connect_pins_batch\",\n      \"set_node_position\",\n      \"auto_layout\"\n    ],\n    \"path\": [\n      \"action\"\n    ],\n    \"message\": \"Invalid enum value. Expected 'read' | 'list_variables' | 'list_functions' | 'read_graph' | 'read_graph_summary' | 'get_execution_flow' | 'get_dependencies' | 'diff' | 'create' | 'add_variable' | 'set_variable_properties' | 'create_function' | 'delete_function' | 'rename_function' | 'add_node' | 'delete_node' | 'set_node_property' | 'connect_pins' | 'add_component' | 'remove_component' | 'set_component_property' | 'set_component_override_materials' | 'add_timeline_track' | 'set_capsule_size' | 'get_component_property' | 'set_class_default' | 'delete_variable' | 'add_function_parameter' | 'set_variable_default' | 'compile' | 'list_node_types' | 'search_node_types' | 'create_interface' | 'add_interface' | 'override_function' | 'list_overridable_functions' | 'list_graphs' | 'resolve_graph' | 'add_event_dispatcher' | 'duplicate' | 'add_local_variable' | 'list_local_variables' | 'validate' | 'read_component_properties' | 'read_node_property' | 'reparent_component' | 'reparent' | 'flush_ich' | 'set_actor_tick_settings' | 'export_nodes_t3d' | 'import_nodes_t3d' | 'set_cdo_property' | 'get_cdo_properties' | 'run_construction_script' | 'compile_all' | 'author' | 'cleanup_graph' | 'connect_pins_batch' | 'set_node_position' | 'auto_layout', received 'list_nodes'\"\n  }\n]"
+    },
+    "flows": {
+      "Start Follow": {
+        "success": true,
+        "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+        "graphName": "EventGraph",
+        "entryPoint": "Event BeginPlay",
+        "entryId": "NBcUFUYnmErfKi-MEX7B6Q",
+        "steps": [
+          {
+            "id": "NBcUFUYnmErfKi-MEX7B6Q",
+            "class": "K2Node_Event",
+            "title": "Event BeginPlay",
+            "branches": [
+              {
+                "pin": "then",
+                "toId": "l8KDUU4ttni_vJGashLf0g"
+              }
+            ]
+          },
+          {
+            "id": "l8KDUU4ttni_vJGashLf0g",
+            "class": "K2Node_CallParentFunction",
+            "title": "Parent: BeginPlay",
+            "branches": []
+          }
+        ],
+        "stepCount": 2
+      },
+      "Update Follow Move": {
+        "success": true,
+        "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+        "graphName": "EventGraph",
+        "entryPoint": "Event BeginPlay",
+        "entryId": "NBcUFUYnmErfKi-MEX7B6Q",
+        "steps": [
+          {
+            "id": "NBcUFUYnmErfKi-MEX7B6Q",
+            "class": "K2Node_Event",
+            "title": "Event BeginPlay",
+            "branches": [
+              {
+                "pin": "then",
+                "toId": "l8KDUU4ttni_vJGashLf0g"
+              }
+            ]
+          },
+          {
+            "id": "l8KDUU4ttni_vJGashLf0g",
+            "class": "K2Node_CallParentFunction",
+            "title": "Parent: BeginPlay",
+            "branches": []
+          }
+        ],
+        "stepCount": 2
+      },
+      "ReceiveBeginPlay": {
+        "success": true,
+        "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+        "graphName": "EventGraph",
+        "entryPoint": "Event BeginPlay",
+        "entryId": "NBcUFUYnmErfKi-MEX7B6Q",
+        "steps": [
+          {
+            "id": "NBcUFUYnmErfKi-MEX7B6Q",
+            "class": "K2Node_Event",
+            "title": "Event BeginPlay",
+            "branches": [
+              {
+                "pin": "then",
+                "toId": "l8KDUU4ttni_vJGashLf0g"
+              }
+            ]
+          },
+          {
+            "id": "l8KDUU4ttni_vJGashLf0g",
+            "class": "K2Node_CallParentFunction",
+            "title": "Parent: BeginPlay",
+            "branches": []
+          }
+        ],
+        "stepCount": 2
+      }
+    },
+    "moveToNodes": []
+  },
+  "hunter": {
+    "path": "/Game/BluePrint/Enemy/BP_EnemyHunter-Ins",
+    "graphName": "EventGraph",
+    "validate": {
+      "success": true,
+      "path": "/Game/BluePrint/Enemy/BP_EnemyHunter-Ins",
+      "errorCount": 0,
+      "warningCount": 0,
+      "valid": true,
+      "messages": []
+    },
+    "graphs": {
+      "success": true,
+      "path": "/Game/BluePrint/Enemy/BP_EnemyHunter-Ins",
+      "graphs": [
+        {
+          "name": "UserConstructionScript",
+          "class": "EdGraph",
+          "nodeCount": 2
+        },
+        {
+          "name": "EventGraph",
+          "class": "EdGraph",
+          "nodeCount": 10
+        }
+      ]
+    },
+    "variables": {
+      "success": true,
+      "path": "/Game/BluePrint/Enemy/BP_EnemyHunter-Ins",
+      "variables": [],
+      "count": 0
+    },
+    "defaults": {
+      "success": true,
+      "text": "MCP error -32602: Input validation error: Invalid arguments for tool blueprint: [\n  {\n    \"received\": \"get_class_defaults\",\n    \"code\": \"invalid_enum_value\",\n    \"options\": [\n      \"read\",\n      \"list_variables\",\n      \"list_functions\",\n      \"read_graph\",\n      \"read_graph_summary\",\n      \"get_execution_flow\",\n      \"get_dependencies\",\n      \"diff\",\n      \"create\",\n      \"add_variable\",\n      \"set_variable_properties\",\n      \"create_function\",\n      \"delete_function\",\n      \"rename_function\",\n      \"add_node\",\n      \"delete_node\",\n      \"set_node_property\",\n      \"connect_pins\",\n      \"add_component\",\n      \"remove_component\",\n      \"set_component_property\",\n      \"set_component_override_materials\",\n      \"add_timeline_track\",\n      \"set_capsule_size\",\n      \"get_component_property\",\n      \"set_class_default\",\n      \"delete_variable\",\n      \"add_function_parameter\",\n      \"set_variable_default\",\n      \"compile\",\n      \"list_node_types\",\n      \"search_node_types\",\n      \"create_interface\",\n      \"add_interface\",\n      \"override_function\",\n      \"list_overridable_functions\",\n      \"list_graphs\",\n      \"resolve_graph\",\n      \"add_event_dispatcher\",\n      \"duplicate\",\n      \"add_local_variable\",\n      \"list_local_variables\",\n      \"validate\",\n      \"read_component_properties\",\n      \"read_node_property\",\n      \"reparent_component\",\n      \"reparent\",\n      \"flush_ich\",\n      \"set_actor_tick_settings\",\n      \"export_nodes_t3d\",\n      \"import_nodes_t3d\",\n      \"set_cdo_property\",\n      \"get_cdo_properties\",\n      \"run_construction_script\",\n      \"compile_all\",\n      \"author\",\n      \"cleanup_graph\",\n      \"connect_pins_batch\",\n      \"set_node_position\",\n      \"auto_layout\"\n    ],\n    \"path\": [\n      \"action\"\n    ],\n    \"message\": \"Invalid enum value. Expected 'read' | 'list_variables' | 'list_functions' | 'read_graph' | 'read_graph_summary' | 'get_execution_flow' | 'get_dependencies' | 'diff' | 'create' | 'add_variable' | 'set_variable_properties' | 'create_function' | 'delete_function' | 'rename_function' | 'add_node' | 'delete_node' | 'set_node_property' | 'connect_pins' | 'add_component' | 'remove_component' | 'set_component_property' | 'set_component_override_materials' | 'add_timeline_track' | 'set_capsule_size' | 'get_component_property' | 'set_class_default' | 'delete_variable' | 'add_function_parameter' | 'set_variable_default' | 'compile' | 'list_node_types' | 'search_node_types' | 'create_interface' | 'add_interface' | 'override_function' | 'list_overridable_functions' | 'list_graphs' | 'resolve_graph' | 'add_event_dispatcher' | 'duplicate' | 'add_local_variable' | 'list_local_variables' | 'validate' | 'read_component_properties' | 'read_node_property' | 'reparent_component' | 'reparent' | 'flush_ich' | 'set_actor_tick_settings' | 'export_nodes_t3d' | 'import_nodes_t3d' | 'set_cdo_property' | 'get_cdo_properties' | 'run_construction_script' | 'compile_all' | 'author' | 'cleanup_graph' | 'connect_pins_batch' | 'set_node_position' | 'auto_layout', received 'get_class_defaults'\"\n  }\n]"
+    },
+    "nodes": {
+      "success": true,
+      "text": "MCP error -32602: Input validation error: Invalid arguments for tool blueprint: [\n  {\n    \"received\": \"list_nodes\",\n    \"code\": \"invalid_enum_value\",\n    \"options\": [\n      \"read\",\n      \"list_variables\",\n      \"list_functions\",\n      \"read_graph\",\n      \"read_graph_summary\",\n      \"get_execution_flow\",\n      \"get_dependencies\",\n      \"diff\",\n      \"create\",\n      \"add_variable\",\n      \"set_variable_properties\",\n      \"create_function\",\n      \"delete_function\",\n      \"rename_function\",\n      \"add_node\",\n      \"delete_node\",\n      \"set_node_property\",\n      \"connect_pins\",\n      \"add_component\",\n      \"remove_component\",\n      \"set_component_property\",\n      \"set_component_override_materials\",\n      \"add_timeline_track\",\n      \"set_capsule_size\",\n      \"get_component_property\",\n      \"set_class_default\",\n      \"delete_variable\",\n      \"add_function_parameter\",\n      \"set_variable_default\",\n      \"compile\",\n      \"list_node_types\",\n      \"search_node_types\",\n      \"create_interface\",\n      \"add_interface\",\n      \"override_function\",\n      \"list_overridable_functions\",\n      \"list_graphs\",\n      \"resolve_graph\",\n      \"add_event_dispatcher\",\n      \"duplicate\",\n      \"add_local_variable\",\n      \"list_local_variables\",\n      \"validate\",\n      \"read_component_properties\",\n      \"read_node_property\",\n      \"reparent_component\",\n      \"reparent\",\n      \"flush_ich\",\n      \"set_actor_tick_settings\",\n      \"export_nodes_t3d\",\n      \"import_nodes_t3d\",\n      \"set_cdo_property\",\n      \"get_cdo_properties\",\n      \"run_construction_script\",\n      \"compile_all\",\n      \"author\",\n      \"cleanup_graph\",\n      \"connect_pins_batch\",\n      \"set_node_position\",\n      \"auto_layout\"\n    ],\n    \"path\": [\n      \"action\"\n    ],\n    \"message\": \"Invalid enum value. Expected 'read' | 'list_variables' | 'list_functions' | 'read_graph' | 'read_graph_summary' | 'get_execution_flow' | 'get_dependencies' | 'diff' | 'create' | 'add_variable' | 'set_variable_properties' | 'create_function' | 'delete_function' | 'rename_function' | 'add_node' | 'delete_node' | 'set_node_property' | 'connect_pins' | 'add_component' | 'remove_component' | 'set_component_property' | 'set_component_override_materials' | 'add_timeline_track' | 'set_capsule_size' | 'get_component_property' | 'set_class_default' | 'delete_variable' | 'add_function_parameter' | 'set_variable_default' | 'compile' | 'list_node_types' | 'search_node_types' | 'create_interface' | 'add_interface' | 'override_function' | 'list_overridable_functions' | 'list_graphs' | 'resolve_graph' | 'add_event_dispatcher' | 'duplicate' | 'add_local_variable' | 'list_local_variables' | 'validate' | 'read_component_properties' | 'read_node_property' | 'reparent_component' | 'reparent' | 'flush_ich' | 'set_actor_tick_settings' | 'export_nodes_t3d' | 'import_nodes_t3d' | 'set_cdo_property' | 'get_cdo_properties' | 'run_construction_script' | 'compile_all' | 'author' | 'cleanup_graph' | 'connect_pins_batch' | 'set_node_position' | 'auto_layout', received 'list_nodes'\"\n  }\n]"
+    },
+    "flows": {
+      "ReceiveBeginPlay": {
+        "success": true,
+        "path": "/Game/BluePrint/Enemy/BP_EnemyHunter-Ins",
+        "graphName": "EventGraph",
+        "entryPoint": "Event BeginPlay",
+        "entryId": "EMuLGULshmDraH-kup8w_g",
+        "steps": [
+          {
+            "id": "EMuLGULshmDraH-kup8w_g",
+            "class": "K2Node_Event",
+            "title": "Event BeginPlay",
+            "branches": [
+              {
+                "pin": "then",
+                "toId": "3sWQ30KkW4HN1zSGaqQ_Xw"
+              }
+            ]
+          },
+          {
+            "id": "3sWQ30KkW4HN1zSGaqQ_Xw",
+            "class": "K2Node_CallParentFunction",
+            "title": "Parent: BeginPlay",
+            "branches": []
+          }
+        ],
+        "stepCount": 2
+      },
+      "BndEvt__BP_EnemyHunter-Ins_Mesh_K2Node_ComponentBoundEvent_0_ComponentBeginOverlapSignature__DelegateSignature": {
+        "success": true,
+        "path": "/Game/BluePrint/Enemy/BP_EnemyHunter-Ins",
+        "graphName": "EventGraph",
+        "entryPoint": "Event BeginPlay",
+        "entryId": "EMuLGULshmDraH-kup8w_g",
+        "steps": [
+          {
+            "id": "EMuLGULshmDraH-kup8w_g",
+            "class": "K2Node_Event",
+            "title": "Event BeginPlay",
+            "branches": [
+              {
+                "pin": "then",
+                "toId": "3sWQ30KkW4HN1zSGaqQ_Xw"
+              }
+            ]
+          },
+          {
+            "id": "3sWQ30KkW4HN1zSGaqQ_Xw",
+            "class": "K2Node_CallParentFunction",
+            "title": "Parent: BeginPlay",
+            "branches": []
+          }
+        ],
+        "stepCount": 2
+      }
+    }
+  },
+  "aic": {
+    "path": "/Game/BluePrint/System/BP_EnemyAIController",
+    "graphName": "EventGraph",
+    "validate": {
+      "success": true,
+      "path": "/Game/BluePrint/System/BP_EnemyAIController",
+      "errorCount": 0,
+      "warningCount": 0,
+      "valid": true,
+      "messages": []
+    },
+    "graphs": {
+      "success": true,
+      "path": "/Game/BluePrint/System/BP_EnemyAIController",
+      "graphs": [
+        {
+          "name": "UserConstructionScript",
+          "class": "EdGraph",
+          "nodeCount": 1
+        },
+        {
+          "name": "EventGraph",
+          "class": "EdGraph",
+          "nodeCount": 207
+        }
+      ]
+    },
+    "variables": {
+      "success": true,
+      "path": "/Game/BluePrint/System/BP_EnemyAIController",
+      "variables": [
+        {
+          "name": "Enemy Ref",
+          "type": "object",
+          "guid": "CDC8FD2140B1C7EB074DD6A791CF92CF",
+          "instanceEditable": true,
+          "exposeOnSpawn": false
+        },
+        {
+          "name": "isChasing",
+          "type": "bool",
+          "guid": "E3805BE847B6170561C03889D3D409CC",
+          "instanceEditable": true,
+          "exposeOnSpawn": false
+        },
+        {
+          "name": "Sight Range",
+          "type": "real",
+          "guid": "EDC6C44141791DDF68B6F5A90D67DCD3",
+          "instanceEditable": true,
+          "exposeOnSpawn": false
+        },
+        {
+          "name": "Wander Radious",
+          "type": "real",
+          "guid": "DD52DB514BF96D6372C58CB68C19FECC",
+          "instanceEditable": true,
+          "exposeOnSpawn": false
+        },
+        {
+          "name": "Normal Speed",
+          "type": "real",
+          "guid": "B7A61FEF47E892D6C66804B8DAD55F49",
+          "instanceEditable": true,
+          "exposeOnSpawn": false
+        },
+        {
+          "name": "Chase Speed",
+          "type": "real",
+          "guid": "21110D5E4FD30515DD5135B0755EC6D5",
+          "instanceEditable": true,
+          "exposeOnSpawn": false
+        },
+        {
+          "name": "ChaseTimerHandle",
+          "type": "struct",
+          "guid": "92CCBBE941D64E7640A48F82A298C4D2",
+          "instanceEditable": true,
+          "exposeOnSpawn": false
+        },
+        {
+          "name": "isAlert",
+          "type": "bool",
+          "guid": "852092104113F5885A45D4A72ED9E0B3",
+          "instanceEditable": true,
+          "exposeOnSpawn": false
+        },
+        {
+          "name": "isInvestigating",
+          "type": "bool",
+          "guid": "0E4373024355B2865126469937495914",
+          "instanceEditable": true,
+          "exposeOnSpawn": false
+        },
+        {
+          "name": "AlertRadius",
+          "type": "real",
+          "guid": "4610619044A304D2A4F40A905FE2ACDF",
+          "instanceEditable": true,
+          "exposeOnSpawn": false
+        },
+        {
+          "name": "MoveAccumulateTime",
+          "type": "real",
+          "guid": "A2D3385A4C47DF24EAF947B5508B03F0",
+          "instanceEditable": true,
+          "exposeOnSpawn": false
+        },
+        {
+          "name": "AlertMoveAccumulate",
+          "type": "real",
+          "guid": "67F047FE4D1C01B3C0F55C92521B36F3",
+          "instanceEditable": true,
+          "exposeOnSpawn": false
+        },
+        {
+          "name": "AlertScanYaw",
+          "type": "real",
+          "guid": "EAC13717438E88F3196560959BE9E189",
+          "instanceEditable": true,
+          "exposeOnSpawn": false
+        },
+        {
+          "name": "AlertScanDuration",
+          "type": "real",
+          "guid": "FAD2DA614F7EE16794250FBC5C4A03F5",
+          "instanceEditable": true,
+          "exposeOnSpawn": false
+        },
+        {
+          "name": "PatrolPointIndex",
+          "type": "int",
+          "guid": "4B9560C7465FB619F896F6A4E9498998",
+          "instanceEditable": true,
+          "exposeOnSpawn": false
+        },
+        {
+          "name": "Chase Target",
+          "type": "object",
+          "guid": "F4E43FC84F437CFE2F49E1807AC06F96",
+          "instanceEditable": true,
+          "exposeOnSpawn": false
+        },
+        {
+          "name": "EncounterStarted",
+          "type": "bool",
+          "guid": "1B3116184D0759DF6AB1FEB58E2DA8CE",
+          "instanceEditable": true,
+          "exposeOnSpawn": false
+        },
+        {
+          "name": "IsRushingKill",
+          "type": "bool",
+          "guid": "868983F84F1B6BCAE5C8B2BB3DBF47DD",
+          "instanceEditable": true,
+          "exposeOnSpawn": false
+        }
+      ],
+      "count": 18
+    },
+    "defaults": {
+      "success": true,
+      "text": "MCP error -32602: Input validation error: Invalid arguments for tool blueprint: [\n  {\n    \"received\": \"get_class_defaults\",\n    \"code\": \"invalid_enum_value\",\n    \"options\": [\n      \"read\",\n      \"list_variables\",\n      \"list_functions\",\n      \"read_graph\",\n      \"read_graph_summary\",\n      \"get_execution_flow\",\n      \"get_dependencies\",\n      \"diff\",\n      \"create\",\n      \"add_variable\",\n      \"set_variable_properties\",\n      \"create_function\",\n      \"delete_function\",\n      \"rename_function\",\n      \"add_node\",\n      \"delete_node\",\n      \"set_node_property\",\n      \"connect_pins\",\n      \"add_component\",\n      \"remove_component\",\n      \"set_component_property\",\n      \"set_component_override_materials\",\n      \"add_timeline_track\",\n      \"set_capsule_size\",\n      \"get_component_property\",\n      \"set_class_default\",\n      \"delete_variable\",\n      \"add_function_parameter\",\n      \"set_variable_default\",\n      \"compile\",\n      \"list_node_types\",\n      \"search_node_types\",\n      \"create_interface\",\n      \"add_interface\",\n      \"override_function\",\n      \"list_overridable_functions\",\n      \"list_graphs\",\n      \"resolve_graph\",\n      \"add_event_dispatcher\",\n      \"duplicate\",\n      \"add_local_variable\",\n      \"list_local_variables\",\n      \"validate\",\n      \"read_component_properties\",\n      \"read_node_property\",\n      \"reparent_component\",\n      \"reparent\",\n      \"flush_ich\",\n      \"set_actor_tick_settings\",\n      \"export_nodes_t3d\",\n      \"import_nodes_t3d\",\n      \"set_cdo_property\",\n      \"get_cdo_properties\",\n      \"run_construction_script\",\n      \"compile_all\",\n      \"author\",\n      \"cleanup_graph\",\n      \"connect_pins_batch\",\n      \"set_node_position\",\n      \"auto_layout\"\n    ],\n    \"path\": [\n      \"action\"\n    ],\n    \"message\": \"Invalid enum value. Expected 'read' | 'list_variables' | 'list_functions' | 'read_graph' | 'read_graph_summary' | 'get_execution_flow' | 'get_dependencies' | 'diff' | 'create' | 'add_variable' | 'set_variable_properties' | 'create_function' | 'delete_function' | 'rename_function' | 'add_node' | 'delete_node' | 'set_node_property' | 'connect_pins' | 'add_component' | 'remove_component' | 'set_component_property' | 'set_component_override_materials' | 'add_timeline_track' | 'set_capsule_size' | 'get_component_property' | 'set_class_default' | 'delete_variable' | 'add_function_parameter' | 'set_variable_default' | 'compile' | 'list_node_types' | 'search_node_types' | 'create_interface' | 'add_interface' | 'override_function' | 'list_overridable_functions' | 'list_graphs' | 'resolve_graph' | 'add_event_dispatcher' | 'duplicate' | 'add_local_variable' | 'list_local_variables' | 'validate' | 'read_component_properties' | 'read_node_property' | 'reparent_component' | 'reparent' | 'flush_ich' | 'set_actor_tick_settings' | 'export_nodes_t3d' | 'import_nodes_t3d' | 'set_cdo_property' | 'get_cdo_properties' | 'run_construction_script' | 'compile_all' | 'author' | 'cleanup_graph' | 'connect_pins_batch' | 'set_node_position' | 'auto_layout', received 'get_class_defaults'\"\n  }\n]"
+    },
+    "nodes": {
+      "success": true,
+      "text": "MCP error -32602: Input validation error: Invalid arguments for tool blueprint: [\n  {\n    \"received\": \"list_nodes\",\n    \"code\": \"invalid_enum_value\",\n    \"options\": [\n      \"read\",\n      \"list_variables\",\n      \"list_functions\",\n      \"read_graph\",\n      \"read_graph_summary\",\n      \"get_execution_flow\",\n      \"get_dependencies\",\n      \"diff\",\n      \"create\",\n      \"add_variable\",\n      \"set_variable_properties\",\n      \"create_function\",\n      \"delete_function\",\n      \"rename_function\",\n      \"add_node\",\n      \"delete_node\",\n      \"set_node_property\",\n      \"connect_pins\",\n      \"add_component\",\n      \"remove_component\",\n      \"set_component_property\",\n      \"set_component_override_materials\",\n      \"add_timeline_track\",\n      \"set_capsule_size\",\n      \"get_component_property\",\n      \"set_class_default\",\n      \"delete_variable\",\n      \"add_function_parameter\",\n      \"set_variable_default\",\n      \"compile\",\n      \"list_node_types\",\n      \"search_node_types\",\n      \"create_interface\",\n      \"add_interface\",\n      \"override_function\",\n      \"list_overridable_functions\",\n      \"list_graphs\",\n      \"resolve_graph\",\n      \"add_event_dispatcher\",\n      \"duplicate\",\n      \"add_local_variable\",\n      \"list_local_variables\",\n      \"validate\",\n      \"read_component_properties\",\n      \"read_node_property\",\n      \"reparent_component\",\n      \"reparent\",\n      \"flush_ich\",\n      \"set_actor_tick_settings\",\n      \"export_nodes_t3d\",\n      \"import_nodes_t3d\",\n      \"set_cdo_property\",\n      \"get_cdo_properties\",\n      \"run_construction_script\",\n      \"compile_all\",\n      \"author\",\n      \"cleanup_graph\",\n      \"connect_pins_batch\",\n      \"set_node_position\",\n      \"auto_layout\"\n    ],\n    \"path\": [\n      \"action\"\n    ],\n    \"message\": \"Invalid enum value. Expected 'read' | 'list_variables' | 'list_functions' | 'read_graph' | 'read_graph_summary' | 'get_execution_flow' | 'get_dependencies' | 'diff' | 'create' | 'add_variable' | 'set_variable_properties' | 'create_function' | 'delete_function' | 'rename_function' | 'add_node' | 'delete_node' | 'set_node_property' | 'connect_pins' | 'add_component' | 'remove_component' | 'set_component_property' | 'set_component_override_materials' | 'add_timeline_track' | 'set_capsule_size' | 'get_component_property' | 'set_class_default' | 'delete_variable' | 'add_function_parameter' | 'set_variable_default' | 'compile' | 'list_node_types' | 'search_node_types' | 'create_interface' | 'add_interface' | 'override_function' | 'list_overridable_functions' | 'list_graphs' | 'resolve_graph' | 'add_event_dispatcher' | 'duplicate' | 'add_local_variable' | 'list_local_variables' | 'validate' | 'read_component_properties' | 'read_node_property' | 'reparent_component' | 'reparent' | 'flush_ich' | 'set_actor_tick_settings' | 'export_nodes_t3d' | 'import_nodes_t3d' | 'set_cdo_property' | 'get_cdo_properties' | 'run_construction_script' | 'compile_all' | 'author' | 'cleanup_graph' | 'connect_pins_batch' | 'set_node_position' | 'auto_layout', received 'list_nodes'\"\n  }\n]"
+    },
+    "flows": {
+      "Request Kill": {
+        "success": true,
+        "path": "/Game/BluePrint/System/BP_EnemyAIController",
+        "graphName": "EventGraph",
+        "entryPoint": "Event BeginPlay",
+        "entryId": "C_FfC06SpRDJo2uhY1hEpA",
+        "steps": [
+          {
+            "id": "C_FfC06SpRDJo2uhY1hEpA",
+            "class": "K2Node_Event",
+            "title": "Event BeginPlay",
+            "branches": [
+              {
+                "pin": "then",
+                "toId": "INOltk_fMCLBcjOm0PPq8w"
+              }
+            ]
+          },
+          {
+            "id": "INOltk_fMCLBcjOm0PPq8w",
+            "class": "K2Node_CallFunction",
+            "title": "Set Active",
+            "branches": [
+              {
+                "pin": "then",
+                "toId": "kZG_dkjEN9EgdnqczVH-7g"
+              }
+            ]
+          },
+          {
+            "id": "kZG_dkjEN9EgdnqczVH-7g",
+            "class": "K2Node_CallFunction",
+            "title": "Request Stimuli Listener Update",
+            "branches": [
+              {
+                "pin": "then",
+                "toId": "yN1IIUOZ3FT0KuedXaRlhg"
+              }
+            ]
+          },
+          {
+            "id": "yN1IIUOZ3FT0KuedXaRlhg",
+            "class": "K2Node_DynamicCast",
+            "title": "Cast To BP_EnemyShadowLogic",
+            "branches": [
+              {
+                "pin": "then",
+                "toId": "a26uQ0xcXMrpOXyTWrk6qQ"
+              }
+            ]
+          },
+          {
+            "id": "a26uQ0xcXMrpOXyTWrk6qQ",
+            "class": "K2Node_VariableSet",
+            "title": "Set Enemy Ref",
+            "branches": [
+              {
+                "pin": "then",
+                "toId": "izrP_0q2r9n5yICAsT1F1w"
+              }
+            ]
+          },
+          {
+            "id": "izrP_0q2r9n5yICAsT1F1w",
+            "class": "K2Node_CallFunction",
+            "title": "Patrol",
+            "branches": []
+          }
+        ],
+        "stepCount": 6
+      },
+      "OnTargetPerceptionUpdated": {
+        "success": true,
+        "path": "/Game/BluePrint/System/BP_EnemyAIController",
+        "graphName": "EventGraph",
+        "entryPoint": "Event BeginPlay",
+        "entryId": "C_FfC06SpRDJo2uhY1hEpA",
+        "steps": [
+          {
+            "id": "C_FfC06SpRDJo2uhY1hEpA",
+            "class": "K2Node_Event",
+            "title": "Event BeginPlay",
+            "branches": [
+              {
+                "pin": "then",
+                "toId": "INOltk_fMCLBcjOm0PPq8w"
+              }
+            ]
+          },
+          {
+            "id": "INOltk_fMCLBcjOm0PPq8w",
+            "class": "K2Node_CallFunction",
+            "title": "Set Active",
+            "branches": [
+              {
+                "pin": "then",
+                "toId": "kZG_dkjEN9EgdnqczVH-7g"
+              }
+            ]
+          },
+          {
+            "id": "kZG_dkjEN9EgdnqczVH-7g",
+            "class": "K2Node_CallFunction",
+            "title": "Request Stimuli Listener Update",
+            "branches": [
+              {
+                "pin": "then",
+                "toId": "yN1IIUOZ3FT0KuedXaRlhg"
+              }
+            ]
+          },
+          {
+            "id": "yN1IIUOZ3FT0KuedXaRlhg",
+            "class": "K2Node_DynamicCast",
+            "title": "Cast To BP_EnemyShadowLogic",
+            "branches": [
+              {
+                "pin": "then",
+                "toId": "a26uQ0xcXMrpOXyTWrk6qQ"
+              }
+            ]
+          },
+          {
+            "id": "a26uQ0xcXMrpOXyTWrk6qQ",
+            "class": "K2Node_VariableSet",
+            "title": "Set Enemy Ref",
+            "branches": [
+              {
+                "pin": "then",
+                "toId": "izrP_0q2r9n5yICAsT1F1w"
+              }
+            ]
+          },
+          {
+            "id": "izrP_0q2r9n5yICAsT1F1w",
+            "class": "K2Node_CallFunction",
+            "title": "Patrol",
+            "branches": []
+          }
+        ],
+        "stepCount": 6
+      },
+      "ReceiveBeginPlay": {
+        "success": true,
+        "path": "/Game/BluePrint/System/BP_EnemyAIController",
+        "graphName": "EventGraph",
+        "entryPoint": "Event BeginPlay",
+        "entryId": "C_FfC06SpRDJo2uhY1hEpA",
+        "steps": [
+          {
+            "id": "C_FfC06SpRDJo2uhY1hEpA",
+            "class": "K2Node_Event",
+            "title": "Event BeginPlay",
+            "branches": [
+              {
+                "pin": "then",
+                "toId": "INOltk_fMCLBcjOm0PPq8w"
+              }
+            ]
+          },
+          {
+            "id": "INOltk_fMCLBcjOm0PPq8w",
+            "class": "K2Node_CallFunction",
+            "title": "Set Active",
+            "branches": [
+              {
+                "pin": "then",
+                "toId": "kZG_dkjEN9EgdnqczVH-7g"
+              }
+            ]
+          },
+          {
+            "id": "kZG_dkjEN9EgdnqczVH-7g",
+            "class": "K2Node_CallFunction",
+            "title": "Request Stimuli Listener Update",
+            "branches": [
+              {
+                "pin": "then",
+                "toId": "yN1IIUOZ3FT0KuedXaRlhg"
+              }
+            ]
+          },
+          {
+            "id": "yN1IIUOZ3FT0KuedXaRlhg",
+            "class": "K2Node_DynamicCast",
+            "title": "Cast To BP_EnemyShadowLogic",
+            "branches": [
+              {
+                "pin": "then",
+                "toId": "a26uQ0xcXMrpOXyTWrk6qQ"
+              }
+            ]
+          },
+          {
+            "id": "a26uQ0xcXMrpOXyTWrk6qQ",
+            "class": "K2Node_VariableSet",
+            "title": "Set Enemy Ref",
+            "branches": [
+              {
+                "pin": "then",
+                "toId": "izrP_0q2r9n5yICAsT1F1w"
+              }
+            ]
+          },
+          {
+            "id": "izrP_0q2r9n5yICAsT1F1w",
+            "class": "K2Node_CallFunction",
+            "title": "Patrol",
+            "branches": []
+          }
+        ],
+        "stepCount": 6
+      },
+      "Notify Encounter Started": {
+        "success": true,
+        "path": "/Game/BluePrint/System/BP_EnemyAIController",
+        "graphName": "EventGraph",
+        "entryPoint": "Event BeginPlay",
+        "entryId": "C_FfC06SpRDJo2uhY1hEpA",
+        "steps": [
+          {
+            "id": "C_FfC06SpRDJo2uhY1hEpA",
+            "class": "K2Node_Event",
+            "title": "Event BeginPlay",
+            "branches": [
+              {
+                "pin": "then",
+                "toId": "INOltk_fMCLBcjOm0PPq8w"
+              }
+            ]
+          },
+          {
+            "id": "INOltk_fMCLBcjOm0PPq8w",
+            "class": "K2Node_CallFunction",
+            "title": "Set Active",
+            "branches": [
+              {
+                "pin": "then",
+                "toId": "kZG_dkjEN9EgdnqczVH-7g"
+              }
+            ]
+          },
+          {
+            "id": "kZG_dkjEN9EgdnqczVH-7g",
+            "class": "K2Node_CallFunction",
+            "title": "Request Stimuli Listener Update",
+            "branches": [
+              {
+                "pin": "then",
+                "toId": "yN1IIUOZ3FT0KuedXaRlhg"
+              }
+            ]
+          },
+          {
+            "id": "yN1IIUOZ3FT0KuedXaRlhg",
+            "class": "K2Node_DynamicCast",
+            "title": "Cast To BP_EnemyShadowLogic",
+            "branches": [
+              {
+                "pin": "then",
+                "toId": "a26uQ0xcXMrpOXyTWrk6qQ"
+              }
+            ]
+          },
+          {
+            "id": "a26uQ0xcXMrpOXyTWrk6qQ",
+            "class": "K2Node_VariableSet",
+            "title": "Set Enemy Ref",
+            "branches": [
+              {
+                "pin": "then",
+                "toId": "izrP_0q2r9n5yICAsT1F1w"
+              }
+            ]
+          },
+          {
+            "id": "izrP_0q2r9n5yICAsT1F1w",
+            "class": "K2Node_CallFunction",
+            "title": "Patrol",
+            "branches": []
+          }
+        ],
+        "stepCount": 6
+      },
+      "Keep Chase": {
+        "success": true,
+        "path": "/Game/BluePrint/System/BP_EnemyAIController",
+        "graphName": "EventGraph",
+        "entryPoint": "Event BeginPlay",
+        "entryId": "C_FfC06SpRDJo2uhY1hEpA",
+        "steps": [
+          {
+            "id": "C_FfC06SpRDJo2uhY1hEpA",
+            "class": "K2Node_Event",
+            "title": "Event BeginPlay",
+            "branches": [
+              {
+                "pin": "then",
+                "toId": "INOltk_fMCLBcjOm0PPq8w"
+              }
+            ]
+          },
+          {
+            "id": "INOltk_fMCLBcjOm0PPq8w",
+            "class": "K2Node_CallFunction",
+            "title": "Set Active",
+            "branches": [
+              {
+                "pin": "then",
+                "toId": "kZG_dkjEN9EgdnqczVH-7g"
+              }
+            ]
+          },
+          {
+            "id": "kZG_dkjEN9EgdnqczVH-7g",
+            "class": "K2Node_CallFunction",
+            "title": "Request Stimuli Listener Update",
+            "branches": [
+              {
+                "pin": "then",
+                "toId": "yN1IIUOZ3FT0KuedXaRlhg"
+              }
+            ]
+          },
+          {
+            "id": "yN1IIUOZ3FT0KuedXaRlhg",
+            "class": "K2Node_DynamicCast",
+            "title": "Cast To BP_EnemyShadowLogic",
+            "branches": [
+              {
+                "pin": "then",
+                "toId": "a26uQ0xcXMrpOXyTWrk6qQ"
+              }
+            ]
+          },
+          {
+            "id": "a26uQ0xcXMrpOXyTWrk6qQ",
+            "class": "K2Node_VariableSet",
+            "title": "Set Enemy Ref",
+            "branches": [
+              {
+                "pin": "then",
+                "toId": "izrP_0q2r9n5yICAsT1F1w"
+              }
+            ]
+          },
+          {
+            "id": "izrP_0q2r9n5yICAsT1F1w",
+            "class": "K2Node_CallFunction",
+            "title": "Patrol",
+            "branches": []
+          }
+        ],
+        "stepCount": 6
+      },
+      "Wander": {
+        "success": true,
+        "path": "/Game/BluePrint/System/BP_EnemyAIController",
+        "graphName": "EventGraph",
+        "entryPoint": "Event BeginPlay",
+        "entryId": "C_FfC06SpRDJo2uhY1hEpA",
+        "steps": [
+          {
+            "id": "C_FfC06SpRDJo2uhY1hEpA",
+            "class": "K2Node_Event",
+            "title": "Event BeginPlay",
+            "branches": [
+              {
+                "pin": "then",
+                "toId": "INOltk_fMCLBcjOm0PPq8w"
+              }
+            ]
+          },
+          {
+            "id": "INOltk_fMCLBcjOm0PPq8w",
+            "class": "K2Node_CallFunction",
+            "title": "Set Active",
+            "branches": [
+              {
+                "pin": "then",
+                "toId": "kZG_dkjEN9EgdnqczVH-7g"
+              }
+            ]
+          },
+          {
+            "id": "kZG_dkjEN9EgdnqczVH-7g",
+            "class": "K2Node_CallFunction",
+            "title": "Request Stimuli Listener Update",
+            "branches": [
+              {
+                "pin": "then",
+                "toId": "yN1IIUOZ3FT0KuedXaRlhg"
+              }
+            ]
+          },
+          {
+            "id": "yN1IIUOZ3FT0KuedXaRlhg",
+            "class": "K2Node_DynamicCast",
+            "title": "Cast To BP_EnemyShadowLogic",
+            "branches": [
+              {
+                "pin": "then",
+                "toId": "a26uQ0xcXMrpOXyTWrk6qQ"
+              }
+            ]
+          },
+          {
+            "id": "a26uQ0xcXMrpOXyTWrk6qQ",
+            "class": "K2Node_VariableSet",
+            "title": "Set Enemy Ref",
+            "branches": [
+              {
+                "pin": "then",
+                "toId": "izrP_0q2r9n5yICAsT1F1w"
+              }
+            ]
+          },
+          {
+            "id": "izrP_0q2r9n5yICAsT1F1w",
+            "class": "K2Node_CallFunction",
+            "title": "Patrol",
+            "branches": []
+          }
+        ],
+        "stepCount": 6
+      }
+    },
+    "moveToNodes": []
+  },
+  "parentDefaults": {
+    "success": true,
+    "text": "MCP error -32602: Input validation error: Invalid arguments for tool blueprint: [\n  {\n    \"received\": \"get_class_defaults\",\n    \"code\": \"invalid_enum_value\",\n    \"options\": [\n      \"read\",\n      \"list_variables\",\n      \"list_functions\",\n      \"read_graph\",\n      \"read_graph_summary\",\n      \"get_execution_flow\",\n      \"get_dependencies\",\n      \"diff\",\n      \"create\",\n      \"add_variable\",\n      \"set_variable_properties\",\n      \"create_function\",\n      \"delete_function\",\n      \"rename_function\",\n      \"add_node\",\n      \"delete_node\",\n      \"set_node_property\",\n      \"connect_pins\",\n      \"add_component\",\n      \"remove_component\",\n      \"set_component_property\",\n      \"set_component_override_materials\",\n      \"add_timeline_track\",\n      \"set_capsule_size\",\n      \"get_component_property\",\n      \"set_class_default\",\n      \"delete_variable\",\n      \"add_function_parameter\",\n      \"set_variable_default\",\n      \"compile\",\n      \"list_node_types\",\n      \"search_node_types\",\n      \"create_interface\",\n      \"add_interface\",\n      \"override_function\",\n      \"list_overridable_functions\",\n      \"list_graphs\",\n      \"resolve_graph\",\n      \"add_event_dispatcher\",\n      \"duplicate\",\n      \"add_local_variable\",\n      \"list_local_variables\",\n      \"validate\",\n      \"read_component_properties\",\n      \"read_node_property\",\n      \"reparent_component\",\n      \"reparent\",\n      \"flush_ich\",\n      \"set_actor_tick_settings\",\n      \"export_nodes_t3d\",\n      \"import_nodes_t3d\",\n      \"set_cdo_property\",\n      \"get_cdo_properties\",\n      \"run_construction_script\",\n      \"compile_all\",\n      \"author\",\n      \"cleanup_graph\",\n      \"connect_pins_batch\",\n      \"set_node_position\",\n      \"auto_layout\"\n    ],\n    \"path\": [\n      \"action\"\n    ],\n    \"message\": \"Invalid enum value. Expected 'read' | 'list_variables' | 'list_functions' | 'read_graph' | 'read_graph_summary' | 'get_execution_flow' | 'get_dependencies' | 'diff' | 'create' | 'add_variable' | 'set_variable_properties' | 'create_function' | 'delete_function' | 'rename_function' | 'add_node' | 'delete_node' | 'set_node_property' | 'connect_pins' | 'add_component' | 'remove_component' | 'set_component_property' | 'set_component_override_materials' | 'add_timeline_track' | 'set_capsule_size' | 'get_component_property' | 'set_class_default' | 'delete_variable' | 'add_function_parameter' | 'set_variable_default' | 'compile' | 'list_node_types' | 'search_node_types' | 'create_interface' | 'add_interface' | 'override_function' | 'list_overridable_functions' | 'list_graphs' | 'resolve_graph' | 'add_event_dispatcher' | 'duplicate' | 'add_local_variable' | 'list_local_variables' | 'validate' | 'read_component_properties' | 'read_node_property' | 'reparent_component' | 'reparent' | 'flush_ich' | 'set_actor_tick_settings' | 'export_nodes_t3d' | 'import_nodes_t3d' | 'set_cdo_property' | 'get_cdo_properties' | 'run_construction_script' | 'compile_all' | 'author' | 'cleanup_graph' | 'connect_pins_batch' | 'set_node_position' | 'auto_layout', received 'get_class_defaults'\"\n  }\n]"
+  }
+}

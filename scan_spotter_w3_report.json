@@ -1,0 +1,1421 @@
+{
+  "spotterValidate": {
+    "success": true,
+    "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+    "errorCount": 0,
+    "warningCount": 0,
+    "valid": true,
+    "messages": []
+  },
+  "spotterVars": {
+    "success": true,
+    "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+    "variables": [
+      {
+        "name": "Follow Target",
+        "type": "object",
+        "guid": "EAA9F8184669A3700E11099738D0ED50",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "IsFollowing",
+        "type": "bool",
+        "guid": "4E6786E84FDE5F2CD74F239D10C871EF",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Hunter Ref",
+        "type": "object",
+        "guid": "BE94DE3F4C2F077ADA34AD8FFC3BE43A",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Point A",
+        "type": "object",
+        "guid": "600F96ED47B34DFEEDC66396E04397AD",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Point B",
+        "type": "object",
+        "guid": "9D38D190484FD69F572146A90C3EF08C",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Point C",
+        "type": "object",
+        "guid": "CBCF10F44480C1FE4370E8A7109F8930",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Phase 2",
+        "type": "bool",
+        "guid": "436111C94A11F039BFEBC9B4ADFB008B",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Phase1TimerHandle",
+        "type": "struct",
+        "guid": "03DE66F045B8C698D38E7AA9CFBE25E5",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "ScanWaitTime",
+        "type": "real",
+        "guid": "CB5C3E65498874BE291001AB780A84E1",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "HalfwayTurnChance",
+        "type": "real",
+        "guid": "B5763D54408F3EF3504696A474E8F2C3",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      }
+    ],
+    "count": 10
+  },
+  "spotterSummary": {
+    "success": true,
+    "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+    "graphName": "EventGraph",
+    "nodes": [
+      {
+        "id": "NBcUFUYnmErfKi-MEX7B6Q",
+        "class": "K2Node_Event",
+        "title": "Event BeginPlay"
+      },
+      {
+        "id": "l8KDUU4ttni_vJGashLf0g",
+        "class": "K2Node_CallParentFunction",
+        "title": "Parent: BeginPlay"
+      },
+      {
+        "id": "SfvpWE7yXGU2q96Sy7h5wA",
+        "class": "K2Node_Event",
+        "title": "Event ActorBeginOverlap"
+      },
+      {
+        "id": "lDaankEClevtDXyxn9slIA",
+        "class": "K2Node_Event",
+        "title": "Event Tick"
+      },
+      {
+        "id": "f2ivUkakFkaSd4a5EMI69Q",
+        "class": "K2Node_CallParentFunction",
+        "title": "Parent: Tick"
+      },
+      {
+        "id": "m0YyLE_S9x8Gt1eflUbWiw",
+        "class": "K2Node_CustomEvent",
+        "title": "Start Follow"
+      },
+      {
+        "id": "sEaK4k8bZ9V2RRCeta93IQ",
+        "class": "K2Node_VariableSet",
+        "title": "Set IsFollowing"
+      },
+      {
+        "id": "AAoAaEAHVLZJvba75Au0xA",
+        "class": "K2Node_VariableSet",
+        "title": "Set Follow Target"
+      },
+      {
+        "id": "t5YnPEfvo0-W1CCp6-_Svg",
+        "class": "K2Node_VariableGet",
+        "title": "Get Hunter Ref"
+      },
+      {
+        "id": "jJXcB0D3rTj-D5qZELXkmA",
+        "class": "K2Node_MacroInstance",
+        "title": "Is Valid"
+      },
+      {
+        "id": "r7DTsUs5zfjoNOCeEejr0g",
+        "class": "K2Node_CallFunction",
+        "title": "Get AIController"
+      },
+      {
+        "id": "Sd4CfEn5hLHYumSBnSAVlw",
+        "class": "K2Node_DynamicCast",
+        "title": "Cast To BP_EnemyAIController"
+      },
+      {
+        "id": "_hlsR0R0wf10dYaeKwPNoA",
+        "class": "K2Node_CallFunction",
+        "title": "Request Kill"
+      },
+      {
+        "id": "hiHxGUWTGMnMUmyMEIcwKw",
+        "class": "K2Node_Knot",
+        "title": "Reroute Node"
+      },
+      {
+        "id": "GFodsUGgjj7J68CLdKGCxA",
+        "class": "K2Node_Knot",
+        "title": "Reroute Node"
+      },
+      {
+        "id": "kl1oa0cTh8G3S0KcalmCRQ",
+        "class": "K2Node_CallFunction",
+        "title": "Set Timer by Event"
+      },
+      {
+        "id": "CKstp0F9G8LuVbCg9gir0g",
+        "class": "K2Node_CustomEvent",
+        "title": "Update Follow Move"
+      },
+      {
+        "id": "dnXaeUHCkahy1cmE7Iahyw",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "aiZ5UUQLzqxkpH-mAm25Ig",
+        "class": "K2Node_VariableGet",
+        "title": "Get IsFollowing"
+      },
+      {
+        "id": "lszoL0639csxnraqPIDrRA",
+        "class": "K2Node_VariableGet",
+        "title": "Get Follow Target"
+      },
+      {
+        "id": "nbrt4kzLdToj1Ia-YwsNdA",
+        "class": "K2Node_MacroInstance",
+        "title": "Is Valid"
+      },
+      {
+        "id": "uZ6ksEBs9sIAxV-1c_PBFw",
+        "class": "K2Node_AIMoveTo",
+        "title": "AI MoveTo"
+      },
+      {
+        "id": "uH20k0iVuw7DopuMPHkT3A",
+        "class": "K2Node_Self",
+        "title": "Self-Reference"
+      },
+      {
+        "id": "GWTS40aWiXWMYyOl1fHI_g",
+        "class": "K2Node_CallFunction",
+        "title": "Delay"
+      },
+      {
+        "id": "c5CWj0O6GnFF0ZWHUukkSQ",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "w3qPfUFqJyMA8PGINjfvTw",
+        "class": "K2Node_CallFunction",
+        "title": "Get AIController"
+      },
+      {
+        "id": "0FAz-0kEyfloZT2MdewRhA",
+        "class": "K2Node_DynamicCast",
+        "title": "Cast To BP_EnemyAIController"
+      },
+      {
+        "id": "YejSZkWTOm3TfWGK23MT9g",
+        "class": "K2Node_VariableGet",
+        "title": "Get EncounterStarted"
+      },
+      {
+        "id": "KMI2JEL2wPgCZySfbPcZpg",
+        "class": "K2Node_CustomEvent",
+        "title": "Start Phase 1"
+      },
+      {
+        "id": "cfhJMEXGZlF4k3-xxN6Esg",
+        "class": "K2Node_CustomEvent",
+        "title": "Phase 1 Go to B"
+      },
+      {
+        "id": "C4W1hkszAyX_PfSRqrwPcA",
+        "class": "K2Node_CustomEvent",
+        "title": "Phase 1 Go to A"
+      },
+      {
+        "id": "M9HC-0Sz4q3-6k2PcaJnOQ",
+        "class": "K2Node_VariableSet",
+        "title": "Set Phase 2"
+      },
+      {
+        "id": "q6hCuEEcy9KhU6GgT_hTlA",
+        "class": "K2Node_CallFunction",
+        "title": "Start Phase 1"
+      },
+      {
+        "id": "wEba40chzPLq_hOLvCnDCQ",
+        "class": "K2Node_VariableGet",
+        "title": "Get CharacterMovement"
+      },
+      {
+        "id": "gzjt6kpiaN965LW3J_-gKg",
+        "class": "K2Node_VariableSet",
+        "title": "Set MaxWalkSpeed"
+      },
+      {
+        "id": "8xJMEE_UB-Ize6C-CpaDtQ",
+        "class": "K2Node_VariableGet",
+        "title": "Get Point B"
+      },
+      {
+        "id": "wgI0SUyRTO00hsKwig-YVQ",
+        "class": "K2Node_CallFunction",
+        "title": "Phase 1 Go to B"
+      },
+      {
+        "id": "TLFwnkz_BtvzbACt-vNkBw",
+        "class": "K2Node_MacroInstance",
+        "title": "Is Valid"
+      },
+      {
+        "id": "sNKtCUgYP30dhVidSG7O-A",
+        "class": "K2Node_Self",
+        "title": "Self-Reference"
+      },
+      {
+        "id": "SVK-v005KDPUtx6CkbY1YA",
+        "class": "K2Node_AIMoveTo",
+        "title": "AI MoveTo"
+      },
+      {
+        "id": "iiMNrkFjiiDEE2GuVFUKPA",
+        "class": "K2Node_CallFunction",
+        "title": "Delay"
+      },
+      {
+        "id": "5_bndEi_jiWfvTqgIUoiMA",
+        "class": "K2Node_VariableGet",
+        "title": "Get ScanWaitTime"
+      },
+      {
+        "id": "NhoxmkPX_iS-fDWbm92s-Q",
+        "class": "K2Node_CallFunction",
+        "title": "Phase 1 Go to A"
+      },
+      {
+        "id": "Mxj2CkSg-z5_HoSplJwQrw",
+        "class": "K2Node_CallFunction",
+        "title": "Delay"
+      },
+      {
+        "id": "8oC6xEkou_f5VFGqx02qmg",
+        "class": "K2Node_CallFunction",
+        "title": "Phase 1 Go to B"
+      },
+      {
+        "id": "uMJBu06o2TVGkwGUnrhnWw",
+        "class": "K2Node_VariableGet",
+        "title": "Get Point A"
+      },
+      {
+        "id": "XipgAEhMJ_ShOvezSYoqUQ",
+        "class": "K2Node_MacroInstance",
+        "title": "Is Valid"
+      },
+      {
+        "id": "Cur-IUIPibsuLg2D_VgAsA",
+        "class": "K2Node_Self",
+        "title": "Self-Reference"
+      },
+      {
+        "id": "H4RzJk2SkXUHogmOqfrlIw",
+        "class": "K2Node_AIMoveTo",
+        "title": "AI MoveTo"
+      },
+      {
+        "id": "l37-AkKvLYt969OCQyOa6A",
+        "class": "K2Node_CallFunction",
+        "title": "Delay"
+      },
+      {
+        "id": "k2nmOEevTljtMTexDuhtJQ",
+        "class": "K2Node_VariableGet",
+        "title": "Get ScanWaitTime"
+      },
+      {
+        "id": "9bOjyEVn4cH_HjW2k3vv3w",
+        "class": "K2Node_CallFunction",
+        "title": "Phase 1 Go to A"
+      },
+      {
+        "id": "WGtKeUsnXmvLM4qj6ERpQA",
+        "class": "K2Node_CallFunction",
+        "title": "Delay"
+      },
+      {
+        "id": "s7xEv0UY3SuGeC-LvPt20g",
+        "class": "K2Node_CallFunction",
+        "title": "Phase 1 Go to B"
+      },
+      {
+        "id": "FRfIT0og-bbYPpaJQ_l3zA",
+        "class": "K2Node_CustomEvent",
+        "title": "Try Halfway Turn"
+      },
+      {
+        "id": "DOKAi0NNcfDvjluaCcHhLA",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "FpPKi0Zx_3QsKCWvd1sQwA",
+        "class": "K2Node_VariableGet",
+        "title": "Get IsFollowing"
+      },
+      {
+        "id": "2j3ArksdErdz_sOsXRhPbw",
+        "class": "K2Node_VariableGet",
+        "title": "Get Phase 2"
+      },
+      {
+        "id": "G-GRekUaBxaU5M-uhyUKkw",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "h3bd60Eut2OBc9GbqjkVhQ",
+        "class": "K2Node_CallFunction",
+        "title": "Random Float in Range"
+      },
+      {
+        "id": "A3cky09HiDPIHoOXGYtSKw",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "x8kAn0DXk90eKsy_YsCI9Q",
+        "class": "K2Node_PromotableOperator",
+        "title": "float < float"
+      },
+      {
+        "id": "AQ0BxUSfcisOKM2wo3HyuQ",
+        "class": "K2Node_VariableGet",
+        "title": "Get HalfwayTurnChance"
+      },
+      {
+        "id": "P1eGnEUdkaPBRpiouGmkzQ",
+        "class": "K2Node_CallFunction",
+        "title": "Stop Movement Immediately"
+      },
+      {
+        "id": "fbzESUJWpZfq49eCgAVnJw",
+        "class": "K2Node_VariableGet",
+        "title": "Get CharacterMovement"
+      },
+      {
+        "id": "Ql1fQE-Q8hb4ICK-UX3PSw",
+        "class": "K2Node_VariableGet",
+        "title": "Get Point B"
+      },
+      {
+        "id": "SzGPYU-jrzrtJGWi5d7tAg",
+        "class": "K2Node_AIMoveTo",
+        "title": "AI MoveTo"
+      },
+      {
+        "id": "I9mryELjyLyJwf2vl7aGfQ",
+        "class": "K2Node_Self",
+        "title": "Self-Reference"
+      },
+      {
+        "id": "KWIGlEmmP5l6K6e45SqjWA",
+        "class": "K2Node_CallFunction",
+        "title": "Delay"
+      },
+      {
+        "id": "3jMISk_ChsJHW2mCrk9PjA",
+        "class": "K2Node_VariableGet",
+        "title": "Get ScanWaitTime"
+      },
+      {
+        "id": "GXSpRkMQSMp_P8SmVhYXcQ",
+        "class": "K2Node_CallFunction",
+        "title": "Phase 1 Go to A"
+      },
+      {
+        "id": "_jtkWk5XLb-TBnSZ9d8Daw",
+        "class": "K2Node_CallFunction",
+        "title": "Delay"
+      },
+      {
+        "id": "UzQbWU1GjwvTk0mW-ggCAw",
+        "class": "K2Node_CallFunction",
+        "title": "Phase 1 Go to B"
+      },
+      {
+        "id": "FbYBd0SOhyxGMTu34gPbYA",
+        "class": "K2Node_ExecutionSequence",
+        "title": "Sequence"
+      },
+      {
+        "id": "w4MyGkLxR3gkT_yJsYsErg",
+        "class": "K2Node_CallFunction",
+        "title": "Set Timer by Event"
+      }
+    ],
+    "execEdges": [
+      {
+        "from": "NBcUFUYnmErfKi-MEX7B6Q",
+        "fromPin": "then",
+        "to": "l8KDUU4ttni_vJGashLf0g",
+        "toPin": "execute"
+      },
+      {
+        "from": "l8KDUU4ttni_vJGashLf0g",
+        "fromPin": "then",
+        "to": "GWTS40aWiXWMYyOl1fHI_g",
+        "toPin": "execute"
+      },
+      {
+        "from": "lDaankEClevtDXyxn9slIA",
+        "fromPin": "then",
+        "to": "f2ivUkakFkaSd4a5EMI69Q",
+        "toPin": "execute"
+      },
+      {
+        "from": "m0YyLE_S9x8Gt1eflUbWiw",
+        "fromPin": "then",
+        "to": "sEaK4k8bZ9V2RRCeta93IQ",
+        "toPin": "execute"
+      },
+      {
+        "from": "sEaK4k8bZ9V2RRCeta93IQ",
+        "fromPin": "then",
+        "to": "AAoAaEAHVLZJvba75Au0xA",
+        "toPin": "execute"
+      },
+      {
+        "from": "AAoAaEAHVLZJvba75Au0xA",
+        "fromPin": "then",
+        "to": "jJXcB0D3rTj-D5qZELXkmA",
+        "toPin": "exec"
+      },
+      {
+        "from": "jJXcB0D3rTj-D5qZELXkmA",
+        "fromPin": "Is Valid",
+        "to": "Sd4CfEn5hLHYumSBnSAVlw",
+        "toPin": "execute"
+      },
+      {
+        "from": "Sd4CfEn5hLHYumSBnSAVlw",
+        "fromPin": "then",
+        "to": "_hlsR0R0wf10dYaeKwPNoA",
+        "toPin": "execute"
+      },
+      {
+        "from": "_hlsR0R0wf10dYaeKwPNoA",
+        "fromPin": "then",
+        "to": "kl1oa0cTh8G3S0KcalmCRQ",
+        "toPin": "execute"
+      },
+      {
+        "from": "CKstp0F9G8LuVbCg9gir0g",
+        "fromPin": "then",
+        "to": "dnXaeUHCkahy1cmE7Iahyw",
+        "toPin": "execute"
+      },
+      {
+        "from": "dnXaeUHCkahy1cmE7Iahyw",
+        "fromPin": "then",
+        "to": "nbrt4kzLdToj1Ia-YwsNdA",
+        "toPin": "exec"
+      },
+      {
+        "from": "nbrt4kzLdToj1Ia-YwsNdA",
+        "fromPin": "Is Valid",
+        "to": "uZ6ksEBs9sIAxV-1c_PBFw",
+        "toPin": "execute"
+      },
+      {
+        "from": "GWTS40aWiXWMYyOl1fHI_g",
+        "fromPin": "then",
+        "to": "0FAz-0kEyfloZT2MdewRhA",
+        "toPin": "execute"
+      },
+      {
+        "from": "c5CWj0O6GnFF0ZWHUukkSQ",
+        "fromPin": "else",
+        "to": "q6hCuEEcy9KhU6GgT_hTlA",
+        "toPin": "execute"
+      },
+      {
+        "from": "0FAz-0kEyfloZT2MdewRhA",
+        "fromPin": "then",
+        "to": "c5CWj0O6GnFF0ZWHUukkSQ",
+        "toPin": "execute"
+      },
+      {
+        "from": "KMI2JEL2wPgCZySfbPcZpg",
+        "fromPin": "then",
+        "to": "M9HC-0Sz4q3-6k2PcaJnOQ",
+        "toPin": "execute"
+      },
+      {
+        "from": "cfhJMEXGZlF4k3-xxN6Esg",
+        "fromPin": "then",
+        "to": "TLFwnkz_BtvzbACt-vNkBw",
+        "toPin": "exec"
+      },
+      {
+        "from": "C4W1hkszAyX_PfSRqrwPcA",
+        "fromPin": "then",
+        "to": "XipgAEhMJ_ShOvezSYoqUQ",
+        "toPin": "exec"
+      },
+      {
+        "from": "M9HC-0Sz4q3-6k2PcaJnOQ",
+        "fromPin": "then",
+        "to": "gzjt6kpiaN965LW3J_-gKg",
+        "toPin": "execute"
+      },
+      {
+        "from": "gzjt6kpiaN965LW3J_-gKg",
+        "fromPin": "then",
+        "to": "wgI0SUyRTO00hsKwig-YVQ",
+        "toPin": "execute"
+      },
+      {
+        "from": "TLFwnkz_BtvzbACt-vNkBw",
+        "fromPin": "Is Valid",
+        "to": "SVK-v005KDPUtx6CkbY1YA",
+        "toPin": "execute"
+      },
+      {
+        "from": "SVK-v005KDPUtx6CkbY1YA",
+        "fromPin": "OnSuccess",
+        "to": "iiMNrkFjiiDEE2GuVFUKPA",
+        "toPin": "execute"
+      },
+      {
+        "from": "SVK-v005KDPUtx6CkbY1YA",
+        "fromPin": "OnFail",
+        "to": "Mxj2CkSg-z5_HoSplJwQrw",
+        "toPin": "execute"
+      },
+      {
+        "from": "iiMNrkFjiiDEE2GuVFUKPA",
+        "fromPin": "then",
+        "to": "NhoxmkPX_iS-fDWbm92s-Q",
+        "toPin": "execute"
+      },
+      {
+        "from": "Mxj2CkSg-z5_HoSplJwQrw",
+        "fromPin": "then",
+        "to": "8oC6xEkou_f5VFGqx02qmg",
+        "toPin": "execute"
+      },
+      {
+        "from": "XipgAEhMJ_ShOvezSYoqUQ",
+        "fromPin": "Is Valid",
+        "to": "FbYBd0SOhyxGMTu34gPbYA",
+        "toPin": "execute"
+      },
+      {
+        "from": "H4RzJk2SkXUHogmOqfrlIw",
+        "fromPin": "OnSuccess",
+        "to": "l37-AkKvLYt969OCQyOa6A",
+        "toPin": "execute"
+      },
+      {
+        "from": "H4RzJk2SkXUHogmOqfrlIw",
+        "fromPin": "OnFail",
+        "to": "WGtKeUsnXmvLM4qj6ERpQA",
+        "toPin": "execute"
+      },
+      {
+        "from": "l37-AkKvLYt969OCQyOa6A",
+        "fromPin": "then",
+        "to": "s7xEv0UY3SuGeC-LvPt20g",
+        "toPin": "execute"
+      },
+      {
+        "from": "WGtKeUsnXmvLM4qj6ERpQA",
+        "fromPin": "then",
+        "to": "9bOjyEVn4cH_HjW2k3vv3w",
+        "toPin": "execute"
+      },
+      {
+        "from": "FRfIT0og-bbYPpaJQ_l3zA",
+        "fromPin": "then",
+        "to": "DOKAi0NNcfDvjluaCcHhLA",
+        "toPin": "execute"
+      },
+      {
+        "from": "DOKAi0NNcfDvjluaCcHhLA",
+        "fromPin": "else",
+        "to": "G-GRekUaBxaU5M-uhyUKkw",
+        "toPin": "execute"
+      },
+      {
+        "from": "G-GRekUaBxaU5M-uhyUKkw",
+        "fromPin": "else",
+        "to": "A3cky09HiDPIHoOXGYtSKw",
+        "toPin": "execute"
+      },
+      {
+        "from": "A3cky09HiDPIHoOXGYtSKw",
+        "fromPin": "else",
+        "to": "P1eGnEUdkaPBRpiouGmkzQ",
+        "toPin": "execute"
+      },
+      {
+        "from": "P1eGnEUdkaPBRpiouGmkzQ",
+        "fromPin": "then",
+        "to": "SzGPYU-jrzrtJGWi5d7tAg",
+        "toPin": "execute"
+      },
+      {
+        "from": "SzGPYU-jrzrtJGWi5d7tAg",
+        "fromPin": "OnSuccess",
+        "to": "KWIGlEmmP5l6K6e45SqjWA",
+        "toPin": "execute"
+      },
+      {
+        "from": "SzGPYU-jrzrtJGWi5d7tAg",
+        "fromPin": "OnFail",
+        "to": "_jtkWk5XLb-TBnSZ9d8Daw",
+        "toPin": "execute"
+      },
+      {
+        "from": "KWIGlEmmP5l6K6e45SqjWA",
+        "fromPin": "then",
+        "to": "GXSpRkMQSMp_P8SmVhYXcQ",
+        "toPin": "execute"
+      },
+      {
+        "from": "_jtkWk5XLb-TBnSZ9d8Daw",
+        "fromPin": "then",
+        "to": "UzQbWU1GjwvTk0mW-ggCAw",
+        "toPin": "execute"
+      },
+      {
+        "from": "FbYBd0SOhyxGMTu34gPbYA",
+        "fromPin": "then_0",
+        "to": "H4RzJk2SkXUHogmOqfrlIw",
+        "toPin": "execute"
+      },
+      {
+        "from": "FbYBd0SOhyxGMTu34gPbYA",
+        "fromPin": "then_1",
+        "to": "w4MyGkLxR3gkT_yJsYsErg",
+        "toPin": "execute"
+      }
+    ],
+    "dataEdges": [
+      {
+        "from": "lDaankEClevtDXyxn9slIA",
+        "fromPin": "DeltaSeconds",
+        "to": "f2ivUkakFkaSd4a5EMI69Q",
+        "toPin": "DeltaSeconds"
+      },
+      {
+        "from": "m0YyLE_S9x8Gt1eflUbWiw",
+        "fromPin": "Player",
+        "to": "AAoAaEAHVLZJvba75Au0xA",
+        "toPin": "Follow Target"
+      },
+      {
+        "from": "m0YyLE_S9x8Gt1eflUbWiw",
+        "fromPin": "Player",
+        "to": "hiHxGUWTGMnMUmyMEIcwKw",
+        "toPin": "InputPin"
+      },
+      {
+        "from": "t5YnPEfvo0-W1CCp6-_Svg",
+        "fromPin": "Hunter Ref",
+        "to": "jJXcB0D3rTj-D5qZELXkmA",
+        "toPin": "InputObject"
+      },
+      {
+        "from": "t5YnPEfvo0-W1CCp6-_Svg",
+        "fromPin": "Hunter Ref",
+        "to": "r7DTsUs5zfjoNOCeEejr0g",
+        "toPin": "ControlledActor"
+      },
+      {
+        "from": "r7DTsUs5zfjoNOCeEejr0g",
+        "fromPin": "ReturnValue",
+        "to": "Sd4CfEn5hLHYumSBnSAVlw",
+        "toPin": "Object"
+      },
+      {
+        "from": "Sd4CfEn5hLHYumSBnSAVlw",
+        "fromPin": "AsBP Enemy AIController",
+        "to": "_hlsR0R0wf10dYaeKwPNoA",
+        "toPin": "self"
+      },
+      {
+        "from": "hiHxGUWTGMnMUmyMEIcwKw",
+        "fromPin": "OutputPin",
+        "to": "GFodsUGgjj7J68CLdKGCxA",
+        "toPin": "InputPin"
+      },
+      {
+        "from": "GFodsUGgjj7J68CLdKGCxA",
+        "fromPin": "OutputPin",
+        "to": "_hlsR0R0wf10dYaeKwPNoA",
+        "toPin": "Target"
+      },
+      {
+        "from": "CKstp0F9G8LuVbCg9gir0g",
+        "fromPin": "OutputDelegate",
+        "to": "kl1oa0cTh8G3S0KcalmCRQ",
+        "toPin": "Delegate"
+      },
+      {
+        "from": "aiZ5UUQLzqxkpH-mAm25Ig",
+        "fromPin": "IsFollowing",
+        "to": "dnXaeUHCkahy1cmE7Iahyw",
+        "toPin": "Condition"
+      },
+      {
+        "from": "lszoL0639csxnraqPIDrRA",
+        "fromPin": "Follow Target",
+        "to": "nbrt4kzLdToj1Ia-YwsNdA",
+        "toPin": "InputObject"
+      },
+      {
+        "from": "lszoL0639csxnraqPIDrRA",
+        "fromPin": "Follow Target",
+        "to": "uZ6ksEBs9sIAxV-1c_PBFw",
+        "toPin": "TargetActor"
+      },
+      {
+        "from": "uH20k0iVuw7DopuMPHkT3A",
+        "fromPin": "self",
+        "to": "uZ6ksEBs9sIAxV-1c_PBFw",
+        "toPin": "Pawn"
+      },
+      {
+        "from": "w3qPfUFqJyMA8PGINjfvTw",
+        "fromPin": "ReturnValue",
+        "to": "0FAz-0kEyfloZT2MdewRhA",
+        "toPin": "Object"
+      },
+      {
+        "from": "0FAz-0kEyfloZT2MdewRhA",
+        "fromPin": "AsBP Enemy AIController",
+        "to": "YejSZkWTOm3TfWGK23MT9g",
+        "toPin": "self"
+      },
+      {
+        "from": "YejSZkWTOm3TfWGK23MT9g",
+        "fromPin": "EncounterStarted",
+        "to": "c5CWj0O6GnFF0ZWHUukkSQ",
+        "toPin": "Condition"
+      },
+      {
+        "from": "wEba40chzPLq_hOLvCnDCQ",
+        "fromPin": "CharacterMovement",
+        "to": "gzjt6kpiaN965LW3J_-gKg",
+        "toPin": "self"
+      },
+      {
+        "from": "8xJMEE_UB-Ize6C-CpaDtQ",
+        "fromPin": "Point B",
+        "to": "TLFwnkz_BtvzbACt-vNkBw",
+        "toPin": "InputObject"
+      },
+      {
+        "from": "8xJMEE_UB-Ize6C-CpaDtQ",
+        "fromPin": "Point B",
+        "to": "SVK-v005KDPUtx6CkbY1YA",
+        "toPin": "TargetActor"
+      },
+      {
+        "from": "sNKtCUgYP30dhVidSG7O-A",
+        "fromPin": "self",
+        "to": "SVK-v005KDPUtx6CkbY1YA",
+        "toPin": "Pawn"
+      },
+      {
+        "from": "5_bndEi_jiWfvTqgIUoiMA",
+        "fromPin": "ScanWaitTime",
+        "to": "iiMNrkFjiiDEE2GuVFUKPA",
+        "toPin": "Duration"
+      },
+      {
+        "from": "uMJBu06o2TVGkwGUnrhnWw",
+        "fromPin": "Point A",
+        "to": "XipgAEhMJ_ShOvezSYoqUQ",
+        "toPin": "InputObject"
+      },
+      {
+        "from": "uMJBu06o2TVGkwGUnrhnWw",
+        "fromPin": "Point A",
+        "to": "H4RzJk2SkXUHogmOqfrlIw",
+        "toPin": "TargetActor"
+      },
+      {
+        "from": "Cur-IUIPibsuLg2D_VgAsA",
+        "fromPin": "self",
+        "to": "H4RzJk2SkXUHogmOqfrlIw",
+        "toPin": "Pawn"
+      },
+      {
+        "from": "k2nmOEevTljtMTexDuhtJQ",
+        "fromPin": "ScanWaitTime",
+        "to": "l37-AkKvLYt969OCQyOa6A",
+        "toPin": "Duration"
+      },
+      {
+        "from": "FRfIT0og-bbYPpaJQ_l3zA",
+        "fromPin": "OutputDelegate",
+        "to": "w4MyGkLxR3gkT_yJsYsErg",
+        "toPin": "Delegate"
+      },
+      {
+        "from": "FpPKi0Zx_3QsKCWvd1sQwA",
+        "fromPin": "IsFollowing",
+        "to": "DOKAi0NNcfDvjluaCcHhLA",
+        "toPin": "Condition"
+      },
+      {
+        "from": "2j3ArksdErdz_sOsXRhPbw",
+        "fromPin": "Phase 2",
+        "to": "G-GRekUaBxaU5M-uhyUKkw",
+        "toPin": "Condition"
+      },
+      {
+        "from": "h3bd60Eut2OBc9GbqjkVhQ",
+        "fromPin": "ReturnValue",
+        "to": "x8kAn0DXk90eKsy_YsCI9Q",
+        "toPin": "B"
+      },
+      {
+        "from": "x8kAn0DXk90eKsy_YsCI9Q",
+        "fromPin": "ReturnValue",
+        "to": "A3cky09HiDPIHoOXGYtSKw",
+        "toPin": "Condition"
+      },
+      {
+        "from": "AQ0BxUSfcisOKM2wo3HyuQ",
+        "fromPin": "HalfwayTurnChance",
+        "to": "x8kAn0DXk90eKsy_YsCI9Q",
+        "toPin": "A"
+      },
+      {
+        "from": "fbzESUJWpZfq49eCgAVnJw",
+        "fromPin": "CharacterMovement",
+        "to": "P1eGnEUdkaPBRpiouGmkzQ",
+        "toPin": "self"
+      },
+      {
+        "from": "Ql1fQE-Q8hb4ICK-UX3PSw",
+        "fromPin": "Point B",
+        "to": "SzGPYU-jrzrtJGWi5d7tAg",
+        "toPin": "TargetActor"
+      },
+      {
+        "from": "I9mryELjyLyJwf2vl7aGfQ",
+        "fromPin": "self",
+        "to": "SzGPYU-jrzrtJGWi5d7tAg",
+        "toPin": "Pawn"
+      },
+      {
+        "from": "3jMISk_ChsJHW2mCrk9PjA",
+        "fromPin": "ScanWaitTime",
+        "to": "KWIGlEmmP5l6K6e45SqjWA",
+        "toPin": "Duration"
+      }
+    ],
+    "nodeCount": 75
+  },
+  "aicNotify": {
+    "success": true,
+    "path": "/Game/BluePrint/System/BP_EnemyAIController",
+    "graphName": "EventGraph",
+    "entryPoint": "Notify Encounter Started",
+    "entryId": "RamG1EAlfKG8BE2bXs6lHg",
+    "steps": [
+      {
+        "id": "RamG1EAlfKG8BE2bXs6lHg",
+        "class": "K2Node_CustomEvent",
+        "title": "Notify Encounter Started",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "qEYuL0Vz45r1vPmpu4_lYg"
+          }
+        ]
+      },
+      {
+        "id": "qEYuL0Vz45r1vPmpu4_lYg",
+        "class": "K2Node_VariableSet",
+        "title": "Set EncounterStarted",
+        "branches": []
+      }
+    ],
+    "stepCount": 2
+  },
+  "flow_Event BeginPlay": {
+    "success": true,
+    "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+    "graphName": "EventGraph",
+    "entryPoint": "Event BeginPlay",
+    "entryId": "NBcUFUYnmErfKi-MEX7B6Q",
+    "steps": [
+      {
+        "id": "NBcUFUYnmErfKi-MEX7B6Q",
+        "class": "K2Node_Event",
+        "title": "Event BeginPlay",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "l8KDUU4ttni_vJGashLf0g"
+          }
+        ]
+      },
+      {
+        "id": "l8KDUU4ttni_vJGashLf0g",
+        "class": "K2Node_CallParentFunction",
+        "title": "Parent: BeginPlay",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "GWTS40aWiXWMYyOl1fHI_g"
+          }
+        ]
+      },
+      {
+        "id": "GWTS40aWiXWMYyOl1fHI_g",
+        "class": "K2Node_CallFunction",
+        "title": "Delay",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "0FAz-0kEyfloZT2MdewRhA"
+          }
+        ]
+      },
+      {
+        "id": "0FAz-0kEyfloZT2MdewRhA",
+        "class": "K2Node_DynamicCast",
+        "title": "Cast To BP_EnemyAIController",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "c5CWj0O6GnFF0ZWHUukkSQ"
+          }
+        ]
+      },
+      {
+        "id": "c5CWj0O6GnFF0ZWHUukkSQ",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "else",
+            "toId": "q6hCuEEcy9KhU6GgT_hTlA"
+          }
+        ]
+      },
+      {
+        "id": "q6hCuEEcy9KhU6GgT_hTlA",
+        "class": "K2Node_CallFunction",
+        "title": "Start Phase 1",
+        "branches": []
+      }
+    ],
+    "stepCount": 6
+  },
+  "flow_Start Phase 1": {
+    "success": true,
+    "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+    "graphName": "EventGraph",
+    "entryPoint": "Start Phase 1",
+    "entryId": "KMI2JEL2wPgCZySfbPcZpg",
+    "steps": [
+      {
+        "id": "KMI2JEL2wPgCZySfbPcZpg",
+        "class": "K2Node_CustomEvent",
+        "title": "Start Phase 1",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "M9HC-0Sz4q3-6k2PcaJnOQ"
+          }
+        ]
+      },
+      {
+        "id": "M9HC-0Sz4q3-6k2PcaJnOQ",
+        "class": "K2Node_VariableSet",
+        "title": "Set Phase 2",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "gzjt6kpiaN965LW3J_-gKg"
+          }
+        ]
+      },
+      {
+        "id": "gzjt6kpiaN965LW3J_-gKg",
+        "class": "K2Node_VariableSet",
+        "title": "Set MaxWalkSpeed",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "wgI0SUyRTO00hsKwig-YVQ"
+          }
+        ]
+      },
+      {
+        "id": "wgI0SUyRTO00hsKwig-YVQ",
+        "class": "K2Node_CallFunction",
+        "title": "Phase 1 Go to B",
+        "branches": []
+      }
+    ],
+    "stepCount": 4
+  },
+  "flow_Phase 1 Go To": {
+    "success": true,
+    "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+    "graphName": "EventGraph",
+    "entryPoint": "Phase 1 Go to B",
+    "entryId": "cfhJMEXGZlF4k3-xxN6Esg",
+    "steps": [
+      {
+        "id": "cfhJMEXGZlF4k3-xxN6Esg",
+        "class": "K2Node_CustomEvent",
+        "title": "Phase 1 Go to B",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "TLFwnkz_BtvzbACt-vNkBw"
+          }
+        ]
+      },
+      {
+        "id": "TLFwnkz_BtvzbACt-vNkBw",
+        "class": "K2Node_MacroInstance",
+        "title": "Is Valid",
+        "branches": [
+          {
+            "pin": "Is Valid",
+            "toId": "SVK-v005KDPUtx6CkbY1YA"
+          }
+        ]
+      },
+      {
+        "id": "SVK-v005KDPUtx6CkbY1YA",
+        "class": "K2Node_AIMoveTo",
+        "title": "AI MoveTo",
+        "branches": [
+          {
+            "pin": "OnSuccess",
+            "toId": "iiMNrkFjiiDEE2GuVFUKPA"
+          },
+          {
+            "pin": "OnFail",
+            "toId": "Mxj2CkSg-z5_HoSplJwQrw"
+          }
+        ]
+      },
+      {
+        "id": "iiMNrkFjiiDEE2GuVFUKPA",
+        "class": "K2Node_CallFunction",
+        "title": "Delay",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "NhoxmkPX_iS-fDWbm92s-Q"
+          }
+        ]
+      },
+      {
+        "id": "Mxj2CkSg-z5_HoSplJwQrw",
+        "class": "K2Node_CallFunction",
+        "title": "Delay",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "8oC6xEkou_f5VFGqx02qmg"
+          }
+        ]
+      },
+      {
+        "id": "NhoxmkPX_iS-fDWbm92s-Q",
+        "class": "K2Node_CallFunction",
+        "title": "Phase 1 Go to A",
+        "branches": []
+      },
+      {
+        "id": "8oC6xEkou_f5VFGqx02qmg",
+        "class": "K2Node_CallFunction",
+        "title": "Phase 1 Go to B",
+        "branches": []
+      }
+    ],
+    "stepCount": 7
+  },
+  "flow_Try Halfway": {
+    "success": true,
+    "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+    "graphName": "EventGraph",
+    "entryPoint": "Try Halfway Turn",
+    "entryId": "FRfIT0og-bbYPpaJQ_l3zA",
+    "steps": [
+      {
+        "id": "FRfIT0og-bbYPpaJQ_l3zA",
+        "class": "K2Node_CustomEvent",
+        "title": "Try Halfway Turn",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "DOKAi0NNcfDvjluaCcHhLA"
+          }
+        ]
+      },
+      {
+        "id": "DOKAi0NNcfDvjluaCcHhLA",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "else",
+            "toId": "G-GRekUaBxaU5M-uhyUKkw"
+          }
+        ]
+      },
+      {
+        "id": "G-GRekUaBxaU5M-uhyUKkw",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "else",
+            "toId": "A3cky09HiDPIHoOXGYtSKw"
+          }
+        ]
+      },
+      {
+        "id": "A3cky09HiDPIHoOXGYtSKw",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "else",
+            "toId": "P1eGnEUdkaPBRpiouGmkzQ"
+          }
+        ]
+      },
+      {
+        "id": "P1eGnEUdkaPBRpiouGmkzQ",
+        "class": "K2Node_CallFunction",
+        "title": "Stop Movement Immediately",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "SzGPYU-jrzrtJGWi5d7tAg"
+          }
+        ]
+      },
+      {
+        "id": "SzGPYU-jrzrtJGWi5d7tAg",
+        "class": "K2Node_AIMoveTo",
+        "title": "AI MoveTo",
+        "branches": [
+          {
+            "pin": "OnSuccess",
+            "toId": "KWIGlEmmP5l6K6e45SqjWA"
+          },
+          {
+            "pin": "OnFail",
+            "toId": "_jtkWk5XLb-TBnSZ9d8Daw"
+          }
+        ]
+      },
+      {
+        "id": "KWIGlEmmP5l6K6e45SqjWA",
+        "class": "K2Node_CallFunction",
+        "title": "Delay",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "GXSpRkMQSMp_P8SmVhYXcQ"
+          }
+        ]
+      },
+      {
+        "id": "_jtkWk5XLb-TBnSZ9d8Daw",
+        "class": "K2Node_CallFunction",
+        "title": "Delay",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "UzQbWU1GjwvTk0mW-ggCAw"
+          }
+        ]
+      },
+      {
+        "id": "GXSpRkMQSMp_P8SmVhYXcQ",
+        "class": "K2Node_CallFunction",
+        "title": "Phase 1 Go to A",
+        "branches": []
+      },
+      {
+        "id": "UzQbWU1GjwvTk0mW-ggCAw",
+        "class": "K2Node_CallFunction",
+        "title": "Phase 1 Go to B",
+        "branches": []
+      }
+    ],
+    "stepCount": 10
+  },
+  "flow_Enter Phase 2": {
+    "success": false,
+    "error": "Entry node not found: Enter Phase 2"
+  },
+  "flow_Start Phase 2": {
+    "success": false,
+    "error": "Entry node not found: Start Phase 2"
+  },
+  "flow_Phase 2": {
+    "success": false,
+    "error": "Entry node not found: Phase 2"
+  },
+  "flow_Start Follow": {
+    "success": true,
+    "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+    "graphName": "EventGraph",
+    "entryPoint": "Start Follow",
+    "entryId": "m0YyLE_S9x8Gt1eflUbWiw",
+    "steps": [
+      {
+        "id": "m0YyLE_S9x8Gt1eflUbWiw",
+        "class": "K2Node_CustomEvent",
+        "title": "Start Follow",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "sEaK4k8bZ9V2RRCeta93IQ"
+          }
+        ]
+      },
+      {
+        "id": "sEaK4k8bZ9V2RRCeta93IQ",
+        "class": "K2Node_VariableSet",
+        "title": "Set IsFollowing",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "AAoAaEAHVLZJvba75Au0xA"
+          }
+        ]
+      },
+      {
+        "id": "AAoAaEAHVLZJvba75Au0xA",
+        "class": "K2Node_VariableSet",
+        "title": "Set Follow Target",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "jJXcB0D3rTj-D5qZELXkmA"
+          }
+        ]
+      },
+      {
+        "id": "jJXcB0D3rTj-D5qZELXkmA",
+        "class": "K2Node_MacroInstance",
+        "title": "Is Valid",
+        "branches": [
+          {
+            "pin": "Is Valid",
+            "toId": "Sd4CfEn5hLHYumSBnSAVlw"
+          }
+        ]
+      },
+      {
+        "id": "Sd4CfEn5hLHYumSBnSAVlw",
+        "class": "K2Node_DynamicCast",
+        "title": "Cast To BP_EnemyAIController",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "_hlsR0R0wf10dYaeKwPNoA"
+          }
+        ]
+      },
+      {
+        "id": "_hlsR0R0wf10dYaeKwPNoA",
+        "class": "K2Node_CallFunction",
+        "title": "Request Kill",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "kl1oa0cTh8G3S0KcalmCRQ"
+          }
+        ]
+      },
+      {
+        "id": "kl1oa0cTh8G3S0KcalmCRQ",
+        "class": "K2Node_CallFunction",
+        "title": "Set Timer by Event",
+        "branches": []
+      }
+    ],
+    "stepCount": 7
+  },
+  "flow_Update Follow": {
+    "success": true,
+    "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+    "graphName": "EventGraph",
+    "entryPoint": "Update Follow Move",
+    "entryId": "CKstp0F9G8LuVbCg9gir0g",
+    "steps": [
+      {
+        "id": "CKstp0F9G8LuVbCg9gir0g",
+        "class": "K2Node_CustomEvent",
+        "title": "Update Follow Move",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "dnXaeUHCkahy1cmE7Iahyw"
+          }
+        ]
+      },
+      {
+        "id": "dnXaeUHCkahy1cmE7Iahyw",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "nbrt4kzLdToj1Ia-YwsNdA"
+          }
+        ]
+      },
+      {
+        "id": "nbrt4kzLdToj1Ia-YwsNdA",
+        "class": "K2Node_MacroInstance",
+        "title": "Is Valid",
+        "branches": [
+          {
+            "pin": "Is Valid",
+            "toId": "uZ6ksEBs9sIAxV-1c_PBFw"
+          }
+        ]
+      },
+      {
+        "id": "uZ6ksEBs9sIAxV-1c_PBFw",
+        "class": "K2Node_AIMoveTo",
+        "title": "AI MoveTo",
+        "branches": []
+      }
+    ],
+    "stepCount": 4
+  }
+}

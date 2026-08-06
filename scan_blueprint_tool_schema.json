@@ -1,0 +1,488 @@
+{
+  "name": "blueprint",
+  "description": "Blueprint reading, authoring, and compilation, including AnimGraph/EventGraph node scripting: add_node, connect_pins, search_node_types, plus variables, functions, graphs, components, interfaces, and event dispatchers.\n\nActions:\n- read: Read BP structure incl. SCS components AND inherited native components from the CDO (CharacterMesh0, CharMoveComp, etc.). Params: assetPath, includeComponentProperties? (dump UPROPERTY name/type/value per component template; off by default) (#353/#370)\n- list_variables: List variables with name, type, guid, category, tooltip, exposeOnSpawn, blueprintReadOnly, private, and editFlag ('EditAnywhere'|'EditDefaultsOnly'|'EditInstanceOnly'|'none'). instanceEditable is true only for EditAnywhere and EditInstanceOnly - EditDefaultsOnly is class-defaults-only and reports false (#744). private is reported separately because it is a Blueprint-graph access flag, not a details-panel one. Params: assetPath\n- list_functions: List the whole graph surface of a Blueprint, matching what list_graphs reports. Every entry carries kind ('function' own declaration | 'override' of a parent function | 'interface' implementation | 'event_graph' | 'event' entry point on an event graph | 'macro' | 'delegate_signature' | 'subgraph' collapsed graph | 'inherited'), source ('own'|'parent'|'interface'), graphName, and declaringClass/declaringClassPath where one applies. name and nodeCount are unchanged; nodeCount is 0 for entries that are not graphs. Params: assetPath, includeInherited? (append overridable parent/interface functions this Blueprint has not implemented, default false) (#809)\n- read_graph: Read graph nodes. Supports pagination, file dumps, and title/class node filters. With includeDefaults, literal FText pin values are returned inline (defaultValue falls back to the pin's text literal, plus an explicit defaultTextValue) and object-ref pins report defaultObject (#743). Params: assetPath, graphName, offset?, limit?, includePins?, includeDefaults?, includeComments?, dumpToFile?, outputPath?, titleFilter?, classFilter? (#560)\n- read_graph_summary: Lightweight graph summary (nodes+edges only, ~10KB). Filterable node list. Params: assetPath, graphName?, titleFilter?, classFilter? (#560)\n- get_execution_flow: Trace exec pins from an entry point. Params: assetPath, graphName?, entryPoint?\n- get_dependencies: Forward (classes/functions/assets) or reverse (referencers) deps. Params: assetPath, reverse?\n- diff: Semantic structural diff between two Blueprints (binary uassets are unreviewable in git). Compares parent class, variables (type/default), functions/macros, components, and per-graph node + connection deltas keyed on stable node GUIDs so edits are matched rather than shown as remove+add. Returns a structured delta plus a human summary and changeCount. Params: assetPath (base/A), otherPath (compare/B). Revision-based diffing (fromRevision/toRevision via source control) is a staged follow-up.\n- create: Create Blueprint. assetPath is the full destination, e.g. /Game/Blueprints/BP_Example; a name plus packagePath pair is accepted as the same thing. A .uasset suffix, an object suffix, and backslashes are normalized away rather than reaching the editor as an invalid asset name. Params: assetPath, name?, packagePath?, parentClass?\n- add_variable: Add variable. varType accepts bool/int/float/string/name/text/byte/vector/rotator/transform/gameplaytag, object:/Script/Module.Class, struct:/Game/Path/To/Struct, or a full class/struct path. Unrecognized types are rejected rather than silently defaulting. Params: assetPath, name, varType (alias: type), onConflict? (skip|error, default skip) (#745)\n- set_variable_properties: Edit variable properties. Note: replication is set with networking(set_property_replicated), and blueprintReadOnly is not writable here - list_variables reports it. Params: assetPath, name, editFlag? (EditAnywhere|EditDefaultsOnly|EditInstanceOnly|none - the exact value list_variables reports, and the only form that round-trips every state), instanceEditable? (two-state shorthand; mutually exclusive with editFlag), private?, category?, tooltip?, exposeOnSpawn?\n- create_function: Create function. Params: assetPath, functionName\n- delete_function: Delete function. Params: assetPath, functionName\n- rename_function: Rename function. Params: assetPath, oldName, newName\n- add_node: Add graph node. For a CallFunction node bound to a custom C++ UFUNCTION, pass nodeParams {functionName, className (or targetClass) = /Script/Module.Class}; the function also resolves against the BP's own component classes and an unambiguous loaded BlueprintCallable function, producing a bound node with pins instead of a stub (#546). nodeClass='CallParent' places a 'Parent: <Function>' call bound to the parent implementation (functionName resolves against ParentClass) so an override graph can chain to the base (#688). Params: assetPath, graphName?, nodeClass, nodeParams?\n- delete_node: Delete node. Params: assetPath, graphName, nodeName\n- set_node_property: Set node pin default or struct property. Params: assetPath, graphName, nodeName, propertyName, value\n- connect_pins: Wire nodes. Params: sourceNode, sourcePin, targetNode, targetPin, assetPath, graphName?, breakExistingSource?, breakExistingTarget?\n- add_component: Add BP component. componentClass accepts short names (e.g. 'ChildActorComponent') or full paths. For a ChildActorComponent, pass childActorClass to set its ChildActorClass in the same call (a Blueprint path with or without _C, or a C++ class) (#526). Params: assetPath, componentClass, componentName?, parentComponent? (SCS parent for hierarchy - #115), childActorClass?\n- remove_component: Remove SCS component. Params: assetPath, componentName\n- set_component_property: Set property on SCS or inherited component. Inherited components go through the child BP's InheritableComponentHandler override template so the parent stays untouched. Pass value=null to clear a TObjectPtr/SoftObject/WeakObject/UClass/Interface reference (e.g. clear AnimClass on CharacterMesh0) (#420). Params: assetPath, componentName, propertyName, value\n- set_component_override_materials: Write OverrideMaterials on a mesh-component template (StaticMeshComponent / SkeletalMeshComponent / any UMeshComponent). Pass materialPaths as a string[] of material asset paths (empty array clears). Avoids any TArray<UObject*> coercion on the generic set_component_property path (#442). Params: assetPath, componentName, materialPaths\n- add_timeline_track: Add a track to a Blueprint timeline. Creates the UTimelineTemplate if missing, builds the matching curve asset (float/vector/color/event), applies keyframes, bumps TimelineLength to cover the last key, then recompiles so K2Node_Timeline regenerates its output pins. Params: assetPath, timelineName, trackName, trackType ('float'|'vector'|'color'|'event'), keyframes ([{time, value}]). value is a number for float/event, {x,y,z} for vector, {r,g,b,a} for color (#457)\n- set_capsule_size: Call UCapsuleComponent::SetCapsuleSize on a CapsuleComponent template (CharacterMovement-friendly path; raw property writes leave the visualizer stale). Pass either or both of halfHeight/radius. Returns the new + previous values. Params: assetPath, componentName, halfHeight?, radius? (#419)\n- get_component_property: Read a single property value from an SCS or inherited component template. Returns the ICH override value for child BPs if one exists. Params: assetPath, componentName, propertyName\n- set_class_default: Set UPROPERTY on Blueprint CDO. Pass value=null to clear an object/class/interface reference (#420). Params: assetPath, propertyName, value\n- delete_variable: Delete a member variable. Params: assetPath, name\n- add_function_parameter: Add input or output parameter to a function. Params: assetPath, functionName, parameterName, parameterType?, isOutput?\n- set_variable_default: Set default value on a BP variable. Params: assetPath, name, value\n- compile: Compile Blueprint. Params: assetPath\n- list_node_types: List node types. Params: category?, includeFunctions?\n- search_node_types: Search placeable nodes across every loaded Blueprint function library (KismetMathLibrary, GameplayStatics, custom libraries) plus UEdGraphNode classes. Matches the C++ name, the palette label from DisplayName metadata, and Keywords metadata, ignoring case/spaces/underscores, so 'is point in box' finds IsPointInBox and 'vector length' finds VSize. Results are ranked and each carries an addNode block (nodeClass + nodeParams incl. targetClass) that add_node accepts verbatim. Params: query, limit? (default 50), className? (narrow to one owning class), includeGraphNodes? (#808)\n- create_interface: Create BP Interface. Params: assetPath\n- add_interface: Implement interface. Params: blueprintPath, interfacePath\n- override_function: Override an inherited interface implementation (inherited via the parent class) or an overridable parent virtual function, with the matching signature so it actually binds as the override (create_function makes a blank, non-binding graph). Returns kind ('function' with a graphName, or 'event' with a nodeId in EventGraph). Event-shaped functions become override events unless preferFunction=true. Pass interfacePath to also implement the interface first if it is not present. Then wire the body with add_node (use nodeClass='CallParent' to chain to the base implementation). Params: assetPath, functionName, source? ('auto'|'interface'|'parent', advisory), preferFunction?, interfacePath? (#688)\n- list_overridable_functions: List functions this Blueprint can override: inherited interface implementations and overridable parent virtuals. Each entry has name, source ('interface'|'parent'), declaringClass, canBeEvent. Params: assetPath (#688)\n- list_graphs: List all graphs in a blueprint. Returns selector/objectPath plus duplicateIndex/duplicateCount; pass selector back as graphName for unambiguous nested graph edits. Params: assetPath\n- resolve_graph: Resolve a Blueprint graph name to selectors accepted by read_graph/add_node/connect_pins and other graph actions. Duplicate nested AnimBP names such as Locomotion return every match with selectors like Locomotion[3], object paths, and ambiguity metadata. Params: assetPath, graphName\n- add_event_dispatcher: Add event dispatcher (multicast delegate variable + signature graph + UFunction). Without parameters, broadcasters fire void(). With parameters, the signature graph gets typed user pins so K2Node_CallDelegate compiles cleanly (#276). Params: blueprintPath, name, parameters?: [{name, type}] where type is bool/int/float/string/name/text/vector/rotator/transform/object:/Script/Module.Class/struct:/Script/Module.Struct\n- duplicate: Duplicate blueprint asset. Params: sourcePath, destinationPath\n- add_local_variable: Add function-scope local variable. Params: assetPath, functionName, name, varType? (alias: type, default bool)\n- list_local_variables: List local variables in a function. Params: assetPath, functionName\n- validate: Validate blueprint without saving (compile + collect diagnostics). Params: assetPath\n- read_component_properties: Dump ALL UPROPERTYs on a BP component template incl. array contents (#105). Params: assetPath, componentName\n- read_node_property: Read a node pin default OR a reflected node property for verification (#102). Params: assetPath, graphName?, nodeName, propertyName\n- reparent_component: Reparent an SCS component under a new parent (#115). Params: assetPath, componentName, newParent\n- reparent: Change a Blueprint's ParentClass and recompile (#138). Params: assetPath, parentClass (short name or full path).\n- flush_ich: Flush orphaned InheritableComponentHandler override records (invalid component-override entries invisible to read/remove_component). Recompiles + saves. Params: assetPath. Returns recordsBefore/After/Removed (#580)\n- set_actor_tick_settings: Set actor CDO tick settings (#116). Params: assetPath, bCanEverTick?, bStartWithTickEnabled?, TickInterval?\n- export_nodes_t3d: Export graph nodes as T3D text (Ctrl+C equivalent) for bulk round-trip (#130). Params: assetPath, graphName?, nodeIds? (omit = whole graph)\n- import_nodes_t3d: Paste a T3D node blob into a graph (Ctrl+V equivalent) for bulk authoring (#130). Params: assetPath, graphName?, t3d, posX?, posY?\n- set_cdo_property: Set UPROPERTY on any C++ class CDO (not just Blueprints). Params: className, propertyName, value (#182/#183)\n- get_cdo_properties: Read UPROPERTY values from any C++ class CDO. Params: className, propertyNames? (#183)\n- run_construction_script: Spawn temp actor, run construction script, return generated components and transforms. Params: assetPath, location? (#195)\n- compile_all: Batch compile + save Blueprints. Params: assetPaths[], save? (default true). Returns per-path status (compiled/failed/not_found) (#284)\n- author: Author a whole Blueprint in one call: optionally create it (parentClass), then add components, variables and function stubs, then compile - one agent-facing action instead of a dozen add_* round-trips. Params: assetPath, parentClass? (create/ensure the BP if given), components? [{componentClass, componentName?, parentComponent?, childActorClass?}], variables? [{name, varType}], functions? [{functionName}], compile? (default true). Returns per-step results + created flag. (#607)\n- cleanup_graph: Remove orphan/corrupted nodes (no class, blank title+no pins, missing target UFunction). Params: assetPath, graphName? (default: every graph) (#285)\n- connect_pins_batch: Apply many pin connections in one call (single compile + save). Params: assetPath, graphName?, connections[]: [{sourceNode, sourcePin, targetNode, targetPin}] (#267)\n- set_node_position: Move a graph node to (posX, posY). Params: assetPath, graphName?, nodeId, posX, posY (#277)\n- auto_layout: Topological layered layout for a graph. Eliminates the (0,0) stack from programmatic add_node. Params: assetPath, graphName?, columnGap? (default 360), rowGap? (default 200) (#277)",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "action": {
+        "type": "string",
+        "enum": [
+          "read",
+          "list_variables",
+          "list_functions",
+          "read_graph",
+          "read_graph_summary",
+          "get_execution_flow",
+          "get_dependencies",
+          "diff",
+          "create",
+          "add_variable",
+          "set_variable_properties",
+          "create_function",
+          "delete_function",
+          "rename_function",
+          "add_node",
+          "delete_node",
+          "set_node_property",
+          "connect_pins",
+          "add_component",
+          "remove_component",
+          "set_component_property",
+          "set_component_override_materials",
+          "add_timeline_track",
+          "set_capsule_size",
+          "get_component_property",
+          "set_class_default",
+          "delete_variable",
+          "add_function_parameter",
+          "set_variable_default",
+          "compile",
+          "list_node_types",
+          "search_node_types",
+          "create_interface",
+          "add_interface",
+          "override_function",
+          "list_overridable_functions",
+          "list_graphs",
+          "resolve_graph",
+          "add_event_dispatcher",
+          "duplicate",
+          "add_local_variable",
+          "list_local_variables",
+          "validate",
+          "read_component_properties",
+          "read_node_property",
+          "reparent_component",
+          "reparent",
+          "flush_ich",
+          "set_actor_tick_settings",
+          "export_nodes_t3d",
+          "import_nodes_t3d",
+          "set_cdo_property",
+          "get_cdo_properties",
+          "run_construction_script",
+          "compile_all",
+          "author",
+          "cleanup_graph",
+          "connect_pins_batch",
+          "set_node_position",
+          "auto_layout"
+        ],
+        "description": "Action to perform"
+      },
+      "assetPath": {
+        "type": "string",
+        "description": "Blueprint asset path"
+      },
+      "path": {
+        "type": "string",
+        "description": "Legacy alias for assetPath. Use assetPath (#798)"
+      },
+      "packagePath": {
+        "type": "string",
+        "description": "create: destination folder, used with name. assetPath is the canonical alternative (#798)"
+      },
+      "graphName": {
+        "type": "string"
+      },
+      "functionName": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string"
+      },
+      "varType": {
+        "type": "string",
+        "description": "Variable type for add_variable/add_local_variable"
+      },
+      "type": {
+        "type": "string",
+        "description": "add_variable: alias for varType"
+      },
+      "onConflict": {
+        "type": "string",
+        "description": "add_variable: skip (default) or error when the variable already exists"
+      },
+      "parentClass": {
+        "type": "string"
+      },
+      "components": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": {}
+        },
+        "description": "author: [{componentClass, componentName?, parentComponent?, childActorClass?}] (#607)"
+      },
+      "variables": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": {}
+        },
+        "description": "author: [{name, varType}] (#607)"
+      },
+      "functions": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": {}
+        },
+        "description": "author: [{functionName}] (#607)"
+      },
+      "compile": {
+        "type": "boolean",
+        "description": "author: compile after authoring (default true) (#607)"
+      },
+      "category": {
+        "type": "string"
+      },
+      "tooltip": {
+        "type": "string"
+      },
+      "exposeOnSpawn": {
+        "type": "boolean",
+        "description": "Toggle ExposeOnSpawn flag on a variable"
+      },
+      "instanceEditable": {
+        "type": "boolean",
+        "description": "set_variable_properties: true = EditAnywhere (per-instance), false = not instance-editable"
+      },
+      "otherPath": {
+        "type": "string",
+        "description": "diff: the compare-against Blueprint (B)"
+      },
+      "fromRevision": {
+        "type": "string",
+        "description": "diff: reserved for revision diffing (not implemented; passing it is an explicit error)"
+      },
+      "toRevision": {
+        "type": "string",
+        "description": "diff: reserved for revision diffing (not implemented; passing it is an explicit error)"
+      },
+      "editFlag": {
+        "type": "string",
+        "description": "set_variable_properties: EditAnywhere|EditDefaultsOnly|EditInstanceOnly|none - the exact value list_variables reports (#744)"
+      },
+      "private": {
+        "type": "boolean",
+        "description": "set_variable_properties: the Blueprint editor's Private checkbox, independent of editFlag"
+      },
+      "location": {
+        "type": "object",
+        "additionalProperties": {},
+        "description": "run_construction_script: {x,y,z} spawn location for the temp actor"
+      },
+      "oldName": {
+        "type": "string"
+      },
+      "newName": {
+        "type": "string"
+      },
+      "nodeClass": {
+        "type": "string"
+      },
+      "nodeParams": {
+        "type": "object",
+        "additionalProperties": {}
+      },
+      "nodeName": {
+        "type": "string"
+      },
+      "propertyName": {
+        "type": "string"
+      },
+      "value": {},
+      "sourceNode": {
+        "type": "string"
+      },
+      "sourcePin": {
+        "type": "string"
+      },
+      "targetNode": {
+        "type": "string"
+      },
+      "targetPin": {
+        "type": "string"
+      },
+      "breakExistingSource": {
+        "type": "boolean",
+        "description": "connect_pins: break all existing links on the source pin before connecting"
+      },
+      "breakExistingTarget": {
+        "type": "boolean",
+        "description": "connect_pins: break all existing links on the target pin before connecting"
+      },
+      "componentClass": {
+        "type": "string"
+      },
+      "componentName": {
+        "type": "string"
+      },
+      "materialPaths": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Material asset paths for set_component_override_materials (#442)"
+      },
+      "timelineName": {
+        "type": "string",
+        "description": "Timeline name for add_timeline_track (#457)"
+      },
+      "trackName": {
+        "type": "string",
+        "description": "Track name within the timeline (#457)"
+      },
+      "trackType": {
+        "type": "string",
+        "enum": [
+          "float",
+          "vector",
+          "color",
+          "event"
+        ],
+        "description": "add_timeline_track type (#457)"
+      },
+      "keyframes": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": {}
+        },
+        "description": "add_timeline_track: [{time, value}] - value is number for float/event, {x,y,z} for vector, {r,g,b,a} for color (#457)"
+      },
+      "halfHeight": {
+        "type": "number",
+        "description": "set_capsule_size: capsule half height (unscaled)"
+      },
+      "radius": {
+        "type": "number",
+        "description": "set_capsule_size: capsule radius (unscaled)"
+      },
+      "parentComponent": {
+        "type": "string",
+        "description": "Parent SCS component for add_component hierarchy (#115)"
+      },
+      "childActorClass": {
+        "type": "string",
+        "description": "ChildActorClass for an added ChildActorComponent - Blueprint path (with/without _C) or C++ class (#526)"
+      },
+      "newParent": {
+        "type": "string",
+        "description": "New parent component name for reparent_component"
+      },
+      "bCanEverTick": {
+        "type": "boolean"
+      },
+      "bStartWithTickEnabled": {
+        "type": "boolean"
+      },
+      "TickInterval": {
+        "type": "number"
+      },
+      "parameterName": {
+        "type": "string"
+      },
+      "parameterType": {
+        "type": "string"
+      },
+      "isOutput": {
+        "type": "boolean"
+      },
+      "source": {
+        "type": "string",
+        "enum": [
+          "auto",
+          "interface",
+          "parent"
+        ],
+        "description": "override_function: advisory hint for where the overridable function comes from (#688)"
+      },
+      "preferFunction": {
+        "type": "boolean",
+        "description": "override_function: force the function-graph form even when the function could be placed as an override event (#688)"
+      },
+      "query": {
+        "type": "string"
+      },
+      "includeFunctions": {
+        "type": "boolean"
+      },
+      "includeInherited": {
+        "type": "boolean",
+        "description": "list_functions: also list overridable parent/interface functions this Blueprint has not implemented (#809)"
+      },
+      "blueprintPath": {
+        "type": "string"
+      },
+      "interfacePath": {
+        "type": "string"
+      },
+      "entryPoint": {
+        "type": "string",
+        "description": "Event/function name to start exec-flow trace"
+      },
+      "reverse": {
+        "type": "boolean",
+        "description": "get_dependencies: true → referencers of this asset"
+      },
+      "includeComponentProperties": {
+        "type": "boolean",
+        "description": "read: dump UPROPERTY name/type/value per component template (#353/#370)"
+      },
+      "sourcePath": {
+        "type": "string"
+      },
+      "destinationPath": {
+        "type": "string"
+      },
+      "nodeIds": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Node guids/names to export (omit = whole graph)"
+      },
+      "t3d": {
+        "type": "string",
+        "description": "T3D blob from export_nodes_t3d (or copied from the BP graph editor)"
+      },
+      "className": {
+        "type": "string",
+        "description": "C++ class name or path for set_cdo_property / get_cdo_properties"
+      },
+      "propertyNames": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Property names to read for get_cdo_properties (omit = all)"
+      },
+      "posX": {
+        "type": "number",
+        "description": "Re-center pasted nodes around this X (with posY)"
+      },
+      "posY": {
+        "type": "number",
+        "description": "Re-center pasted nodes around this Y (with posX)"
+      },
+      "offset": {
+        "type": "integer",
+        "minimum": 0,
+        "description": "Pagination offset for read_graph"
+      },
+      "limit": {
+        "type": "integer",
+        "exclusiveMinimum": 0,
+        "description": "Pagination limit for read_graph"
+      },
+      "includePins": {
+        "type": "boolean",
+        "description": "Include pins in read_graph results (default true)"
+      },
+      "includeDefaults": {
+        "type": "boolean",
+        "description": "Include pin default values in read_graph results (default true)"
+      },
+      "includeComments": {
+        "type": "boolean",
+        "description": "Include node comments in read_graph results (default true)"
+      },
+      "dumpToFile": {
+        "type": "boolean",
+        "description": "Write read_graph JSON to a file instead of returning nodes inline; without offset/limit this dumps the full graph, otherwise it dumps the requested slice"
+      },
+      "outputPath": {
+        "type": "string",
+        "description": "Absolute or Saved-relative JSON path for read_graph dumps; default path includes the asset, graph, and a path hash"
+      },
+      "titleFilter": {
+        "type": "string",
+        "description": "read_graph/read_graph_summary: case-insensitive substring match on node title (#560)"
+      },
+      "classFilter": {
+        "type": "string",
+        "description": "read_graph/read_graph_summary: case-insensitive substring match on node class name (#560)"
+      },
+      "parameters": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "additionalProperties": false
+        },
+        "description": "add_event_dispatcher: typed signature parameters [{name, type}]. type is bool/int/float/string/name/text/vector/rotator/transform/object:/Script/Module.Class/struct:/Script/Module.Struct"
+      },
+      "assetPaths": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Asset paths for compile_all"
+      },
+      "save": {
+        "type": "boolean",
+        "description": "compile_all: persist on success (default true)"
+      },
+      "nodeId": {
+        "type": "string",
+        "description": "Node guid or name (set_node_position)"
+      },
+      "columnGap": {
+        "type": "number",
+        "description": "auto_layout: horizontal spacing between columns (default 360)"
+      },
+      "rowGap": {
+        "type": "number",
+        "description": "auto_layout: vertical spacing between rows (default 200)"
+      },
+      "connections": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "sourceNode": {
+              "type": "string"
+            },
+            "sourcePin": {
+              "type": "string"
+            },
+            "targetNode": {
+              "type": "string"
+            },
+            "targetPin": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "sourceNode",
+            "sourcePin",
+            "targetNode",
+            "targetPin"
+          ],
+          "additionalProperties": false
+        },
+        "description": "connect_pins_batch: per-connection records"
+      }
+    },
+    "required": [
+      "action"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+  },
+  "execution": {
+    "taskSupport": "forbidden"
+  }
+}

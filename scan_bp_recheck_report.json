@@ -1,0 +1,3633 @@
+{
+  "spotterValidate": {
+    "success": true,
+    "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+    "errorCount": 0,
+    "warningCount": 0,
+    "valid": true,
+    "messages": []
+  },
+  "spotterSummary": {
+    "success": true,
+    "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+    "graphName": "EventGraph",
+    "nodes": [
+      {
+        "id": "NBcUFUYnmErfKi-MEX7B6Q",
+        "class": "K2Node_Event",
+        "title": "Event BeginPlay"
+      },
+      {
+        "id": "l8KDUU4ttni_vJGashLf0g",
+        "class": "K2Node_CallParentFunction",
+        "title": "Parent: BeginPlay"
+      },
+      {
+        "id": "SfvpWE7yXGU2q96Sy7h5wA",
+        "class": "K2Node_Event",
+        "title": "Event ActorBeginOverlap"
+      },
+      {
+        "id": "lDaankEClevtDXyxn9slIA",
+        "class": "K2Node_Event",
+        "title": "Event Tick"
+      },
+      {
+        "id": "f2ivUkakFkaSd4a5EMI69Q",
+        "class": "K2Node_CallParentFunction",
+        "title": "Parent: Tick"
+      },
+      {
+        "id": "m0YyLE_S9x8Gt1eflUbWiw",
+        "class": "K2Node_CustomEvent",
+        "title": "Start Follow"
+      },
+      {
+        "id": "sEaK4k8bZ9V2RRCeta93IQ",
+        "class": "K2Node_VariableSet",
+        "title": "Set IsFollowing"
+      },
+      {
+        "id": "AAoAaEAHVLZJvba75Au0xA",
+        "class": "K2Node_VariableSet",
+        "title": "Set Follow Target"
+      },
+      {
+        "id": "t5YnPEfvo0-W1CCp6-_Svg",
+        "class": "K2Node_VariableGet",
+        "title": "Get Hunter Ref"
+      },
+      {
+        "id": "jJXcB0D3rTj-D5qZELXkmA",
+        "class": "K2Node_MacroInstance",
+        "title": "Is Valid"
+      },
+      {
+        "id": "r7DTsUs5zfjoNOCeEejr0g",
+        "class": "K2Node_CallFunction",
+        "title": "Get AIController"
+      },
+      {
+        "id": "Sd4CfEn5hLHYumSBnSAVlw",
+        "class": "K2Node_DynamicCast",
+        "title": "Cast To BP_EnemyAIController"
+      },
+      {
+        "id": "_hlsR0R0wf10dYaeKwPNoA",
+        "class": "K2Node_CallFunction",
+        "title": "Request Kill"
+      },
+      {
+        "id": "hiHxGUWTGMnMUmyMEIcwKw",
+        "class": "K2Node_Knot",
+        "title": "Reroute Node"
+      },
+      {
+        "id": "GFodsUGgjj7J68CLdKGCxA",
+        "class": "K2Node_Knot",
+        "title": "Reroute Node"
+      },
+      {
+        "id": "kl1oa0cTh8G3S0KcalmCRQ",
+        "class": "K2Node_CallFunction",
+        "title": "Set Timer by Event"
+      },
+      {
+        "id": "CKstp0F9G8LuVbCg9gir0g",
+        "class": "K2Node_CustomEvent",
+        "title": "Update Follow Move"
+      },
+      {
+        "id": "dnXaeUHCkahy1cmE7Iahyw",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "aiZ5UUQLzqxkpH-mAm25Ig",
+        "class": "K2Node_VariableGet",
+        "title": "Get IsFollowing"
+      },
+      {
+        "id": "lszoL0639csxnraqPIDrRA",
+        "class": "K2Node_VariableGet",
+        "title": "Get Follow Target"
+      },
+      {
+        "id": "nbrt4kzLdToj1Ia-YwsNdA",
+        "class": "K2Node_MacroInstance",
+        "title": "Is Valid"
+      },
+      {
+        "id": "uZ6ksEBs9sIAxV-1c_PBFw",
+        "class": "K2Node_AIMoveTo",
+        "title": "AI MoveTo"
+      },
+      {
+        "id": "kNJAPk7-Ubz5r-Skzl1yYg",
+        "class": "K2Node_CallFunction",
+        "title": "Print String"
+      },
+      {
+        "id": "uH20k0iVuw7DopuMPHkT3A",
+        "class": "K2Node_Self",
+        "title": "Self-Reference"
+      }
+    ],
+    "execEdges": [
+      {
+        "from": "NBcUFUYnmErfKi-MEX7B6Q",
+        "fromPin": "then",
+        "to": "l8KDUU4ttni_vJGashLf0g",
+        "toPin": "execute"
+      },
+      {
+        "from": "lDaankEClevtDXyxn9slIA",
+        "fromPin": "then",
+        "to": "f2ivUkakFkaSd4a5EMI69Q",
+        "toPin": "execute"
+      },
+      {
+        "from": "m0YyLE_S9x8Gt1eflUbWiw",
+        "fromPin": "then",
+        "to": "kNJAPk7-Ubz5r-Skzl1yYg",
+        "toPin": "execute"
+      },
+      {
+        "from": "sEaK4k8bZ9V2RRCeta93IQ",
+        "fromPin": "then",
+        "to": "AAoAaEAHVLZJvba75Au0xA",
+        "toPin": "execute"
+      },
+      {
+        "from": "AAoAaEAHVLZJvba75Au0xA",
+        "fromPin": "then",
+        "to": "jJXcB0D3rTj-D5qZELXkmA",
+        "toPin": "exec"
+      },
+      {
+        "from": "jJXcB0D3rTj-D5qZELXkmA",
+        "fromPin": "Is Valid",
+        "to": "Sd4CfEn5hLHYumSBnSAVlw",
+        "toPin": "execute"
+      },
+      {
+        "from": "Sd4CfEn5hLHYumSBnSAVlw",
+        "fromPin": "then",
+        "to": "_hlsR0R0wf10dYaeKwPNoA",
+        "toPin": "execute"
+      },
+      {
+        "from": "_hlsR0R0wf10dYaeKwPNoA",
+        "fromPin": "then",
+        "to": "kl1oa0cTh8G3S0KcalmCRQ",
+        "toPin": "execute"
+      },
+      {
+        "from": "CKstp0F9G8LuVbCg9gir0g",
+        "fromPin": "then",
+        "to": "dnXaeUHCkahy1cmE7Iahyw",
+        "toPin": "execute"
+      },
+      {
+        "from": "dnXaeUHCkahy1cmE7Iahyw",
+        "fromPin": "then",
+        "to": "nbrt4kzLdToj1Ia-YwsNdA",
+        "toPin": "exec"
+      },
+      {
+        "from": "nbrt4kzLdToj1Ia-YwsNdA",
+        "fromPin": "Is Valid",
+        "to": "uZ6ksEBs9sIAxV-1c_PBFw",
+        "toPin": "execute"
+      },
+      {
+        "from": "kNJAPk7-Ubz5r-Skzl1yYg",
+        "fromPin": "then",
+        "to": "sEaK4k8bZ9V2RRCeta93IQ",
+        "toPin": "execute"
+      }
+    ],
+    "dataEdges": [
+      {
+        "from": "lDaankEClevtDXyxn9slIA",
+        "fromPin": "DeltaSeconds",
+        "to": "f2ivUkakFkaSd4a5EMI69Q",
+        "toPin": "DeltaSeconds"
+      },
+      {
+        "from": "m0YyLE_S9x8Gt1eflUbWiw",
+        "fromPin": "Player",
+        "to": "AAoAaEAHVLZJvba75Au0xA",
+        "toPin": "Follow Target"
+      },
+      {
+        "from": "m0YyLE_S9x8Gt1eflUbWiw",
+        "fromPin": "Player",
+        "to": "hiHxGUWTGMnMUmyMEIcwKw",
+        "toPin": "InputPin"
+      },
+      {
+        "from": "t5YnPEfvo0-W1CCp6-_Svg",
+        "fromPin": "Hunter Ref",
+        "to": "jJXcB0D3rTj-D5qZELXkmA",
+        "toPin": "InputObject"
+      },
+      {
+        "from": "t5YnPEfvo0-W1CCp6-_Svg",
+        "fromPin": "Hunter Ref",
+        "to": "r7DTsUs5zfjoNOCeEejr0g",
+        "toPin": "ControlledActor"
+      },
+      {
+        "from": "r7DTsUs5zfjoNOCeEejr0g",
+        "fromPin": "ReturnValue",
+        "to": "Sd4CfEn5hLHYumSBnSAVlw",
+        "toPin": "Object"
+      },
+      {
+        "from": "Sd4CfEn5hLHYumSBnSAVlw",
+        "fromPin": "AsBP Enemy AIController",
+        "to": "_hlsR0R0wf10dYaeKwPNoA",
+        "toPin": "self"
+      },
+      {
+        "from": "hiHxGUWTGMnMUmyMEIcwKw",
+        "fromPin": "OutputPin",
+        "to": "GFodsUGgjj7J68CLdKGCxA",
+        "toPin": "InputPin"
+      },
+      {
+        "from": "GFodsUGgjj7J68CLdKGCxA",
+        "fromPin": "OutputPin",
+        "to": "_hlsR0R0wf10dYaeKwPNoA",
+        "toPin": "Target"
+      },
+      {
+        "from": "CKstp0F9G8LuVbCg9gir0g",
+        "fromPin": "OutputDelegate",
+        "to": "kl1oa0cTh8G3S0KcalmCRQ",
+        "toPin": "Delegate"
+      },
+      {
+        "from": "aiZ5UUQLzqxkpH-mAm25Ig",
+        "fromPin": "IsFollowing",
+        "to": "dnXaeUHCkahy1cmE7Iahyw",
+        "toPin": "Condition"
+      },
+      {
+        "from": "lszoL0639csxnraqPIDrRA",
+        "fromPin": "Follow Target",
+        "to": "nbrt4kzLdToj1Ia-YwsNdA",
+        "toPin": "InputObject"
+      },
+      {
+        "from": "lszoL0639csxnraqPIDrRA",
+        "fromPin": "Follow Target",
+        "to": "uZ6ksEBs9sIAxV-1c_PBFw",
+        "toPin": "TargetActor"
+      },
+      {
+        "from": "uH20k0iVuw7DopuMPHkT3A",
+        "fromPin": "self",
+        "to": "uZ6ksEBs9sIAxV-1c_PBFw",
+        "toPin": "Pawn"
+      }
+    ],
+    "nodeCount": 24
+  },
+  "spotterVars": {
+    "success": true,
+    "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+    "variables": [
+      {
+        "name": "Follow Target",
+        "type": "object",
+        "guid": "EAA9F8184669A3700E11099738D0ED50",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "IsFollowing",
+        "type": "bool",
+        "guid": "4E6786E84FDE5F2CD74F239D10C871EF",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Hunter Ref",
+        "type": "object",
+        "guid": "BE94DE3F4C2F077ADA34AD8FFC3BE43A",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      }
+    ],
+    "count": 3
+  },
+  "hunterValidate": {
+    "success": true,
+    "path": "/Game/BluePrint/Enemy/BP_EnemyHunter-Ins",
+    "errorCount": 0,
+    "warningCount": 0,
+    "valid": true,
+    "messages": []
+  },
+  "hunterSummary": {
+    "success": true,
+    "path": "/Game/BluePrint/Enemy/BP_EnemyHunter-Ins",
+    "graphName": "EventGraph",
+    "nodes": [
+      {
+        "id": "EMuLGULshmDraH-kup8w_g",
+        "class": "K2Node_Event",
+        "title": "Event BeginPlay"
+      },
+      {
+        "id": "3sWQ30KkW4HN1zSGaqQ_Xw",
+        "class": "K2Node_CallParentFunction",
+        "title": "Parent: BeginPlay"
+      },
+      {
+        "id": "ARNG3UBC3VtsFEKq_8ccxA",
+        "class": "K2Node_Event",
+        "title": "Event ActorBeginOverlap"
+      },
+      {
+        "id": "OfhhBkjHHxJLK9GJm1i-gA",
+        "class": "K2Node_Event",
+        "title": "Event Tick"
+      },
+      {
+        "id": "byZoOkWa8WNN5Wyog9ULKA",
+        "class": "K2Node_CallParentFunction",
+        "title": "Parent: Tick"
+      },
+      {
+        "id": "4rhkp0EYicC-zcaWc9GqYQ",
+        "class": "K2Node_ComponentBoundEvent",
+        "title": "On Component Begin Overlap (Mesh)"
+      },
+      {
+        "id": "1QIb9EE7roFVMVOYHV1ddA",
+        "class": "K2Node_DynamicCast",
+        "title": "Cast To BP_ThirdPersonCharacter"
+      },
+      {
+        "id": "z7qIWUd6PYogI5O0L-Dggw",
+        "class": "K2Node_CallFunction",
+        "title": "Get Controller"
+      },
+      {
+        "id": "w_otuEzL7OTxBra6PoYUpw",
+        "class": "K2Node_DynamicCast",
+        "title": "Cast To AIController"
+      },
+      {
+        "id": "YoDMsEHy1xrc_gWWWq3QYg",
+        "class": "K2Node_CallFunction",
+        "title": "Quit Game"
+      }
+    ],
+    "execEdges": [
+      {
+        "from": "EMuLGULshmDraH-kup8w_g",
+        "fromPin": "then",
+        "to": "3sWQ30KkW4HN1zSGaqQ_Xw",
+        "toPin": "execute"
+      },
+      {
+        "from": "OfhhBkjHHxJLK9GJm1i-gA",
+        "fromPin": "then",
+        "to": "byZoOkWa8WNN5Wyog9ULKA",
+        "toPin": "execute"
+      },
+      {
+        "from": "4rhkp0EYicC-zcaWc9GqYQ",
+        "fromPin": "then",
+        "to": "1QIb9EE7roFVMVOYHV1ddA",
+        "toPin": "execute"
+      },
+      {
+        "from": "1QIb9EE7roFVMVOYHV1ddA",
+        "fromPin": "then",
+        "to": "YoDMsEHy1xrc_gWWWq3QYg",
+        "toPin": "execute"
+      }
+    ],
+    "dataEdges": [
+      {
+        "from": "OfhhBkjHHxJLK9GJm1i-gA",
+        "fromPin": "DeltaSeconds",
+        "to": "byZoOkWa8WNN5Wyog9ULKA",
+        "toPin": "DeltaSeconds"
+      },
+      {
+        "from": "4rhkp0EYicC-zcaWc9GqYQ",
+        "fromPin": "OtherActor",
+        "to": "1QIb9EE7roFVMVOYHV1ddA",
+        "toPin": "Object"
+      },
+      {
+        "from": "z7qIWUd6PYogI5O0L-Dggw",
+        "fromPin": "ReturnValue",
+        "to": "w_otuEzL7OTxBra6PoYUpw",
+        "toPin": "Object"
+      }
+    ],
+    "nodeCount": 10
+  },
+  "hunterVars": {
+    "success": true,
+    "path": "/Game/BluePrint/Enemy/BP_EnemyHunter-Ins",
+    "variables": [],
+    "count": 0
+  },
+  "aicValidate": {
+    "success": true,
+    "path": "/Game/BluePrint/System/BP_EnemyAIController",
+    "errorCount": 0,
+    "warningCount": 0,
+    "valid": true,
+    "messages": []
+  },
+  "aicSummary": {
+    "success": true,
+    "path": "/Game/BluePrint/System/BP_EnemyAIController",
+    "graphName": "EventGraph",
+    "nodes": [
+      {
+        "id": "C_FfC06SpRDJo2uhY1hEpA",
+        "class": "K2Node_Event",
+        "title": "Event BeginPlay"
+      },
+      {
+        "id": "kssl8UIBvzvIHu-ezC79jA",
+        "class": "K2Node_CallFunction",
+        "title": "Get Controlled Pawn"
+      },
+      {
+        "id": "yN1IIUOZ3FT0KuedXaRlhg",
+        "class": "K2Node_DynamicCast",
+        "title": "Cast To BP_EnemyShadowLogic"
+      },
+      {
+        "id": "a26uQ0xcXMrpOXyTWrk6qQ",
+        "class": "K2Node_VariableSet",
+        "title": "Set Enemy Ref"
+      },
+      {
+        "id": "Z8VzH0HLkN-te0-GEqgJXg",
+        "class": "K2Node_CustomEvent",
+        "title": "Wander"
+      },
+      {
+        "id": "Ll5G8UM_1NF-Xnq5II-Tig",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "F_BMXERcy3fuATm50LTvHA",
+        "class": "K2Node_VariableGet",
+        "title": "Get Enemy Ref"
+      },
+      {
+        "id": "tv-TR0KKt_DN1eyKU3ljRw",
+        "class": "K2Node_CallFunction",
+        "title": "Is Valid"
+      },
+      {
+        "id": "a7kNL0X961pnj3mNYwGNWQ",
+        "class": "K2Node_VariableGet",
+        "title": "Get Enemy Ref"
+      },
+      {
+        "id": "J_Z75k_-ADozkJiaXkyqcA",
+        "class": "K2Node_VariableGet",
+        "title": "Get CharacterMovement"
+      },
+      {
+        "id": "6iH3bUQ_bB8XwoulAkLsOg",
+        "class": "K2Node_VariableSet",
+        "title": "Set MaxWalkSpeed"
+      },
+      {
+        "id": "5sn3n0fihzS2vJSRLLH4VQ",
+        "class": "K2Node_CallFunction",
+        "title": "Get Random Reachable Point in Radius"
+      },
+      {
+        "id": "BwJm2kXtfwONavmki6CkYQ",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "yLxflUdv4w3aXMWTHcYCrA",
+        "class": "K2Node_CallFunction",
+        "title": "Delay"
+      },
+      {
+        "id": "UoWF6UVVBwpSojm-A9X6Vg",
+        "class": "K2Node_CallFunction",
+        "title": "Wander"
+      },
+      {
+        "id": "aQEtiEA2_zMdRia4WB4ATg",
+        "class": "K2Node_CallFunction",
+        "title": "Delay"
+      },
+      {
+        "id": "QhEaMUNAzHS2KVGWWwG-5w",
+        "class": "K2Node_CallFunction",
+        "title": "Wander"
+      },
+      {
+        "id": "WXyiSU_MJYqXLIi3igK9mg",
+        "class": "K2Node_CallFunction",
+        "title": "Wander"
+      },
+      {
+        "id": "t3nP3Uu0sKGE4ryl1Aa3PA",
+        "class": "K2Node_AIMoveTo",
+        "title": "AI MoveTo"
+      },
+      {
+        "id": "NU4rxU94LSk8JsW599QeQA",
+        "class": "K2Node_CallFunction",
+        "title": "Get Actor Location"
+      },
+      {
+        "id": "bsRHP0VOF8BEsr6DoBjTvA",
+        "class": "K2Node_VariableGet",
+        "title": "Get Wander Radious"
+      },
+      {
+        "id": "K3m4JUghfnrOHKW-ExBlrw",
+        "class": "K2Node_VariableGet",
+        "title": "Get Normal Speed"
+      },
+      {
+        "id": "eBRY50IXBuFLaBe4wGOYfg",
+        "class": "K2Node_PromotableOperator",
+        "title": "Equal (Object)"
+      },
+      {
+        "id": "uQaq5E-pz4Igb7uZv7n2PQ",
+        "class": "K2Node_ComponentBoundEvent",
+        "title": "On Target Perception Updated (AIPerception)"
+      },
+      {
+        "id": "qvCwP0r2XkeWTzCsV67vkg",
+        "class": "K2Node_CallFunction",
+        "title": "Get Player Character"
+      },
+      {
+        "id": "0ODvvkFhzYT104aw0zjApA",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "Uxgqm0Ryf5MCqWK32XqMFw",
+        "class": "K2Node_BreakStruct",
+        "title": "Break AIStimulus"
+      },
+      {
+        "id": "SBdIA0hcJpCK0nO31kmn4A",
+        "class": "K2Node_VariableSet",
+        "title": "Set isChasing"
+      },
+      {
+        "id": "9LMYNUvaeU5RfvSBgbYobQ",
+        "class": "K2Node_VariableGet",
+        "title": "Get AIPerception"
+      },
+      {
+        "id": "INOltk_fMCLBcjOm0PPq8w",
+        "class": "K2Node_CallFunction",
+        "title": "Set Active"
+      },
+      {
+        "id": "kZG_dkjEN9EgdnqczVH-7g",
+        "class": "K2Node_CallFunction",
+        "title": "Request Stimuli Listener Update"
+      },
+      {
+        "id": "6L7QSkAtYIHt5Zy9jwl7Lw",
+        "class": "K2Node_VariableGet",
+        "title": "Get AIPerception"
+      },
+      {
+        "id": "Ns62xklUX1lB9-uhRUnYBg",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "wyG0sUf1pDWC70SyDXzA8A",
+        "class": "K2Node_VariableGet",
+        "title": "Get isChasing"
+      },
+      {
+        "id": "fFjr-E-5MdBNZzCk8Xzy9w",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "AbsAQUAh1GmmH_a6E9ex0g",
+        "class": "K2Node_VariableGet",
+        "title": "Get isChasing"
+      },
+      {
+        "id": "olAoRE-32QnGc-aH_yqLDw",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "VB6SJEIu1KdLIvyjH0M9QA",
+        "class": "K2Node_CustomEvent",
+        "title": "Keep Chase"
+      },
+      {
+        "id": "UNz_UEud4WkGFiCYj_v0Mg",
+        "class": "K2Node_AIMoveTo",
+        "title": "AI MoveTo"
+      },
+      {
+        "id": "FFVpWUA8nOJRlIGCHVyndw",
+        "class": "K2Node_VariableGet",
+        "title": "Get Enemy Ref"
+      },
+      {
+        "id": "5fam-kDVH6wwYCSUcNxTNg",
+        "class": "K2Node_VariableSet",
+        "title": "Set MaxWalkSpeed"
+      },
+      {
+        "id": "YAJ3YkoIpWSkCF6lcYEAyQ",
+        "class": "K2Node_VariableGet",
+        "title": "Get Chase Speed"
+      },
+      {
+        "id": "jc3nN0FOV5xy-V-u3z0_FQ",
+        "class": "K2Node_VariableGet",
+        "title": "Get CharacterMovement"
+      },
+      {
+        "id": "FjdPKk-HhHd1Fo-Nwaz3Xg",
+        "class": "K2Node_CallFunction",
+        "title": "Wander"
+      },
+      {
+        "id": "ftJKZEY3QorAmROuwA4VtA",
+        "class": "K2Node_PromotableOperator",
+        "title": "vector + vector"
+      },
+      {
+        "id": "9vN2KUki1TqWQI-nA5evgA",
+        "class": "K2Node_CallFunction",
+        "title": "Get Actor Location"
+      },
+      {
+        "id": "6Ssl7EbjUITtQuuip2VJvQ",
+        "class": "K2Node_CallFunction",
+        "title": "Get Velocity"
+      },
+      {
+        "id": "QwiwkUK2karogu6iCDCHlg",
+        "class": "K2Node_CallFunction",
+        "title": "Normalize"
+      },
+      {
+        "id": "W-maMEC3XyfMY0Wn0JOPWg",
+        "class": "K2Node_PromotableOperator",
+        "title": "vector * vector"
+      },
+      {
+        "id": "yBC2-k7m5K_HaHuBgzobfg",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "Na5At0JQmLcMF9m5cHr9aA",
+        "class": "K2Node_CallFunction",
+        "title": "Set Timer by Event"
+      },
+      {
+        "id": "vN3Ry0SiFRDdrU-8-wyq_A",
+        "class": "K2Node_VariableSet",
+        "title": "Set isChasing"
+      },
+      {
+        "id": "O0mYQ0FEX37T0Q-Rj_lhTA",
+        "class": "K2Node_CallFunction",
+        "title": "Set Timer by Event"
+      },
+      {
+        "id": "HEzYOEc0395EZeCsbp5Nrw",
+        "class": "K2Node_VariableSet",
+        "title": "Set ChaseTimerHandle"
+      },
+      {
+        "id": "0vE6bEzXViw8pgCU_ie9Wg",
+        "class": "K2Node_Knot",
+        "title": "Reroute Node"
+      },
+      {
+        "id": "Bm_2JEpR5oqzthqbrgvbIw",
+        "class": "K2Node_VariableSet",
+        "title": "Set isChasing"
+      },
+      {
+        "id": "LQq1Jkm5TGRh7fmSzWIcpA",
+        "class": "K2Node_CallFunction",
+        "title": "Clear and Invalidate Timer by Handle"
+      },
+      {
+        "id": "wMVu4k2IhBWM8TWLdPftJg",
+        "class": "K2Node_VariableGet",
+        "title": "Get ChaseTimerHandle"
+      },
+      {
+        "id": "5roEekpspOYJnNSZWpXL8w",
+        "class": "K2Node_CommutativeAssociativeBinaryOperator",
+        "title": "OR Boolean"
+      },
+      {
+        "id": "RiSca06nk1a3GXOo2FZJCw",
+        "class": "K2Node_VariableGet",
+        "title": "Get isAlert"
+      },
+      {
+        "id": "p23pxE2tqGT0sdmsPerOjw",
+        "class": "K2Node_Event",
+        "title": "Event Tick"
+      },
+      {
+        "id": "n30HrkOeYQvcz4Ku0FVIaQ",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "_GV9PUHfhva8ARasY5d1qg",
+        "class": "K2Node_VariableGet",
+        "title": "Get isChasing"
+      },
+      {
+        "id": "j7JPXkvSnXx90Ham0CLwOQ",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "f3bu10RXq6ReP3KjYzt8BQ",
+        "class": "K2Node_VariableGet",
+        "title": "Get isAlert"
+      },
+      {
+        "id": "LmcDg0UCLeRcBoCAQqO6hQ",
+        "class": "K2Node_CustomEvent",
+        "title": "Check Alert Entry"
+      },
+      {
+        "id": "fingK02rcS8iiVSWzaobjA",
+        "class": "K2Node_CallFunction",
+        "title": "Check Alert Entry"
+      },
+      {
+        "id": "cHSLgUGbnejmiSWw6peIOQ",
+        "class": "K2Node_CustomEvent",
+        "title": "Update Alert Scan"
+      },
+      {
+        "id": "IMp9FU1wsRKi5HaB5HA-tg",
+        "class": "K2Node_CallFunction",
+        "title": "Update Alert Scan"
+      },
+      {
+        "id": "bTAxe0c8zyHe_o2aeCL10Q",
+        "class": "K2Node_VariableGet",
+        "title": "Get Enemy Ref"
+      },
+      {
+        "id": "OGspqUjV0pfQ3KyvRBhIQQ",
+        "class": "K2Node_CallFunction",
+        "title": "Get Player Character"
+      },
+      {
+        "id": "VpYOqkOBUwnlCsmwmqJ-hA",
+        "class": "K2Node_CallFunction",
+        "title": "Get Distance To"
+      },
+      {
+        "id": "cOd9GkHE73QgiimjxSUYfg",
+        "class": "K2Node_PromotableOperator",
+        "title": "float <= float"
+      },
+      {
+        "id": "FUT0aEhsrtzOnhuC1Of8Jw",
+        "class": "K2Node_VariableGet",
+        "title": "Get AlertRadius"
+      },
+      {
+        "id": "4V-8d0agqeOpzQC0aO5Hcw",
+        "class": "K2Node_CallFunction",
+        "title": "Get Velocity"
+      },
+      {
+        "id": "ft7nUECpE0_wni64I4pIXw",
+        "class": "K2Node_CallFunction",
+        "title": "Vector Length"
+      },
+      {
+        "id": "6wvzwkLECVHPfwmH0fwFtw",
+        "class": "K2Node_PromotableOperator",
+        "title": "float > float"
+      },
+      {
+        "id": "5ATp1UelLQiZhsGnVkItjw",
+        "class": "K2Node_CommutativeAssociativeBinaryOperator",
+        "title": "AND Boolean"
+      },
+      {
+        "id": "az-ZCUarnWNb-CWhGJTwGg",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "Ermjo0xS-B6mAEeXrZZYNQ",
+        "class": "K2Node_VariableSet",
+        "title": "Set AlertMoveAccumulate"
+      },
+      {
+        "id": "mvaL8UErbqYBLM29sxcM_g",
+        "class": "K2Node_VariableGet",
+        "title": "Get MoveAccumulateTime"
+      },
+      {
+        "id": "JL3eR0iIUngVznmRjgUPnQ",
+        "class": "K2Node_PromotableOperator",
+        "title": "float + float"
+      },
+      {
+        "id": "U98SbUZQelaCGiqBzb58nQ",
+        "class": "K2Node_VariableSet",
+        "title": "Set MoveAccumulateTime"
+      },
+      {
+        "id": "tjQBQ0tsttCsl8O_271ccA",
+        "class": "K2Node_PromotableOperator",
+        "title": "float > float"
+      },
+      {
+        "id": "F-9RbEiz3nlTb4etOCodpw",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "qvscFUyt6ZFsLHq1tTs51Q",
+        "class": "K2Node_CustomEvent",
+        "title": "Enter Alert"
+      },
+      {
+        "id": "A5k2W0T7sO19qZ2kH4LczA",
+        "class": "K2Node_VariableSet",
+        "title": "Set isAlert"
+      },
+      {
+        "id": "Aihqz04eo_ZwrqOrpdr3Gw",
+        "class": "K2Node_VariableSet",
+        "title": "Set isInvestigating"
+      },
+      {
+        "id": "ijaBL0cUOhbmXEKqHq69gw",
+        "class": "K2Node_VariableSet",
+        "title": "Set isChasing"
+      },
+      {
+        "id": "Lg98NE15Y-ZVygSsfpe94g",
+        "class": "K2Node_VariableSet",
+        "title": "Set MoveAccumulateTime"
+      },
+      {
+        "id": "Gk9JOEJC2xaxzjirAc_U9g",
+        "class": "K2Node_VariableSet",
+        "title": "Set AlertMoveAccumulate"
+      },
+      {
+        "id": "1sGix01bxpGdj3qxotT-uA",
+        "class": "K2Node_VariableSet",
+        "title": "Set AlertScanYaw"
+      },
+      {
+        "id": "o6Hw_E_6FgYc5nOM1-XKuQ",
+        "class": "K2Node_CallFunction",
+        "title": "Clear and Invalidate Timer by Handle"
+      },
+      {
+        "id": "qBdYG0WJJXyMSbuWHwc8EA",
+        "class": "K2Node_CallFunction",
+        "title": "Stop Movement"
+      },
+      {
+        "id": "sLaN-k17v4ag356LogYz6w",
+        "class": "K2Node_CallFunction",
+        "title": "Enter Alert"
+      },
+      {
+        "id": "7toyY0cbjxgwrGy6wDn7QA",
+        "class": "K2Node_VariableGet",
+        "title": "Get ChaseTimerHandle"
+      },
+      {
+        "id": "mjo6lUTBl1n8f7ag4pkUhA",
+        "class": "K2Node_VariableSet",
+        "title": "Set MoveAccumulateTime"
+      },
+      {
+        "id": "RyPSkErjLFWxo9aK0m79YA",
+        "class": "K2Node_PromotableOperator",
+        "title": "float / float"
+      },
+      {
+        "id": "WR8c50qdAEsyFxCu3VonkQ",
+        "class": "K2Node_VariableGet",
+        "title": "Get AlertScanDuration"
+      },
+      {
+        "id": "-lzCvkiyNz9-2J-V7GowFg",
+        "class": "K2Node_PromotableOperator",
+        "title": "float * float"
+      },
+      {
+        "id": "7EOqNUYOvIivxdSDwYPLIA",
+        "class": "K2Node_VariableSet",
+        "title": "Set AlertScanYaw"
+      },
+      {
+        "id": "xfdUv0tLZji3f6WNrYXX1g",
+        "class": "K2Node_CallFunction",
+        "title": "Get Control Rotation"
+      },
+      {
+        "id": "avc6METVnz073YuDo0XhHA",
+        "class": "K2Node_CallFunction",
+        "title": "Break Rotator"
+      },
+      {
+        "id": "olNsZ0cGsQ1d5SSobHp8Mg",
+        "class": "K2Node_PromotableOperator",
+        "title": "float + float"
+      },
+      {
+        "id": "eCsca0rBsqV9xWK9pMtj6A",
+        "class": "K2Node_CallFunction",
+        "title": "Make Rotator"
+      },
+      {
+        "id": "PHpOSUJYeS40uzaxJOpZrw",
+        "class": "K2Node_VariableGet",
+        "title": "Get AlertScanYaw"
+      },
+      {
+        "id": "XJjar0MtGkPIB_CXRBqelg",
+        "class": "K2Node_PromotableOperator",
+        "title": "float + float"
+      },
+      {
+        "id": "TCj6Fk-491LIel60DUOswA",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "9HtBDkq8e85pLTyTOmgnyw",
+        "class": "K2Node_PromotableOperator",
+        "title": "float >= float"
+      },
+      {
+        "id": "Swjkc09bGfTJxx-rrPMUlg",
+        "class": "K2Node_VariableGet",
+        "title": "Get AlertScanYaw"
+      },
+      {
+        "id": "BkC6t0UkbjOx_Z-0E628Zg",
+        "class": "K2Node_CustomEvent",
+        "title": "Exit Alert to Wander"
+      },
+      {
+        "id": "VPdsuE0PxD-0AVuTd8sTdQ",
+        "class": "K2Node_CallFunction",
+        "title": "Exit Alert to Wander"
+      },
+      {
+        "id": "5Z9izkxITppteWC_JLzJJQ",
+        "class": "K2Node_VariableSet",
+        "title": "Set isAlert"
+      },
+      {
+        "id": "oJYcN0MkYywZcgq36t8GXg",
+        "class": "K2Node_VariableSet",
+        "title": "Set isInvestigating"
+      },
+      {
+        "id": "xsuFQERhVGBsty-0JPcZzw",
+        "class": "K2Node_VariableSet",
+        "title": "Set MoveAccumulateTime"
+      },
+      {
+        "id": "fLEzW05FBE1o3KeACzQGWg",
+        "class": "K2Node_VariableSet",
+        "title": "Set AlertMoveAccumulate"
+      },
+      {
+        "id": "fH3C_0qmf5Ma7P6M5XrGBw",
+        "class": "K2Node_VariableSet",
+        "title": "Set AlertScanYaw"
+      },
+      {
+        "id": "NsQEjEXd8p-wDmWe073iCw",
+        "class": "K2Node_CallFunction",
+        "title": "Wander"
+      },
+      {
+        "id": "FC4pikztEVu9_ByXT_qCcg",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "O5BGj0UqM4uoHdCUCMWUHQ",
+        "class": "K2Node_CallFunction",
+        "title": "Print String"
+      },
+      {
+        "id": "Hw6UsU5S0596yb6vYyLhlg",
+        "class": "K2Node_CallFunction",
+        "title": "Print String"
+      },
+      {
+        "id": "odBFOEb6SGOmdjWF-Qq1oA",
+        "class": "K2Node_CallFunction",
+        "title": "Print String"
+      },
+      {
+        "id": "qdELQ0m8cyU1MnmPVZTSgQ",
+        "class": "K2Node_CallFunction",
+        "title": "Print String"
+      },
+      {
+        "id": "J4msqE1OwpldZGamOdU6mg",
+        "class": "K2Node_CallFunction",
+        "title": "Print String"
+      },
+      {
+        "id": "PJ9tEUHu54FcK_ugoZBJzg",
+        "class": "K2Node_VariableGet",
+        "title": "Get Enemy Ref"
+      },
+      {
+        "id": "08WEEULzWYK3Z4CiVwCzAQ",
+        "class": "K2Node_CallFunction",
+        "title": "Set Actor Rotation"
+      },
+      {
+        "id": "aptPfk8vyVfLgO6h1_RLHA",
+        "class": "K2Node_CallFunction",
+        "title": "Print String"
+      },
+      {
+        "id": "9qap8kl5uOPBoMeb7OD1MQ",
+        "class": "K2Node_CallFunction",
+        "title": "To String (Float)"
+      },
+      {
+        "id": "T-lySk9FksoAbkmJvzB-rw",
+        "class": "K2Node_VariableSet",
+        "title": "Set AlertScanYaw"
+      },
+      {
+        "id": "Kv5SWEUyjwi6oO-SpzN9Kw",
+        "class": "K2Node_VariableGet",
+        "title": "Get AlertScanYaw"
+      },
+      {
+        "id": "_XnHyELdl_bBDjaTmAUQ3w",
+        "class": "K2Node_PromotableOperator",
+        "title": "float + float"
+      },
+      {
+        "id": "A3O88Uk2KyCVs1CBWs5KGw",
+        "class": "K2Node_PromotableOperator",
+        "title": "float / float"
+      },
+      {
+        "id": "wfxA308Ux-c_L2mLEL80Mg",
+        "class": "K2Node_VariableGet",
+        "title": "Get AlertScanDuration"
+      },
+      {
+        "id": "5QMeJkbNf7MaY9CIyJyz3w",
+        "class": "K2Node_PromotableOperator",
+        "title": "float * float"
+      },
+      {
+        "id": "rxdC5UNHy3l8awyeEVOVCA",
+        "class": "K2Node_VariableSet",
+        "title": "Set AlertScanYaw"
+      },
+      {
+        "id": "JsgyDEkIcaFjfr6HQ9fmGQ",
+        "class": "K2Node_VariableGet",
+        "title": "Get AlertScanYaw"
+      },
+      {
+        "id": "tDKLUUPnxvhaK-KVOJ9iug",
+        "class": "K2Node_PromotableOperator",
+        "title": "float + float"
+      },
+      {
+        "id": "9NyCJUvG8pjH3WaUYrS5JQ",
+        "class": "K2Node_PromotableOperator",
+        "title": "float >= float"
+      },
+      {
+        "id": "y-2ZnkulwD5v0P68H2xGUw",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "vPxoZ0fOk5Qip6Whw7BUGg",
+        "class": "K2Node_CallFunction",
+        "title": "Exit Alert to Wander"
+      },
+      {
+        "id": "XtONEU7TwaCtCVyeQJhi7w",
+        "class": "K2Node_VariableGet",
+        "title": "Get Enemy Ref"
+      },
+      {
+        "id": "QA3tqEeBlutX3V2tLAX76Q",
+        "class": "K2Node_CallFunction",
+        "title": "Set Actor Rotation"
+      },
+      {
+        "id": "mGsnzUABaW7ysXmL2uHiRQ",
+        "class": "K2Node_CallFunction",
+        "title": "Break Rotator"
+      },
+      {
+        "id": "ZbRDRE-YY6ti4R-qyTxA-Q",
+        "class": "K2Node_VariableGet",
+        "title": "Get Enemy Ref"
+      },
+      {
+        "id": "8b-rsEdsURTbewuPGSmkRw",
+        "class": "K2Node_CallFunction",
+        "title": "Get Actor Rotation"
+      },
+      {
+        "id": "uTUxhkSOBnX4uxanXei0jA",
+        "class": "K2Node_PromotableOperator",
+        "title": "float + float"
+      },
+      {
+        "id": "NDf3507DXtBF3FW1lFkmcQ",
+        "class": "K2Node_CallFunction",
+        "title": "Make Rotator"
+      },
+      {
+        "id": "7jO3iUP7AVpTFyiNx5KKaA",
+        "class": "K2Node_CustomEvent",
+        "title": "Patrol"
+      },
+      {
+        "id": "izrP_0q2r9n5yICAsT1F1w",
+        "class": "K2Node_CallFunction",
+        "title": "Patrol"
+      },
+      {
+        "id": "UMzMwExptnJWPR2lio0EpQ",
+        "class": "K2Node_CallFunction",
+        "title": "Patrol"
+      },
+      {
+        "id": "2JVaXk1YsvcZzo68uHesaw",
+        "class": "K2Node_VariableGet",
+        "title": "Get isChasing"
+      },
+      {
+        "id": "h25kJE21S9w4Zlqyts3oMw",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "DLW87kqfYWKZZKCECCGKMw",
+        "class": "K2Node_VariableGet",
+        "title": "Get Enemy Ref"
+      },
+      {
+        "id": "usmHgkjlrMiE98GzmeisqQ",
+        "class": "K2Node_VariableGet",
+        "title": "Get Patrol Path Actor"
+      },
+      {
+        "id": "Kd9UCUqJmejz6ua_5_ngng",
+        "class": "K2Node_VariableGet",
+        "title": "Get Patrol Path Index"
+      },
+      {
+        "id": "XOkckU-cM1zTm92zMxGStg",
+        "class": "K2Node_CallFunction",
+        "title": "Is Valid"
+      },
+      {
+        "id": "xs4qokihnXZJGD2m8FAzAw",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "vdapfklx6NY2SL606BuzDg",
+        "class": "K2Node_CallFunction",
+        "title": "Wander"
+      },
+      {
+        "id": "3uYcREpAU5hSWA6F821nbQ",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "1FLyvEnAGXEo7vmRoAha1Q",
+        "class": "K2Node_CallFunction",
+        "title": "Is Valid"
+      },
+      {
+        "id": "6IzPUUjQuEEUEZGlZX_Vvg",
+        "class": "K2Node_CallFunction",
+        "title": "Get Components By Class"
+      },
+      {
+        "id": "XIyPPkk0CnBTibCXSB5dqg",
+        "class": "K2Node_GetArrayItem",
+        "title": "Get (a copy)"
+      },
+      {
+        "id": "xAzAaEey5hCZ3bu4akDpKA",
+        "class": "K2Node_PromotableOperator",
+        "title": "integer > integer"
+      },
+      {
+        "id": "t8fi7USa3AyoKkKLyFtdJg",
+        "class": "K2Node_CallFunction",
+        "title": "Get Number Of Spline Points"
+      },
+      {
+        "id": "OQYxL0kRdY5hh8GvYAZOgQ",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "EoAfdEals_mXotWdcyKGqg",
+        "class": "K2Node_VariableGet",
+        "title": "Get CharacterMovement"
+      },
+      {
+        "id": "IqeJd0BVT8kAwRmqv4BWCw",
+        "class": "K2Node_VariableSet",
+        "title": "Set MaxWalkSpeed"
+      },
+      {
+        "id": "b6hfE0nhLccGwFi5DAnwSA",
+        "class": "K2Node_VariableGet",
+        "title": "Get Normal Speed"
+      },
+      {
+        "id": "ui1rzElR2x_KDz2drwDvQQ",
+        "class": "K2Node_VariableGet",
+        "title": "Get PatrolPointIndex"
+      },
+      {
+        "id": "kfW63kU-wZVvJzyPjAMzFQ",
+        "class": "K2Node_CallFunction",
+        "title": "% (Integer)"
+      },
+      {
+        "id": "xyGHzU7DOuFChGG4Q9k6Qw",
+        "class": "K2Node_CallFunction",
+        "title": "Get Location at Spline Point"
+      },
+      {
+        "id": "SlzpfUXkKWCqpeSa8A78TQ",
+        "class": "K2Node_AIMoveTo",
+        "title": "AI MoveTo"
+      },
+      {
+        "id": "tPpedkc2gmim-h2AbY4IFg",
+        "class": "K2Node_VariableGet",
+        "title": "Get PatrolPointIndex"
+      },
+      {
+        "id": "f0UM5Elc9Qh4_iafKuPIHw",
+        "class": "K2Node_PromotableOperator",
+        "title": "int + int"
+      },
+      {
+        "id": "ix5Pnk0NtM1QtpuCtaN2pQ",
+        "class": "K2Node_CallFunction",
+        "title": "Patrol"
+      },
+      {
+        "id": "iir1VUlQEYlFYqG5bd8_4w",
+        "class": "K2Node_VariableSet",
+        "title": "Set PatrolPointIndex"
+      },
+      {
+        "id": "1ZtNW0EQK30HdLeaoo2fGw",
+        "class": "K2Node_CallFunction",
+        "title": "Delay"
+      },
+      {
+        "id": "yBAAV0BbRHe4Azyy3yhGhw",
+        "class": "K2Node_CallFunction",
+        "title": "Patrol"
+      },
+      {
+        "id": "ZjdNJEQRcb7tyDqb3Ju6SQ",
+        "class": "K2Node_VariableSet",
+        "title": "Set Chase Target"
+      },
+      {
+        "id": "c-4jt0JTL3psJ9aznu7N-Q",
+        "class": "K2Node_VariableSet",
+        "title": "Set Chase Target"
+      },
+      {
+        "id": "DlZgT0lp5EN8J0GKMc_1gQ",
+        "class": "K2Node_VariableGet",
+        "title": "Get Chase Target"
+      },
+      {
+        "id": "vja3cUnIYIqI9mGdSaQZYQ",
+        "class": "K2Node_CallFunction",
+        "title": "Is Valid"
+      },
+      {
+        "id": "GLsGl05lhVOpNxOX4ztA_w",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "aCpqo0U7fm9g6FOGq7eXcg",
+        "class": "K2Node_VariableGet",
+        "title": "Get Chase Target"
+      },
+      {
+        "id": "ANcotEmG7Ut1iIqpRvctoA",
+        "class": "K2Node_VariableGet",
+        "title": "Get Enemy Ref"
+      },
+      {
+        "id": "RamG1EAlfKG8BE2bXs6lHg",
+        "class": "K2Node_CustomEvent",
+        "title": "Notify Encounter Started"
+      },
+      {
+        "id": "qEYuL0Vz45r1vPmpu4_lYg",
+        "class": "K2Node_VariableSet",
+        "title": "Set EncounterStarted"
+      },
+      {
+        "id": "AplXJ0n0d9uNMcSCtO3K9w",
+        "class": "K2Node_CustomEvent",
+        "title": "Request Kill"
+      },
+      {
+        "id": "DgJyA0CdMM357wKHToX8EQ",
+        "class": "K2Node_VariableGet",
+        "title": "Get Enemy Ref"
+      },
+      {
+        "id": "fgvmnUhA64CGMKiHNILRMA",
+        "class": "K2Node_CallFunction",
+        "title": "Actor Has Tag"
+      },
+      {
+        "id": "23gOIEieS0ofgj-vnT58QA",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "BNQvh0hy673O3D-pM1aidQ",
+        "class": "K2Node_VariableSet",
+        "title": "Set Chase Target"
+      },
+      {
+        "id": "IzhuKEZ60k4VkJaTsrbgEg",
+        "class": "K2Node_VariableSet",
+        "title": "Set IsRushingKill"
+      },
+      {
+        "id": "Vv4GUUlaSZhPFwWmkCBMZA",
+        "class": "K2Node_VariableSet",
+        "title": "Set isChasing"
+      },
+      {
+        "id": "qdXuK0m0xZT_p8KyVSe8FA",
+        "class": "K2Node_AIMoveTo",
+        "title": "AI MoveTo"
+      },
+      {
+        "id": "Et-EIEGIVmHOyPq-pVY7bQ",
+        "class": "K2Node_VariableGet",
+        "title": "Get Enemy Ref"
+      },
+      {
+        "id": "0Y4WPU3cHQDfUf27TdA4mg",
+        "class": "K2Node_VariableGet",
+        "title": "Get Chase Target"
+      },
+      {
+        "id": "HaGxyk-a9xcjeRWn3-pI_Q",
+        "class": "K2Node_CustomEvent",
+        "title": "Finish Kill"
+      },
+      {
+        "id": "CeFZlkSk6urdneyGOxu5Lg",
+        "class": "K2Node_CallFunction",
+        "title": "Quit Game"
+      },
+      {
+        "id": "X4qZ_UF4lcuPDaG_xf1v9w",
+        "class": "EdGraphNode_Comment",
+        "title": "Comment"
+      },
+      {
+        "id": "PnysUEBYiYfXCqqBzaxw3w",
+        "class": "K2Node_VariableGet",
+        "title": "Get Enemy Ref"
+      },
+      {
+        "id": "GKvIkUllZOvvaOawTU3oEg",
+        "class": "K2Node_CallFunction",
+        "title": "Actor Has Tag"
+      },
+      {
+        "id": "7Tnz2EX9YYhvcCOtcXwuig",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch"
+      },
+      {
+        "id": "6ah6ikd0th1gV4mIgRACkw",
+        "class": "K2Node_DynamicCast",
+        "title": "Cast To BP_EnemySpotter-Ins"
+      },
+      {
+        "id": "gYZ4xEnfw0u7DIC1lcd8Sg",
+        "class": "K2Node_CallFunction",
+        "title": "Start Follow"
+      },
+      {
+        "id": "zyOCGUagGifkp_mUBSqfeA",
+        "class": "K2Node_CallFunction",
+        "title": "Print String"
+      },
+      {
+        "id": "jl6y90-WUNne32y2jlAwBg",
+        "class": "K2Node_Knot",
+        "title": "Reroute Node"
+      }
+    ],
+    "execEdges": [
+      {
+        "from": "C_FfC06SpRDJo2uhY1hEpA",
+        "fromPin": "then",
+        "to": "INOltk_fMCLBcjOm0PPq8w",
+        "toPin": "execute"
+      },
+      {
+        "from": "yN1IIUOZ3FT0KuedXaRlhg",
+        "fromPin": "then",
+        "to": "a26uQ0xcXMrpOXyTWrk6qQ",
+        "toPin": "execute"
+      },
+      {
+        "from": "a26uQ0xcXMrpOXyTWrk6qQ",
+        "fromPin": "then",
+        "to": "izrP_0q2r9n5yICAsT1F1w",
+        "toPin": "execute"
+      },
+      {
+        "from": "Z8VzH0HLkN-te0-GEqgJXg",
+        "fromPin": "then",
+        "to": "Ns62xklUX1lB9-uhRUnYBg",
+        "toPin": "execute"
+      },
+      {
+        "from": "Ll5G8UM_1NF-Xnq5II-Tig",
+        "fromPin": "then",
+        "to": "6iH3bUQ_bB8XwoulAkLsOg",
+        "toPin": "execute"
+      },
+      {
+        "from": "6iH3bUQ_bB8XwoulAkLsOg",
+        "fromPin": "then",
+        "to": "BwJm2kXtfwONavmki6CkYQ",
+        "toPin": "execute"
+      },
+      {
+        "from": "BwJm2kXtfwONavmki6CkYQ",
+        "fromPin": "then",
+        "to": "t3nP3Uu0sKGE4ryl1Aa3PA",
+        "toPin": "execute"
+      },
+      {
+        "from": "yLxflUdv4w3aXMWTHcYCrA",
+        "fromPin": "then",
+        "to": "UoWF6UVVBwpSojm-A9X6Vg",
+        "toPin": "execute"
+      },
+      {
+        "from": "aQEtiEA2_zMdRia4WB4ATg",
+        "fromPin": "then",
+        "to": "WXyiSU_MJYqXLIi3igK9mg",
+        "toPin": "execute"
+      },
+      {
+        "from": "t3nP3Uu0sKGE4ryl1Aa3PA",
+        "fromPin": "OnSuccess",
+        "to": "yLxflUdv4w3aXMWTHcYCrA",
+        "toPin": "execute"
+      },
+      {
+        "from": "t3nP3Uu0sKGE4ryl1Aa3PA",
+        "fromPin": "OnFail",
+        "to": "aQEtiEA2_zMdRia4WB4ATg",
+        "toPin": "execute"
+      },
+      {
+        "from": "uQaq5E-pz4Igb7uZv7n2PQ",
+        "fromPin": "then",
+        "to": "7Tnz2EX9YYhvcCOtcXwuig",
+        "toPin": "execute"
+      },
+      {
+        "from": "0ODvvkFhzYT104aw0zjApA",
+        "fromPin": "then",
+        "to": "olAoRE-32QnGc-aH_yqLDw",
+        "toPin": "execute"
+      },
+      {
+        "from": "0ODvvkFhzYT104aw0zjApA",
+        "fromPin": "else",
+        "to": "Bm_2JEpR5oqzthqbrgvbIw",
+        "toPin": "execute"
+      },
+      {
+        "from": "SBdIA0hcJpCK0nO31kmn4A",
+        "fromPin": "then",
+        "to": "ZjdNJEQRcb7tyDqb3Ju6SQ",
+        "toPin": "execute"
+      },
+      {
+        "from": "INOltk_fMCLBcjOm0PPq8w",
+        "fromPin": "then",
+        "to": "kZG_dkjEN9EgdnqczVH-7g",
+        "toPin": "execute"
+      },
+      {
+        "from": "Ns62xklUX1lB9-uhRUnYBg",
+        "fromPin": "else",
+        "to": "Ll5G8UM_1NF-Xnq5II-Tig",
+        "toPin": "execute"
+      },
+      {
+        "from": "fFjr-E-5MdBNZzCk8Xzy9w",
+        "fromPin": "else",
+        "to": "SBdIA0hcJpCK0nO31kmn4A",
+        "toPin": "execute"
+      },
+      {
+        "from": "olAoRE-32QnGc-aH_yqLDw",
+        "fromPin": "then",
+        "to": "fFjr-E-5MdBNZzCk8Xzy9w",
+        "toPin": "execute"
+      },
+      {
+        "from": "olAoRE-32QnGc-aH_yqLDw",
+        "fromPin": "else",
+        "to": "FjdPKk-HhHd1Fo-Nwaz3Xg",
+        "toPin": "execute"
+      },
+      {
+        "from": "VB6SJEIu1KdLIvyjH0M9QA",
+        "fromPin": "then",
+        "to": "GLsGl05lhVOpNxOX4ztA_w",
+        "toPin": "execute"
+      },
+      {
+        "from": "UNz_UEud4WkGFiCYj_v0Mg",
+        "fromPin": "OnSuccess",
+        "to": "yBC2-k7m5K_HaHuBgzobfg",
+        "toPin": "execute"
+      },
+      {
+        "from": "5fam-kDVH6wwYCSUcNxTNg",
+        "fromPin": "then",
+        "to": "UNz_UEud4WkGFiCYj_v0Mg",
+        "toPin": "execute"
+      },
+      {
+        "from": "yBC2-k7m5K_HaHuBgzobfg",
+        "fromPin": "else",
+        "to": "vN3Ry0SiFRDdrU-8-wyq_A",
+        "toPin": "execute"
+      },
+      {
+        "from": "vN3Ry0SiFRDdrU-8-wyq_A",
+        "fromPin": "then",
+        "to": "O0mYQ0FEX37T0Q-Rj_lhTA",
+        "toPin": "execute"
+      },
+      {
+        "from": "O0mYQ0FEX37T0Q-Rj_lhTA",
+        "fromPin": "then",
+        "to": "HEzYOEc0395EZeCsbp5Nrw",
+        "toPin": "execute"
+      },
+      {
+        "from": "Bm_2JEpR5oqzthqbrgvbIw",
+        "fromPin": "then",
+        "to": "LQq1Jkm5TGRh7fmSzWIcpA",
+        "toPin": "execute"
+      },
+      {
+        "from": "LQq1Jkm5TGRh7fmSzWIcpA",
+        "fromPin": "then",
+        "to": "c-4jt0JTL3psJ9aznu7N-Q",
+        "toPin": "execute"
+      },
+      {
+        "from": "p23pxE2tqGT0sdmsPerOjw",
+        "fromPin": "then",
+        "to": "n30HrkOeYQvcz4Ku0FVIaQ",
+        "toPin": "execute"
+      },
+      {
+        "from": "n30HrkOeYQvcz4Ku0FVIaQ",
+        "fromPin": "else",
+        "to": "j7JPXkvSnXx90Ham0CLwOQ",
+        "toPin": "execute"
+      },
+      {
+        "from": "j7JPXkvSnXx90Ham0CLwOQ",
+        "fromPin": "then",
+        "to": "IMp9FU1wsRKi5HaB5HA-tg",
+        "toPin": "execute"
+      },
+      {
+        "from": "LmcDg0UCLeRcBoCAQqO6hQ",
+        "fromPin": "then",
+        "to": "az-ZCUarnWNb-CWhGJTwGg",
+        "toPin": "execute"
+      },
+      {
+        "from": "cHSLgUGbnejmiSWw6peIOQ",
+        "fromPin": "then",
+        "to": "QA3tqEeBlutX3V2tLAX76Q",
+        "toPin": "execute"
+      },
+      {
+        "from": "az-ZCUarnWNb-CWhGJTwGg",
+        "fromPin": "then",
+        "to": "U98SbUZQelaCGiqBzb58nQ",
+        "toPin": "execute"
+      },
+      {
+        "from": "az-ZCUarnWNb-CWhGJTwGg",
+        "fromPin": "else",
+        "to": "mjo6lUTBl1n8f7ag4pkUhA",
+        "toPin": "execute"
+      },
+      {
+        "from": "U98SbUZQelaCGiqBzb58nQ",
+        "fromPin": "then",
+        "to": "F-9RbEiz3nlTb4etOCodpw",
+        "toPin": "execute"
+      },
+      {
+        "from": "A5k2W0T7sO19qZ2kH4LczA",
+        "fromPin": "then",
+        "to": "Aihqz04eo_ZwrqOrpdr3Gw",
+        "toPin": "execute"
+      },
+      {
+        "from": "Aihqz04eo_ZwrqOrpdr3Gw",
+        "fromPin": "then",
+        "to": "ijaBL0cUOhbmXEKqHq69gw",
+        "toPin": "execute"
+      },
+      {
+        "from": "ijaBL0cUOhbmXEKqHq69gw",
+        "fromPin": "then",
+        "to": "Lg98NE15Y-ZVygSsfpe94g",
+        "toPin": "execute"
+      },
+      {
+        "from": "Lg98NE15Y-ZVygSsfpe94g",
+        "fromPin": "then",
+        "to": "Gk9JOEJC2xaxzjirAc_U9g",
+        "toPin": "execute"
+      },
+      {
+        "from": "Gk9JOEJC2xaxzjirAc_U9g",
+        "fromPin": "then",
+        "to": "1sGix01bxpGdj3qxotT-uA",
+        "toPin": "execute"
+      },
+      {
+        "from": "1sGix01bxpGdj3qxotT-uA",
+        "fromPin": "then",
+        "to": "o6Hw_E_6FgYc5nOM1-XKuQ",
+        "toPin": "execute"
+      },
+      {
+        "from": "o6Hw_E_6FgYc5nOM1-XKuQ",
+        "fromPin": "then",
+        "to": "qBdYG0WJJXyMSbuWHwc8EA",
+        "toPin": "execute"
+      },
+      {
+        "from": "mjo6lUTBl1n8f7ag4pkUhA",
+        "fromPin": "then",
+        "to": "Ermjo0xS-B6mAEeXrZZYNQ",
+        "toPin": "execute"
+      },
+      {
+        "from": "7EOqNUYOvIivxdSDwYPLIA",
+        "fromPin": "then",
+        "to": "aptPfk8vyVfLgO6h1_RLHA",
+        "toPin": "execute"
+      },
+      {
+        "from": "TCj6Fk-491LIel60DUOswA",
+        "fromPin": "then",
+        "to": "VPdsuE0PxD-0AVuTd8sTdQ",
+        "toPin": "execute"
+      },
+      {
+        "from": "BkC6t0UkbjOx_Z-0E628Zg",
+        "fromPin": "then",
+        "to": "qdELQ0m8cyU1MnmPVZTSgQ",
+        "toPin": "execute"
+      },
+      {
+        "from": "5Z9izkxITppteWC_JLzJJQ",
+        "fromPin": "then",
+        "to": "oJYcN0MkYywZcgq36t8GXg",
+        "toPin": "execute"
+      },
+      {
+        "from": "oJYcN0MkYywZcgq36t8GXg",
+        "fromPin": "then",
+        "to": "xsuFQERhVGBsty-0JPcZzw",
+        "toPin": "execute"
+      },
+      {
+        "from": "xsuFQERhVGBsty-0JPcZzw",
+        "fromPin": "then",
+        "to": "fLEzW05FBE1o3KeACzQGWg",
+        "toPin": "execute"
+      },
+      {
+        "from": "fLEzW05FBE1o3KeACzQGWg",
+        "fromPin": "then",
+        "to": "fH3C_0qmf5Ma7P6M5XrGBw",
+        "toPin": "execute"
+      },
+      {
+        "from": "fH3C_0qmf5Ma7P6M5XrGBw",
+        "fromPin": "then",
+        "to": "NsQEjEXd8p-wDmWe073iCw",
+        "toPin": "execute"
+      },
+      {
+        "from": "NsQEjEXd8p-wDmWe073iCw",
+        "fromPin": "then",
+        "to": "J4msqE1OwpldZGamOdU6mg",
+        "toPin": "execute"
+      },
+      {
+        "from": "Hw6UsU5S0596yb6vYyLhlg",
+        "fromPin": "then",
+        "to": "A5k2W0T7sO19qZ2kH4LczA",
+        "toPin": "execute"
+      },
+      {
+        "from": "odBFOEb6SGOmdjWF-Qq1oA",
+        "fromPin": "then",
+        "to": "08WEEULzWYK3Z4CiVwCzAQ",
+        "toPin": "execute"
+      },
+      {
+        "from": "qdELQ0m8cyU1MnmPVZTSgQ",
+        "fromPin": "then",
+        "to": "5Z9izkxITppteWC_JLzJJQ",
+        "toPin": "execute"
+      },
+      {
+        "from": "08WEEULzWYK3Z4CiVwCzAQ",
+        "fromPin": "then",
+        "to": "7EOqNUYOvIivxdSDwYPLIA",
+        "toPin": "execute"
+      },
+      {
+        "from": "aptPfk8vyVfLgO6h1_RLHA",
+        "fromPin": "then",
+        "to": "TCj6Fk-491LIel60DUOswA",
+        "toPin": "execute"
+      },
+      {
+        "from": "rxdC5UNHy3l8awyeEVOVCA",
+        "fromPin": "then",
+        "to": "y-2ZnkulwD5v0P68H2xGUw",
+        "toPin": "execute"
+      },
+      {
+        "from": "y-2ZnkulwD5v0P68H2xGUw",
+        "fromPin": "then",
+        "to": "vPxoZ0fOk5Qip6Whw7BUGg",
+        "toPin": "execute"
+      },
+      {
+        "from": "QA3tqEeBlutX3V2tLAX76Q",
+        "fromPin": "then",
+        "to": "rxdC5UNHy3l8awyeEVOVCA",
+        "toPin": "execute"
+      },
+      {
+        "from": "7jO3iUP7AVpTFyiNx5KKaA",
+        "fromPin": "then",
+        "to": "h25kJE21S9w4Zlqyts3oMw",
+        "toPin": "execute"
+      },
+      {
+        "from": "h25kJE21S9w4Zlqyts3oMw",
+        "fromPin": "else",
+        "to": "xs4qokihnXZJGD2m8FAzAw",
+        "toPin": "execute"
+      },
+      {
+        "from": "xs4qokihnXZJGD2m8FAzAw",
+        "fromPin": "then",
+        "to": "3uYcREpAU5hSWA6F821nbQ",
+        "toPin": "execute"
+      },
+      {
+        "from": "xs4qokihnXZJGD2m8FAzAw",
+        "fromPin": "else",
+        "to": "vdapfklx6NY2SL606BuzDg",
+        "toPin": "execute"
+      },
+      {
+        "from": "3uYcREpAU5hSWA6F821nbQ",
+        "fromPin": "then",
+        "to": "OQYxL0kRdY5hh8GvYAZOgQ",
+        "toPin": "execute"
+      },
+      {
+        "from": "3uYcREpAU5hSWA6F821nbQ",
+        "fromPin": "else",
+        "to": "vdapfklx6NY2SL606BuzDg",
+        "toPin": "execute"
+      },
+      {
+        "from": "OQYxL0kRdY5hh8GvYAZOgQ",
+        "fromPin": "then",
+        "to": "IqeJd0BVT8kAwRmqv4BWCw",
+        "toPin": "execute"
+      },
+      {
+        "from": "OQYxL0kRdY5hh8GvYAZOgQ",
+        "fromPin": "else",
+        "to": "vdapfklx6NY2SL606BuzDg",
+        "toPin": "execute"
+      },
+      {
+        "from": "IqeJd0BVT8kAwRmqv4BWCw",
+        "fromPin": "then",
+        "to": "SlzpfUXkKWCqpeSa8A78TQ",
+        "toPin": "execute"
+      },
+      {
+        "from": "SlzpfUXkKWCqpeSa8A78TQ",
+        "fromPin": "OnSuccess",
+        "to": "iir1VUlQEYlFYqG5bd8_4w",
+        "toPin": "execute"
+      },
+      {
+        "from": "SlzpfUXkKWCqpeSa8A78TQ",
+        "fromPin": "OnFail",
+        "to": "1ZtNW0EQK30HdLeaoo2fGw",
+        "toPin": "execute"
+      },
+      {
+        "from": "iir1VUlQEYlFYqG5bd8_4w",
+        "fromPin": "then",
+        "to": "ix5Pnk0NtM1QtpuCtaN2pQ",
+        "toPin": "execute"
+      },
+      {
+        "from": "1ZtNW0EQK30HdLeaoo2fGw",
+        "fromPin": "then",
+        "to": "yBAAV0BbRHe4Azyy3yhGhw",
+        "toPin": "execute"
+      },
+      {
+        "from": "ZjdNJEQRcb7tyDqb3Ju6SQ",
+        "fromPin": "then",
+        "to": "Na5At0JQmLcMF9m5cHr9aA",
+        "toPin": "execute"
+      },
+      {
+        "from": "c-4jt0JTL3psJ9aznu7N-Q",
+        "fromPin": "then",
+        "to": "UMzMwExptnJWPR2lio0EpQ",
+        "toPin": "execute"
+      },
+      {
+        "from": "GLsGl05lhVOpNxOX4ztA_w",
+        "fromPin": "then",
+        "to": "5fam-kDVH6wwYCSUcNxTNg",
+        "toPin": "execute"
+      },
+      {
+        "from": "RamG1EAlfKG8BE2bXs6lHg",
+        "fromPin": "then",
+        "to": "qEYuL0Vz45r1vPmpu4_lYg",
+        "toPin": "execute"
+      },
+      {
+        "from": "AplXJ0n0d9uNMcSCtO3K9w",
+        "fromPin": "then",
+        "to": "23gOIEieS0ofgj-vnT58QA",
+        "toPin": "execute"
+      },
+      {
+        "from": "23gOIEieS0ofgj-vnT58QA",
+        "fromPin": "then",
+        "to": "BNQvh0hy673O3D-pM1aidQ",
+        "toPin": "execute"
+      },
+      {
+        "from": "BNQvh0hy673O3D-pM1aidQ",
+        "fromPin": "then",
+        "to": "IzhuKEZ60k4VkJaTsrbgEg",
+        "toPin": "execute"
+      },
+      {
+        "from": "IzhuKEZ60k4VkJaTsrbgEg",
+        "fromPin": "then",
+        "to": "Vv4GUUlaSZhPFwWmkCBMZA",
+        "toPin": "execute"
+      },
+      {
+        "from": "Vv4GUUlaSZhPFwWmkCBMZA",
+        "fromPin": "then",
+        "to": "qdXuK0m0xZT_p8KyVSe8FA",
+        "toPin": "execute"
+      },
+      {
+        "from": "HaGxyk-a9xcjeRWn3-pI_Q",
+        "fromPin": "then",
+        "to": "CeFZlkSk6urdneyGOxu5Lg",
+        "toPin": "execute"
+      },
+      {
+        "from": "7Tnz2EX9YYhvcCOtcXwuig",
+        "fromPin": "then",
+        "to": "6ah6ikd0th1gV4mIgRACkw",
+        "toPin": "execute"
+      },
+      {
+        "from": "6ah6ikd0th1gV4mIgRACkw",
+        "fromPin": "then",
+        "to": "zyOCGUagGifkp_mUBSqfeA",
+        "toPin": "execute"
+      },
+      {
+        "from": "zyOCGUagGifkp_mUBSqfeA",
+        "fromPin": "then",
+        "to": "gYZ4xEnfw0u7DIC1lcd8Sg",
+        "toPin": "execute"
+      }
+    ],
+    "dataEdges": [
+      {
+        "from": "kssl8UIBvzvIHu-ezC79jA",
+        "fromPin": "ReturnValue",
+        "to": "yN1IIUOZ3FT0KuedXaRlhg",
+        "toPin": "Object"
+      },
+      {
+        "from": "yN1IIUOZ3FT0KuedXaRlhg",
+        "fromPin": "AsBP Enemy Shadow Logic",
+        "to": "a26uQ0xcXMrpOXyTWrk6qQ",
+        "toPin": "Enemy Ref"
+      },
+      {
+        "from": "F_BMXERcy3fuATm50LTvHA",
+        "fromPin": "Enemy Ref",
+        "to": "t3nP3Uu0sKGE4ryl1Aa3PA",
+        "toPin": "Pawn"
+      },
+      {
+        "from": "tv-TR0KKt_DN1eyKU3ljRw",
+        "fromPin": "ReturnValue",
+        "to": "Ll5G8UM_1NF-Xnq5II-Tig",
+        "toPin": "Condition"
+      },
+      {
+        "from": "a7kNL0X961pnj3mNYwGNWQ",
+        "fromPin": "Enemy Ref",
+        "to": "J_Z75k_-ADozkJiaXkyqcA",
+        "toPin": "self"
+      },
+      {
+        "from": "a7kNL0X961pnj3mNYwGNWQ",
+        "fromPin": "Enemy Ref",
+        "to": "NU4rxU94LSk8JsW599QeQA",
+        "toPin": "self"
+      },
+      {
+        "from": "a7kNL0X961pnj3mNYwGNWQ",
+        "fromPin": "Enemy Ref",
+        "to": "tv-TR0KKt_DN1eyKU3ljRw",
+        "toPin": "Object"
+      },
+      {
+        "from": "J_Z75k_-ADozkJiaXkyqcA",
+        "fromPin": "CharacterMovement",
+        "to": "6iH3bUQ_bB8XwoulAkLsOg",
+        "toPin": "self"
+      },
+      {
+        "from": "5sn3n0fihzS2vJSRLLH4VQ",
+        "fromPin": "RandomLocation",
+        "to": "t3nP3Uu0sKGE4ryl1Aa3PA",
+        "toPin": "Destination"
+      },
+      {
+        "from": "5sn3n0fihzS2vJSRLLH4VQ",
+        "fromPin": "ReturnValue",
+        "to": "BwJm2kXtfwONavmki6CkYQ",
+        "toPin": "Condition"
+      },
+      {
+        "from": "NU4rxU94LSk8JsW599QeQA",
+        "fromPin": "ReturnValue",
+        "to": "5sn3n0fihzS2vJSRLLH4VQ",
+        "toPin": "Origin"
+      },
+      {
+        "from": "bsRHP0VOF8BEsr6DoBjTvA",
+        "fromPin": "Wander Radious",
+        "to": "5sn3n0fihzS2vJSRLLH4VQ",
+        "toPin": "Radius"
+      },
+      {
+        "from": "K3m4JUghfnrOHKW-ExBlrw",
+        "fromPin": "Normal Speed",
+        "to": "6iH3bUQ_bB8XwoulAkLsOg",
+        "toPin": "MaxWalkSpeed"
+      },
+      {
+        "from": "eBRY50IXBuFLaBe4wGOYfg",
+        "fromPin": "ReturnValue",
+        "to": "0ODvvkFhzYT104aw0zjApA",
+        "toPin": "Condition"
+      },
+      {
+        "from": "uQaq5E-pz4Igb7uZv7n2PQ",
+        "fromPin": "Actor",
+        "to": "jl6y90-WUNne32y2jlAwBg",
+        "toPin": "InputPin"
+      },
+      {
+        "from": "qvCwP0r2XkeWTzCsV67vkg",
+        "fromPin": "ReturnValue",
+        "to": "eBRY50IXBuFLaBe4wGOYfg",
+        "toPin": "B"
+      },
+      {
+        "from": "Uxgqm0Ryf5MCqWK32XqMFw",
+        "fromPin": "bSuccessfullySensed",
+        "to": "olAoRE-32QnGc-aH_yqLDw",
+        "toPin": "Condition"
+      },
+      {
+        "from": "9LMYNUvaeU5RfvSBgbYobQ",
+        "fromPin": "AIPerception",
+        "to": "INOltk_fMCLBcjOm0PPq8w",
+        "toPin": "self"
+      },
+      {
+        "from": "6L7QSkAtYIHt5Zy9jwl7Lw",
+        "fromPin": "AIPerception",
+        "to": "kZG_dkjEN9EgdnqczVH-7g",
+        "toPin": "self"
+      },
+      {
+        "from": "wyG0sUf1pDWC70SyDXzA8A",
+        "fromPin": "isChasing",
+        "to": "5roEekpspOYJnNSZWpXL8w",
+        "toPin": "A"
+      },
+      {
+        "from": "AbsAQUAh1GmmH_a6E9ex0g",
+        "fromPin": "isChasing",
+        "to": "fFjr-E-5MdBNZzCk8Xzy9w",
+        "toPin": "Condition"
+      },
+      {
+        "from": "VB6SJEIu1KdLIvyjH0M9QA",
+        "fromPin": "OutputDelegate",
+        "to": "Na5At0JQmLcMF9m5cHr9aA",
+        "toPin": "Delegate"
+      },
+      {
+        "from": "VB6SJEIu1KdLIvyjH0M9QA",
+        "fromPin": "OutputDelegate",
+        "to": "0vE6bEzXViw8pgCU_ie9Wg",
+        "toPin": "InputPin"
+      },
+      {
+        "from": "FFVpWUA8nOJRlIGCHVyndw",
+        "fromPin": "Enemy Ref",
+        "to": "UNz_UEud4WkGFiCYj_v0Mg",
+        "toPin": "Pawn"
+      },
+      {
+        "from": "FFVpWUA8nOJRlIGCHVyndw",
+        "fromPin": "Enemy Ref",
+        "to": "jc3nN0FOV5xy-V-u3z0_FQ",
+        "toPin": "self"
+      },
+      {
+        "from": "YAJ3YkoIpWSkCF6lcYEAyQ",
+        "fromPin": "Chase Speed",
+        "to": "5fam-kDVH6wwYCSUcNxTNg",
+        "toPin": "MaxWalkSpeed"
+      },
+      {
+        "from": "jc3nN0FOV5xy-V-u3z0_FQ",
+        "fromPin": "CharacterMovement",
+        "to": "5fam-kDVH6wwYCSUcNxTNg",
+        "toPin": "self"
+      },
+      {
+        "from": "ftJKZEY3QorAmROuwA4VtA",
+        "fromPin": "ReturnValue",
+        "to": "UNz_UEud4WkGFiCYj_v0Mg",
+        "toPin": "Destination"
+      },
+      {
+        "from": "9vN2KUki1TqWQI-nA5evgA",
+        "fromPin": "ReturnValue",
+        "to": "ftJKZEY3QorAmROuwA4VtA",
+        "toPin": "A"
+      },
+      {
+        "from": "6Ssl7EbjUITtQuuip2VJvQ",
+        "fromPin": "ReturnValue",
+        "to": "QwiwkUK2karogu6iCDCHlg",
+        "toPin": "A"
+      },
+      {
+        "from": "QwiwkUK2karogu6iCDCHlg",
+        "fromPin": "ReturnValue",
+        "to": "W-maMEC3XyfMY0Wn0JOPWg",
+        "toPin": "A"
+      },
+      {
+        "from": "W-maMEC3XyfMY0Wn0JOPWg",
+        "fromPin": "ReturnValue",
+        "to": "ftJKZEY3QorAmROuwA4VtA",
+        "toPin": "B"
+      },
+      {
+        "from": "O0mYQ0FEX37T0Q-Rj_lhTA",
+        "fromPin": "ReturnValue",
+        "to": "HEzYOEc0395EZeCsbp5Nrw",
+        "toPin": "ChaseTimerHandle"
+      },
+      {
+        "from": "0vE6bEzXViw8pgCU_ie9Wg",
+        "fromPin": "OutputPin",
+        "to": "O0mYQ0FEX37T0Q-Rj_lhTA",
+        "toPin": "Delegate"
+      },
+      {
+        "from": "wMVu4k2IhBWM8TWLdPftJg",
+        "fromPin": "ChaseTimerHandle",
+        "to": "LQq1Jkm5TGRh7fmSzWIcpA",
+        "toPin": "Handle"
+      },
+      {
+        "from": "5roEekpspOYJnNSZWpXL8w",
+        "fromPin": "ReturnValue",
+        "to": "Ns62xklUX1lB9-uhRUnYBg",
+        "toPin": "Condition"
+      },
+      {
+        "from": "RiSca06nk1a3GXOo2FZJCw",
+        "fromPin": "isAlert",
+        "to": "5roEekpspOYJnNSZWpXL8w",
+        "toPin": "B"
+      },
+      {
+        "from": "p23pxE2tqGT0sdmsPerOjw",
+        "fromPin": "DeltaSeconds",
+        "to": "fingK02rcS8iiVSWzaobjA",
+        "toPin": "Delta Seconds"
+      },
+      {
+        "from": "p23pxE2tqGT0sdmsPerOjw",
+        "fromPin": "DeltaSeconds",
+        "to": "IMp9FU1wsRKi5HaB5HA-tg",
+        "toPin": "Delat Seconds"
+      },
+      {
+        "from": "_GV9PUHfhva8ARasY5d1qg",
+        "fromPin": "isChasing",
+        "to": "n30HrkOeYQvcz4Ku0FVIaQ",
+        "toPin": "Condition"
+      },
+      {
+        "from": "f3bu10RXq6ReP3KjYzt8BQ",
+        "fromPin": "isAlert",
+        "to": "j7JPXkvSnXx90Ham0CLwOQ",
+        "toPin": "Condition"
+      },
+      {
+        "from": "LmcDg0UCLeRcBoCAQqO6hQ",
+        "fromPin": "Delta Seconds",
+        "to": "JL3eR0iIUngVznmRjgUPnQ",
+        "toPin": "B"
+      },
+      {
+        "from": "cHSLgUGbnejmiSWw6peIOQ",
+        "fromPin": "Delat Seconds",
+        "to": "A3O88Uk2KyCVs1CBWs5KGw",
+        "toPin": "A"
+      },
+      {
+        "from": "bTAxe0c8zyHe_o2aeCL10Q",
+        "fromPin": "Enemy Ref",
+        "to": "VpYOqkOBUwnlCsmwmqJ-hA",
+        "toPin": "self"
+      },
+      {
+        "from": "OGspqUjV0pfQ3KyvRBhIQQ",
+        "fromPin": "ReturnValue",
+        "to": "VpYOqkOBUwnlCsmwmqJ-hA",
+        "toPin": "OtherActor"
+      },
+      {
+        "from": "OGspqUjV0pfQ3KyvRBhIQQ",
+        "fromPin": "ReturnValue",
+        "to": "4V-8d0agqeOpzQC0aO5Hcw",
+        "toPin": "self"
+      },
+      {
+        "from": "VpYOqkOBUwnlCsmwmqJ-hA",
+        "fromPin": "ReturnValue",
+        "to": "cOd9GkHE73QgiimjxSUYfg",
+        "toPin": "A"
+      },
+      {
+        "from": "cOd9GkHE73QgiimjxSUYfg",
+        "fromPin": "ReturnValue",
+        "to": "5ATp1UelLQiZhsGnVkItjw",
+        "toPin": "A"
+      },
+      {
+        "from": "FUT0aEhsrtzOnhuC1Of8Jw",
+        "fromPin": "AlertRadius",
+        "to": "cOd9GkHE73QgiimjxSUYfg",
+        "toPin": "B"
+      },
+      {
+        "from": "4V-8d0agqeOpzQC0aO5Hcw",
+        "fromPin": "ReturnValue",
+        "to": "ft7nUECpE0_wni64I4pIXw",
+        "toPin": "A"
+      },
+      {
+        "from": "ft7nUECpE0_wni64I4pIXw",
+        "fromPin": "ReturnValue",
+        "to": "6wvzwkLECVHPfwmH0fwFtw",
+        "toPin": "A"
+      },
+      {
+        "from": "6wvzwkLECVHPfwmH0fwFtw",
+        "fromPin": "ReturnValue",
+        "to": "5ATp1UelLQiZhsGnVkItjw",
+        "toPin": "B"
+      },
+      {
+        "from": "5ATp1UelLQiZhsGnVkItjw",
+        "fromPin": "ReturnValue",
+        "to": "az-ZCUarnWNb-CWhGJTwGg",
+        "toPin": "Condition"
+      },
+      {
+        "from": "mvaL8UErbqYBLM29sxcM_g",
+        "fromPin": "MoveAccumulateTime",
+        "to": "JL3eR0iIUngVznmRjgUPnQ",
+        "toPin": "A"
+      },
+      {
+        "from": "JL3eR0iIUngVznmRjgUPnQ",
+        "fromPin": "ReturnValue",
+        "to": "U98SbUZQelaCGiqBzb58nQ",
+        "toPin": "MoveAccumulateTime"
+      },
+      {
+        "from": "U98SbUZQelaCGiqBzb58nQ",
+        "fromPin": "Output_Get",
+        "to": "tjQBQ0tsttCsl8O_271ccA",
+        "toPin": "A"
+      },
+      {
+        "from": "tjQBQ0tsttCsl8O_271ccA",
+        "fromPin": "ReturnValue",
+        "to": "F-9RbEiz3nlTb4etOCodpw",
+        "toPin": "Condition"
+      },
+      {
+        "from": "7toyY0cbjxgwrGy6wDn7QA",
+        "fromPin": "ChaseTimerHandle",
+        "to": "o6Hw_E_6FgYc5nOM1-XKuQ",
+        "toPin": "Handle"
+      },
+      {
+        "from": "RyPSkErjLFWxo9aK0m79YA",
+        "fromPin": "ReturnValue",
+        "to": "-lzCvkiyNz9-2J-V7GowFg",
+        "toPin": "A"
+      },
+      {
+        "from": "WR8c50qdAEsyFxCu3VonkQ",
+        "fromPin": "AlertScanDuration",
+        "to": "RyPSkErjLFWxo9aK0m79YA",
+        "toPin": "B"
+      },
+      {
+        "from": "-lzCvkiyNz9-2J-V7GowFg",
+        "fromPin": "ReturnValue",
+        "to": "_XnHyELdl_bBDjaTmAUQ3w",
+        "toPin": "A"
+      },
+      {
+        "from": "7EOqNUYOvIivxdSDwYPLIA",
+        "fromPin": "Output_Get",
+        "to": "9qap8kl5uOPBoMeb7OD1MQ",
+        "toPin": "InDouble"
+      },
+      {
+        "from": "xfdUv0tLZji3f6WNrYXX1g",
+        "fromPin": "ReturnValue",
+        "to": "avc6METVnz073YuDo0XhHA",
+        "toPin": "InRot"
+      },
+      {
+        "from": "avc6METVnz073YuDo0XhHA",
+        "fromPin": "Roll",
+        "to": "eCsca0rBsqV9xWK9pMtj6A",
+        "toPin": "Roll"
+      },
+      {
+        "from": "avc6METVnz073YuDo0XhHA",
+        "fromPin": "Pitch",
+        "to": "eCsca0rBsqV9xWK9pMtj6A",
+        "toPin": "Pitch"
+      },
+      {
+        "from": "avc6METVnz073YuDo0XhHA",
+        "fromPin": "Yaw",
+        "to": "olNsZ0cGsQ1d5SSobHp8Mg",
+        "toPin": "B"
+      },
+      {
+        "from": "olNsZ0cGsQ1d5SSobHp8Mg",
+        "fromPin": "ReturnValue",
+        "to": "eCsca0rBsqV9xWK9pMtj6A",
+        "toPin": "Yaw"
+      },
+      {
+        "from": "olNsZ0cGsQ1d5SSobHp8Mg",
+        "fromPin": "ReturnValue",
+        "to": "XJjar0MtGkPIB_CXRBqelg",
+        "toPin": "B"
+      },
+      {
+        "from": "eCsca0rBsqV9xWK9pMtj6A",
+        "fromPin": "ReturnValue",
+        "to": "08WEEULzWYK3Z4CiVwCzAQ",
+        "toPin": "NewRotation"
+      },
+      {
+        "from": "PHpOSUJYeS40uzaxJOpZrw",
+        "fromPin": "AlertScanYaw",
+        "to": "XJjar0MtGkPIB_CXRBqelg",
+        "toPin": "A"
+      },
+      {
+        "from": "XJjar0MtGkPIB_CXRBqelg",
+        "fromPin": "ReturnValue",
+        "to": "7EOqNUYOvIivxdSDwYPLIA",
+        "toPin": "AlertScanYaw"
+      },
+      {
+        "from": "9HtBDkq8e85pLTyTOmgnyw",
+        "fromPin": "ReturnValue",
+        "to": "TCj6Fk-491LIel60DUOswA",
+        "toPin": "Condition"
+      },
+      {
+        "from": "Swjkc09bGfTJxx-rrPMUlg",
+        "fromPin": "AlertScanYaw",
+        "to": "9HtBDkq8e85pLTyTOmgnyw",
+        "toPin": "A"
+      },
+      {
+        "from": "PJ9tEUHu54FcK_ugoZBJzg",
+        "fromPin": "Enemy Ref",
+        "to": "08WEEULzWYK3Z4CiVwCzAQ",
+        "toPin": "self"
+      },
+      {
+        "from": "9qap8kl5uOPBoMeb7OD1MQ",
+        "fromPin": "ReturnValue",
+        "to": "aptPfk8vyVfLgO6h1_RLHA",
+        "toPin": "InString"
+      },
+      {
+        "from": "Kv5SWEUyjwi6oO-SpzN9Kw",
+        "fromPin": "AlertScanYaw",
+        "to": "_XnHyELdl_bBDjaTmAUQ3w",
+        "toPin": "B"
+      },
+      {
+        "from": "_XnHyELdl_bBDjaTmAUQ3w",
+        "fromPin": "ReturnValue",
+        "to": "T-lySk9FksoAbkmJvzB-rw",
+        "toPin": "AlertScanYaw"
+      },
+      {
+        "from": "A3O88Uk2KyCVs1CBWs5KGw",
+        "fromPin": "ReturnValue",
+        "to": "5QMeJkbNf7MaY9CIyJyz3w",
+        "toPin": "A"
+      },
+      {
+        "from": "wfxA308Ux-c_L2mLEL80Mg",
+        "fromPin": "AlertScanDuration",
+        "to": "A3O88Uk2KyCVs1CBWs5KGw",
+        "toPin": "B"
+      },
+      {
+        "from": "5QMeJkbNf7MaY9CIyJyz3w",
+        "fromPin": "ReturnValue",
+        "to": "tDKLUUPnxvhaK-KVOJ9iug",
+        "toPin": "A"
+      },
+      {
+        "from": "5QMeJkbNf7MaY9CIyJyz3w",
+        "fromPin": "ReturnValue",
+        "to": "uTUxhkSOBnX4uxanXei0jA",
+        "toPin": "A"
+      },
+      {
+        "from": "JsgyDEkIcaFjfr6HQ9fmGQ",
+        "fromPin": "AlertScanYaw",
+        "to": "tDKLUUPnxvhaK-KVOJ9iug",
+        "toPin": "B"
+      },
+      {
+        "from": "tDKLUUPnxvhaK-KVOJ9iug",
+        "fromPin": "ReturnValue",
+        "to": "rxdC5UNHy3l8awyeEVOVCA",
+        "toPin": "AlertScanYaw"
+      },
+      {
+        "from": "tDKLUUPnxvhaK-KVOJ9iug",
+        "fromPin": "ReturnValue",
+        "to": "9NyCJUvG8pjH3WaUYrS5JQ",
+        "toPin": "A"
+      },
+      {
+        "from": "9NyCJUvG8pjH3WaUYrS5JQ",
+        "fromPin": "ReturnValue",
+        "to": "y-2ZnkulwD5v0P68H2xGUw",
+        "toPin": "Condition"
+      },
+      {
+        "from": "XtONEU7TwaCtCVyeQJhi7w",
+        "fromPin": "Enemy Ref",
+        "to": "QA3tqEeBlutX3V2tLAX76Q",
+        "toPin": "self"
+      },
+      {
+        "from": "mGsnzUABaW7ysXmL2uHiRQ",
+        "fromPin": "Roll",
+        "to": "NDf3507DXtBF3FW1lFkmcQ",
+        "toPin": "Roll"
+      },
+      {
+        "from": "mGsnzUABaW7ysXmL2uHiRQ",
+        "fromPin": "Pitch",
+        "to": "NDf3507DXtBF3FW1lFkmcQ",
+        "toPin": "Pitch"
+      },
+      {
+        "from": "mGsnzUABaW7ysXmL2uHiRQ",
+        "fromPin": "Yaw",
+        "to": "uTUxhkSOBnX4uxanXei0jA",
+        "toPin": "B"
+      },
+      {
+        "from": "ZbRDRE-YY6ti4R-qyTxA-Q",
+        "fromPin": "Enemy Ref",
+        "to": "8b-rsEdsURTbewuPGSmkRw",
+        "toPin": "self"
+      },
+      {
+        "from": "8b-rsEdsURTbewuPGSmkRw",
+        "fromPin": "ReturnValue",
+        "to": "mGsnzUABaW7ysXmL2uHiRQ",
+        "toPin": "InRot"
+      },
+      {
+        "from": "uTUxhkSOBnX4uxanXei0jA",
+        "fromPin": "ReturnValue",
+        "to": "NDf3507DXtBF3FW1lFkmcQ",
+        "toPin": "Yaw"
+      },
+      {
+        "from": "NDf3507DXtBF3FW1lFkmcQ",
+        "fromPin": "ReturnValue",
+        "to": "QA3tqEeBlutX3V2tLAX76Q",
+        "toPin": "NewRotation"
+      },
+      {
+        "from": "2JVaXk1YsvcZzo68uHesaw",
+        "fromPin": "isChasing",
+        "to": "h25kJE21S9w4Zlqyts3oMw",
+        "toPin": "Condition"
+      },
+      {
+        "from": "DLW87kqfYWKZZKCECCGKMw",
+        "fromPin": "Enemy Ref",
+        "to": "usmHgkjlrMiE98GzmeisqQ",
+        "toPin": "self"
+      },
+      {
+        "from": "DLW87kqfYWKZZKCECCGKMw",
+        "fromPin": "Enemy Ref",
+        "to": "Kd9UCUqJmejz6ua_5_ngng",
+        "toPin": "self"
+      },
+      {
+        "from": "DLW87kqfYWKZZKCECCGKMw",
+        "fromPin": "Enemy Ref",
+        "to": "XOkckU-cM1zTm92zMxGStg",
+        "toPin": "Object"
+      },
+      {
+        "from": "DLW87kqfYWKZZKCECCGKMw",
+        "fromPin": "Enemy Ref",
+        "to": "EoAfdEals_mXotWdcyKGqg",
+        "toPin": "self"
+      },
+      {
+        "from": "usmHgkjlrMiE98GzmeisqQ",
+        "fromPin": "Patrol Path Actor",
+        "to": "1FLyvEnAGXEo7vmRoAha1Q",
+        "toPin": "Object"
+      },
+      {
+        "from": "usmHgkjlrMiE98GzmeisqQ",
+        "fromPin": "Patrol Path Actor",
+        "to": "6IzPUUjQuEEUEZGlZX_Vvg",
+        "toPin": "self"
+      },
+      {
+        "from": "Kd9UCUqJmejz6ua_5_ngng",
+        "fromPin": "Patrol Path Index",
+        "to": "XIyPPkk0CnBTibCXSB5dqg",
+        "toPin": "Dimension 1"
+      },
+      {
+        "from": "XOkckU-cM1zTm92zMxGStg",
+        "fromPin": "ReturnValue",
+        "to": "xs4qokihnXZJGD2m8FAzAw",
+        "toPin": "Condition"
+      },
+      {
+        "from": "1FLyvEnAGXEo7vmRoAha1Q",
+        "fromPin": "ReturnValue",
+        "to": "3uYcREpAU5hSWA6F821nbQ",
+        "toPin": "Condition"
+      },
+      {
+        "from": "6IzPUUjQuEEUEZGlZX_Vvg",
+        "fromPin": "ReturnValue",
+        "to": "XIyPPkk0CnBTibCXSB5dqg",
+        "toPin": "Array"
+      },
+      {
+        "from": "XIyPPkk0CnBTibCXSB5dqg",
+        "fromPin": "Output",
+        "to": "t8fi7USa3AyoKkKLyFtdJg",
+        "toPin": "self"
+      },
+      {
+        "from": "XIyPPkk0CnBTibCXSB5dqg",
+        "fromPin": "Output",
+        "to": "xyGHzU7DOuFChGG4Q9k6Qw",
+        "toPin": "self"
+      },
+      {
+        "from": "xAzAaEey5hCZ3bu4akDpKA",
+        "fromPin": "ReturnValue",
+        "to": "OQYxL0kRdY5hh8GvYAZOgQ",
+        "toPin": "Condition"
+      },
+      {
+        "from": "t8fi7USa3AyoKkKLyFtdJg",
+        "fromPin": "ReturnValue",
+        "to": "xAzAaEey5hCZ3bu4akDpKA",
+        "toPin": "A"
+      },
+      {
+        "from": "t8fi7USa3AyoKkKLyFtdJg",
+        "fromPin": "ReturnValue",
+        "to": "kfW63kU-wZVvJzyPjAMzFQ",
+        "toPin": "B"
+      },
+      {
+        "from": "EoAfdEals_mXotWdcyKGqg",
+        "fromPin": "CharacterMovement",
+        "to": "IqeJd0BVT8kAwRmqv4BWCw",
+        "toPin": "self"
+      },
+      {
+        "from": "b6hfE0nhLccGwFi5DAnwSA",
+        "fromPin": "Normal Speed",
+        "to": "IqeJd0BVT8kAwRmqv4BWCw",
+        "toPin": "MaxWalkSpeed"
+      },
+      {
+        "from": "ui1rzElR2x_KDz2drwDvQQ",
+        "fromPin": "PatrolPointIndex",
+        "to": "kfW63kU-wZVvJzyPjAMzFQ",
+        "toPin": "A"
+      },
+      {
+        "from": "kfW63kU-wZVvJzyPjAMzFQ",
+        "fromPin": "ReturnValue",
+        "to": "xyGHzU7DOuFChGG4Q9k6Qw",
+        "toPin": "PointIndex"
+      },
+      {
+        "from": "xyGHzU7DOuFChGG4Q9k6Qw",
+        "fromPin": "ReturnValue",
+        "to": "SlzpfUXkKWCqpeSa8A78TQ",
+        "toPin": "Destination"
+      },
+      {
+        "from": "tPpedkc2gmim-h2AbY4IFg",
+        "fromPin": "PatrolPointIndex",
+        "to": "f0UM5Elc9Qh4_iafKuPIHw",
+        "toPin": "A"
+      },
+      {
+        "from": "f0UM5Elc9Qh4_iafKuPIHw",
+        "fromPin": "ReturnValue",
+        "to": "iir1VUlQEYlFYqG5bd8_4w",
+        "toPin": "PatrolPointIndex"
+      },
+      {
+        "from": "DlZgT0lp5EN8J0GKMc_1gQ",
+        "fromPin": "Chase Target",
+        "to": "vja3cUnIYIqI9mGdSaQZYQ",
+        "toPin": "Object"
+      },
+      {
+        "from": "vja3cUnIYIqI9mGdSaQZYQ",
+        "fromPin": "ReturnValue",
+        "to": "GLsGl05lhVOpNxOX4ztA_w",
+        "toPin": "Condition"
+      },
+      {
+        "from": "aCpqo0U7fm9g6FOGq7eXcg",
+        "fromPin": "Chase Target",
+        "to": "6Ssl7EbjUITtQuuip2VJvQ",
+        "toPin": "self"
+      },
+      {
+        "from": "aCpqo0U7fm9g6FOGq7eXcg",
+        "fromPin": "Chase Target",
+        "to": "9vN2KUki1TqWQI-nA5evgA",
+        "toPin": "self"
+      },
+      {
+        "from": "aCpqo0U7fm9g6FOGq7eXcg",
+        "fromPin": "Chase Target",
+        "to": "UNz_UEud4WkGFiCYj_v0Mg",
+        "toPin": "TargetActor"
+      },
+      {
+        "from": "ANcotEmG7Ut1iIqpRvctoA",
+        "fromPin": "Enemy Ref",
+        "to": "SlzpfUXkKWCqpeSa8A78TQ",
+        "toPin": "Pawn"
+      },
+      {
+        "from": "AplXJ0n0d9uNMcSCtO3K9w",
+        "fromPin": "Target",
+        "to": "BNQvh0hy673O3D-pM1aidQ",
+        "toPin": "Chase Target"
+      },
+      {
+        "from": "DgJyA0CdMM357wKHToX8EQ",
+        "fromPin": "Enemy Ref",
+        "to": "fgvmnUhA64CGMKiHNILRMA",
+        "toPin": "self"
+      },
+      {
+        "from": "fgvmnUhA64CGMKiHNILRMA",
+        "fromPin": "ReturnValue",
+        "to": "23gOIEieS0ofgj-vnT58QA",
+        "toPin": "Condition"
+      },
+      {
+        "from": "Et-EIEGIVmHOyPq-pVY7bQ",
+        "fromPin": "Enemy Ref",
+        "to": "qdXuK0m0xZT_p8KyVSe8FA",
+        "toPin": "Pawn"
+      },
+      {
+        "from": "0Y4WPU3cHQDfUf27TdA4mg",
+        "fromPin": "Chase Target",
+        "to": "qdXuK0m0xZT_p8KyVSe8FA",
+        "toPin": "TargetActor"
+      },
+      {
+        "from": "PnysUEBYiYfXCqqBzaxw3w",
+        "fromPin": "Enemy Ref",
+        "to": "GKvIkUllZOvvaOawTU3oEg",
+        "toPin": "self"
+      },
+      {
+        "from": "PnysUEBYiYfXCqqBzaxw3w",
+        "fromPin": "Enemy Ref",
+        "to": "6ah6ikd0th1gV4mIgRACkw",
+        "toPin": "Object"
+      },
+      {
+        "from": "GKvIkUllZOvvaOawTU3oEg",
+        "fromPin": "ReturnValue",
+        "to": "7Tnz2EX9YYhvcCOtcXwuig",
+        "toPin": "Condition"
+      },
+      {
+        "from": "6ah6ikd0th1gV4mIgRACkw",
+        "fromPin": "AsBP Enemy Spotter- Ins",
+        "to": "gYZ4xEnfw0u7DIC1lcd8Sg",
+        "toPin": "self"
+      },
+      {
+        "from": "jl6y90-WUNne32y2jlAwBg",
+        "fromPin": "OutputPin",
+        "to": "gYZ4xEnfw0u7DIC1lcd8Sg",
+        "toPin": "Player"
+      }
+    ],
+    "nodeCount": 207
+  },
+  "aicVars": {
+    "success": true,
+    "path": "/Game/BluePrint/System/BP_EnemyAIController",
+    "variables": [
+      {
+        "name": "Enemy Ref",
+        "type": "object",
+        "guid": "CDC8FD2140B1C7EB074DD6A791CF92CF",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "isChasing",
+        "type": "bool",
+        "guid": "E3805BE847B6170561C03889D3D409CC",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Sight Range",
+        "type": "real",
+        "guid": "EDC6C44141791DDF68B6F5A90D67DCD3",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Wander Radious",
+        "type": "real",
+        "guid": "DD52DB514BF96D6372C58CB68C19FECC",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Normal Speed",
+        "type": "real",
+        "guid": "B7A61FEF47E892D6C66804B8DAD55F49",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Chase Speed",
+        "type": "real",
+        "guid": "21110D5E4FD30515DD5135B0755EC6D5",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "ChaseTimerHandle",
+        "type": "struct",
+        "guid": "92CCBBE941D64E7640A48F82A298C4D2",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "isAlert",
+        "type": "bool",
+        "guid": "852092104113F5885A45D4A72ED9E0B3",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "isInvestigating",
+        "type": "bool",
+        "guid": "0E4373024355B2865126469937495914",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "AlertRadius",
+        "type": "real",
+        "guid": "4610619044A304D2A4F40A905FE2ACDF",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "MoveAccumulateTime",
+        "type": "real",
+        "guid": "A2D3385A4C47DF24EAF947B5508B03F0",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "AlertMoveAccumulate",
+        "type": "real",
+        "guid": "67F047FE4D1C01B3C0F55C92521B36F3",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "AlertScanYaw",
+        "type": "real",
+        "guid": "EAC13717438E88F3196560959BE9E189",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "AlertScanDuration",
+        "type": "real",
+        "guid": "FAD2DA614F7EE16794250FBC5C4A03F5",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "PatrolPointIndex",
+        "type": "int",
+        "guid": "4B9560C7465FB619F896F6A4E9498998",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Chase Target",
+        "type": "object",
+        "guid": "F4E43FC84F437CFE2F49E1807AC06F96",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "EncounterStarted",
+        "type": "bool",
+        "guid": "1B3116184D0759DF6AB1FEB58E2DA8CE",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "IsRushingKill",
+        "type": "bool",
+        "guid": "868983F84F1B6BCAE5C8B2BB3DBF47DD",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      }
+    ],
+    "count": 18
+  },
+  "flow_BP_EnemySpotter-Ins_Start Follow": {
+    "success": true,
+    "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+    "graphName": "EventGraph",
+    "entryPoint": "Start Follow",
+    "entryId": "m0YyLE_S9x8Gt1eflUbWiw",
+    "steps": [
+      {
+        "id": "m0YyLE_S9x8Gt1eflUbWiw",
+        "class": "K2Node_CustomEvent",
+        "title": "Start Follow",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "kNJAPk7-Ubz5r-Skzl1yYg"
+          }
+        ]
+      },
+      {
+        "id": "kNJAPk7-Ubz5r-Skzl1yYg",
+        "class": "K2Node_CallFunction",
+        "title": "Print String",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "sEaK4k8bZ9V2RRCeta93IQ"
+          }
+        ]
+      },
+      {
+        "id": "sEaK4k8bZ9V2RRCeta93IQ",
+        "class": "K2Node_VariableSet",
+        "title": "Set IsFollowing",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "AAoAaEAHVLZJvba75Au0xA"
+          }
+        ]
+      },
+      {
+        "id": "AAoAaEAHVLZJvba75Au0xA",
+        "class": "K2Node_VariableSet",
+        "title": "Set Follow Target",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "jJXcB0D3rTj-D5qZELXkmA"
+          }
+        ]
+      },
+      {
+        "id": "jJXcB0D3rTj-D5qZELXkmA",
+        "class": "K2Node_MacroInstance",
+        "title": "Is Valid",
+        "branches": [
+          {
+            "pin": "Is Valid",
+            "toId": "Sd4CfEn5hLHYumSBnSAVlw"
+          }
+        ]
+      },
+      {
+        "id": "Sd4CfEn5hLHYumSBnSAVlw",
+        "class": "K2Node_DynamicCast",
+        "title": "Cast To BP_EnemyAIController",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "_hlsR0R0wf10dYaeKwPNoA"
+          }
+        ]
+      },
+      {
+        "id": "_hlsR0R0wf10dYaeKwPNoA",
+        "class": "K2Node_CallFunction",
+        "title": "Request Kill",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "kl1oa0cTh8G3S0KcalmCRQ"
+          }
+        ]
+      },
+      {
+        "id": "kl1oa0cTh8G3S0KcalmCRQ",
+        "class": "K2Node_CallFunction",
+        "title": "Set Timer by Event",
+        "branches": []
+      }
+    ],
+    "stepCount": 8
+  },
+  "flow_BP_EnemySpotter-Ins_Update Follow Move": {
+    "success": true,
+    "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+    "graphName": "EventGraph",
+    "entryPoint": "Update Follow Move",
+    "entryId": "CKstp0F9G8LuVbCg9gir0g",
+    "steps": [
+      {
+        "id": "CKstp0F9G8LuVbCg9gir0g",
+        "class": "K2Node_CustomEvent",
+        "title": "Update Follow Move",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "dnXaeUHCkahy1cmE7Iahyw"
+          }
+        ]
+      },
+      {
+        "id": "dnXaeUHCkahy1cmE7Iahyw",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "nbrt4kzLdToj1Ia-YwsNdA"
+          }
+        ]
+      },
+      {
+        "id": "nbrt4kzLdToj1Ia-YwsNdA",
+        "class": "K2Node_MacroInstance",
+        "title": "Is Valid",
+        "branches": [
+          {
+            "pin": "Is Valid",
+            "toId": "uZ6ksEBs9sIAxV-1c_PBFw"
+          }
+        ]
+      },
+      {
+        "id": "uZ6ksEBs9sIAxV-1c_PBFw",
+        "class": "K2Node_AIMoveTo",
+        "title": "AI MoveTo",
+        "branches": []
+      }
+    ],
+    "stepCount": 4
+  },
+  "flow_BP_EnemySpotter-Ins_Event BeginPlay": {
+    "success": true,
+    "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+    "graphName": "EventGraph",
+    "entryPoint": "Event BeginPlay",
+    "entryId": "NBcUFUYnmErfKi-MEX7B6Q",
+    "steps": [
+      {
+        "id": "NBcUFUYnmErfKi-MEX7B6Q",
+        "class": "K2Node_Event",
+        "title": "Event BeginPlay",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "l8KDUU4ttni_vJGashLf0g"
+          }
+        ]
+      },
+      {
+        "id": "l8KDUU4ttni_vJGashLf0g",
+        "class": "K2Node_CallParentFunction",
+        "title": "Parent: BeginPlay",
+        "branches": []
+      }
+    ],
+    "stepCount": 2
+  },
+  "flow_BP_EnemyHunter-Ins_Event BeginPlay": {
+    "success": true,
+    "path": "/Game/BluePrint/Enemy/BP_EnemyHunter-Ins",
+    "graphName": "EventGraph",
+    "entryPoint": "Event BeginPlay",
+    "entryId": "EMuLGULshmDraH-kup8w_g",
+    "steps": [
+      {
+        "id": "EMuLGULshmDraH-kup8w_g",
+        "class": "K2Node_Event",
+        "title": "Event BeginPlay",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "3sWQ30KkW4HN1zSGaqQ_Xw"
+          }
+        ]
+      },
+      {
+        "id": "3sWQ30KkW4HN1zSGaqQ_Xw",
+        "class": "K2Node_CallParentFunction",
+        "title": "Parent: BeginPlay",
+        "branches": []
+      }
+    ],
+    "stepCount": 2
+  },
+  "flow_BP_EnemyHunter-Ins_On Component Begin Overlap": {
+    "success": true,
+    "path": "/Game/BluePrint/Enemy/BP_EnemyHunter-Ins",
+    "graphName": "EventGraph",
+    "entryPoint": "On Component Begin Overlap (Mesh)",
+    "entryId": "4rhkp0EYicC-zcaWc9GqYQ",
+    "steps": [
+      {
+        "id": "4rhkp0EYicC-zcaWc9GqYQ",
+        "class": "K2Node_ComponentBoundEvent",
+        "title": "On Component Begin Overlap (Mesh)",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "1QIb9EE7roFVMVOYHV1ddA"
+          }
+        ]
+      },
+      {
+        "id": "1QIb9EE7roFVMVOYHV1ddA",
+        "class": "K2Node_DynamicCast",
+        "title": "Cast To BP_ThirdPersonCharacter",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "YoDMsEHy1xrc_gWWWq3QYg"
+          }
+        ]
+      },
+      {
+        "id": "YoDMsEHy1xrc_gWWWq3QYg",
+        "class": "K2Node_CallFunction",
+        "title": "Quit Game",
+        "branches": []
+      }
+    ],
+    "stepCount": 3
+  },
+  "flow_BP_EnemyAIController_Event BeginPlay": {
+    "success": true,
+    "path": "/Game/BluePrint/System/BP_EnemyAIController",
+    "graphName": "EventGraph",
+    "entryPoint": "Event BeginPlay",
+    "entryId": "C_FfC06SpRDJo2uhY1hEpA",
+    "steps": [
+      {
+        "id": "C_FfC06SpRDJo2uhY1hEpA",
+        "class": "K2Node_Event",
+        "title": "Event BeginPlay",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "INOltk_fMCLBcjOm0PPq8w"
+          }
+        ]
+      },
+      {
+        "id": "INOltk_fMCLBcjOm0PPq8w",
+        "class": "K2Node_CallFunction",
+        "title": "Set Active",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "kZG_dkjEN9EgdnqczVH-7g"
+          }
+        ]
+      },
+      {
+        "id": "kZG_dkjEN9EgdnqczVH-7g",
+        "class": "K2Node_CallFunction",
+        "title": "Request Stimuli Listener Update",
+        "branches": []
+      }
+    ],
+    "stepCount": 3
+  },
+  "flow_BP_EnemyAIController_Request Kill": {
+    "success": true,
+    "path": "/Game/BluePrint/System/BP_EnemyAIController",
+    "graphName": "EventGraph",
+    "entryPoint": "Request Kill",
+    "entryId": "AplXJ0n0d9uNMcSCtO3K9w",
+    "steps": [
+      {
+        "id": "AplXJ0n0d9uNMcSCtO3K9w",
+        "class": "K2Node_CustomEvent",
+        "title": "Request Kill",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "23gOIEieS0ofgj-vnT58QA"
+          }
+        ]
+      },
+      {
+        "id": "23gOIEieS0ofgj-vnT58QA",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "BNQvh0hy673O3D-pM1aidQ"
+          }
+        ]
+      },
+      {
+        "id": "BNQvh0hy673O3D-pM1aidQ",
+        "class": "K2Node_VariableSet",
+        "title": "Set Chase Target",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "IzhuKEZ60k4VkJaTsrbgEg"
+          }
+        ]
+      },
+      {
+        "id": "IzhuKEZ60k4VkJaTsrbgEg",
+        "class": "K2Node_VariableSet",
+        "title": "Set IsRushingKill",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "Vv4GUUlaSZhPFwWmkCBMZA"
+          }
+        ]
+      },
+      {
+        "id": "Vv4GUUlaSZhPFwWmkCBMZA",
+        "class": "K2Node_VariableSet",
+        "title": "Set isChasing",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "qdXuK0m0xZT_p8KyVSe8FA"
+          }
+        ]
+      },
+      {
+        "id": "qdXuK0m0xZT_p8KyVSe8FA",
+        "class": "K2Node_AIMoveTo",
+        "title": "AI MoveTo",
+        "branches": []
+      }
+    ],
+    "stepCount": 6
+  },
+  "flow_BP_EnemyAIController_On Target Perception Updated": {
+    "success": true,
+    "path": "/Game/BluePrint/System/BP_EnemyAIController",
+    "graphName": "EventGraph",
+    "entryPoint": "On Target Perception Updated (AIPerception)",
+    "entryId": "uQaq5E-pz4Igb7uZv7n2PQ",
+    "steps": [
+      {
+        "id": "uQaq5E-pz4Igb7uZv7n2PQ",
+        "class": "K2Node_ComponentBoundEvent",
+        "title": "On Target Perception Updated (AIPerception)",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "7Tnz2EX9YYhvcCOtcXwuig"
+          }
+        ]
+      },
+      {
+        "id": "7Tnz2EX9YYhvcCOtcXwuig",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "6ah6ikd0th1gV4mIgRACkw"
+          }
+        ]
+      },
+      {
+        "id": "6ah6ikd0th1gV4mIgRACkw",
+        "class": "K2Node_DynamicCast",
+        "title": "Cast To BP_EnemySpotter-Ins",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "zyOCGUagGifkp_mUBSqfeA"
+          }
+        ]
+      },
+      {
+        "id": "zyOCGUagGifkp_mUBSqfeA",
+        "class": "K2Node_CallFunction",
+        "title": "Print String",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "gYZ4xEnfw0u7DIC1lcd8Sg"
+          }
+        ]
+      },
+      {
+        "id": "gYZ4xEnfw0u7DIC1lcd8Sg",
+        "class": "K2Node_CallFunction",
+        "title": "Start Follow",
+        "branches": []
+      }
+    ],
+    "stepCount": 5
+  },
+  "flow_BP_EnemyAIController_Notify Encounter Started": {
+    "success": true,
+    "path": "/Game/BluePrint/System/BP_EnemyAIController",
+    "graphName": "EventGraph",
+    "entryPoint": "Notify Encounter Started",
+    "entryId": "RamG1EAlfKG8BE2bXs6lHg",
+    "steps": [
+      {
+        "id": "RamG1EAlfKG8BE2bXs6lHg",
+        "class": "K2Node_CustomEvent",
+        "title": "Notify Encounter Started",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "qEYuL0Vz45r1vPmpu4_lYg"
+          }
+        ]
+      },
+      {
+        "id": "qEYuL0Vz45r1vPmpu4_lYg",
+        "class": "K2Node_VariableSet",
+        "title": "Set EncounterStarted",
+        "branches": []
+      }
+    ],
+    "stepCount": 2
+  },
+  "flow_BP_EnemyAIController_Patrol": {
+    "success": true,
+    "path": "/Game/BluePrint/System/BP_EnemyAIController",
+    "graphName": "EventGraph",
+    "entryPoint": "Patrol",
+    "entryId": "7jO3iUP7AVpTFyiNx5KKaA",
+    "steps": [
+      {
+        "id": "7jO3iUP7AVpTFyiNx5KKaA",
+        "class": "K2Node_CustomEvent",
+        "title": "Patrol",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "h25kJE21S9w4Zlqyts3oMw"
+          }
+        ]
+      },
+      {
+        "id": "h25kJE21S9w4Zlqyts3oMw",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "else",
+            "toId": "xs4qokihnXZJGD2m8FAzAw"
+          }
+        ]
+      },
+      {
+        "id": "xs4qokihnXZJGD2m8FAzAw",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "3uYcREpAU5hSWA6F821nbQ"
+          },
+          {
+            "pin": "else",
+            "toId": "vdapfklx6NY2SL606BuzDg"
+          }
+        ]
+      },
+      {
+        "id": "3uYcREpAU5hSWA6F821nbQ",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "OQYxL0kRdY5hh8GvYAZOgQ"
+          },
+          {
+            "pin": "else",
+            "toId": "vdapfklx6NY2SL606BuzDg"
+          }
+        ]
+      },
+      {
+        "id": "vdapfklx6NY2SL606BuzDg",
+        "class": "K2Node_CallFunction",
+        "title": "Wander",
+        "branches": []
+      },
+      {
+        "id": "OQYxL0kRdY5hh8GvYAZOgQ",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "IqeJd0BVT8kAwRmqv4BWCw"
+          },
+          {
+            "pin": "else",
+            "toId": "vdapfklx6NY2SL606BuzDg"
+          }
+        ]
+      },
+      {
+        "id": "IqeJd0BVT8kAwRmqv4BWCw",
+        "class": "K2Node_VariableSet",
+        "title": "Set MaxWalkSpeed",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "SlzpfUXkKWCqpeSa8A78TQ"
+          }
+        ]
+      },
+      {
+        "id": "SlzpfUXkKWCqpeSa8A78TQ",
+        "class": "K2Node_AIMoveTo",
+        "title": "AI MoveTo",
+        "branches": [
+          {
+            "pin": "OnSuccess",
+            "toId": "iir1VUlQEYlFYqG5bd8_4w"
+          },
+          {
+            "pin": "OnFail",
+            "toId": "1ZtNW0EQK30HdLeaoo2fGw"
+          }
+        ]
+      },
+      {
+        "id": "iir1VUlQEYlFYqG5bd8_4w",
+        "class": "K2Node_VariableSet",
+        "title": "Set PatrolPointIndex",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "ix5Pnk0NtM1QtpuCtaN2pQ"
+          }
+        ]
+      },
+      {
+        "id": "1ZtNW0EQK30HdLeaoo2fGw",
+        "class": "K2Node_CallFunction",
+        "title": "Delay",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "yBAAV0BbRHe4Azyy3yhGhw"
+          }
+        ]
+      },
+      {
+        "id": "ix5Pnk0NtM1QtpuCtaN2pQ",
+        "class": "K2Node_CallFunction",
+        "title": "Patrol",
+        "branches": []
+      },
+      {
+        "id": "yBAAV0BbRHe4Azyy3yhGhw",
+        "class": "K2Node_CallFunction",
+        "title": "Patrol",
+        "branches": []
+      }
+    ],
+    "stepCount": 12
+  },
+  "flow_BP_EnemyAIController_Wander": {
+    "success": true,
+    "path": "/Game/BluePrint/System/BP_EnemyAIController",
+    "graphName": "EventGraph",
+    "entryPoint": "Wander",
+    "entryId": "Z8VzH0HLkN-te0-GEqgJXg",
+    "steps": [
+      {
+        "id": "Z8VzH0HLkN-te0-GEqgJXg",
+        "class": "K2Node_CustomEvent",
+        "title": "Wander",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "Ns62xklUX1lB9-uhRUnYBg"
+          }
+        ]
+      },
+      {
+        "id": "Ns62xklUX1lB9-uhRUnYBg",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "else",
+            "toId": "Ll5G8UM_1NF-Xnq5II-Tig"
+          }
+        ]
+      },
+      {
+        "id": "Ll5G8UM_1NF-Xnq5II-Tig",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "6iH3bUQ_bB8XwoulAkLsOg"
+          }
+        ]
+      },
+      {
+        "id": "6iH3bUQ_bB8XwoulAkLsOg",
+        "class": "K2Node_VariableSet",
+        "title": "Set MaxWalkSpeed",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "BwJm2kXtfwONavmki6CkYQ"
+          }
+        ]
+      },
+      {
+        "id": "BwJm2kXtfwONavmki6CkYQ",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "t3nP3Uu0sKGE4ryl1Aa3PA"
+          }
+        ]
+      },
+      {
+        "id": "t3nP3Uu0sKGE4ryl1Aa3PA",
+        "class": "K2Node_AIMoveTo",
+        "title": "AI MoveTo",
+        "branches": [
+          {
+            "pin": "OnSuccess",
+            "toId": "yLxflUdv4w3aXMWTHcYCrA"
+          },
+          {
+            "pin": "OnFail",
+            "toId": "aQEtiEA2_zMdRia4WB4ATg"
+          }
+        ]
+      },
+      {
+        "id": "yLxflUdv4w3aXMWTHcYCrA",
+        "class": "K2Node_CallFunction",
+        "title": "Delay",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "UoWF6UVVBwpSojm-A9X6Vg"
+          }
+        ]
+      },
+      {
+        "id": "aQEtiEA2_zMdRia4WB4ATg",
+        "class": "K2Node_CallFunction",
+        "title": "Delay",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "WXyiSU_MJYqXLIi3igK9mg"
+          }
+        ]
+      },
+      {
+        "id": "UoWF6UVVBwpSojm-A9X6Vg",
+        "class": "K2Node_CallFunction",
+        "title": "Wander",
+        "branches": []
+      },
+      {
+        "id": "WXyiSU_MJYqXLIi3igK9mg",
+        "class": "K2Node_CallFunction",
+        "title": "Wander",
+        "branches": []
+      }
+    ],
+    "stepCount": 10
+  }
+}
