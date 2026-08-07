@@ -1,0 +1,420 @@
+{
+  "flow_Patrol": {
+    "success": true,
+    "path": "/Game/BluePrint/System/BP_EnemyAIController",
+    "graphName": "EventGraph",
+    "entryPoint": "Patrol",
+    "entryId": "7jO3iUP7AVpTFyiNx5KKaA",
+    "steps": [
+      {
+        "id": "7jO3iUP7AVpTFyiNx5KKaA",
+        "class": "K2Node_CustomEvent",
+        "title": "Patrol",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "5uv4vU4FgPAS36yfn-B50g"
+          }
+        ]
+      },
+      {
+        "id": "5uv4vU4FgPAS36yfn-B50g",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "else",
+            "toId": "h25kJE21S9w4Zlqyts3oMw"
+          }
+        ]
+      },
+      {
+        "id": "h25kJE21S9w4Zlqyts3oMw",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "else",
+            "toId": "xs4qokihnXZJGD2m8FAzAw"
+          }
+        ]
+      },
+      {
+        "id": "xs4qokihnXZJGD2m8FAzAw",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "3uYcREpAU5hSWA6F821nbQ"
+          },
+          {
+            "pin": "else",
+            "toId": "vdapfklx6NY2SL606BuzDg"
+          }
+        ]
+      },
+      {
+        "id": "3uYcREpAU5hSWA6F821nbQ",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "RPRpz0AQk410l96ULOTv-Q"
+          },
+          {
+            "pin": "else",
+            "toId": "vdapfklx6NY2SL606BuzDg"
+          }
+        ]
+      },
+      {
+        "id": "vdapfklx6NY2SL606BuzDg",
+        "class": "K2Node_CallFunction",
+        "title": "Wander",
+        "branches": []
+      },
+      {
+        "id": "RPRpz0AQk410l96ULOTv-Q",
+        "class": "K2Node_CallFunction",
+        "title": "Print String",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "OQYxL0kRdY5hh8GvYAZOgQ"
+          }
+        ]
+      },
+      {
+        "id": "OQYxL0kRdY5hh8GvYAZOgQ",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "IqeJd0BVT8kAwRmqv4BWCw"
+          }
+        ]
+      },
+      {
+        "id": "IqeJd0BVT8kAwRmqv4BWCw",
+        "class": "K2Node_VariableSet",
+        "title": "Set MaxWalkSpeed",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "mvaqlUcP653KE3CUY-noTw"
+          }
+        ]
+      },
+      {
+        "id": "mvaqlUcP653KE3CUY-noTw",
+        "class": "K2Node_CallFunction",
+        "title": "Print String",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "DHDaQUuaaLn5m0uePrqlSQ"
+          }
+        ]
+      },
+      {
+        "id": "DHDaQUuaaLn5m0uePrqlSQ",
+        "class": "K2Node_CallFunction",
+        "title": "Print String",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "SlzpfUXkKWCqpeSa8A78TQ"
+          }
+        ]
+      },
+      {
+        "id": "SlzpfUXkKWCqpeSa8A78TQ",
+        "class": "K2Node_AIMoveTo",
+        "title": "AI MoveTo",
+        "branches": [
+          {
+            "pin": "OnSuccess",
+            "toId": "iir1VUlQEYlFYqG5bd8_4w"
+          },
+          {
+            "pin": "OnFail",
+            "toId": "d9yKokItOIZzJuyPcPa27w"
+          }
+        ]
+      },
+      {
+        "id": "iir1VUlQEYlFYqG5bd8_4w",
+        "class": "K2Node_VariableSet",
+        "title": "Set PatrolPointIndex",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "n84AQkVo-sqkb6ae9BuzAw"
+          }
+        ]
+      },
+      {
+        "id": "d9yKokItOIZzJuyPcPa27w",
+        "class": "K2Node_CallFunction",
+        "title": "Print String",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "AEUJKEz4OcWrdCuRZ0360A"
+          }
+        ]
+      },
+      {
+        "id": "n84AQkVo-sqkb6ae9BuzAw",
+        "class": "K2Node_CallFunction",
+        "title": "Delay",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "ix5Pnk0NtM1QtpuCtaN2pQ"
+          }
+        ]
+      },
+      {
+        "id": "AEUJKEz4OcWrdCuRZ0360A",
+        "class": "K2Node_VariableSet",
+        "title": "Set PatrolPointIndex",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "1ZtNW0EQK30HdLeaoo2fGw"
+          }
+        ]
+      },
+      {
+        "id": "ix5Pnk0NtM1QtpuCtaN2pQ",
+        "class": "K2Node_CallFunction",
+        "title": "Patrol",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "FM78u091GOUDJC6mQvk-Qg"
+          }
+        ]
+      },
+      {
+        "id": "1ZtNW0EQK30HdLeaoo2fGw",
+        "class": "K2Node_CallFunction",
+        "title": "Delay",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "pHNVMEz7vXB_ZP2q1-vkug"
+          }
+        ]
+      },
+      {
+        "id": "FM78u091GOUDJC6mQvk-Qg",
+        "class": "K2Node_CallFunction",
+        "title": "Print String",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "Awzu30Dusx239P2-mYRksw"
+          }
+        ]
+      },
+      {
+        "id": "pHNVMEz7vXB_ZP2q1-vkug",
+        "class": "K2Node_CallFunction",
+        "title": "Print String",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "7XuxV0cwlmRPNUuq9aBYZw"
+          }
+        ]
+      },
+      {
+        "id": "Awzu30Dusx239P2-mYRksw",
+        "class": "K2Node_CallFunction",
+        "title": "Print String",
+        "branches": []
+      },
+      {
+        "id": "7XuxV0cwlmRPNUuq9aBYZw",
+        "class": "K2Node_CallFunction",
+        "title": "Print String",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "yBAAV0BbRHe4Azyy3yhGhw"
+          }
+        ]
+      },
+      {
+        "id": "yBAAV0BbRHe4Azyy3yhGhw",
+        "class": "K2Node_CallFunction",
+        "title": "Patrol",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "VU15OkSOjKuMRpmiJOVZlg"
+          }
+        ]
+      },
+      {
+        "id": "VU15OkSOjKuMRpmiJOVZlg",
+        "class": "K2Node_CallFunction",
+        "title": "Print String",
+        "branches": []
+      }
+    ],
+    "stepCount": 24
+  },
+  "flow_Notify": {
+    "success": true,
+    "path": "/Game/BluePrint/System/BP_EnemyAIController",
+    "graphName": "EventGraph",
+    "entryPoint": "Notify Encounter Started",
+    "entryId": "RamG1EAlfKG8BE2bXs6lHg",
+    "steps": [
+      {
+        "id": "RamG1EAlfKG8BE2bXs6lHg",
+        "class": "K2Node_CustomEvent",
+        "title": "Notify Encounter Started",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "qEYuL0Vz45r1vPmpu4_lYg"
+          }
+        ]
+      },
+      {
+        "id": "qEYuL0Vz45r1vPmpu4_lYg",
+        "class": "K2Node_VariableSet",
+        "title": "Set EncounterStarted",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "-bkWAEktm-8DchiP14o24g"
+          }
+        ]
+      },
+      {
+        "id": "-bkWAEktm-8DchiP14o24g",
+        "class": "K2Node_ExecutionSequence",
+        "title": "Sequence",
+        "branches": [
+          {
+            "pin": "then_0",
+            "toId": "PQHN_0kgUygNqYCczv6yRQ"
+          },
+          {
+            "pin": "then_1",
+            "toId": "_dSxek0DFCRaxWmJ5B1CEQ"
+          }
+        ]
+      },
+      {
+        "id": "PQHN_0kgUygNqYCczv6yRQ",
+        "class": "K2Node_MacroInstance",
+        "title": "Is Valid",
+        "branches": [
+          {
+            "pin": "Is Valid",
+            "toId": "rIPLikRpLwjyIySVF_1kWg"
+          }
+        ]
+      },
+      {
+        "id": "_dSxek0DFCRaxWmJ5B1CEQ",
+        "class": "K2Node_MacroInstance",
+        "title": "Is Valid",
+        "branches": [
+          {
+            "pin": "Is Valid",
+            "toId": "8TY8QkQe76HoRNCl-xRnrQ"
+          }
+        ]
+      },
+      {
+        "id": "rIPLikRpLwjyIySVF_1kWg",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "Os10pkt0tGl2ta-4qsipcg"
+          }
+        ]
+      },
+      {
+        "id": "8TY8QkQe76HoRNCl-xRnrQ",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "LG3A-kjnunpXk8-tlRNywg"
+          }
+        ]
+      },
+      {
+        "id": "Os10pkt0tGl2ta-4qsipcg",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "else",
+            "toId": "ma9wME41k6AKi9uqXGaELg"
+          }
+        ]
+      },
+      {
+        "id": "LG3A-kjnunpXk8-tlRNywg",
+        "class": "K2Node_DynamicCast",
+        "title": "Cast To BP_EnemySpotter-Ins",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "tz7BV0z1W-70Sg6ipy64vw"
+          }
+        ]
+      },
+      {
+        "id": "ma9wME41k6AKi9uqXGaELg",
+        "class": "K2Node_VariableSet",
+        "title": "Set MaxWalkSpeed",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "5qAV60MB5POBlxeHDSOxng"
+          }
+        ]
+      },
+      {
+        "id": "tz7BV0z1W-70Sg6ipy64vw",
+        "class": "K2Node_CallFunction",
+        "title": "Enter Phase 2",
+        "branches": []
+      },
+      {
+        "id": "5qAV60MB5POBlxeHDSOxng",
+        "class": "K2Node_VariableSet",
+        "title": "Set isChasing",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "MCbQIkuzxdJs5R2elMekTg"
+          }
+        ]
+      },
+      {
+        "id": "MCbQIkuzxdJs5R2elMekTg",
+        "class": "K2Node_CallFunction",
+        "title": "Patrol",
+        "branches": []
+      }
+    ],
+    "stepCount": 13
+  }
+}
