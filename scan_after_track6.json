@@ -1,0 +1,792 @@
+{
+  "flows": {
+    "After Track Arrived": {
+      "success": true,
+      "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+      "graphName": "EventGraph",
+      "entryPoint": "After Track Arrived",
+      "entryId": "1HGwsk381k2HmCqxwJgNSA",
+      "steps": [
+        {
+          "id": "1HGwsk381k2HmCqxwJgNSA",
+          "class": "K2Node_CustomEvent",
+          "title": "After Track Arrived",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "om3otk0kUxWBpRSj3ZtAuw"
+            }
+          ]
+        },
+        {
+          "id": "om3otk0kUxWBpRSj3ZtAuw",
+          "class": "K2Node_IfThenElse",
+          "title": "Branch",
+          "branches": [
+            {
+              "pin": "else",
+              "toId": "ohF89UUPdRLpksOLf7c0ew"
+            }
+          ]
+        },
+        {
+          "id": "ohF89UUPdRLpksOLf7c0ew",
+          "class": "K2Node_VariableSet",
+          "title": "Set GrabCount",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "XBlJP0SCZ-7_5xe0F8yjRg"
+            }
+          ]
+        },
+        {
+          "id": "XBlJP0SCZ-7_5xe0F8yjRg",
+          "class": "K2Node_IfThenElse",
+          "title": "Branch",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "tFEBdU4FqnJiofmKrGJyuw"
+            },
+            {
+              "pin": "else",
+              "toId": "7XBOv017VNQLDKanerKm6w"
+            }
+          ]
+        },
+        {
+          "id": "tFEBdU4FqnJiofmKrGJyuw",
+          "class": "K2Node_AIMoveTo",
+          "title": "AI MoveTo",
+          "branches": []
+        },
+        {
+          "id": "7XBOv017VNQLDKanerKm6w",
+          "class": "K2Node_IfThenElse",
+          "title": "Branch",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "zycIAk4y75MKp2KNED9Mcw"
+            },
+            {
+              "pin": "else",
+              "toId": "tFEBdU4FqnJiofmKrGJyuw"
+            }
+          ]
+        },
+        {
+          "id": "zycIAk4y75MKp2KNED9Mcw",
+          "class": "K2Node_IfThenElse",
+          "title": "Branch",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "pIPSh0KQ3137Ru-IObOrXQ"
+            }
+          ]
+        },
+        {
+          "id": "pIPSh0KQ3137Ru-IObOrXQ",
+          "class": "K2Node_IfThenElse",
+          "title": "Branch",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "AmgKV0NCM_S7Kqa6MMBcaw"
+            },
+            {
+              "pin": "else",
+              "toId": "Xt_quELA-8Qq6qKO1arlLA"
+            }
+          ]
+        },
+        {
+          "id": "AmgKV0NCM_S7Kqa6MMBcaw",
+          "class": "K2Node_Knot",
+          "title": "Reroute Node",
+          "branches": [
+            {
+              "pin": "OutputPin",
+              "toId": "EPu0Ckr8Kb4xHMGnUQ0FJw"
+            }
+          ]
+        },
+        {
+          "id": "Xt_quELA-8Qq6qKO1arlLA",
+          "class": "K2Node_IfThenElse",
+          "title": "Branch",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "CAja-EwBWILorfSGv16YOw"
+            },
+            {
+              "pin": "else",
+              "toId": "tFEBdU4FqnJiofmKrGJyuw"
+            }
+          ]
+        },
+        {
+          "id": "EPu0Ckr8Kb4xHMGnUQ0FJw",
+          "class": "K2Node_CallFunction",
+          "title": "Phase 2 Try to Track",
+          "branches": []
+        },
+        {
+          "id": "CAja-EwBWILorfSGv16YOw",
+          "class": "K2Node_IfThenElse",
+          "title": "Branch",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "h6ryxUYNljfdI-e7BzyYdA"
+            },
+            {
+              "pin": "else",
+              "toId": "LUP200PZwaAAV7iMExDQ_g"
+            }
+          ]
+        },
+        {
+          "id": "h6ryxUYNljfdI-e7BzyYdA",
+          "class": "K2Node_Knot",
+          "title": "Reroute Node",
+          "branches": [
+            {
+              "pin": "OutputPin",
+              "toId": "EPu0Ckr8Kb4xHMGnUQ0FJw"
+            }
+          ]
+        },
+        {
+          "id": "LUP200PZwaAAV7iMExDQ_g",
+          "class": "K2Node_IfThenElse",
+          "title": "Branch",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "vS0kj0oKaHhZQeKid6d_Mw"
+            },
+            {
+              "pin": "else",
+              "toId": "tFEBdU4FqnJiofmKrGJyuw"
+            }
+          ]
+        },
+        {
+          "id": "vS0kj0oKaHhZQeKid6d_Mw",
+          "class": "K2Node_IfThenElse",
+          "title": "Branch",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "EPu0Ckr8Kb4xHMGnUQ0FJw"
+            },
+            {
+              "pin": "else",
+              "toId": "tFEBdU4FqnJiofmKrGJyuw"
+            }
+          ]
+        }
+      ],
+      "stepCount": 15
+    },
+    "Enter Phase 2 Track Loop": {
+      "success": true,
+      "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+      "graphName": "EventGraph",
+      "entryPoint": "Enter Phase 2 Track Loop",
+      "entryId": "SvA-2UrQdk09EGGl7MCcAA",
+      "steps": [
+        {
+          "id": "SvA-2UrQdk09EGGl7MCcAA",
+          "class": "K2Node_CustomEvent",
+          "title": "Enter Phase 2 Track Loop",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "zSKlhUGskXA7jxmELqJZAg"
+            }
+          ]
+        },
+        {
+          "id": "zSKlhUGskXA7jxmELqJZAg",
+          "class": "K2Node_IfThenElse",
+          "title": "Branch",
+          "branches": [
+            {
+              "pin": "else",
+              "toId": "p7ZgE0KRcVxUE1-o_trtKQ"
+            }
+          ]
+        },
+        {
+          "id": "p7ZgE0KRcVxUE1-o_trtKQ",
+          "class": "K2Node_VariableSet",
+          "title": "Set GrabCount",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "jlNuR03MqSeF5GeV_7B0bA"
+            }
+          ]
+        },
+        {
+          "id": "jlNuR03MqSeF5GeV_7B0bA",
+          "class": "K2Node_CallFunction",
+          "title": "Set Timer by Event",
+          "branches": []
+        }
+      ],
+      "stepCount": 4
+    },
+    "Phase 2 Try to Track": {
+      "success": true,
+      "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+      "graphName": "EventGraph",
+      "entryPoint": "Phase 2 Try to Track",
+      "entryId": "hHvwcE7DBqsCkeyDKMS0KA",
+      "steps": [
+        {
+          "id": "hHvwcE7DBqsCkeyDKMS0KA",
+          "class": "K2Node_CustomEvent",
+          "title": "Phase 2 Try to Track",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "9S_7oUqR-B3aeWSDtzodxw"
+            }
+          ]
+        },
+        {
+          "id": "9S_7oUqR-B3aeWSDtzodxw",
+          "class": "K2Node_IfThenElse",
+          "title": "Branch",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "scLSmEy2GQcqJMyyW_D3Ww"
+            }
+          ]
+        },
+        {
+          "id": "scLSmEy2GQcqJMyyW_D3Ww",
+          "class": "K2Node_IfThenElse",
+          "title": "Branch",
+          "branches": [
+            {
+              "pin": "else",
+              "toId": "iKaSK0TLVdu0NimnetBCpg"
+            }
+          ]
+        },
+        {
+          "id": "iKaSK0TLVdu0NimnetBCpg",
+          "class": "K2Node_IfThenElse",
+          "title": "Branch",
+          "branches": [
+            {
+              "pin": "else",
+              "toId": "Vq22XEizEwJcq3WeO5bJYA"
+            }
+          ]
+        },
+        {
+          "id": "Vq22XEizEwJcq3WeO5bJYA",
+          "class": "K2Node_CallFunction",
+          "title": "Get All Actors Of Class",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "pT3PiUj8LESE87WKzRUkZQ"
+            }
+          ]
+        },
+        {
+          "id": "pT3PiUj8LESE87WKzRUkZQ",
+          "class": "K2Node_MacroInstance",
+          "title": "Is Valid",
+          "branches": [
+            {
+              "pin": "Is Valid",
+              "toId": "vOHwvkJaL4TR2pmwdwGaRA"
+            },
+            {
+              "pin": "Is Not Valid",
+              "toId": "U4FcWEHFQkSa2-GC8n96og"
+            }
+          ]
+        },
+        {
+          "id": "vOHwvkJaL4TR2pmwdwGaRA",
+          "class": "K2Node_CallFunction",
+          "title": "Print String",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "-WYsZks4yAYsMKWNXol4jg"
+            }
+          ]
+        },
+        {
+          "id": "U4FcWEHFQkSa2-GC8n96og",
+          "class": "K2Node_CallFunction",
+          "title": "Print String",
+          "branches": []
+        },
+        {
+          "id": "-WYsZks4yAYsMKWNXol4jg",
+          "class": "K2Node_VariableSet",
+          "title": "Set LastGrabLocation",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "QPcKRkuf6_W0S161fPvIPA"
+            }
+          ]
+        },
+        {
+          "id": "QPcKRkuf6_W0S161fPvIPA",
+          "class": "K2Node_AIMoveTo",
+          "title": "AI MoveTo",
+          "branches": [
+            {
+              "pin": "OnSuccess",
+              "toId": "BFt_A0emHdT0nDOuB8mlWA"
+            },
+            {
+              "pin": "OnFail",
+              "toId": "W5ApvE1uTL4MtsyOUgbAyQ"
+            }
+          ]
+        },
+        {
+          "id": "BFt_A0emHdT0nDOuB8mlWA",
+          "class": "K2Node_CallFunction",
+          "title": "Delay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "sqSG3kLMxpcnChySYTzWZQ"
+            }
+          ]
+        },
+        {
+          "id": "W5ApvE1uTL4MtsyOUgbAyQ",
+          "class": "K2Node_CallFunction",
+          "title": "Delay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "Z_Jg0095h23MPc-hXnpKNQ"
+            }
+          ]
+        },
+        {
+          "id": "sqSG3kLMxpcnChySYTzWZQ",
+          "class": "K2Node_CallFunction",
+          "title": "After Track Arrived",
+          "branches": []
+        },
+        {
+          "id": "Z_Jg0095h23MPc-hXnpKNQ",
+          "class": "K2Node_AIMoveTo",
+          "title": "AI MoveTo",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "knksa00fs8k_IV2JDpfrKQ"
+            }
+          ]
+        },
+        {
+          "id": "knksa00fs8k_IV2JDpfrKQ",
+          "class": "K2Node_CallFunction",
+          "title": "Phase 2 Try to Track",
+          "branches": []
+        }
+      ],
+      "stepCount": 15
+    },
+    "Start Follow": {
+      "success": true,
+      "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+      "graphName": "EventGraph",
+      "entryPoint": "Start Follow",
+      "entryId": "m0YyLE_S9x8Gt1eflUbWiw",
+      "steps": [
+        {
+          "id": "m0YyLE_S9x8Gt1eflUbWiw",
+          "class": "K2Node_CustomEvent",
+          "title": "Start Follow",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "Mwl2DEv8oGbbmeqJAOv2Ww"
+            }
+          ]
+        },
+        {
+          "id": "Mwl2DEv8oGbbmeqJAOv2Ww",
+          "class": "K2Node_IfThenElse",
+          "title": "Branch",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "_Q-B7ELfYYQhWo2g6YNyfA"
+            },
+            {
+              "pin": "else",
+              "toId": "W8x7uUzKz_olMHmTuJmHDQ"
+            }
+          ]
+        },
+        {
+          "id": "_Q-B7ELfYYQhWo2g6YNyfA",
+          "class": "K2Node_VariableSet",
+          "title": "Set Follow Target",
+          "branches": []
+        },
+        {
+          "id": "W8x7uUzKz_olMHmTuJmHDQ",
+          "class": "K2Node_CallFunction",
+          "title": "Print String",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "sEaK4k8bZ9V2RRCeta93IQ"
+            }
+          ]
+        },
+        {
+          "id": "sEaK4k8bZ9V2RRCeta93IQ",
+          "class": "K2Node_VariableSet",
+          "title": "Set IsFollowing",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "AAoAaEAHVLZJvba75Au0xA"
+            }
+          ]
+        },
+        {
+          "id": "AAoAaEAHVLZJvba75Au0xA",
+          "class": "K2Node_VariableSet",
+          "title": "Set Follow Target",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "jJXcB0D3rTj-D5qZELXkmA"
+            }
+          ]
+        },
+        {
+          "id": "jJXcB0D3rTj-D5qZELXkmA",
+          "class": "K2Node_MacroInstance",
+          "title": "Is Valid",
+          "branches": [
+            {
+              "pin": "Is Valid",
+              "toId": "Sd4CfEn5hLHYumSBnSAVlw"
+            }
+          ]
+        },
+        {
+          "id": "Sd4CfEn5hLHYumSBnSAVlw",
+          "class": "K2Node_DynamicCast",
+          "title": "Cast To BP_EnemyAIController",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "_hlsR0R0wf10dYaeKwPNoA"
+            }
+          ]
+        },
+        {
+          "id": "_hlsR0R0wf10dYaeKwPNoA",
+          "class": "K2Node_CallFunction",
+          "title": "Request Kill",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "kl1oa0cTh8G3S0KcalmCRQ"
+            }
+          ]
+        },
+        {
+          "id": "kl1oa0cTh8G3S0KcalmCRQ",
+          "class": "K2Node_CallFunction",
+          "title": "Set Timer by Event",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "HKKHrEADWEWb-ze5VTc5Qw"
+            }
+          ]
+        },
+        {
+          "id": "HKKHrEADWEWb-ze5VTc5Qw",
+          "class": "K2Node_VariableSet",
+          "title": "Set Phase2PausedForFollow",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "WbH-T04fwRdi1rGJkGnxxA"
+            }
+          ]
+        },
+        {
+          "id": "WbH-T04fwRdi1rGJkGnxxA",
+          "class": "K2Node_CallFunction",
+          "title": "Clear and Invalidate Timer by Handle",
+          "branches": []
+        }
+      ],
+      "stepCount": 12
+    },
+    "Enter Phase 2": {
+      "success": true,
+      "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+      "graphName": "EventGraph",
+      "entryPoint": "Enter Phase 2",
+      "entryId": "9bUOOEMAF3pVbWC5nwFglw",
+      "steps": [
+        {
+          "id": "9bUOOEMAF3pVbWC5nwFglw",
+          "class": "K2Node_CustomEvent",
+          "title": "Enter Phase 2",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "EJmhhED5o-GyMk-fjvkIjQ"
+            }
+          ]
+        },
+        {
+          "id": "EJmhhED5o-GyMk-fjvkIjQ",
+          "class": "K2Node_IfThenElse",
+          "title": "Branch",
+          "branches": [
+            {
+              "pin": "else",
+              "toId": "Lsu5FUhJxHkbhCOKsDSkEA"
+            }
+          ]
+        },
+        {
+          "id": "Lsu5FUhJxHkbhCOKsDSkEA",
+          "class": "K2Node_VariableSet",
+          "title": "Set Phase 2",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "byht6k5zuWWKn5i3eE3fRA"
+            }
+          ]
+        },
+        {
+          "id": "byht6k5zuWWKn5i3eE3fRA",
+          "class": "K2Node_CallFunction",
+          "title": "Clear and Invalidate Timer by Handle",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "_dHBCEY0tYsEEW-_0N-RPA"
+            }
+          ]
+        },
+        {
+          "id": "_dHBCEY0tYsEEW-_0N-RPA",
+          "class": "K2Node_CallFunction",
+          "title": "Stop Movement Immediately",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "N_giKENz0V7eJcWsUvREkg"
+            }
+          ]
+        },
+        {
+          "id": "N_giKENz0V7eJcWsUvREkg",
+          "class": "K2Node_MacroInstance",
+          "title": "Is Valid",
+          "branches": [
+            {
+              "pin": "Is Valid",
+              "toId": "JabVH0aCCC-PNzubtxA-Ig"
+            }
+          ]
+        },
+        {
+          "id": "JabVH0aCCC-PNzubtxA-Ig",
+          "class": "K2Node_VariableSet",
+          "title": "Set MaxWalkSpeed",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "cWtC1UXwf3fsXqqEMnj1mQ"
+            }
+          ]
+        },
+        {
+          "id": "cWtC1UXwf3fsXqqEMnj1mQ",
+          "class": "K2Node_AIMoveTo",
+          "title": "AI MoveTo",
+          "branches": [
+            {
+              "pin": "OnSuccess",
+              "toId": "9qwKCUNlpljRtKGa93s1SA"
+            },
+            {
+              "pin": "OnFail",
+              "toId": "7kpev0t1M-Z8ffy_Iy-UQQ"
+            }
+          ]
+        },
+        {
+          "id": "9qwKCUNlpljRtKGa93s1SA",
+          "class": "K2Node_CallFunction",
+          "title": "Enter Phase 2 Track Loop",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "9sIx5kNbnVayoxqzjGSxBQ"
+            }
+          ]
+        },
+        {
+          "id": "7kpev0t1M-Z8ffy_Iy-UQQ",
+          "class": "K2Node_CallFunction",
+          "title": "Delay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "fRaACEhmIzbFcLyWWjTbNQ"
+            }
+          ]
+        },
+        {
+          "id": "9sIx5kNbnVayoxqzjGSxBQ",
+          "class": "K2Node_CallFunction",
+          "title": "Print String",
+          "branches": []
+        },
+        {
+          "id": "fRaACEhmIzbFcLyWWjTbNQ",
+          "class": "K2Node_Knot",
+          "title": "Reroute Node",
+          "branches": [
+            {
+              "pin": "OutputPin",
+              "toId": "iiMeCkpS-3Bn0zCVJ-gAhA"
+            }
+          ]
+        },
+        {
+          "id": "iiMeCkpS-3Bn0zCVJ-gAhA",
+          "class": "K2Node_Knot",
+          "title": "Reroute Node",
+          "branches": [
+            {
+              "pin": "OutputPin",
+              "toId": "cWtC1UXwf3fsXqqEMnj1mQ"
+            }
+          ]
+        }
+      ],
+      "stepCount": 13
+    }
+  },
+  "filteredMeta": {
+    "success": true,
+    "nodeCount": 198,
+    "keys": [
+      "success",
+      "path",
+      "graphName",
+      "nodes",
+      "nodeCount"
+    ]
+  },
+  "grabVars": [
+    {
+      "name": "Follow Target",
+      "type": "object",
+      "guid": "EAA9F8184669A3700E11099738D0ED50",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    },
+    {
+      "name": "IsFollowing",
+      "type": "bool",
+      "guid": "4E6786E84FDE5F2CD74F239D10C871EF",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    },
+    {
+      "name": "Phase 2",
+      "type": "bool",
+      "guid": "436111C94A11F039BFEBC9B4ADFB008B",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    },
+    {
+      "name": "Phase1TimerHandle",
+      "type": "struct",
+      "guid": "03DE66F045B8C698D38E7AA9CFBE25E5",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    },
+    {
+      "name": "ScanWaitTime",
+      "type": "real",
+      "guid": "CB5C3E65498874BE291001AB780A84E1",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    },
+    {
+      "name": "TrackInterval",
+      "type": "real",
+      "guid": "498924134AF3D7B5E1982DA28662788D",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    },
+    {
+      "name": "GrabCount",
+      "type": "int",
+      "guid": "11CE530244EBB05823D41EBE34AA5FD8",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    },
+    {
+      "name": "MaxGrabChain",
+      "type": "int",
+      "guid": "F0BB3FD34118C10CC99D3E95B8E456AC",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    },
+    {
+      "name": "LastGrabLocation",
+      "type": "struct",
+      "guid": "7DC8EE184FD51B4353182287F021B788",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    },
+    {
+      "name": "Phase2TimerHandle",
+      "type": "struct",
+      "guid": "C87CE1DA4865349AE5904BA6E8989802",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    },
+    {
+      "name": "Phase2PausedForFollow",
+      "type": "bool",
+      "guid": "6F5E3E5F49925C289B0F9C815E3DE311",
+      "instanceEditable": true,
+      "exposeOnSpawn": false
+    }
+  ]
+}

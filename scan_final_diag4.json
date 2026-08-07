@@ -1,0 +1,195 @@
+{
+  "splineInfo": {
+    "success": true,
+    "actorLabel": "BP_PatrolPath",
+    "splinePointCount": 6,
+    "closedLoop": false,
+    "splineLength": 2570.895751953125,
+    "points": [
+      {
+        "index": 0,
+        "worldLocation": {
+          "x": -10035,
+          "y": -7285,
+          "z": 40
+        },
+        "localLocation": {
+          "x": -1780,
+          "y": 375,
+          "z": 0
+        },
+        "arriveTangent": {
+          "x": 75,
+          "y": -375,
+          "z": 0
+        },
+        "leaveTangent": {
+          "x": 75,
+          "y": -375,
+          "z": 0
+        },
+        "pointType": "Curve"
+      },
+      {
+        "index": 1,
+        "worldLocation": {
+          "x": -9960,
+          "y": -7660,
+          "z": 40
+        },
+        "localLocation": {
+          "x": -1705,
+          "y": 0,
+          "z": 0
+        },
+        "arriveTangent": {
+          "x": 280,
+          "y": -205,
+          "z": 0
+        },
+        "leaveTangent": {
+          "x": 280,
+          "y": -205,
+          "z": 0
+        },
+        "pointType": "Curve"
+      },
+      {
+        "index": 2,
+        "worldLocation": {
+          "x": -9475,
+          "y": -7695,
+          "z": 40
+        },
+        "localLocation": {
+          "x": -1220,
+          "y": -35,
+          "z": 0
+        },
+        "arriveTangent": {
+          "x": 485,
+          "y": -10,
+          "z": 0
+        },
+        "leaveTangent": {
+          "x": 485,
+          "y": -10,
+          "z": 0
+        },
+        "pointType": "Curve"
+      },
+      {
+        "index": 3,
+        "worldLocation": {
+          "x": -8990,
+          "y": -7680,
+          "z": 40
+        },
+        "localLocation": {
+          "x": -735,
+          "y": -20,
+          "z": 0
+        },
+        "arriveTangent": {
+          "x": 560,
+          "y": 7.5,
+          "z": 0
+        },
+        "leaveTangent": {
+          "x": 560,
+          "y": 7.5,
+          "z": 0
+        },
+        "pointType": "Curve"
+      },
+      {
+        "index": 4,
+        "worldLocation": {
+          "x": -8355,
+          "y": -7680,
+          "z": 40
+        },
+        "localLocation": {
+          "x": -100,
+          "y": -20,
+          "z": 0
+        },
+        "arriveTangent": {
+          "x": 600,
+          "y": 0,
+          "z": 0
+        },
+        "leaveTangent": {
+          "x": 600,
+          "y": 0,
+          "z": 0
+        },
+        "pointType": "Curve"
+      },
+      {
+        "index": 5,
+        "worldLocation": {
+          "x": -7790,
+          "y": -7680,
+          "z": 40
+        },
+        "localLocation": {
+          "x": 465,
+          "y": -20,
+          "z": 0
+        },
+        "arriveTangent": {
+          "x": 565,
+          "y": 0,
+          "z": 0
+        },
+        "leaveTangent": {
+          "x": 565,
+          "y": 0,
+          "z": 0
+        },
+        "pointType": "Curve"
+      }
+    ]
+  },
+  "actorDetails": {
+    "success": true,
+    "label": "BP_PatrolPath",
+    "name": "BP_PatrolPath_C_UAID_047C1636E0B0B6F502_1738664247",
+    "class": "BP_PatrolPath_C",
+    "path": "/Game/ThirdPerson/Lvl_ThirdPerson.Lvl_ThirdPerson:PersistentLevel.BP_PatrolPath_C_UAID_047C1636E0B0B6F502_1738664247",
+    "location": {
+      "x": -8255,
+      "y": -7660,
+      "z": 40
+    },
+    "rotation": {
+      "pitch": 0,
+      "yaw": 0,
+      "roll": 0
+    },
+    "scale": {
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
+    "components": [
+      {
+        "name": "DefaultSceneRoot",
+        "class": "SceneComponent"
+      },
+      {
+        "name": "BillboardComponent_71",
+        "class": "BillboardComponent"
+      },
+      {
+        "name": "Patrol Path1",
+        "class": "SplineComponent"
+      },
+      {
+        "name": "Patrol Path2",
+        "class": "SplineComponent"
+      }
+    ]
+  }
+}

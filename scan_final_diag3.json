@@ -1,0 +1,12 @@
+{
+  "componentTree": {
+    "raw": "Error [TASK_FAILED]: Bridge error: Unknown method: get_component_tree. The Unreal bridge plugin speaks protocol version 1, this ue-mcp client (v1.2.1) speaks version 2. Rebuild the plugin against the current package: run 'npx ue-mcp update' in the project, then rebuild the editor binaries."
+  },
+  "splineInfo": {
+    "success": false,
+    "error": "Missing required parameter 'actorLabel'"
+  },
+  "navProject_p1": {
+    "raw": "Error [TASK_FAILED]: Bridge error: Unknown method: nav_project_point. The Unreal bridge plugin speaks protocol version 1, this ue-mcp client (v1.2.1) speaks version 2. Rebuild the plugin against the current package: run 'npx ue-mcp update' in the project, then rebuild the editor binaries."
+  }
+}

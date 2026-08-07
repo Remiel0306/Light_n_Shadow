@@ -1,0 +1,10 @@
+{
+  "graphs": {
+    "success": false,
+    "error": "Missing required parameter 'path' (or 'assetPath')"
+  },
+  "flow": {
+    "success": false,
+    "error": "Missing required parameter 'path' (or 'assetPath')"
+  }
+}

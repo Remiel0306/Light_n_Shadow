@@ -1,0 +1,409 @@
+{
+  "hunters": {
+    "success": true,
+    "actors": [
+      {
+        "label": "BP_EnemyHunter-Ins",
+        "class": "BP_EnemyHunter-Ins_C",
+        "path": "/Game/ThirdPerson/Lvl_ThirdPerson.Lvl_ThirdPerson:PersistentLevel.BP_EnemyHunter-Ins_C_UAID_047C1636E0B06FF502_1803172752"
+      }
+    ],
+    "count": 1
+  },
+  "spotters": {
+    "success": true,
+    "actors": [
+      {
+        "label": "BP_EnemySpotter-Ins",
+        "class": "BP_EnemySpotter-Ins_C",
+        "path": "/Game/ThirdPerson/Lvl_ThirdPerson.Lvl_ThirdPerson:PersistentLevel.BP_EnemySpotter-Ins_C_UAID_047C1636E0B06FF502_1798754751"
+      }
+    ],
+    "count": 1
+  },
+  "aics": {
+    "success": true,
+    "actors": [],
+    "count": 0
+  },
+  "patrolPaths": {
+    "success": true,
+    "actors": [
+      {
+        "label": "BP_PatrolPath",
+        "class": "BP_PatrolPath_C",
+        "path": "/Game/ThirdPerson/Lvl_ThirdPerson.Lvl_ThirdPerson:PersistentLevel.BP_PatrolPath_C_UAID_047C1636E0B0B6F502_1738664247"
+      }
+    ],
+    "count": 1
+  },
+  "countHunter": {
+    "success": true,
+    "classes": [
+      {
+        "class": "StaticMeshActor",
+        "count": 309
+      },
+      {
+        "class": "RectLight",
+        "count": 32
+      },
+      {
+        "class": "BP_ObjectShadowLogic_C",
+        "count": 15
+      },
+      {
+        "class": "PointLight",
+        "count": 7
+      },
+      {
+        "class": "TargetPoint",
+        "count": 3
+      },
+      {
+        "class": "BP_EnemyShadowLogic_C",
+        "count": 3
+      },
+      {
+        "class": "BP_KillTest_C",
+        "count": 3
+      },
+      {
+        "class": "Actor",
+        "count": 2
+      },
+      {
+        "class": "PostProcessVolume",
+        "count": 2
+      },
+      {
+        "class": "WorldDataLayers",
+        "count": 1
+      },
+      {
+        "class": "DefaultPhysicsVolume",
+        "count": 1
+      },
+      {
+        "class": "VolumetricCloud",
+        "count": 1
+      },
+      {
+        "class": "GameplayDebuggerPlayerManager",
+        "count": 1
+      },
+      {
+        "class": "Brush",
+        "count": 1
+      },
+      {
+        "class": "WorldSettings",
+        "count": 1
+      },
+      {
+        "class": "BP_EnemySpotter-Ins_C",
+        "count": 1
+      },
+      {
+        "class": "BP_EnemyHunter-Ins_C",
+        "count": 1
+      },
+      {
+        "class": "RecastNavMesh",
+        "count": 1
+      },
+      {
+        "class": "DirectionalLight",
+        "count": 1
+      },
+      {
+        "class": "WorldPartitionMiniMap",
+        "count": 1
+      },
+      {
+        "class": "BP_EncounterTrigger_C",
+        "count": 1
+      },
+      {
+        "class": "NavMeshBoundsVolume",
+        "count": 1
+      },
+      {
+        "class": "BP_WindowShadowLogic_C",
+        "count": 1
+      },
+      {
+        "class": "SkyAtmosphere",
+        "count": 1
+      },
+      {
+        "class": "PlayerStart",
+        "count": 1
+      },
+      {
+        "class": "SkyLight",
+        "count": 1
+      },
+      {
+        "class": "ExponentialHeightFog",
+        "count": 1
+      },
+      {
+        "class": "AbstractNavData",
+        "count": 1
+      },
+      {
+        "class": "BP_PatrolPath_C",
+        "count": 1
+      }
+    ],
+    "uniqueClasses": 29,
+    "totalActors": 396
+  },
+  "countAIC": {
+    "success": true,
+    "classes": [
+      {
+        "class": "StaticMeshActor",
+        "count": 309
+      },
+      {
+        "class": "RectLight",
+        "count": 32
+      },
+      {
+        "class": "BP_ObjectShadowLogic_C",
+        "count": 15
+      },
+      {
+        "class": "PointLight",
+        "count": 7
+      },
+      {
+        "class": "TargetPoint",
+        "count": 3
+      },
+      {
+        "class": "BP_EnemyShadowLogic_C",
+        "count": 3
+      },
+      {
+        "class": "BP_KillTest_C",
+        "count": 3
+      },
+      {
+        "class": "Actor",
+        "count": 2
+      },
+      {
+        "class": "PostProcessVolume",
+        "count": 2
+      },
+      {
+        "class": "WorldDataLayers",
+        "count": 1
+      },
+      {
+        "class": "DefaultPhysicsVolume",
+        "count": 1
+      },
+      {
+        "class": "VolumetricCloud",
+        "count": 1
+      },
+      {
+        "class": "GameplayDebuggerPlayerManager",
+        "count": 1
+      },
+      {
+        "class": "Brush",
+        "count": 1
+      },
+      {
+        "class": "WorldSettings",
+        "count": 1
+      },
+      {
+        "class": "BP_EnemySpotter-Ins_C",
+        "count": 1
+      },
+      {
+        "class": "BP_EnemyHunter-Ins_C",
+        "count": 1
+      },
+      {
+        "class": "RecastNavMesh",
+        "count": 1
+      },
+      {
+        "class": "DirectionalLight",
+        "count": 1
+      },
+      {
+        "class": "WorldPartitionMiniMap",
+        "count": 1
+      },
+      {
+        "class": "BP_EncounterTrigger_C",
+        "count": 1
+      },
+      {
+        "class": "NavMeshBoundsVolume",
+        "count": 1
+      },
+      {
+        "class": "BP_WindowShadowLogic_C",
+        "count": 1
+      },
+      {
+        "class": "SkyAtmosphere",
+        "count": 1
+      },
+      {
+        "class": "PlayerStart",
+        "count": 1
+      },
+      {
+        "class": "SkyLight",
+        "count": 1
+      },
+      {
+        "class": "ExponentialHeightFog",
+        "count": 1
+      },
+      {
+        "class": "AbstractNavData",
+        "count": 1
+      },
+      {
+        "class": "BP_PatrolPath_C",
+        "count": 1
+      }
+    ],
+    "uniqueClasses": 29,
+    "totalActors": 396
+  },
+  "countPatrolPath": {
+    "success": true,
+    "classes": [
+      {
+        "class": "StaticMeshActor",
+        "count": 309
+      },
+      {
+        "class": "RectLight",
+        "count": 32
+      },
+      {
+        "class": "BP_ObjectShadowLogic_C",
+        "count": 15
+      },
+      {
+        "class": "PointLight",
+        "count": 7
+      },
+      {
+        "class": "TargetPoint",
+        "count": 3
+      },
+      {
+        "class": "BP_EnemyShadowLogic_C",
+        "count": 3
+      },
+      {
+        "class": "BP_KillTest_C",
+        "count": 3
+      },
+      {
+        "class": "Actor",
+        "count": 2
+      },
+      {
+        "class": "PostProcessVolume",
+        "count": 2
+      },
+      {
+        "class": "WorldDataLayers",
+        "count": 1
+      },
+      {
+        "class": "DefaultPhysicsVolume",
+        "count": 1
+      },
+      {
+        "class": "VolumetricCloud",
+        "count": 1
+      },
+      {
+        "class": "GameplayDebuggerPlayerManager",
+        "count": 1
+      },
+      {
+        "class": "Brush",
+        "count": 1
+      },
+      {
+        "class": "WorldSettings",
+        "count": 1
+      },
+      {
+        "class": "BP_EnemySpotter-Ins_C",
+        "count": 1
+      },
+      {
+        "class": "BP_EnemyHunter-Ins_C",
+        "count": 1
+      },
+      {
+        "class": "RecastNavMesh",
+        "count": 1
+      },
+      {
+        "class": "DirectionalLight",
+        "count": 1
+      },
+      {
+        "class": "WorldPartitionMiniMap",
+        "count": 1
+      },
+      {
+        "class": "BP_EncounterTrigger_C",
+        "count": 1
+      },
+      {
+        "class": "NavMeshBoundsVolume",
+        "count": 1
+      },
+      {
+        "class": "BP_WindowShadowLogic_C",
+        "count": 1
+      },
+      {
+        "class": "SkyAtmosphere",
+        "count": 1
+      },
+      {
+        "class": "PlayerStart",
+        "count": 1
+      },
+      {
+        "class": "SkyLight",
+        "count": 1
+      },
+      {
+        "class": "ExponentialHeightFog",
+        "count": 1
+      },
+      {
+        "class": "AbstractNavData",
+        "count": 1
+      },
+      {
+        "class": "BP_PatrolPath_C",
+        "count": 1
+      }
+    ],
+    "uniqueClasses": 29,
+    "totalActors": 396
+  }
+}

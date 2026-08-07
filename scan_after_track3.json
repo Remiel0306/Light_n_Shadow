@@ -1,0 +1,1123 @@
+{
+  "interesting": [
+    "Start Follow\\nCustom Event",
+    "Set IsFollowing",
+    "Set Follow Target",
+    "Request Kill\\nTarget is BP Enemy AIController",
+    "Update Follow Move\\nCustom Event",
+    "Get IsFollowing",
+    "Get Follow Target",
+    "Start Phase 1\\nCustom Event",
+    "Phase 1 Go to B\\nCustom Event",
+    "Phase 1 Go to A\\nCustom Event",
+    "Set Phase 2",
+    "Start Phase 1\\nTarget is BP Enemy Spotter- Ins",
+    "Phase 1 Go To B\\nTarget is BP Enemy Spotter- Ins",
+    "Get ScanWaitTime",
+    "Phase 1 Go To A\\nTarget is BP Enemy Spotter- Ins",
+    "Get Phase 2",
+    "Random Float in Range",
+    "Enter Phase 2\\nCustom Event",
+    "Get Phase1TimerHandle",
+    "Enter Phase 2 Track Loop\\nCustom Event",
+    "Set GrabCount",
+    "Get TrackInterval",
+    "Phase 2 Try to Track\\nCustom Event",
+    "Get Phase2PausedForFollow",
+    "Set LastGrabLocation",
+    "After Track Arrived\\nCustom Event",
+    "After Track Arrived\\nTarget is BP Enemy Spotter- Ins",
+    "Get GrabCount",
+    "Phase 2 Try To Track\\nTarget is BP Enemy Spotter- Ins",
+    "Enter Phase 2 Track Loop\\nTarget is BP Enemy Spotter- Ins",
+    "Set Phase2PausedForFollow",
+    "Enter Phase 2\\nTarget is BP Enemy Spotter- Ins"
+  ],
+  "candidates": [
+    "Start Follow\\nCustom Event",
+    "Enter Phase 2\\nCustom Event",
+    "Enter Phase 2 Track Loop\\nCustom Event",
+    "Set GrabCount",
+    "Set LastGrabLocation",
+    "After Track Arrived\\nCustom Event",
+    "After Track Arrived\\nTarget is BP Enemy Spotter- Ins",
+    "Get GrabCount",
+    "Enter Phase 2 Track Loop\\nTarget is BP Enemy Spotter- Ins",
+    "Enter Phase 2\\nTarget is BP Enemy Spotter- Ins"
+  ],
+  "flows": {
+    "Start Follow\\nCustom Event": {
+      "success": true,
+      "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+      "graphName": "EventGraph",
+      "entryPoint": "Event BeginPlay",
+      "entryId": "NBcUFUYnmErfKi-MEX7B6Q",
+      "steps": [
+        {
+          "id": "NBcUFUYnmErfKi-MEX7B6Q",
+          "class": "K2Node_Event",
+          "title": "Event BeginPlay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "l8KDUU4ttni_vJGashLf0g"
+            }
+          ]
+        },
+        {
+          "id": "l8KDUU4ttni_vJGashLf0g",
+          "class": "K2Node_CallParentFunction",
+          "title": "Parent: BeginPlay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "GWTS40aWiXWMYyOl1fHI_g"
+            }
+          ]
+        },
+        {
+          "id": "GWTS40aWiXWMYyOl1fHI_g",
+          "class": "K2Node_CallFunction",
+          "title": "Delay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "0FAz-0kEyfloZT2MdewRhA"
+            }
+          ]
+        },
+        {
+          "id": "0FAz-0kEyfloZT2MdewRhA",
+          "class": "K2Node_DynamicCast",
+          "title": "Cast To BP_EnemyAIController",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "Dq9z60l3d6j6K62KWcjG7A"
+            }
+          ]
+        },
+        {
+          "id": "Dq9z60l3d6j6K62KWcjG7A",
+          "class": "K2Node_CallFunction",
+          "title": "Print String",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "c5CWj0O6GnFF0ZWHUukkSQ"
+            }
+          ]
+        },
+        {
+          "id": "c5CWj0O6GnFF0ZWHUukkSQ",
+          "class": "K2Node_IfThenElse",
+          "title": "Branch",
+          "branches": [
+            {
+              "pin": "else",
+              "toId": "q6hCuEEcy9KhU6GgT_hTlA"
+            }
+          ]
+        },
+        {
+          "id": "q6hCuEEcy9KhU6GgT_hTlA",
+          "class": "K2Node_CallFunction",
+          "title": "Start Phase 1",
+          "branches": []
+        }
+      ],
+      "stepCount": 7
+    },
+    "Enter Phase 2\\nCustom Event": {
+      "success": true,
+      "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+      "graphName": "EventGraph",
+      "entryPoint": "Event BeginPlay",
+      "entryId": "NBcUFUYnmErfKi-MEX7B6Q",
+      "steps": [
+        {
+          "id": "NBcUFUYnmErfKi-MEX7B6Q",
+          "class": "K2Node_Event",
+          "title": "Event BeginPlay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "l8KDUU4ttni_vJGashLf0g"
+            }
+          ]
+        },
+        {
+          "id": "l8KDUU4ttni_vJGashLf0g",
+          "class": "K2Node_CallParentFunction",
+          "title": "Parent: BeginPlay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "GWTS40aWiXWMYyOl1fHI_g"
+            }
+          ]
+        },
+        {
+          "id": "GWTS40aWiXWMYyOl1fHI_g",
+          "class": "K2Node_CallFunction",
+          "title": "Delay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "0FAz-0kEyfloZT2MdewRhA"
+            }
+          ]
+        },
+        {
+          "id": "0FAz-0kEyfloZT2MdewRhA",
+          "class": "K2Node_DynamicCast",
+          "title": "Cast To BP_EnemyAIController",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "Dq9z60l3d6j6K62KWcjG7A"
+            }
+          ]
+        },
+        {
+          "id": "Dq9z60l3d6j6K62KWcjG7A",
+          "class": "K2Node_CallFunction",
+          "title": "Print String",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "c5CWj0O6GnFF0ZWHUukkSQ"
+            }
+          ]
+        },
+        {
+          "id": "c5CWj0O6GnFF0ZWHUukkSQ",
+          "class": "K2Node_IfThenElse",
+          "title": "Branch",
+          "branches": [
+            {
+              "pin": "else",
+              "toId": "q6hCuEEcy9KhU6GgT_hTlA"
+            }
+          ]
+        },
+        {
+          "id": "q6hCuEEcy9KhU6GgT_hTlA",
+          "class": "K2Node_CallFunction",
+          "title": "Start Phase 1",
+          "branches": []
+        }
+      ],
+      "stepCount": 7
+    },
+    "Enter Phase 2 Track Loop\\nCustom Event": {
+      "success": true,
+      "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+      "graphName": "EventGraph",
+      "entryPoint": "Event BeginPlay",
+      "entryId": "NBcUFUYnmErfKi-MEX7B6Q",
+      "steps": [
+        {
+          "id": "NBcUFUYnmErfKi-MEX7B6Q",
+          "class": "K2Node_Event",
+          "title": "Event BeginPlay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "l8KDUU4ttni_vJGashLf0g"
+            }
+          ]
+        },
+        {
+          "id": "l8KDUU4ttni_vJGashLf0g",
+          "class": "K2Node_CallParentFunction",
+          "title": "Parent: BeginPlay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "GWTS40aWiXWMYyOl1fHI_g"
+            }
+          ]
+        },
+        {
+          "id": "GWTS40aWiXWMYyOl1fHI_g",
+          "class": "K2Node_CallFunction",
+          "title": "Delay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "0FAz-0kEyfloZT2MdewRhA"
+            }
+          ]
+        },
+        {
+          "id": "0FAz-0kEyfloZT2MdewRhA",
+          "class": "K2Node_DynamicCast",
+          "title": "Cast To BP_EnemyAIController",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "Dq9z60l3d6j6K62KWcjG7A"
+            }
+          ]
+        },
+        {
+          "id": "Dq9z60l3d6j6K62KWcjG7A",
+          "class": "K2Node_CallFunction",
+          "title": "Print String",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "c5CWj0O6GnFF0ZWHUukkSQ"
+            }
+          ]
+        },
+        {
+          "id": "c5CWj0O6GnFF0ZWHUukkSQ",
+          "class": "K2Node_IfThenElse",
+          "title": "Branch",
+          "branches": [
+            {
+              "pin": "else",
+              "toId": "q6hCuEEcy9KhU6GgT_hTlA"
+            }
+          ]
+        },
+        {
+          "id": "q6hCuEEcy9KhU6GgT_hTlA",
+          "class": "K2Node_CallFunction",
+          "title": "Start Phase 1",
+          "branches": []
+        }
+      ],
+      "stepCount": 7
+    },
+    "Set GrabCount": {
+      "success": true,
+      "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+      "graphName": "EventGraph",
+      "entryPoint": "Event BeginPlay",
+      "entryId": "NBcUFUYnmErfKi-MEX7B6Q",
+      "steps": [
+        {
+          "id": "NBcUFUYnmErfKi-MEX7B6Q",
+          "class": "K2Node_Event",
+          "title": "Event BeginPlay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "l8KDUU4ttni_vJGashLf0g"
+            }
+          ]
+        },
+        {
+          "id": "l8KDUU4ttni_vJGashLf0g",
+          "class": "K2Node_CallParentFunction",
+          "title": "Parent: BeginPlay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "GWTS40aWiXWMYyOl1fHI_g"
+            }
+          ]
+        },
+        {
+          "id": "GWTS40aWiXWMYyOl1fHI_g",
+          "class": "K2Node_CallFunction",
+          "title": "Delay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "0FAz-0kEyfloZT2MdewRhA"
+            }
+          ]
+        },
+        {
+          "id": "0FAz-0kEyfloZT2MdewRhA",
+          "class": "K2Node_DynamicCast",
+          "title": "Cast To BP_EnemyAIController",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "Dq9z60l3d6j6K62KWcjG7A"
+            }
+          ]
+        },
+        {
+          "id": "Dq9z60l3d6j6K62KWcjG7A",
+          "class": "K2Node_CallFunction",
+          "title": "Print String",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "c5CWj0O6GnFF0ZWHUukkSQ"
+            }
+          ]
+        },
+        {
+          "id": "c5CWj0O6GnFF0ZWHUukkSQ",
+          "class": "K2Node_IfThenElse",
+          "title": "Branch",
+          "branches": [
+            {
+              "pin": "else",
+              "toId": "q6hCuEEcy9KhU6GgT_hTlA"
+            }
+          ]
+        },
+        {
+          "id": "q6hCuEEcy9KhU6GgT_hTlA",
+          "class": "K2Node_CallFunction",
+          "title": "Start Phase 1",
+          "branches": []
+        }
+      ],
+      "stepCount": 7
+    },
+    "Set LastGrabLocation": {
+      "success": true,
+      "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+      "graphName": "EventGraph",
+      "entryPoint": "Event BeginPlay",
+      "entryId": "NBcUFUYnmErfKi-MEX7B6Q",
+      "steps": [
+        {
+          "id": "NBcUFUYnmErfKi-MEX7B6Q",
+          "class": "K2Node_Event",
+          "title": "Event BeginPlay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "l8KDUU4ttni_vJGashLf0g"
+            }
+          ]
+        },
+        {
+          "id": "l8KDUU4ttni_vJGashLf0g",
+          "class": "K2Node_CallParentFunction",
+          "title": "Parent: BeginPlay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "GWTS40aWiXWMYyOl1fHI_g"
+            }
+          ]
+        },
+        {
+          "id": "GWTS40aWiXWMYyOl1fHI_g",
+          "class": "K2Node_CallFunction",
+          "title": "Delay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "0FAz-0kEyfloZT2MdewRhA"
+            }
+          ]
+        },
+        {
+          "id": "0FAz-0kEyfloZT2MdewRhA",
+          "class": "K2Node_DynamicCast",
+          "title": "Cast To BP_EnemyAIController",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "Dq9z60l3d6j6K62KWcjG7A"
+            }
+          ]
+        },
+        {
+          "id": "Dq9z60l3d6j6K62KWcjG7A",
+          "class": "K2Node_CallFunction",
+          "title": "Print String",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "c5CWj0O6GnFF0ZWHUukkSQ"
+            }
+          ]
+        },
+        {
+          "id": "c5CWj0O6GnFF0ZWHUukkSQ",
+          "class": "K2Node_IfThenElse",
+          "title": "Branch",
+          "branches": [
+            {
+              "pin": "else",
+              "toId": "q6hCuEEcy9KhU6GgT_hTlA"
+            }
+          ]
+        },
+        {
+          "id": "q6hCuEEcy9KhU6GgT_hTlA",
+          "class": "K2Node_CallFunction",
+          "title": "Start Phase 1",
+          "branches": []
+        }
+      ],
+      "stepCount": 7
+    },
+    "After Track Arrived\\nCustom Event": {
+      "success": true,
+      "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+      "graphName": "EventGraph",
+      "entryPoint": "Event BeginPlay",
+      "entryId": "NBcUFUYnmErfKi-MEX7B6Q",
+      "steps": [
+        {
+          "id": "NBcUFUYnmErfKi-MEX7B6Q",
+          "class": "K2Node_Event",
+          "title": "Event BeginPlay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "l8KDUU4ttni_vJGashLf0g"
+            }
+          ]
+        },
+        {
+          "id": "l8KDUU4ttni_vJGashLf0g",
+          "class": "K2Node_CallParentFunction",
+          "title": "Parent: BeginPlay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "GWTS40aWiXWMYyOl1fHI_g"
+            }
+          ]
+        },
+        {
+          "id": "GWTS40aWiXWMYyOl1fHI_g",
+          "class": "K2Node_CallFunction",
+          "title": "Delay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "0FAz-0kEyfloZT2MdewRhA"
+            }
+          ]
+        },
+        {
+          "id": "0FAz-0kEyfloZT2MdewRhA",
+          "class": "K2Node_DynamicCast",
+          "title": "Cast To BP_EnemyAIController",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "Dq9z60l3d6j6K62KWcjG7A"
+            }
+          ]
+        },
+        {
+          "id": "Dq9z60l3d6j6K62KWcjG7A",
+          "class": "K2Node_CallFunction",
+          "title": "Print String",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "c5CWj0O6GnFF0ZWHUukkSQ"
+            }
+          ]
+        },
+        {
+          "id": "c5CWj0O6GnFF0ZWHUukkSQ",
+          "class": "K2Node_IfThenElse",
+          "title": "Branch",
+          "branches": [
+            {
+              "pin": "else",
+              "toId": "q6hCuEEcy9KhU6GgT_hTlA"
+            }
+          ]
+        },
+        {
+          "id": "q6hCuEEcy9KhU6GgT_hTlA",
+          "class": "K2Node_CallFunction",
+          "title": "Start Phase 1",
+          "branches": []
+        }
+      ],
+      "stepCount": 7
+    },
+    "After Track Arrived\\nTarget is BP Enemy Spotter- Ins": {
+      "success": true,
+      "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+      "graphName": "EventGraph",
+      "entryPoint": "Event BeginPlay",
+      "entryId": "NBcUFUYnmErfKi-MEX7B6Q",
+      "steps": [
+        {
+          "id": "NBcUFUYnmErfKi-MEX7B6Q",
+          "class": "K2Node_Event",
+          "title": "Event BeginPlay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "l8KDUU4ttni_vJGashLf0g"
+            }
+          ]
+        },
+        {
+          "id": "l8KDUU4ttni_vJGashLf0g",
+          "class": "K2Node_CallParentFunction",
+          "title": "Parent: BeginPlay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "GWTS40aWiXWMYyOl1fHI_g"
+            }
+          ]
+        },
+        {
+          "id": "GWTS40aWiXWMYyOl1fHI_g",
+          "class": "K2Node_CallFunction",
+          "title": "Delay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "0FAz-0kEyfloZT2MdewRhA"
+            }
+          ]
+        },
+        {
+          "id": "0FAz-0kEyfloZT2MdewRhA",
+          "class": "K2Node_DynamicCast",
+          "title": "Cast To BP_EnemyAIController",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "Dq9z60l3d6j6K62KWcjG7A"
+            }
+          ]
+        },
+        {
+          "id": "Dq9z60l3d6j6K62KWcjG7A",
+          "class": "K2Node_CallFunction",
+          "title": "Print String",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "c5CWj0O6GnFF0ZWHUukkSQ"
+            }
+          ]
+        },
+        {
+          "id": "c5CWj0O6GnFF0ZWHUukkSQ",
+          "class": "K2Node_IfThenElse",
+          "title": "Branch",
+          "branches": [
+            {
+              "pin": "else",
+              "toId": "q6hCuEEcy9KhU6GgT_hTlA"
+            }
+          ]
+        },
+        {
+          "id": "q6hCuEEcy9KhU6GgT_hTlA",
+          "class": "K2Node_CallFunction",
+          "title": "Start Phase 1",
+          "branches": []
+        }
+      ],
+      "stepCount": 7
+    },
+    "Get GrabCount": {
+      "success": true,
+      "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+      "graphName": "EventGraph",
+      "entryPoint": "Event BeginPlay",
+      "entryId": "NBcUFUYnmErfKi-MEX7B6Q",
+      "steps": [
+        {
+          "id": "NBcUFUYnmErfKi-MEX7B6Q",
+          "class": "K2Node_Event",
+          "title": "Event BeginPlay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "l8KDUU4ttni_vJGashLf0g"
+            }
+          ]
+        },
+        {
+          "id": "l8KDUU4ttni_vJGashLf0g",
+          "class": "K2Node_CallParentFunction",
+          "title": "Parent: BeginPlay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "GWTS40aWiXWMYyOl1fHI_g"
+            }
+          ]
+        },
+        {
+          "id": "GWTS40aWiXWMYyOl1fHI_g",
+          "class": "K2Node_CallFunction",
+          "title": "Delay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "0FAz-0kEyfloZT2MdewRhA"
+            }
+          ]
+        },
+        {
+          "id": "0FAz-0kEyfloZT2MdewRhA",
+          "class": "K2Node_DynamicCast",
+          "title": "Cast To BP_EnemyAIController",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "Dq9z60l3d6j6K62KWcjG7A"
+            }
+          ]
+        },
+        {
+          "id": "Dq9z60l3d6j6K62KWcjG7A",
+          "class": "K2Node_CallFunction",
+          "title": "Print String",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "c5CWj0O6GnFF0ZWHUukkSQ"
+            }
+          ]
+        },
+        {
+          "id": "c5CWj0O6GnFF0ZWHUukkSQ",
+          "class": "K2Node_IfThenElse",
+          "title": "Branch",
+          "branches": [
+            {
+              "pin": "else",
+              "toId": "q6hCuEEcy9KhU6GgT_hTlA"
+            }
+          ]
+        },
+        {
+          "id": "q6hCuEEcy9KhU6GgT_hTlA",
+          "class": "K2Node_CallFunction",
+          "title": "Start Phase 1",
+          "branches": []
+        }
+      ],
+      "stepCount": 7
+    },
+    "After Track Arrived": {
+      "success": true,
+      "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+      "graphName": "EventGraph",
+      "entryPoint": "Event BeginPlay",
+      "entryId": "NBcUFUYnmErfKi-MEX7B6Q",
+      "steps": [
+        {
+          "id": "NBcUFUYnmErfKi-MEX7B6Q",
+          "class": "K2Node_Event",
+          "title": "Event BeginPlay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "l8KDUU4ttni_vJGashLf0g"
+            }
+          ]
+        },
+        {
+          "id": "l8KDUU4ttni_vJGashLf0g",
+          "class": "K2Node_CallParentFunction",
+          "title": "Parent: BeginPlay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "GWTS40aWiXWMYyOl1fHI_g"
+            }
+          ]
+        },
+        {
+          "id": "GWTS40aWiXWMYyOl1fHI_g",
+          "class": "K2Node_CallFunction",
+          "title": "Delay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "0FAz-0kEyfloZT2MdewRhA"
+            }
+          ]
+        },
+        {
+          "id": "0FAz-0kEyfloZT2MdewRhA",
+          "class": "K2Node_DynamicCast",
+          "title": "Cast To BP_EnemyAIController",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "Dq9z60l3d6j6K62KWcjG7A"
+            }
+          ]
+        },
+        {
+          "id": "Dq9z60l3d6j6K62KWcjG7A",
+          "class": "K2Node_CallFunction",
+          "title": "Print String",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "c5CWj0O6GnFF0ZWHUukkSQ"
+            }
+          ]
+        },
+        {
+          "id": "c5CWj0O6GnFF0ZWHUukkSQ",
+          "class": "K2Node_IfThenElse",
+          "title": "Branch",
+          "branches": [
+            {
+              "pin": "else",
+              "toId": "q6hCuEEcy9KhU6GgT_hTlA"
+            }
+          ]
+        },
+        {
+          "id": "q6hCuEEcy9KhU6GgT_hTlA",
+          "class": "K2Node_CallFunction",
+          "title": "Start Phase 1",
+          "branches": []
+        }
+      ],
+      "stepCount": 7
+    },
+    "Enter Phase 2 Track Loop": {
+      "success": true,
+      "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+      "graphName": "EventGraph",
+      "entryPoint": "Event BeginPlay",
+      "entryId": "NBcUFUYnmErfKi-MEX7B6Q",
+      "steps": [
+        {
+          "id": "NBcUFUYnmErfKi-MEX7B6Q",
+          "class": "K2Node_Event",
+          "title": "Event BeginPlay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "l8KDUU4ttni_vJGashLf0g"
+            }
+          ]
+        },
+        {
+          "id": "l8KDUU4ttni_vJGashLf0g",
+          "class": "K2Node_CallParentFunction",
+          "title": "Parent: BeginPlay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "GWTS40aWiXWMYyOl1fHI_g"
+            }
+          ]
+        },
+        {
+          "id": "GWTS40aWiXWMYyOl1fHI_g",
+          "class": "K2Node_CallFunction",
+          "title": "Delay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "0FAz-0kEyfloZT2MdewRhA"
+            }
+          ]
+        },
+        {
+          "id": "0FAz-0kEyfloZT2MdewRhA",
+          "class": "K2Node_DynamicCast",
+          "title": "Cast To BP_EnemyAIController",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "Dq9z60l3d6j6K62KWcjG7A"
+            }
+          ]
+        },
+        {
+          "id": "Dq9z60l3d6j6K62KWcjG7A",
+          "class": "K2Node_CallFunction",
+          "title": "Print String",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "c5CWj0O6GnFF0ZWHUukkSQ"
+            }
+          ]
+        },
+        {
+          "id": "c5CWj0O6GnFF0ZWHUukkSQ",
+          "class": "K2Node_IfThenElse",
+          "title": "Branch",
+          "branches": [
+            {
+              "pin": "else",
+              "toId": "q6hCuEEcy9KhU6GgT_hTlA"
+            }
+          ]
+        },
+        {
+          "id": "q6hCuEEcy9KhU6GgT_hTlA",
+          "class": "K2Node_CallFunction",
+          "title": "Start Phase 1",
+          "branches": []
+        }
+      ],
+      "stepCount": 7
+    },
+    "Start Phase 2 Track Loop": {
+      "success": true,
+      "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+      "graphName": "EventGraph",
+      "entryPoint": "Event BeginPlay",
+      "entryId": "NBcUFUYnmErfKi-MEX7B6Q",
+      "steps": [
+        {
+          "id": "NBcUFUYnmErfKi-MEX7B6Q",
+          "class": "K2Node_Event",
+          "title": "Event BeginPlay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "l8KDUU4ttni_vJGashLf0g"
+            }
+          ]
+        },
+        {
+          "id": "l8KDUU4ttni_vJGashLf0g",
+          "class": "K2Node_CallParentFunction",
+          "title": "Parent: BeginPlay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "GWTS40aWiXWMYyOl1fHI_g"
+            }
+          ]
+        },
+        {
+          "id": "GWTS40aWiXWMYyOl1fHI_g",
+          "class": "K2Node_CallFunction",
+          "title": "Delay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "0FAz-0kEyfloZT2MdewRhA"
+            }
+          ]
+        },
+        {
+          "id": "0FAz-0kEyfloZT2MdewRhA",
+          "class": "K2Node_DynamicCast",
+          "title": "Cast To BP_EnemyAIController",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "Dq9z60l3d6j6K62KWcjG7A"
+            }
+          ]
+        },
+        {
+          "id": "Dq9z60l3d6j6K62KWcjG7A",
+          "class": "K2Node_CallFunction",
+          "title": "Print String",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "c5CWj0O6GnFF0ZWHUukkSQ"
+            }
+          ]
+        },
+        {
+          "id": "c5CWj0O6GnFF0ZWHUukkSQ",
+          "class": "K2Node_IfThenElse",
+          "title": "Branch",
+          "branches": [
+            {
+              "pin": "else",
+              "toId": "q6hCuEEcy9KhU6GgT_hTlA"
+            }
+          ]
+        },
+        {
+          "id": "q6hCuEEcy9KhU6GgT_hTlA",
+          "class": "K2Node_CallFunction",
+          "title": "Start Phase 1",
+          "branches": []
+        }
+      ],
+      "stepCount": 7
+    },
+    "Start Follow": {
+      "success": true,
+      "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+      "graphName": "EventGraph",
+      "entryPoint": "Event BeginPlay",
+      "entryId": "NBcUFUYnmErfKi-MEX7B6Q",
+      "steps": [
+        {
+          "id": "NBcUFUYnmErfKi-MEX7B6Q",
+          "class": "K2Node_Event",
+          "title": "Event BeginPlay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "l8KDUU4ttni_vJGashLf0g"
+            }
+          ]
+        },
+        {
+          "id": "l8KDUU4ttni_vJGashLf0g",
+          "class": "K2Node_CallParentFunction",
+          "title": "Parent: BeginPlay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "GWTS40aWiXWMYyOl1fHI_g"
+            }
+          ]
+        },
+        {
+          "id": "GWTS40aWiXWMYyOl1fHI_g",
+          "class": "K2Node_CallFunction",
+          "title": "Delay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "0FAz-0kEyfloZT2MdewRhA"
+            }
+          ]
+        },
+        {
+          "id": "0FAz-0kEyfloZT2MdewRhA",
+          "class": "K2Node_DynamicCast",
+          "title": "Cast To BP_EnemyAIController",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "Dq9z60l3d6j6K62KWcjG7A"
+            }
+          ]
+        },
+        {
+          "id": "Dq9z60l3d6j6K62KWcjG7A",
+          "class": "K2Node_CallFunction",
+          "title": "Print String",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "c5CWj0O6GnFF0ZWHUukkSQ"
+            }
+          ]
+        },
+        {
+          "id": "c5CWj0O6GnFF0ZWHUukkSQ",
+          "class": "K2Node_IfThenElse",
+          "title": "Branch",
+          "branches": [
+            {
+              "pin": "else",
+              "toId": "q6hCuEEcy9KhU6GgT_hTlA"
+            }
+          ]
+        },
+        {
+          "id": "q6hCuEEcy9KhU6GgT_hTlA",
+          "class": "K2Node_CallFunction",
+          "title": "Start Phase 1",
+          "branches": []
+        }
+      ],
+      "stepCount": 7
+    },
+    "Enter Phase 2": {
+      "success": true,
+      "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+      "graphName": "EventGraph",
+      "entryPoint": "Event BeginPlay",
+      "entryId": "NBcUFUYnmErfKi-MEX7B6Q",
+      "steps": [
+        {
+          "id": "NBcUFUYnmErfKi-MEX7B6Q",
+          "class": "K2Node_Event",
+          "title": "Event BeginPlay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "l8KDUU4ttni_vJGashLf0g"
+            }
+          ]
+        },
+        {
+          "id": "l8KDUU4ttni_vJGashLf0g",
+          "class": "K2Node_CallParentFunction",
+          "title": "Parent: BeginPlay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "GWTS40aWiXWMYyOl1fHI_g"
+            }
+          ]
+        },
+        {
+          "id": "GWTS40aWiXWMYyOl1fHI_g",
+          "class": "K2Node_CallFunction",
+          "title": "Delay",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "0FAz-0kEyfloZT2MdewRhA"
+            }
+          ]
+        },
+        {
+          "id": "0FAz-0kEyfloZT2MdewRhA",
+          "class": "K2Node_DynamicCast",
+          "title": "Cast To BP_EnemyAIController",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "Dq9z60l3d6j6K62KWcjG7A"
+            }
+          ]
+        },
+        {
+          "id": "Dq9z60l3d6j6K62KWcjG7A",
+          "class": "K2Node_CallFunction",
+          "title": "Print String",
+          "branches": [
+            {
+              "pin": "then",
+              "toId": "c5CWj0O6GnFF0ZWHUukkSQ"
+            }
+          ]
+        },
+        {
+          "id": "c5CWj0O6GnFF0ZWHUukkSQ",
+          "class": "K2Node_IfThenElse",
+          "title": "Branch",
+          "branches": [
+            {
+              "pin": "else",
+              "toId": "q6hCuEEcy9KhU6GgT_hTlA"
+            }
+          ]
+        },
+        {
+          "id": "q6hCuEEcy9KhU6GgT_hTlA",
+          "class": "K2Node_CallFunction",
+          "title": "Start Phase 1",
+          "branches": []
+        }
+      ],
+      "stepCount": 7
+    }
+  },
+  "keys": [
+    "success",
+    "path",
+    "graphName",
+    "nodes",
+    "nodeCount"
+  ]
+}

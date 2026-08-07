@@ -1,0 +1,221 @@
+{
+  "flow": {
+    "success": true,
+    "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+    "graphName": "EventGraph",
+    "entryPoint": "Event BeginPlay",
+    "entryId": "NBcUFUYnmErfKi-MEX7B6Q",
+    "steps": [
+      {
+        "id": "NBcUFUYnmErfKi-MEX7B6Q",
+        "class": "K2Node_Event",
+        "title": "Event BeginPlay",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "l8KDUU4ttni_vJGashLf0g"
+          }
+        ]
+      },
+      {
+        "id": "l8KDUU4ttni_vJGashLf0g",
+        "class": "K2Node_CallParentFunction",
+        "title": "Parent: BeginPlay",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "GWTS40aWiXWMYyOl1fHI_g"
+          }
+        ]
+      },
+      {
+        "id": "GWTS40aWiXWMYyOl1fHI_g",
+        "class": "K2Node_CallFunction",
+        "title": "Delay",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "0FAz-0kEyfloZT2MdewRhA"
+          }
+        ]
+      },
+      {
+        "id": "0FAz-0kEyfloZT2MdewRhA",
+        "class": "K2Node_DynamicCast",
+        "title": "Cast To BP_EnemyAIController",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "Dq9z60l3d6j6K62KWcjG7A"
+          }
+        ]
+      },
+      {
+        "id": "Dq9z60l3d6j6K62KWcjG7A",
+        "class": "K2Node_CallFunction",
+        "title": "Print String",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "c5CWj0O6GnFF0ZWHUukkSQ"
+          }
+        ]
+      },
+      {
+        "id": "c5CWj0O6GnFF0ZWHUukkSQ",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "else",
+            "toId": "q6hCuEEcy9KhU6GgT_hTlA"
+          }
+        ]
+      },
+      {
+        "id": "q6hCuEEcy9KhU6GgT_hTlA",
+        "class": "K2Node_CallFunction",
+        "title": "Start Phase 1",
+        "branches": []
+      }
+    ],
+    "stepCount": 7
+  },
+  "vars": {
+    "success": true,
+    "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+    "variables": [
+      {
+        "name": "Follow Target",
+        "type": "object",
+        "guid": "EAA9F8184669A3700E11099738D0ED50",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "IsFollowing",
+        "type": "bool",
+        "guid": "4E6786E84FDE5F2CD74F239D10C871EF",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Hunter Ref",
+        "type": "object",
+        "guid": "BE94DE3F4C2F077ADA34AD8FFC3BE43A",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Point A",
+        "type": "object",
+        "guid": "600F96ED47B34DFEEDC66396E04397AD",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Point B",
+        "type": "object",
+        "guid": "9D38D190484FD69F572146A90C3EF08C",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Point C",
+        "type": "object",
+        "guid": "CBCF10F44480C1FE4370E8A7109F8930",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Phase 2",
+        "type": "bool",
+        "guid": "436111C94A11F039BFEBC9B4ADFB008B",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Phase1TimerHandle",
+        "type": "struct",
+        "guid": "03DE66F045B8C698D38E7AA9CFBE25E5",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "ScanWaitTime",
+        "type": "real",
+        "guid": "CB5C3E65498874BE291001AB780A84E1",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "HalfwayTurnChance",
+        "type": "real",
+        "guid": "B5763D54408F3EF3504696A474E8F2C3",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "TrackInterval",
+        "type": "real",
+        "guid": "498924134AF3D7B5E1982DA28662788D",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "GrabCount",
+        "type": "int",
+        "guid": "11CE530244EBB05823D41EBE34AA5FD8",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "MaxGrabChain",
+        "type": "int",
+        "guid": "F0BB3FD34118C10CC99D3E95B8E456AC",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "LastGrabLocation",
+        "type": "struct",
+        "guid": "7DC8EE184FD51B4353182287F021B788",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Phase2TimerHandle",
+        "type": "struct",
+        "guid": "C87CE1DA4865349AE5904BA6E8989802",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Phase2PausedForFollow",
+        "type": "bool",
+        "guid": "6F5E3E5F49925C289B0F9C815E3DE311",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "HalfWayTurn",
+        "type": "bool",
+        "guid": "1221A4AC46DC3377EC062B99713C7AC4",
+        "instanceEditable": true,
+        "exposeOnSpawn": false
+      }
+    ],
+    "count": 17
+  },
+  "funcs": {
+    "success": true,
+    "path": "/Game/BluePrint/Enemy/BP_EnemySpotter-Ins",
+    "functions": [
+      {
+        "name": "UserConstructionScript",
+        "nodeCount": 2
+      }
+    ],
+    "count": 1
+  }
+}
