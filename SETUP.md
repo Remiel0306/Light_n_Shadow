@@ -1,6 +1,6 @@
 # Light_and_Shadow — 同學第一次 Clone 教學
 
-**請用 branch `7`，不要用 `main`。** `main` 是舊版。
+**請用 branch `9`，不要用 `main`。** `main` 是舊版；`7` 也是舊進度。
 
 ---
 
@@ -13,15 +13,15 @@
 
 ---
 
-## 步驟 1：Clone 並切到 branch 7
+## 步驟 1：Clone 並切到 branch 9
 
 ```bat
 git clone https://github.com/Remiel0306/Light_n_Shadow.git
 cd Light_n_Shadow
-git checkout 7
+git checkout 9
 ```
 
-Git Extensions 使用者：Fetch 後在 `remotes/origin/7` 右鍵 **Checkout**。
+Git Extensions 使用者：Fetch 後在 `remotes/origin/9` 右鍵 **Checkout**。
 
 ---
 
@@ -89,9 +89,9 @@ Content Browser 搜尋 **`BP_ThirdPersonCharacter`** 應能找到。
 |------|------|
 | `target does not exist` | 先跑 `Setup_FirstTime.bat` |
 | `MCP_Bridge different version` | 不要刪插件；確認 `.uproject` 裡 MCP 是 `"Enabled": false`，重跑 bat |
-| branch 只有 main | `git fetch` → `git checkout 7` |
+| branch 只有 main | `git fetch` → `git checkout 9` |
 | 關卡全黑 | Viewport 按 `L`（Lit）；等 Shader 編完 |
-| Player 資料夾 BP 只有 3KB | `git checkout 7` + `git pull`，沒拉完整 |
+| Player 資料夾 BP 只有 3KB | `git checkout 9` + `git pull`，沒拉完整 |
 
 ---
 
@@ -103,8 +103,8 @@ Content Browser 搜尋 **`BP_ThirdPersonCharacter`** 應能找到。
 
 ## 維護者（Remiel）Push 前檢查
 
-- [ ] 在 branch **7** 上
+- [ ] 在 branch **9** 上
 - [ ] `Setup_FirstTime.bat`、`Fix_ContentBrowser.bat`、`Launch_UE_Safe.bat`、`SETUP.md` 已 commit
 - [ ] `Light_and_Shadow.uproject` 裡 MCP `"Enabled": false`
 - [ ] 不要 commit `Binaries/`、`Intermediate/`、`Saved/`
-- [ ] 通知同學：**clone 後 checkout 7 → 跑 bat → 再開 UE**
+- [ ] 通知同學：**clone 後 checkout 9 → 跑 bat → 再開 UE**
