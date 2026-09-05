@@ -1,0 +1,76 @@
+{
+  "setp": {
+    "success": true,
+    "editor": "Light_and_Shadow",
+    "projectName": "Light_and_Shadow",
+    "contentDir": "D:\\Unreal Engine\\Light_n_Shadow\\Content",
+    "engineAssociation": "5.7",
+    "editorConnected": false,
+    "editorTarget": {
+      "projectPath": "D:\\Unreal Engine\\Light_n_Shadow\\Light_and_Shadow.uproject",
+      "port": 53642,
+      "portSource": "derived"
+    },
+    "editorUnreachable": "Failed to connect to editor bridge at ws://127.0.0.1:53642: connect ECONNREFUSED 127.0.0.1:53642",
+    "bridgeSetup": "Bridge already configured"
+  },
+  "status": {
+    "engine": {
+      "phase": "editor exited",
+      "blocked": false,
+      "secondsSinceLogWrite": 394.93205029296877,
+      "lastLogLine": "[2026.09.05-17.11.03:138][806]Log file closed, 09/06/26 01:11:03",
+      "recentErrors": [
+        "[2026.09.05-15.28.53:843][853]MapCheck: Error: Actor /Game/ThirdPerson/Lvl_ThirdPerson.BP_EnemySpotter-Ins2 references an actor in a different set of runtime data layers /Game/ThirdPerson/Lvl_ThirdPerson.BP_EnemyHunter-Ins2 ",
+        "[2026.09.05-15.28.53:843][853]MapCheck: Error: Actor /Game/ThirdPerson/Lvl_ThirdPerson.BP_EnemySpotter-Ins2 references an actor in a different set of runtime data layers /Game/ThirdPerson/Lvl_ThirdPerson.TP_Spotter_A2 ",
+        "[2026.09.05-15.28.53:843][853]MapCheck: Error: Actor /Game/ThirdPerson/Lvl_ThirdPerson.BP_EnemySpotter-Ins2 references an actor in a different set of runtime data layers /Game/ThirdPerson/Lvl_ThirdPerson.TP_Spotter_B2 ",
+        "[2026.09.05-15.28.53:843][853]MapCheck: Error: Actor /Game/ThirdPerson/Lvl_ThirdPerson.BP_EnemySpotter-Ins2 references an actor in a different set of runtime data layers /Game/ThirdPerson/Lvl_ThirdPerson.TP_Spotter_C2 ",
+        "[2026.09.05-15.48.33:250][397]MapCheck: Error: Actor /Game/ThirdPerson/Lvl_ThirdPerson.BP_EnemySpotter-Ins2 references an actor in a different set of runtime data layers /Game/ThirdPerson/Lvl_ThirdPerson.TP_Spotter_A2 "
+      ],
+      "hint": "editor(action='get_engine_state') runs the full out-of-process probe (process table, native dialogs)."
+    },
+    "pluginBuildStale": false,
+    "mode": "disconnected",
+    "editorConnected": false,
+    "editorTarget": {
+      "projectPath": "D:\\Unreal Engine\\Light_n_Shadow\\Light_and_Shadow.uproject",
+      "port": 53642,
+      "portSource": "derived"
+    },
+    "project": {
+      "name": "Light_and_Shadow",
+      "path": "D:\\Unreal Engine\\Light_n_Shadow\\Light_and_Shadow.uproject",
+      "contentDir": "D:\\Unreal Engine\\Light_n_Shadow\\Content",
+      "engineAssociation": "5.7",
+      "config": {
+        "contentRoots": [
+          "/Game/"
+        ],
+        "version": 1
+      }
+    },
+    "bridgeApiVersion": 1,
+    "flows": [
+      {
+        "name": "niagara_fire",
+        "description": "Build a fire Niagara system from scratch (spawn rate, upward velocity, HDR orange colour) and verify it emits. A 0-to-1 best-practice starting point, not a demo. Lands at /Game/VFX/Fire/NS_Fire; override name/packagePath via params."
+      },
+      {
+        "name": "beacon",
+        "description": "Demo - build a shrine scene from scratch: floor, pedestal, orb, five pillars, four materials (dark stone, brushed metal, warm stone, parameterized emissive), colored lights, and atmosphere"
+      },
+      {
+        "name": "texture_bomb",
+        "description": "Build a reusable MF_TextureBomb MaterialFunction (#491). Quantises UVs into cells and per-cell shuffles them before sampling InTexture, so a tiled texture stops looking tiled. Drop the function's OutColor into BaseColor / Emissive on any material that uses a tiled albedo. CellDensity input controls the cell frequency. Lives at /Game/Materials/Functions/MF_TextureBomb."
+      },
+      {
+        "name": "neon_shrine",
+        "description": "Build the full Neon Shrine demo scene end-to-end (19 steps). Driven by the demo.step handler shipped with the bridge plugin. Leaves the editor on /Game/Demo/DemoLevel; run neon_shrine_cleanup to wipe it."
+      },
+      {
+        "name": "neon_shrine_cleanup",
+        "description": "Wipe the Neon Shrine demo content. Switches the editor to /Game/MCP_Home first so you don't get stranded on Untitled."
+      }
+    ]
+  }
+}

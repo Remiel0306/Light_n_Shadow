@@ -16,6 +16,7 @@ private:
 	static TSharedPtr<FJsonValue> ReadPCGGraph(const TSharedPtr<FJsonObject>& Params);
 	static TSharedPtr<FJsonValue> AddPCGNode(const TSharedPtr<FJsonObject>& Params);
 	static TSharedPtr<FJsonValue> ConnectPCGNodes(const TSharedPtr<FJsonObject>& Params);
+	static TSharedPtr<FJsonValue> DisconnectPCGNodes(const TSharedPtr<FJsonObject>& Params);
 	static TSharedPtr<FJsonValue> RemovePCGNode(const TSharedPtr<FJsonObject>& Params);
 	static TSharedPtr<FJsonValue> SetPCGNodeSettings(const TSharedPtr<FJsonObject>& Params);
 	static TSharedPtr<FJsonValue> ExecutePCGGraph(const TSharedPtr<FJsonObject>& Params);
@@ -23,11 +24,15 @@ private:
 	static TSharedPtr<FJsonValue> ReadPCGNodeSettings(const TSharedPtr<FJsonObject>& Params);
 	static TSharedPtr<FJsonValue> GetPCGComponentDetails(const TSharedPtr<FJsonObject>& Params);
 
-	// v0.7.18 issue #145 — populate MeshEntries on a PCGStaticMeshSpawner node
+	// v0.7.18 issue #145 - populate MeshEntries on a PCGStaticMeshSpawner node
 	static TSharedPtr<FJsonValue> SetStaticMeshSpawnerMeshes(const TSharedPtr<FJsonObject>& Params);
 
-	// v0.7.19 issue #146 — PCG component (re)generation and cleanup
+	// v0.7.19 issue #146 - PCG component (re)generation and cleanup
 	static TSharedPtr<FJsonValue> ForceRegeneratePCG(const TSharedPtr<FJsonObject>& Params);
 	static TSharedPtr<FJsonValue> CleanupPCG(const TSharedPtr<FJsonObject>& Params);
 	static TSharedPtr<FJsonValue> ToggleGraphPCG(const TSharedPtr<FJsonObject>& Params);
+
+	// issue #213 - bulk graph authoring via JSON spec.
+	static TSharedPtr<FJsonValue> ImportGraph(const TSharedPtr<FJsonObject>& Params);
+	static TSharedPtr<FJsonValue> ExportGraph(const TSharedPtr<FJsonObject>& Params);
 };

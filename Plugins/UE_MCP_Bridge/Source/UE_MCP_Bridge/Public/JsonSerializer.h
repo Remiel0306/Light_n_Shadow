@@ -5,7 +5,7 @@
 #include "Dom/JsonObject.h"
 #include "UObject/UnrealType.h"
 
-class FMCPJsonSerializer
+class UE_MCP_BRIDGE_API FMCPJsonSerializer
 {
 public:
 	// Serialize UE type to JSON value
@@ -38,7 +38,7 @@ public:
 
 	// Deserialize a JSON value into a UE property (recursive; handles TArray,
 	// nested structs, UObject refs, soft refs, FGameplayTag, etc.).
-	// Delegates to MCPJsonProperty::SetJsonOnProperty — see HandlerJsonProperty.h.
+	// Delegates to MCPJsonProperty::SetJsonOnProperty - see HandlerJsonProperty.h.
 	static bool DeserializeValue(FProperty* Property, void* ValueAddr, const TSharedPtr<FJsonValue>& JsonValue, FString& OutError);
 
 private:

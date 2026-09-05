@@ -1,0 +1,4 @@
+﻿[2026.09.05-17.10.49:299][706]LogStreaming: Warning: Failed to read file '../../../../Unreal Engine/Light_n_Shadow/Plugins/UE_MCP_Bridge/Resources/Icon128.png' error.
+[2026.09.05-17.10.49:299][706]LogSlate: Could not load file for Slate resource: [../../../../Unreal Engine/Light_n_Shadow/Plugins/UE_MCP_Bridge/Resources/Icon128.png] file: [../../../../Unreal Engine/Light_n_Shadow/Plugins/UE_MCP_Bridge/Resources/Icon128.png]
+2026/9/6 上午 01:11:03
+UE_PID=5040

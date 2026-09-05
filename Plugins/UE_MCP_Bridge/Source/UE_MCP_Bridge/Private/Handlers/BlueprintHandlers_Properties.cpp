@@ -8,6 +8,8 @@
 #include "HandlerRegistry.h"
 #include "HandlerUtils.h"
 #include "HandlerJsonProperty.h"
+#include "HandlerPropertyText.h"
+#include "JsonSerializer.h"
 #include "Kismet2/BlueprintEditorUtils.h"
 #include "Kismet2/KismetEditorUtilities.h"
 #include "BlueprintEditorLibrary.h"
@@ -29,6 +31,13 @@
 #include "Components/PrimitiveComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "Components/MeshComponent.h"
+#include "Materials/MaterialInterface.h"
+#include "Engine/TimelineTemplate.h"
+#include "Curves/CurveFloat.h"
+#include "Curves/CurveVector.h"
+#include "Curves/CurveLinearColor.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/Actor.h"
 #include "Engine/StaticMesh.h"
 #include "Engine/SkeletalMesh.h"
@@ -49,7 +58,7 @@ TSharedPtr<FJsonValue> FBlueprintHandlers::SetVariableProperties(const TSharedPt
 	UBlueprint* Blueprint = LoadBlueprint(AssetPath);
 	if (!Blueprint)
 	{
-		return MCPError(FString::Printf(TEXT("Blueprint not found: %s"), *AssetPath));
+		return BlueprintNotFoundError(AssetPath);
 	}
 
 	// Find the variable
@@ -69,7 +78,15 @@ TSharedPtr<FJsonValue> FBlueprintHandlers::SetVariableProperties(const TSharedPt
 	}
 
 	// Capture previous values for rollback
-	const bool bPrevInstanceEditable = (FoundVar->PropertyFlags & CPF_Edit) != 0;
+	// Must match list_variables' definition (#744): CPF_Edit alone is also set
+	// by EditDefaultsOnly, so the distinguishing flag is CPF_DisableEditOnInstance.
+	// MD_Private is a Blueprint-GRAPH access flag - it hides the variable from
+	// other Blueprints' graphs, not from a placed instance's details panel - so
+	// it is deliberately NOT folded in here. Doing so made the no-op check
+	// report "already not instance editable" for a variable that still was.
+	const bool bPrevInstanceEditable =
+		(FoundVar->PropertyFlags & CPF_Edit) != 0 &&
+		(FoundVar->PropertyFlags & CPF_DisableEditOnInstance) == 0;
 	FString PrevCategory;
 	if (FoundVar->HasMetaData(FBlueprintMetadata::MD_FunctionCategory))
 	{
@@ -81,10 +98,92 @@ TSharedPtr<FJsonValue> FBlueprintHandlers::SetVariableProperties(const TSharedPt
 		PrevTooltip = FoundVar->GetMetaData(FBlueprintMetadata::MD_Tooltip);
 	}
 
-	// Set expose on spawn
+	// Read every request and capture every previous value FIRST. Nothing below
+	// this point writes until the no-op check has run.
 	bool bExposeOnSpawn = false;
 	const bool bHasExposeOnSpawn = Params->TryGetBoolField(TEXT("exposeOnSpawn"), bExposeOnSpawn);
-	const bool bPrevExposeOnSpawn = FoundVar->HasMetaData(FBlueprintMetadata::MD_ExposeOnSpawn);
+	// Compare the effective state, not merely the presence of the metadata key:
+	// the key can exist with value "false", or exist while CPF_ExposeOnSpawn is
+	// clear, and treating that as "already true" hid a real change.
+	const bool bPrevExposeOnSpawn =
+		(FoundVar->PropertyFlags & CPF_ExposeOnSpawn) != 0 ||
+		(FoundVar->HasMetaData(FBlueprintMetadata::MD_ExposeOnSpawn) &&
+		 FoundVar->GetMetaData(FBlueprintMetadata::MD_ExposeOnSpawn).ToBool());
+
+	bool bInstanceEditable = false;
+	const bool bHasInstanceEditable = Params->TryGetBoolField(TEXT("instanceEditable"), bInstanceEditable);
+	const bool bWasEditableAtAll = (FoundVar->PropertyFlags & CPF_Edit) != 0;
+	// Read the VALUE, not just presence - the engine's own readers use it, so a
+	// key present with "false" is NOT private. GetMetaData asserts outright
+	// when the key is absent (FBPVariableDescription::GetMetaData ->
+	// check(EntryIndex != INDEX_NONE)), so it must stay behind HasMetaData.
+	const bool bWasPrivate =
+		FoundVar->HasMetaData(FBlueprintMetadata::MD_Private) &&
+		FoundVar->GetMetaData(FBlueprintMetadata::MD_Private).ToBool();
+
+	// `instanceEditable` is a boolean over a three-state setting, so it cannot
+	// express (and therefore cannot restore) every state a variable can be in:
+	// a variable that was EditAnywhere AND private, or one that was not exposed
+	// at all, both round-trip wrong. `editFlag` mirrors exactly what
+	// list_variables reports, which makes read -> write -> read closed, and
+	// makes the rollback below able to name the state it is restoring.
+	const FString PrevEditFlag =
+		!bWasEditableAtAll                                            ? TEXT("none") :
+		(FoundVar->PropertyFlags & CPF_DisableEditOnInstance) != 0    ? TEXT("EditDefaultsOnly") :
+		(FoundVar->PropertyFlags & CPF_DisableEditOnTemplate) != 0    ? TEXT("EditInstanceOnly") :
+		                                                                TEXT("EditAnywhere");
+	// MD_Private is orthogonal to the edit flags - the Blueprint editor's
+	// "Private" checkbox does not clear EditAnywhere - so it is its own param
+	// rather than a fifth enum value. Folding it in would lose a bit, which is
+	// exactly what made the old rollback unable to restore the original state.
+	bool bPrivate = false;
+	const bool bHasPrivate = Params->TryGetBoolField(TEXT("private"), bPrivate);
+	FString EditFlag = OptionalString(Params, TEXT("editFlag"));
+	if (!EditFlag.IsEmpty())
+	{
+		const FString L = EditFlag.ToLower();
+		if      (L == TEXT("editanywhere"))      EditFlag = TEXT("EditAnywhere");
+		else if (L == TEXT("editdefaultsonly"))  EditFlag = TEXT("EditDefaultsOnly");
+		else if (L == TEXT("editinstanceonly"))  EditFlag = TEXT("EditInstanceOnly");
+		else if (L == TEXT("none"))              EditFlag = TEXT("none");
+		else
+		{
+			return MCPError(FString::Printf(
+				TEXT("Unknown editFlag '%s'. Expected EditAnywhere, EditDefaultsOnly, EditInstanceOnly or none (the values list_variables reports)."),
+				*EditFlag));
+		}
+	}
+	const bool bHasEditFlag = !EditFlag.IsEmpty();
+	if (bHasEditFlag && bHasInstanceEditable)
+	{
+		return MCPError(TEXT("Pass editFlag or instanceEditable, not both - instanceEditable is the two-state shorthand for editFlag."));
+	}
+
+	FString CategoryStr;
+	const bool bHasCategory = Params->TryGetStringField(TEXT("category"), CategoryStr);
+	FString TooltipStr;
+	const bool bHasTooltip = Params->TryGetStringField(TEXT("tooltip"), TooltipStr);
+
+	// Detect no-op BEFORE writing anything. Previously every branch above had
+	// already mutated PropertyFlags by the time this ran, so a "nothing
+	// changed" return still left the in-memory Blueprint altered and never
+	// compiled or saved - divergence from disk with no record of it.
+	const bool bAnyChanged =
+		(bHasExposeOnSpawn && bExposeOnSpawn != bPrevExposeOnSpawn) ||
+		(bHasInstanceEditable && bInstanceEditable != bPrevInstanceEditable) ||
+		(bHasEditFlag && EditFlag != PrevEditFlag) ||
+		(bHasPrivate && bPrivate != bWasPrivate) ||
+		(bHasCategory && CategoryStr != PrevCategory) ||
+		(bHasTooltip && TooltipStr != PrevTooltip);
+	if (!bAnyChanged)
+	{
+		auto Noop = MCPSuccess();
+		MCPSetExisted(Noop);
+		Noop->SetStringField(TEXT("path"), AssetPath);
+		Noop->SetStringField(TEXT("name"), VarName);
+		return MCPResult(Noop);
+	}
+
 	if (bHasExposeOnSpawn)
 	{
 		if (bExposeOnSpawn)
@@ -98,52 +197,66 @@ TSharedPtr<FJsonValue> FBlueprintHandlers::SetVariableProperties(const TSharedPt
 			FoundVar->PropertyFlags &= ~CPF_ExposeOnSpawn;
 		}
 	}
-
-	// Set instance editable
-	bool bInstanceEditable = false;
-	const bool bHasInstanceEditable = Params->TryGetBoolField(TEXT("instanceEditable"), bInstanceEditable);
-	if (bHasInstanceEditable)
-	{
-		if (bInstanceEditable)
-		{
-			FoundVar->PropertyFlags |= CPF_Edit;
-			FoundVar->RemoveMetaData(FBlueprintMetadata::MD_Private);
-		}
-		else
-		{
-			FoundVar->PropertyFlags &= ~CPF_Edit;
-		}
-	}
-
-	// Set category
-	FString CategoryStr;
-	const bool bHasCategory = Params->TryGetStringField(TEXT("category"), CategoryStr);
 	if (bHasCategory)
 	{
 		FoundVar->SetMetaData(FBlueprintMetadata::MD_FunctionCategory, *CategoryStr);
 	}
-
-	// Set tooltip
-	FString TooltipStr;
-	const bool bHasTooltip = Params->TryGetStringField(TEXT("tooltip"), TooltipStr);
 	if (bHasTooltip)
 	{
 		FoundVar->SetMetaData(FBlueprintMetadata::MD_Tooltip, *TooltipStr);
 	}
-
-	// Detect no-op: nothing requested OR every requested field already matches
-	const bool bAnyChanged =
-		(bHasExposeOnSpawn && bExposeOnSpawn != bPrevExposeOnSpawn) ||
-		(bHasInstanceEditable && bInstanceEditable != bPrevInstanceEditable) ||
-		(bHasCategory && CategoryStr != PrevCategory) ||
-		(bHasTooltip && TooltipStr != PrevTooltip);
-	if (!bAnyChanged)
+	if (bHasEditFlag)
 	{
-		auto Noop = MCPSuccess();
-		MCPSetExisted(Noop);
-		Noop->SetStringField(TEXT("path"), AssetPath);
-		Noop->SetStringField(TEXT("name"), VarName);
-		return MCPResult(Noop);
+		// Write the flag trio directly. Every state is reachable from every
+		// other, which is what makes the rollback exact. MD_Private is left
+		// alone - it is the `private` param's business, not this one's.
+		FoundVar->PropertyFlags &= ~(CPF_Edit | CPF_DisableEditOnInstance | CPF_DisableEditOnTemplate);
+		if (EditFlag == TEXT("EditAnywhere"))
+		{
+			FoundVar->PropertyFlags |= CPF_Edit;
+		}
+		else if (EditFlag == TEXT("EditDefaultsOnly"))
+		{
+			FoundVar->PropertyFlags |= CPF_Edit | CPF_DisableEditOnInstance;
+		}
+		else if (EditFlag == TEXT("EditInstanceOnly"))
+		{
+			FoundVar->PropertyFlags |= CPF_Edit | CPF_DisableEditOnTemplate;
+		}
+		// "none" leaves every edit flag clear: the variable is not exposed on
+		// the details panel at all.
+	}
+	// instanceEditable runs BEFORE private, and no longer touches MD_Private at
+	// all: it used to clear it as a side effect, so (instanceEditable=true,
+	// private=true) wrote private and then silently undid it in the next block.
+	// The two settings are orthogonal and are now applied as such.
+	if (bHasInstanceEditable)
+	{
+		if (bInstanceEditable)
+		{
+			// Clear BOTH disable flags. OR-ing DisableEditOnInstance on top of
+			// an existing DisableEditOnTemplate produced a variable hidden from
+			// the class-defaults AND the instance panel, which no editFlag
+			// value can describe and which list_variables mis-reported as
+			// EditDefaultsOnly.
+			FoundVar->PropertyFlags |= CPF_Edit;
+			FoundVar->PropertyFlags &= ~(CPF_DisableEditOnInstance | CPF_DisableEditOnTemplate);
+		}
+		else if (bWasEditableAtAll)
+		{
+			// "Not instance editable" on an editable variable means
+			// EditDefaultsOnly. Only do this when it was already editable -
+			// otherwise a non-editable variable would be silently PROMOTED into
+			// the class-defaults panel, and the rollback would re-apply the
+			// promotion rather than undo it.
+			FoundVar->PropertyFlags &= ~CPF_DisableEditOnTemplate;
+			FoundVar->PropertyFlags |= CPF_DisableEditOnInstance;
+		}
+	}
+	if (bHasPrivate)
+	{
+		if (bPrivate) FoundVar->SetMetaData(FBlueprintMetadata::MD_Private, TEXT("true"));
+		else          FoundVar->RemoveMetaData(FBlueprintMetadata::MD_Private);
 	}
 
 	// Compile and save
@@ -160,7 +273,18 @@ TSharedPtr<FJsonValue> FBlueprintHandlers::SetVariableProperties(const TSharedPt
 	Payload->SetStringField(TEXT("path"), AssetPath);
 	Payload->SetStringField(TEXT("name"), VarName);
 	if (bHasExposeOnSpawn) Payload->SetBoolField(TEXT("exposeOnSpawn"), bPrevExposeOnSpawn);
-	if (bHasInstanceEditable) Payload->SetBoolField(TEXT("instanceEditable"), bPrevInstanceEditable);
+	// Always restore the edit state via editFlag, never via instanceEditable:
+	// the boolean cannot express "was not exposed at all", so replaying it left
+	// the variable promoted into the class-defaults panel. private is restored
+	// independently because the two are orthogonal.
+	if (bHasInstanceEditable || bHasEditFlag)
+	{
+		Payload->SetStringField(TEXT("editFlag"), PrevEditFlag);
+	}
+	if (bHasPrivate)
+	{
+		Payload->SetBoolField(TEXT("private"), bWasPrivate);
+	}
 	if (bHasCategory) Payload->SetStringField(TEXT("category"), PrevCategory);
 	if (bHasTooltip) Payload->SetStringField(TEXT("tooltip"), PrevTooltip);
 	MCPSetRollback(Result, TEXT("set_variable_properties"), Payload);
@@ -179,7 +303,7 @@ TSharedPtr<FJsonValue> FBlueprintHandlers::SetComponentProperty(const TSharedPtr
 	FString PropertyName;
 	if (auto Err = RequireString(Params, TEXT("propertyName"), PropertyName)) return Err;
 
-	// #152: accept any JSON value type — scalars, numbers, booleans, or structured
+	// #152: accept any JSON value type - scalars, numbers, booleans, or structured
 	// objects like {x,y,z} for FVector. Previous impl only accepted strings, so
 	// RelativeLocation etc. couldn't be set without pre-formatting "(X=1,Y=2,Z=3)".
 	TSharedPtr<FJsonValue> ValueField = Params->TryGetField(TEXT("value"));
@@ -191,7 +315,7 @@ TSharedPtr<FJsonValue> FBlueprintHandlers::SetComponentProperty(const TSharedPtr
 	UBlueprint* Blueprint = LoadBlueprint(AssetPath);
 	if (!Blueprint)
 	{
-		return MCPError(FString::Printf(TEXT("Blueprint not found: %s"), *AssetPath));
+		return BlueprintNotFoundError(AssetPath);
 	}
 
 	bool bIsInherited = false;
@@ -204,6 +328,59 @@ TSharedPtr<FJsonValue> FBlueprintHandlers::SetComponentProperty(const TSharedPtr
 		return MCPError(FString::Printf(
 			TEXT("Component '%s' not found. Available: [%s]"),
 			*ComponentName, *FString::Join(Available, TEXT(", "))));
+	}
+
+	// #680: writing SkeletalMeshAsset via raw reflection leaves the base
+	// USkinnedMeshComponent::SkinnedAsset pointer untouched, so the template
+	// renders nothing at runtime. Route mesh assignment through the native
+	// setter (SetSkeletalMeshAsset) which updates SkinnedAsset + the animation
+	// instance. Only the single-segment property name is special-cased.
+	if (!PropertyName.Contains(TEXT(".")))
+	{
+		const bool bIsMeshProp =
+			PropertyName.Equals(TEXT("SkeletalMesh"), ESearchCase::IgnoreCase) ||
+			PropertyName.Equals(TEXT("SkeletalMeshAsset"), ESearchCase::IgnoreCase) ||
+			PropertyName.Equals(TEXT("SkinnedAsset"), ESearchCase::IgnoreCase);
+		if (bIsMeshProp)
+		{
+			if (USkeletalMeshComponent* SkelComp = Cast<USkeletalMeshComponent>(Template))
+			{
+				FString MeshPath;
+				if (!ValueField->TryGetString(MeshPath))
+				{
+					const TSharedPtr<FJsonObject>* VObj = nullptr;
+					if (ValueField->TryGetObject(VObj) && VObj)
+					{
+						(*VObj)->TryGetStringField(TEXT("path"), MeshPath);
+						if (MeshPath.IsEmpty()) (*VObj)->TryGetStringField(TEXT("assetPath"), MeshPath);
+					}
+				}
+				USkeletalMesh* NewMesh = nullptr;
+				if (!MeshPath.IsEmpty() && MeshPath != TEXT("None"))
+				{
+					NewMesh = LoadAssetByPath<USkeletalMesh>(MeshPath);
+					if (!NewMesh)
+					{
+						return MCPError(FString::Printf(TEXT("SkeletalMesh not found: %s"), *MeshPath));
+					}
+				}
+				SkelComp->Modify();
+				SkelComp->SetSkeletalMeshAsset(NewMesh);
+				SkelComp->PostEditChange();
+				FKismetEditorUtilities::CompileBlueprint(Blueprint);
+				SaveAssetPackage(Blueprint);
+
+				auto Result = MCPSuccess();
+				MCPSetUpdated(Result);
+				Result->SetStringField(TEXT("path"), AssetPath);
+				Result->SetStringField(TEXT("componentName"), ComponentName);
+				Result->SetStringField(TEXT("propertyName"), PropertyName);
+				Result->SetStringField(TEXT("value"), NewMesh ? NewMesh->GetPathName() : TEXT("None"));
+				Result->SetStringField(TEXT("skinnedAsset"), SkelComp->GetSkinnedAsset() ? SkelComp->GetSkinnedAsset()->GetPathName() : TEXT("None"));
+				Result->SetStringField(TEXT("note"), TEXT("Routed through SetSkeletalMeshAsset so SkinnedAsset is updated (#680)"));
+				return MCPResult(Result);
+			}
+		}
 	}
 
 	// Walk dotted path to the final property. The helper from HandlerJsonProperty.h
@@ -253,6 +430,16 @@ TSharedPtr<FJsonValue> FBlueprintHandlers::SetComponentProperty(const TSharedPtr
 	FString PrevValue;
 	FinalProp->ExportText_Direct(PrevValue, ValuePtr, ValuePtr, nullptr, PPF_None);
 
+	// #820: export text cannot carry a struct-keyed TMap back, so a rollback
+	// built from it would replay as an empty map. Keep the structured value for
+	// map-bearing properties and roll back with that instead.
+	const bool bMapBearing = MCPPropertyText::ContainsMap(FinalProp);
+	TSharedPtr<FJsonValue> PrevStructured;
+	if (bMapBearing)
+	{
+		PrevStructured = FMCPJsonSerializer::SerializeValue(ValuePtr, FinalProp);
+	}
+
 	Template->Modify();
 	FString SetErr;
 	if (!MCPJsonProperty::SetJsonOnProperty(FinalProp, ValuePtr, ValueField, SetErr))
@@ -287,13 +474,28 @@ TSharedPtr<FJsonValue> FBlueprintHandlers::SetComponentProperty(const TSharedPtr
 	Result->SetStringField(TEXT("propertyName"), PropertyName);
 	Result->SetStringField(TEXT("value"), NewValue);
 	Result->SetBoolField(TEXT("inherited"), bIsInherited);
+	if (bMapBearing)
+	{
+		// #820: `value` is export text and cannot show a struct-keyed map
+		// faithfully. Report what landed, and the structured form the setter
+		// reads back.
+		Result->SetNumberField(TEXT("mapPairCount"), MCPPropertyText::CountMapPairs(FinalProp, ValuePtr));
+		Result->SetField(TEXT("valueJson"), FMCPJsonSerializer::SerializeValue(ValuePtr, FinalProp));
+	}
 
 	// Rollback: self-inverse with previous value
 	TSharedPtr<FJsonObject> Payload = MakeShared<FJsonObject>();
 	Payload->SetStringField(TEXT("path"), AssetPath);
 	Payload->SetStringField(TEXT("componentName"), ComponentName);
 	Payload->SetStringField(TEXT("propertyName"), PropertyName);
-	Payload->SetStringField(TEXT("value"), PrevValue);
+	if (PrevStructured.IsValid())
+	{
+		Payload->SetField(TEXT("value"), PrevStructured);
+	}
+	else
+	{
+		Payload->SetStringField(TEXT("value"), PrevValue);
+	}
 	MCPSetRollback(Result, TEXT("set_component_property"), Payload);
 
 	return MCPResult(Result);
@@ -329,7 +531,7 @@ TSharedPtr<FJsonValue> FBlueprintHandlers::SetClassDefault(const TSharedPtr<FJso
 	UBlueprint* Blueprint = LoadBlueprint(AssetPath);
 	if (!Blueprint)
 	{
-		return MCPError(FString::Printf(TEXT("Blueprint not found: %s"), *AssetPath));
+		return BlueprintNotFoundError(AssetPath);
 	}
 
 	UClass* GenClass = Blueprint->GeneratedClass;
@@ -458,7 +660,7 @@ TSharedPtr<FJsonValue> FBlueprintHandlers::AddFunctionParameter(const TSharedPtr
 	UBlueprint* Blueprint = LoadBlueprint(AssetPath);
 	if (!Blueprint)
 	{
-		return MCPError(FString::Printf(TEXT("Blueprint not found: %s"), *AssetPath));
+		return BlueprintNotFoundError(AssetPath);
 	}
 
 	// Find the function graph
@@ -613,7 +815,26 @@ TSharedPtr<FJsonValue> FBlueprintHandlers::AddFunctionParameter(const TSharedPtr
 	Result->SetStringField(TEXT("parameterName"), ParamName);
 	Result->SetStringField(TEXT("parameterType"), ParamType);
 	Result->SetBoolField(TEXT("isOutput"), bIsOutput);
-	// No rollback: no paired remove_function_parameter handler yet.
+
+	// edit_graph_parameters op=remove is the paired remove this handler used to
+	// say it did not have. It drops the user-defined pin from the same entry or
+	// return node this call added it to, and reports alreadyRemoved on replay.
+	TSharedPtr<FJsonObject> Payload = MakeShared<FJsonObject>();
+	Payload->SetStringField(TEXT("assetPath"), AssetPath);
+	Payload->SetStringField(TEXT("functionName"), FunctionName);
+	Payload->SetStringField(TEXT("op"), TEXT("remove"));
+	Payload->SetStringField(TEXT("parameterName"), ParamName);
+	Payload->SetBoolField(TEXT("isOutput"), bIsOutput);
+	MCPSetRollback(Result, TEXT("edit_graph_parameters"), Payload);
+	if (bIsOutput)
+	{
+		// The first output parameter on a function mints its return node. The
+		// inverse drops the parameter, not the node it arrived with.
+		Result->SetBoolField(TEXT("rollbackLossy"), true);
+		Result->SetStringField(TEXT("rollbackNote"), TEXT(
+			"Removing the parameter does not remove the function's return node. If this call was the one that minted "
+			"it, an empty return node is left behind in the graph after the rollback."));
+	}
 	return MCPResult(Result);
 }
 
@@ -643,7 +864,7 @@ TSharedPtr<FJsonValue> FBlueprintHandlers::SetVariableDefault(const TSharedPtr<F
 	UBlueprint* Blueprint = LoadBlueprint(AssetPath);
 	if (!Blueprint)
 	{
-		return MCPError(FString::Printf(TEXT("Blueprint not found: %s"), *AssetPath));
+		return BlueprintNotFoundError(AssetPath);
 	}
 
 	// Find the variable description
@@ -754,7 +975,7 @@ TSharedPtr<FJsonValue> FBlueprintHandlers::SetVariableDefault(const TSharedPtr<F
 }
 
 // ===========================================================================
-// v0.7.11 — Blueprint authoring depth
+// v0.7.11 - Blueprint authoring depth
 // ===========================================================================
 
 
@@ -768,7 +989,7 @@ TSharedPtr<FJsonValue> FBlueprintHandlers::ReadComponentProperties(const TShared
 	if (auto Err = RequireString(Params, TEXT("componentName"), ComponentName)) return Err;
 
 	UBlueprint* Blueprint = LoadBlueprint(AssetPath);
-	if (!Blueprint) return MCPError(FString::Printf(TEXT("Blueprint not found: %s"), *AssetPath));
+	if (!Blueprint) return BlueprintNotFoundError(AssetPath);
 
 	bool bIsInherited = false;
 	TArray<FString> Available;
@@ -833,37 +1054,85 @@ TSharedPtr<FJsonValue> FBlueprintHandlers::SetActorTickSettings(const TSharedPtr
 	AActor* CDO = Cast<AActor>(Blueprint->GeneratedClass->GetDefaultObject(true));
 	if (!CDO) return MCPError(TEXT("Blueprint is not an Actor"));
 
-	bool bCanEverTick = CDO->PrimaryActorTick.bCanEverTick;
-	bool bStartWithTickEnabled = CDO->PrimaryActorTick.bStartWithTickEnabled;
-	double TickInterval = CDO->PrimaryActorTick.TickInterval;
+	// The previous triple, which is both the idempotency answer and the exact
+	// inverse: this handler writes all three fields every call, so replaying it
+	// with these values restores exactly what was there.
+	const bool bPrevCanEverTick = CDO->PrimaryActorTick.bCanEverTick;
+	const bool bPrevStartWithTickEnabled = CDO->PrimaryActorTick.bStartWithTickEnabled;
+	// float, not double: FTickFunction::TickInterval is a float, and holding the
+	// previous value at wider precision is what made the equality test below
+	// unable to recognise a value it had just written.
+	const float PrevTickInterval = CDO->PrimaryActorTick.TickInterval;
+
+	bool bCanEverTick = bPrevCanEverTick;
+	bool bStartWithTickEnabled = bPrevStartWithTickEnabled;
+	double TickInterval = PrevTickInterval;
 
 	Params->TryGetBoolField(TEXT("bCanEverTick"), bCanEverTick);
 	Params->TryGetBoolField(TEXT("bStartWithTickEnabled"), bStartWithTickEnabled);
 	Params->TryGetNumberField(TEXT("TickInterval"), TickInterval);
 
-	CDO->PrimaryActorTick.bCanEverTick = bCanEverTick;
-	CDO->PrimaryActorTick.bStartWithTickEnabled = bStartWithTickEnabled;
-	CDO->PrimaryActorTick.TickInterval = (float)TickInterval;
+	// The stored field is a float, so the comparison has to happen in float.
+	// Comparing the caller's double 0.1 against a float-widened 0.1f is never
+	// equal, which made `unchanged` false for every call that in fact wrote the
+	// same value back.
+	const float NewTickInterval = (float)TickInterval;
+	const bool bNoChange =
+		bCanEverTick == bPrevCanEverTick
+		&& bStartWithTickEnabled == bPrevStartWithTickEnabled
+		&& NewTickInterval == PrevTickInterval;
 
-	Blueprint->MarkPackageDirty();
-	UEditorAssetLibrary::SaveAsset(AssetPath);
+	// A no-op does not dirty the package and does not save it. Reporting
+	// unchanged:true beside an unconditional MarkPackageDirty and SaveAsset was
+	// the claim and the contradiction in the same result.
+	if (!bNoChange)
+	{
+		CDO->PrimaryActorTick.bCanEverTick = bCanEverTick;
+		CDO->PrimaryActorTick.bStartWithTickEnabled = bStartWithTickEnabled;
+		CDO->PrimaryActorTick.TickInterval = NewTickInterval;
+
+		Blueprint->MarkPackageDirty();
+		UEditorAssetLibrary::SaveAsset(AssetPath);
+	}
 
 	auto Result = MCPSuccess();
-	MCPSetUpdated(Result);
+	if (bNoChange) MCPSetExisted(Result); else MCPSetUpdated(Result);
+	Result->SetStringField(TEXT("path"), AssetPath);
 	Result->SetBoolField(TEXT("bCanEverTick"), bCanEverTick);
 	Result->SetBoolField(TEXT("bStartWithTickEnabled"), bStartWithTickEnabled);
-	Result->SetNumberField(TEXT("TickInterval"), TickInterval);
+	Result->SetNumberField(TEXT("TickInterval"), NewTickInterval);
+	Result->SetBoolField(TEXT("previousCanEverTick"), bPrevCanEverTick);
+	Result->SetBoolField(TEXT("previousStartWithTickEnabled"), bPrevStartWithTickEnabled);
+	Result->SetNumberField(TEXT("previousTickInterval"), PrevTickInterval);
+	Result->SetBoolField(TEXT("unchanged"), bNoChange);
+
+	if (bNoChange)
+	{
+		Result->SetBoolField(TEXT("rollbackPossible"), false);
+		Result->SetStringField(TEXT("rollbackNote"),
+			TEXT("The tick settings already held these values, so nothing was written or saved and there is "
+			     "nothing to undo."));
+	}
+	else
+	{
+		TSharedPtr<FJsonObject> Payload = MakeShared<FJsonObject>();
+		Payload->SetStringField(TEXT("path"), AssetPath);
+		Payload->SetBoolField(TEXT("bCanEverTick"), bPrevCanEverTick);
+		Payload->SetBoolField(TEXT("bStartWithTickEnabled"), bPrevStartWithTickEnabled);
+		Payload->SetNumberField(TEXT("TickInterval"), PrevTickInterval);
+		MCPSetRollback(Result, TEXT("set_actor_tick_settings"), Payload);
+	}
 	return MCPResult(Result);
 }
 
-// ─── #128 get_component_property — inherited-aware single-prop read ──
+// ─── #128 get_component_property - inherited-aware single-prop read ──
 // Params: assetPath, componentName, propertyName
 // Returns the effective default for the given child BP: the ICH override
 // if one exists, otherwise the parent template value. Supports dotted
 // property paths ("RelativeLocation.X").
 
 
-// ─── #128 get_component_property — inherited-aware single-prop read ──
+// ─── #128 get_component_property - inherited-aware single-prop read ──
 // Params: assetPath, componentName, propertyName
 // Returns the effective default for the given child BP: the ICH override
 // if one exists, otherwise the parent template value. Supports dotted
@@ -878,7 +1147,7 @@ TSharedPtr<FJsonValue> FBlueprintHandlers::GetComponentProperty(const TSharedPtr
 	if (auto Err = RequireString(Params, TEXT("propertyName"), PropertyName)) return Err;
 
 	UBlueprint* Blueprint = LoadBlueprint(AssetPath);
-	if (!Blueprint) return MCPError(FString::Printf(TEXT("Blueprint not found: %s"), *AssetPath));
+	if (!Blueprint) return BlueprintNotFoundError(AssetPath);
 
 	bool bIsInherited = false;
 	TArray<FString> Available;
@@ -1128,6 +1397,400 @@ TSharedPtr<FJsonValue> FBlueprintHandlers::GetCdoProperties(const TSharedPtr<FJs
 	Result->SetObjectField(TEXT("properties"), PropsObj);
 	Result->SetNumberField(TEXT("count"), PropsObj->Values.Num());
 
+	return MCPResult(Result);
+}
+
+// #442: dedicated OverrideMaterials writer for mesh-component templates
+// (StaticMeshComponent, SkeletalMeshComponent, anything deriving from
+// UMeshComponent). Takes materialPaths directly so the caller never has to
+// route a TArray through the generic set_component_property path.
+//
+// Params: assetPath, componentName, materialPaths (string[]). Pass an empty
+// array to clear the override list.
+TSharedPtr<FJsonValue> FBlueprintHandlers::SetComponentOverrideMaterials(const TSharedPtr<FJsonObject>& Params)
+{
+	FString AssetPath;
+	if (auto Err = RequireStringAlt(Params, TEXT("path"), TEXT("assetPath"), AssetPath)) return Err;
+	FString ComponentName;
+	if (auto Err = RequireString(Params, TEXT("componentName"), ComponentName)) return Err;
+
+	const TArray<TSharedPtr<FJsonValue>>* PathsArr = nullptr;
+	if (!Params->TryGetArrayField(TEXT("materialPaths"), PathsArr) || !PathsArr)
+	{
+		return MCPError(TEXT("Missing 'materialPaths' (string array)"));
+	}
+
+	UBlueprint* Blueprint = LoadBlueprint(AssetPath);
+	if (!Blueprint) return BlueprintNotFoundError(AssetPath);
+
+	bool bIsInherited = false;
+	TArray<FString> Available;
+	UActorComponent* Template = ResolveComponentTemplate(
+		Blueprint, ComponentName, /*bForWrite*/ true, bIsInherited, Available);
+	if (!Template)
+	{
+		return MCPError(FString::Printf(TEXT("Component '%s' not found. Available: [%s]"),
+			*ComponentName, *FString::Join(Available, TEXT(", "))));
+	}
+
+	UMeshComponent* MeshComp = Cast<UMeshComponent>(Template);
+	if (!MeshComp)
+	{
+		return MCPError(FString::Printf(TEXT("Component '%s' is %s, not a MeshComponent"),
+			*ComponentName, *Template->GetClass()->GetName()));
+	}
+
+	TArray<UMaterialInterface*> Loaded;
+	TArray<FString> ResolvedPaths;
+	for (const TSharedPtr<FJsonValue>& V : *PathsArr)
+	{
+		FString Path;
+		if (!V->TryGetString(Path) || Path.IsEmpty())
+		{
+			Loaded.Add(nullptr);
+			ResolvedPaths.Add(TEXT("None"));
+			continue;
+		}
+		UMaterialInterface* M = Cast<UMaterialInterface>(StaticLoadObject(UMaterialInterface::StaticClass(), nullptr, *Path));
+		if (!M) return MCPError(FString::Printf(TEXT("Material not found: %s"), *Path));
+		Loaded.Add(M);
+		ResolvedPaths.Add(M->GetPathName());
+	}
+
+	// Capture the prior OverrideMaterials list for rollback.
+	TArray<TSharedPtr<FJsonValue>> PrevPaths;
+	for (UMaterialInterface* Prev : MeshComp->OverrideMaterials)
+	{
+		PrevPaths.Add(MakeShared<FJsonValueString>(Prev ? Prev->GetPathName() : FString(TEXT("None"))));
+	}
+
+	Template->Modify();
+	MeshComp->OverrideMaterials = Loaded;
+	Template->PostEditChange();
+
+	FKismetEditorUtilities::CompileBlueprint(Blueprint);
+	SaveAssetPackage(Blueprint);
+
+	auto Result = MCPSuccess();
+	MCPSetUpdated(Result);
+	Result->SetStringField(TEXT("path"), AssetPath);
+	Result->SetStringField(TEXT("componentName"), ComponentName);
+	Result->SetNumberField(TEXT("materialCount"), Loaded.Num());
+	TArray<TSharedPtr<FJsonValue>> ResolvedArr;
+	for (const FString& P : ResolvedPaths) ResolvedArr.Add(MakeShared<FJsonValueString>(P));
+	Result->SetArrayField(TEXT("materialPaths"), ResolvedArr);
+	Result->SetBoolField(TEXT("inherited"), bIsInherited);
+
+	TSharedPtr<FJsonObject> Payload = MakeShared<FJsonObject>();
+	Payload->SetStringField(TEXT("path"), AssetPath);
+	Payload->SetStringField(TEXT("componentName"), ComponentName);
+	Payload->SetArrayField(TEXT("materialPaths"), PrevPaths);
+	MCPSetRollback(Result, TEXT("set_component_override_materials"), Payload);
+
+	return MCPResult(Result);
+}
+
+// #457: Timeline track authoring. Create or look up a UTimelineTemplate by
+// timeline name (matching the K2Node_Timeline TimelineName), append a
+// float/vector/linear-color/event track with the given keys, and recompile
+// the Blueprint so the K2Node_Timeline regenerates its output pins.
+//
+// Params:
+//   assetPath, timelineName, trackName,
+//   trackType ("float" | "vector" | "color" | "event"),
+//   keyframes ([{time, value}]) - value: number for float/event,
+//     {x,y,z} for vector, {r,g,b,a} for color.
+TSharedPtr<FJsonValue> FBlueprintHandlers::AddTimelineTrack(const TSharedPtr<FJsonObject>& Params)
+{
+	FString AssetPath;
+	if (auto Err = RequireStringAlt(Params, TEXT("path"), TEXT("assetPath"), AssetPath)) return Err;
+	FString TimelineName;
+	if (auto Err = RequireString(Params, TEXT("timelineName"), TimelineName)) return Err;
+	FString TrackName;
+	if (auto Err = RequireString(Params, TEXT("trackName"), TrackName)) return Err;
+	const FString TrackType = OptionalString(Params, TEXT("trackType"), TEXT("float")).ToLower();
+
+	UBlueprint* Blueprint = LoadBlueprint(AssetPath);
+	if (!Blueprint) return BlueprintNotFoundError(AssetPath);
+
+	// Find or create the UTimelineTemplate that backs the K2Node_Timeline.
+	const FName TimelineFName(*TimelineName);
+	UTimelineTemplate* Timeline = nullptr;
+	for (UTimelineTemplate* T : Blueprint->Timelines)
+	{
+		if (T && T->GetVariableName() == TimelineFName) { Timeline = T; break; }
+	}
+	if (!Timeline)
+	{
+		// Mirror what FBlueprintEditorUtils does for new timelines: name the
+		// template "<TimelineName>_Template" so K2Node_Timeline lookup matches.
+		const FString TemplateName = UTimelineTemplate::TimelineVariableNameToTemplateName(TimelineFName);
+		Timeline = NewObject<UTimelineTemplate>(Blueprint, FName(*TemplateName), RF_Transactional);
+		Blueprint->Timelines.Add(Timeline);
+	}
+
+	// Read keyframes array. Float/event keys carry numeric values; vector
+	// keys are {x,y,z}; color keys are {r,g,b,a}.
+	const TArray<TSharedPtr<FJsonValue>>* Keys = nullptr;
+	Params->TryGetArrayField(TEXT("keyframes"), Keys);
+
+	const FName TrackFName(*TrackName);
+
+	// Idempotency, and the reason it matters here more than usual: this handler
+	// has no inverse, so a replayed call that appends a SECOND track of the same
+	// name leaves a timeline nothing in the bridge can clean up. Track names are
+	// what K2Node_Timeline turns into output pins, so two of a name is a broken
+	// node rather than a harmless duplicate. Every track list on the template is
+	// checked, not just the one matching trackType, because the pin name
+	// collides across types too.
+	auto TrackNameTaken = [Timeline, TrackFName]() -> const TCHAR*
+	{
+		for (const FTTFloatTrack& T : Timeline->FloatTracks)       { if (T.GetTrackName() == TrackFName) return TEXT("float"); }
+		for (const FTTVectorTrack& T : Timeline->VectorTracks)      { if (T.GetTrackName() == TrackFName) return TEXT("vector"); }
+		for (const FTTLinearColorTrack& T : Timeline->LinearColorTracks) { if (T.GetTrackName() == TrackFName) return TEXT("color"); }
+		for (const FTTEventTrack& T : Timeline->EventTracks)        { if (T.GetTrackName() == TrackFName) return TEXT("event"); }
+		return nullptr;
+	};
+	if (const TCHAR* ExistingType = TrackNameTaken())
+	{
+		auto Existed = MCPSuccess();
+		MCPSetExisted(Existed);
+		Existed->SetBoolField(TEXT("alreadyExists"), true);
+		Existed->SetBoolField(TEXT("unchanged"), true);
+		Existed->SetStringField(TEXT("path"), AssetPath);
+		Existed->SetStringField(TEXT("timelineName"), TimelineName);
+		Existed->SetStringField(TEXT("trackName"), TrackName);
+		Existed->SetStringField(TEXT("trackType"), TrackType);
+		Existed->SetStringField(TEXT("existingTrackType"), ExistingType);
+		Existed->SetStringField(TEXT("reason"), FString::Printf(TEXT(
+			"Timeline '%s' already has a %s track named '%s', and nothing was added. Track names become "
+			"K2Node_Timeline output pins, so a second track of this name would break the node, and no action "
+			"removes a timeline track once it exists. Pick a different trackName."),
+			*TimelineName, ExistingType, *TrackName));
+		Existed->SetBoolField(TEXT("rollbackPossible"), false);
+		Existed->SetStringField(TEXT("rollbackNote"), TEXT("Nothing was added, so there is nothing to undo."));
+		return MCPResult(Existed);
+	}
+
+	Timeline->Modify();
+
+	auto BumpLength = [&](float Time)
+	{
+		if (Time > Timeline->TimelineLength) Timeline->TimelineLength = Time;
+	};
+
+	if (TrackType == TEXT("float"))
+	{
+		// Build a CurveFloat asset bound to the timeline.
+		UCurveFloat* Curve = NewObject<UCurveFloat>(Timeline, NAME_None, RF_Transactional);
+		if (Keys)
+		{
+			for (const TSharedPtr<FJsonValue>& KV : *Keys)
+			{
+				const TSharedPtr<FJsonObject>* KObj = nullptr;
+				if (!KV->TryGetObject(KObj) || !*KObj) continue;
+				double T = 0, V = 0;
+				(*KObj)->TryGetNumberField(TEXT("time"), T);
+				(*KObj)->TryGetNumberField(TEXT("value"), V);
+				Curve->FloatCurve.UpdateOrAddKey((float)T, (float)V);
+				BumpLength((float)T);
+			}
+		}
+		FTTFloatTrack Track;
+		Track.SetTrackName(TrackFName, Timeline);
+		Track.CurveFloat = Curve;
+		Timeline->FloatTracks.Add(Track);
+	}
+	else if (TrackType == TEXT("vector"))
+	{
+		UCurveVector* Curve = NewObject<UCurveVector>(Timeline, NAME_None, RF_Transactional);
+		if (Keys)
+		{
+			for (const TSharedPtr<FJsonValue>& KV : *Keys)
+			{
+				const TSharedPtr<FJsonObject>* KObj = nullptr;
+				if (!KV->TryGetObject(KObj) || !*KObj) continue;
+				double T = 0;
+				(*KObj)->TryGetNumberField(TEXT("time"), T);
+				double X = 0, Y = 0, Z = 0;
+				const TSharedPtr<FJsonObject>* VObj = nullptr;
+				if ((*KObj)->TryGetObjectField(TEXT("value"), VObj) && *VObj)
+				{
+					(*VObj)->TryGetNumberField(TEXT("x"), X);
+					(*VObj)->TryGetNumberField(TEXT("y"), Y);
+					(*VObj)->TryGetNumberField(TEXT("z"), Z);
+				}
+				Curve->FloatCurves[0].UpdateOrAddKey((float)T, (float)X);
+				Curve->FloatCurves[1].UpdateOrAddKey((float)T, (float)Y);
+				Curve->FloatCurves[2].UpdateOrAddKey((float)T, (float)Z);
+				BumpLength((float)T);
+			}
+		}
+		FTTVectorTrack Track;
+		Track.SetTrackName(TrackFName, Timeline);
+		Track.CurveVector = Curve;
+		Timeline->VectorTracks.Add(Track);
+	}
+	else if (TrackType == TEXT("color"))
+	{
+		UCurveLinearColor* Curve = NewObject<UCurveLinearColor>(Timeline, NAME_None, RF_Transactional);
+		if (Keys)
+		{
+			for (const TSharedPtr<FJsonValue>& KV : *Keys)
+			{
+				const TSharedPtr<FJsonObject>* KObj = nullptr;
+				if (!KV->TryGetObject(KObj) || !*KObj) continue;
+				double T = 0;
+				(*KObj)->TryGetNumberField(TEXT("time"), T);
+				double R = 0, G = 0, B = 0, A = 1;
+				const TSharedPtr<FJsonObject>* VObj = nullptr;
+				if ((*KObj)->TryGetObjectField(TEXT("value"), VObj) && *VObj)
+				{
+					(*VObj)->TryGetNumberField(TEXT("r"), R);
+					(*VObj)->TryGetNumberField(TEXT("g"), G);
+					(*VObj)->TryGetNumberField(TEXT("b"), B);
+					(*VObj)->TryGetNumberField(TEXT("a"), A);
+				}
+				Curve->FloatCurves[0].UpdateOrAddKey((float)T, (float)R);
+				Curve->FloatCurves[1].UpdateOrAddKey((float)T, (float)G);
+				Curve->FloatCurves[2].UpdateOrAddKey((float)T, (float)B);
+				Curve->FloatCurves[3].UpdateOrAddKey((float)T, (float)A);
+				BumpLength((float)T);
+			}
+		}
+		FTTLinearColorTrack Track;
+		Track.SetTrackName(TrackFName, Timeline);
+		Track.CurveLinearColor = Curve;
+		Timeline->LinearColorTracks.Add(Track);
+	}
+	else if (TrackType == TEXT("event"))
+	{
+		FTTEventTrack EventTrack;
+		EventTrack.SetTrackName(TrackFName, Timeline);
+		UCurveFloat* Curve = NewObject<UCurveFloat>(Timeline, NAME_None, RF_Transactional);
+		if (Keys)
+		{
+			for (const TSharedPtr<FJsonValue>& KV : *Keys)
+			{
+				const TSharedPtr<FJsonObject>* KObj = nullptr;
+				if (!KV->TryGetObject(KObj) || !*KObj) continue;
+				double T = 0;
+				(*KObj)->TryGetNumberField(TEXT("time"), T);
+				Curve->FloatCurve.UpdateOrAddKey((float)T, 1.0f);
+				BumpLength((float)T);
+			}
+		}
+		EventTrack.CurveKeys = Curve;
+		Timeline->EventTracks.Add(EventTrack);
+	}
+	else
+	{
+		return MCPError(FString::Printf(TEXT("Unknown trackType '%s'. Use 'float' | 'vector' | 'color' | 'event'."), *TrackType));
+	}
+
+	// Recompile so K2Node_Timeline regenerates its output pins for the new track.
+	FBlueprintEditorUtils::MarkBlueprintAsStructurallyModified(Blueprint);
+	FKismetEditorUtilities::CompileBlueprint(Blueprint);
+	SaveAssetPackage(Blueprint);
+
+	auto Result = MCPSuccess();
+	MCPSetCreated(Result);
+	Result->SetStringField(TEXT("path"), AssetPath);
+	Result->SetStringField(TEXT("timelineName"), TimelineName);
+	Result->SetStringField(TEXT("trackName"), TrackName);
+	Result->SetStringField(TEXT("trackType"), TrackType);
+	Result->SetNumberField(TEXT("keyCount"), Keys ? Keys->Num() : 0);
+	Result->SetNumberField(TEXT("timelineLength"), Timeline->TimelineLength);
+
+	// add_timeline_track is the only timeline action the bridge registers. There
+	// is no remove_timeline_track and no editor for a timeline's track list, so
+	// no inverse is named here rather than one that does not exist.
+	Result->SetBoolField(TEXT("rollbackPossible"), false);
+	Result->SetStringField(TEXT("rollbackNote"), TEXT(
+		"No action removes a timeline track: add_timeline_track is the only timeline action registered, so there is "
+		"nothing to name as an inverse. The track, its generated curve object and any TimelineLength this call "
+		"raised all stay."));
+	return MCPResult(Result);
+}
+
+// ---------------------------------------------------------------------------
+// set_capsule_size -- Call UCapsuleComponent::SetCapsuleSize on a BP capsule
+// component template. Property writes alone leave the visualizer stale; the
+// UFUNCTION setter propagates scaled/unscaled state correctly (#419).
+// ---------------------------------------------------------------------------
+TSharedPtr<FJsonValue> FBlueprintHandlers::SetCapsuleSize(const TSharedPtr<FJsonObject>& Params)
+{
+	FString AssetPath;
+	if (auto Err = RequireStringAlt(Params, TEXT("path"), TEXT("assetPath"), AssetPath)) return Err;
+	FString ComponentName;
+	if (auto Err = RequireString(Params, TEXT("componentName"), ComponentName)) return Err;
+
+	const bool bHasHalfHeight = Params->HasField(TEXT("halfHeight"));
+	const bool bHasRadius = Params->HasField(TEXT("radius"));
+	if (!bHasHalfHeight && !bHasRadius)
+	{
+		return MCPError(TEXT("Pass at least one of 'halfHeight' or 'radius'"));
+	}
+
+	UBlueprint* Blueprint = LoadBlueprint(AssetPath);
+	if (!Blueprint) return BlueprintNotFoundError(AssetPath);
+
+	bool bIsInherited = false;
+	TArray<FString> Available;
+	UActorComponent* Template = ResolveComponentTemplate(
+		Blueprint, ComponentName, /*bForWrite*/ true, bIsInherited, Available);
+	if (!Template)
+	{
+		return MCPError(FString::Printf(TEXT("Component '%s' not found. Available: [%s]"),
+			*ComponentName, *FString::Join(Available, TEXT(", "))));
+	}
+
+	UCapsuleComponent* Capsule = Cast<UCapsuleComponent>(Template);
+	if (!Capsule)
+	{
+		return MCPError(FString::Printf(TEXT("Component '%s' is %s, not a CapsuleComponent"),
+			*ComponentName, *Template->GetClass()->GetName()));
+	}
+
+	const float PrevHalfHeight = Capsule->GetUnscaledCapsuleHalfHeight();
+	const float PrevRadius = Capsule->GetUnscaledCapsuleRadius();
+
+	float NewHalfHeight = PrevHalfHeight;
+	float NewRadius = PrevRadius;
+	if (bHasHalfHeight)
+	{
+		double H = PrevHalfHeight;
+		Params->TryGetNumberField(TEXT("halfHeight"), H);
+		NewHalfHeight = (float)H;
+	}
+	if (bHasRadius)
+	{
+		double R = PrevRadius;
+		Params->TryGetNumberField(TEXT("radius"), R);
+		NewRadius = (float)R;
+	}
+
+	Capsule->Modify();
+	Capsule->SetCapsuleSize(NewRadius, NewHalfHeight, /*bUpdateOverlaps*/ true);
+	FKismetEditorUtilities::CompileBlueprint(Blueprint);
+	SaveAssetPackage(Blueprint);
+
+	auto Result = MCPSuccess();
+	MCPSetUpdated(Result);
+	Result->SetStringField(TEXT("path"), AssetPath);
+	Result->SetStringField(TEXT("componentName"), ComponentName);
+	Result->SetNumberField(TEXT("halfHeight"), NewHalfHeight);
+	Result->SetNumberField(TEXT("radius"), NewRadius);
+	Result->SetNumberField(TEXT("previousHalfHeight"), PrevHalfHeight);
+	Result->SetNumberField(TEXT("previousRadius"), PrevRadius);
+	Result->SetBoolField(TEXT("inherited"), bIsInherited);
+
+	TSharedPtr<FJsonObject> Payload = MakeShared<FJsonObject>();
+	Payload->SetStringField(TEXT("path"), AssetPath);
+	Payload->SetStringField(TEXT("componentName"), ComponentName);
+	Payload->SetNumberField(TEXT("halfHeight"), PrevHalfHeight);
+	Payload->SetNumberField(TEXT("radius"), PrevRadius);
+	MCPSetRollback(Result, TEXT("set_capsule_size"), Payload);
 	return MCPResult(Result);
 }
 

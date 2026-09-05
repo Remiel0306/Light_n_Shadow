@@ -1,0 +1,5 @@
+{
+  "success": false,
+  "message": "No project loaded. Use project(action='set_project') first.",
+  "progressDisplayNote": "Note: start-ed 1 did not send a progressToken with this call, so no live progress could be streamed - MCP progress is opt-in per request. The phase timeline above is what the live view would have shown. Clients that request progress (the reference SDK client, MCP Inspector) render it throughout the wait."
+}

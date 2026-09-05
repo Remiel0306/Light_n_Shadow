@@ -1,0 +1,29 @@
+
+
+Id           : 5040
+CPU          : 4.46875
+WorkingSet64 : 182743040
+
+
+
+
+[21/200] Compile [x64] AnimationHandlers_ControlRigSequencer.cpp
+[22/200] Compile [x64] AnimationHandlers_Depth.cpp
+[23/200] Compile [x64] AnimationHandlers_IKRetargeterAuthoring.cpp
+[24/200] Compile [x64] AnimationHandlers_IKRigAuthoring.cpp
+[25/200] Compile [x64] AnimationHandlers_MotionMatching.cpp
+[26/200] Compile [x64] AnimationHandlers_Pose.cpp
+[27/200] Compile [x64] AnimationHandlers_Sequence.cpp
+[28/200] Compile [x64] AnimationHandlers_SkeletalLive.cpp
+[29/200] Compile [x64] AnimationHandlers_Skeleton.cpp
+[30/200] Compile [x64] AnimationHandlers_StateMachine.cpp
+[31/200] Compile [x64] AnimationHandlers_Validation.cpp
+[32/200] Compile [x64] AnimationPoseTests.cpp
+[33/200] Compile [x64] AssetBulkReadTests.cpp
+[34/200] Compile [x64] AssetBulkUpsertTests.cpp
+[35/200] Compile [x64] AssetDeleteGuardTests.cpp
+[36/200] Compile [x64] AssetHandlers.cpp
+[37/200] Compile [x64] AssetHandlers_BulkProperties.cpp
+[38/200] Compile [x64] AssetHandlers_BulkRead.cpp
+[39/200] Compile [x64] AssetHandlers_BulkUpsert.cpp
+[40/200] Compile [x64] AssetHandlers_Enum.cpp

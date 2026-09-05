@@ -1,0 +1,7 @@
+﻿PluginBinariesWin64=True
+DllCount=1
+LogExists=True
+LatestLog=D:\Unreal Engine\Light_n_Shadow\Saved\Logs\Light_and_Shadow.log
+Light_and_Shadow.log 09/06/2026 01:09:28
+cef3.log 09/06/2026 01:00:03
+Light_and_Shadow_2.log 09/05/2026 01:45:06

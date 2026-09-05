@@ -1,6 +1,7 @@
 #include "FoliageHandlers.h"
 #include "HandlerRegistry.h"
 #include "HandlerUtils.h"
+#include "HandlerPagination.h"
 #include "InstancedFoliageActor.h"
 #include "FoliageType.h"
 #include "FoliageType_InstancedStaticMesh.h"
@@ -23,21 +24,45 @@ void FFoliageHandlers::RegisterHandlers(FMCPHandlerRegistry& Registry)
 {
 	Registry.RegisterHandler(TEXT("list_foliage_types"), &ListFoliageTypes);
 	Registry.RegisterHandler(TEXT("sample_foliage"), &SampleFoliage);
-	Registry.RegisterHandler(TEXT("get_foliage_settings"), &GetFoliageSettings);
-	Registry.RegisterHandler(TEXT("paint_foliage"), &PaintFoliage);
-	Registry.RegisterHandler(TEXT("erase_foliage"), &EraseFoliage);
-	Registry.RegisterHandler(TEXT("sample_foliage_instances"), &SampleFoliageInstances);
-	Registry.RegisterHandler(TEXT("create_foliage_layer"), &CreateFoliageLayer);
 	Registry.RegisterHandler(TEXT("get_foliage_type_settings"), &GetFoliageSettings);
 	Registry.RegisterHandler(TEXT("set_foliage_type_settings"), &SetFoliageTypeSettings);
 	Registry.RegisterHandler(TEXT("create_foliage_type"), &CreateFoliageType);
+	// #988: predicate-driven batch. Scanning and saving hundreds of FoliageType
+	// assets outlives the default handler timeout.
+	Registry.RegisterHandlerWithTimeout(
+		TEXT("batch_set_foliage_settings_where"), &BatchSetFoliageSettingsWhere, 300.0f);
+
+	// V12 depth (FoliageHandlers_Depth.cpp): the surface above could create and
+	// configure a FoliageType and count instances inside a sphere, but could not
+	// place one, remove one, say where any of them are, or put a type into the
+	// level's palette at all.
+	Registry.RegisterHandler(TEXT("add_foliage_instances"), &AddFoliageInstances);
+	Registry.RegisterHandler(TEXT("remove_foliage_instances"), &RemoveFoliageInstances);
+	Registry.RegisterHandler(TEXT("get_foliage_instances"), &GetFoliageInstances);
+	Registry.RegisterHandler(TEXT("add_foliage_type_to_level"), &AddFoliageTypeToLevel);
+	Registry.RegisterHandler(TEXT("remove_foliage_type_from_level"), &RemoveFoliageTypeFromLevel);
+	Registry.RegisterHandler(TEXT("read_procedural_foliage_spawner"), &ReadProceduralFoliageSpawner);
+	Registry.RegisterHandler(TEXT("set_procedural_foliage_spawner_types"), &SetProceduralFoliageSpawnerTypes);
+	// A tile simulation over a large volume plus a world trace per generated
+	// point outlives the default handler timeout on anything but a small volume.
+	Registry.RegisterHandlerWithTimeout(
+		TEXT("simulate_procedural_foliage"), &SimulateProceduralFoliage, 600.0f);
+	Registry.RegisterHandler(TEXT("clear_procedural_foliage"), &ClearProceduralFoliage);
 }
 
 TSharedPtr<FJsonValue> FFoliageHandlers::ListFoliageTypes(const TSharedPtr<FJsonObject>& Params)
 {
+	// T3: paged.
+	MCPPagination::FPageRequest Page;
+	if (auto Err = MCPPagination::ReadPageRequest(
+			Params, TEXT("list_foliage_types"), /*DefaultLimit*/ 200, /*MaxLimit*/ 2000, Page))
+	{
+		return Err;
+	}
+
 	REQUIRE_EDITOR_WORLD(World);
 
-	TArray<TSharedPtr<FJsonValue>> FoliageTypesArray;
+	TArray<MCPPagination::FPageRow> Rows;
 
 	for (TActorIterator<AInstancedFoliageActor> It(World); It; ++It)
 	{
@@ -67,32 +92,36 @@ TSharedPtr<FJsonValue> FFoliageHandlers::ListFoliageTypes(const TSharedPtr<FJson
 
 			// Get source info
 			TypeObj->SetStringField(TEXT("className"), FoliageType->GetClass()->GetName());
+			// Which InstancedFoliageActor holds this type. One world holds one
+			// per level or grid cell, and the same foliage type appears under
+			// each, so the row says which one it came from.
+			TypeObj->SetStringField(TEXT("foliageActorPath"), FoliageActor->GetPathName());
 
-			FoliageTypesArray.Add(MakeShared<FJsonValueObject>(TypeObj));
+			// The page anchor is the owning actor plus the type, because the
+			// type alone repeats across actors and an anchor has to name one
+			// row.
+			Rows.Add({
+				FString::Printf(TEXT("%s|%s"), *FoliageActor->GetPathName(), *FoliageType->GetPathName()),
+				MakeShared<FJsonValueObject>(TypeObj) });
 		}
 	}
 
+	// TActorIterator order and TMap iteration order are both unspecified, so
+	// the rows are sorted before paging. A cursor over an unordered enumeration
+	// is not resumable.
+	Rows.Sort([](const MCPPagination::FPageRow& A, const MCPPagination::FPageRow& B)
+		{ return A.Id < B.Id; });
+
 	auto Result = MCPSuccess();
-	Result->SetArrayField(TEXT("foliageTypes"), FoliageTypesArray);
-	Result->SetNumberField(TEXT("count"), FoliageTypesArray.Num());
+	MCPPagination::EmitPage(Page, Rows, TEXT("foliageTypes"), Result);
 
 	return MCPResult(Result);
 }
 
 TSharedPtr<FJsonValue> FFoliageHandlers::SampleFoliage(const TSharedPtr<FJsonObject>& Params)
 {
-	// Parse center point
-	const TSharedPtr<FJsonObject>* CenterObj = nullptr;
-	if (!Params->TryGetObjectField(TEXT("center"), CenterObj) || !CenterObj || !(*CenterObj).IsValid())
-	{
-		return MCPError(TEXT("Missing 'center' parameter (object with x, y, z)"));
-	}
-
-	double CenterX = 0, CenterY = 0, CenterZ = 0;
-	(*CenterObj)->TryGetNumberField(TEXT("x"), CenterX);
-	(*CenterObj)->TryGetNumberField(TEXT("y"), CenterY);
-	(*CenterObj)->TryGetNumberField(TEXT("z"), CenterZ);
-	FVector Center(CenterX, CenterY, CenterZ);
+	FVector Center;
+	if (auto Err = RequireVec3(Params, TEXT("center"), Center)) return Err;
 
 	double Radius = OptionalNumber(Params, TEXT("radius"), 1000.0);
 	double RadiusSq = Radius * Radius;
@@ -154,13 +183,7 @@ TSharedPtr<FJsonValue> FFoliageHandlers::SampleFoliage(const TSharedPtr<FJsonObj
 	}
 
 	auto Result = MCPSuccess();
-
-	TSharedPtr<FJsonObject> CenterResult = MakeShared<FJsonObject>();
-	CenterResult->SetNumberField(TEXT("x"), CenterX);
-	CenterResult->SetNumberField(TEXT("y"), CenterY);
-	CenterResult->SetNumberField(TEXT("z"), CenterZ);
-
-	Result->SetObjectField(TEXT("center"), CenterResult);
+	Result->SetObjectField(TEXT("center"), MCPVec3ToJsonObject(Center));
 	Result->SetNumberField(TEXT("radius"), Radius);
 	Result->SetNumberField(TEXT("totalCount"), TotalCount);
 	Result->SetArrayField(TEXT("types"), TypesArray);
@@ -171,7 +194,12 @@ TSharedPtr<FJsonValue> FFoliageHandlers::SampleFoliage(const TSharedPtr<FJsonObj
 TSharedPtr<FJsonValue> FFoliageHandlers::GetFoliageSettings(const TSharedPtr<FJsonObject>& Params)
 {
 	FString FoliageTypePath;
-	if (auto Err = RequireString(Params, TEXT("foliageTypePath"), FoliageTypePath)) return Err;
+	if (!Params->TryGetStringField(TEXT("foliageTypePath"), FoliageTypePath) || FoliageTypePath.IsEmpty())
+	{
+		// #988: a caller who reaches this error usually wants the whole set,
+		// not one asset, so the error names the action that answers that.
+		return MCPError(TEXT("Missing required parameter 'foliageTypePath'. To read or filter many types at once use foliage(list_types) or asset(bulk_read_properties); to WRITE settings to every type matching a predicate use foliage(batch_set_settings_where)."));
+	}
 
 	UFoliageType* FoliageType = LoadObject<UFoliageType>(nullptr, *FoliageTypePath);
 	if (!FoliageType)
@@ -238,341 +266,6 @@ TSharedPtr<FJsonValue> FFoliageHandlers::GetFoliageSettings(const TSharedPtr<FJs
 	return MCPResult(Result);
 }
 
-TSharedPtr<FJsonValue> FFoliageHandlers::PaintFoliage(const TSharedPtr<FJsonObject>& Params)
-{
-	FString FoliageTypePath;
-	if (auto Err = RequireString(Params, TEXT("foliageType"), FoliageTypePath)) return Err;
-
-	const TSharedPtr<FJsonObject>* LocationObj = nullptr;
-	if (!Params->TryGetObjectField(TEXT("location"), LocationObj) || !LocationObj || !(*LocationObj).IsValid())
-	{
-		return MCPError(TEXT("Missing 'location' parameter (object with x, y, z)"));
-	}
-
-	double LocX = 0, LocY = 0, LocZ = 0;
-	(*LocationObj)->TryGetNumberField(TEXT("x"), LocX);
-	(*LocationObj)->TryGetNumberField(TEXT("y"), LocY);
-	(*LocationObj)->TryGetNumberField(TEXT("z"), LocZ);
-
-	double PaintRadius = OptionalNumber(Params, TEXT("radius"), 500.0);
-	double PaintDensity = OptionalNumber(Params, TEXT("density"), 100.0);
-
-	// Foliage painting is not directly exposed as a C++ editor API.
-	// The FoliageEdMode / FoliageEditorLibrary is internal to the foliage editor mode
-	// and cannot be easily called programmatically from a plugin.
-	// Use execute_python as a fallback to invoke the Python FoliageEditorLibrary if available.
-	auto Result = MakeShared<FJsonObject>();
-	Result->SetStringField(TEXT("foliageType"), FoliageTypePath);
-
-	TSharedPtr<FJsonObject> LocationResult = MakeShared<FJsonObject>();
-	LocationResult->SetNumberField(TEXT("x"), LocX);
-	LocationResult->SetNumberField(TEXT("y"), LocY);
-	LocationResult->SetNumberField(TEXT("z"), LocZ);
-	Result->SetObjectField(TEXT("location"), LocationResult);
-	Result->SetNumberField(TEXT("radius"), PaintRadius);
-	Result->SetNumberField(TEXT("density"), PaintDensity);
-
-	Result->SetBoolField(TEXT("success"), false);
-	Result->SetStringField(TEXT("note"),
-		TEXT("Foliage painting requires FoliageEdMode which is not accessible from C++ plugins. ")
-		TEXT("Use the execute_python handler with unreal.FoliageEditorLibrary.paint_foliage() if available, ")
-		TEXT("or manually paint in the editor foliage tool."));
-
-	return MCPResult(Result);
-}
-
-TSharedPtr<FJsonValue> FFoliageHandlers::EraseFoliage(const TSharedPtr<FJsonObject>& Params)
-{
-	const TSharedPtr<FJsonObject>* LocationObj = nullptr;
-	if (!Params->TryGetObjectField(TEXT("location"), LocationObj) || !LocationObj || !(*LocationObj).IsValid())
-	{
-		return MCPError(TEXT("Missing 'location' parameter (object with x, y, z)"));
-	}
-
-	double LocX = 0, LocY = 0, LocZ = 0;
-	(*LocationObj)->TryGetNumberField(TEXT("x"), LocX);
-	(*LocationObj)->TryGetNumberField(TEXT("y"), LocY);
-	(*LocationObj)->TryGetNumberField(TEXT("z"), LocZ);
-
-	double EraseRadius = OptionalNumber(Params, TEXT("radius"), 500.0);
-
-	FString FoliageTypeFilter = OptionalString(Params, TEXT("foliageType"));
-
-	// Foliage erasure, like painting, is internal to FoliageEdMode.
-	// Provide the same execute_python fallback note.
-	auto Result = MakeShared<FJsonObject>();
-
-	TSharedPtr<FJsonObject> LocationResult = MakeShared<FJsonObject>();
-	LocationResult->SetNumberField(TEXT("x"), LocX);
-	LocationResult->SetNumberField(TEXT("y"), LocY);
-	LocationResult->SetNumberField(TEXT("z"), LocZ);
-	Result->SetObjectField(TEXT("location"), LocationResult);
-	Result->SetNumberField(TEXT("radius"), EraseRadius);
-
-	if (!FoliageTypeFilter.IsEmpty())
-	{
-		Result->SetStringField(TEXT("foliageTypeFilter"), FoliageTypeFilter);
-	}
-
-	Result->SetBoolField(TEXT("success"), false);
-	Result->SetStringField(TEXT("note"),
-		TEXT("Foliage erasure requires FoliageEdMode which is not accessible from C++ plugins. ")
-		TEXT("Use the execute_python handler with unreal.FoliageEditorLibrary.erase_foliage() if available, ")
-		TEXT("or manually erase in the editor foliage tool."));
-
-	return MCPResult(Result);
-}
-
-TSharedPtr<FJsonValue> FFoliageHandlers::SampleFoliageInstances(const TSharedPtr<FJsonObject>& Params)
-{
-	// Parse center location
-	const TSharedPtr<FJsonObject>* CenterObj = nullptr;
-	if (!Params->TryGetObjectField(TEXT("center"), CenterObj) || !CenterObj || !(*CenterObj).IsValid())
-	{
-		return MCPError(TEXT("Missing 'center' parameter (object with x, y, z)"));
-	}
-
-	double CenterX = 0, CenterY = 0, CenterZ = 0;
-	(*CenterObj)->TryGetNumberField(TEXT("x"), CenterX);
-	(*CenterObj)->TryGetNumberField(TEXT("y"), CenterY);
-	(*CenterObj)->TryGetNumberField(TEXT("z"), CenterZ);
-	FVector Center(CenterX, CenterY, CenterZ);
-
-	double Radius = OptionalNumber(Params, TEXT("radius"), 1000.0);
-	double RadiusSq = Radius * Radius;
-
-	int32 Limit = 100;
-	if (Params->HasField(TEXT("limit")))
-	{
-		Limit = static_cast<int32>(Params->GetNumberField(TEXT("limit")));
-	}
-
-	FString FoliageTypeFilter = OptionalString(Params, TEXT("foliageType"));
-
-	REQUIRE_EDITOR_WORLD(World);
-
-	TArray<TSharedPtr<FJsonValue>> InstancesArray;
-
-	for (TActorIterator<AInstancedFoliageActor> It(World); It; ++It)
-	{
-		AInstancedFoliageActor* FoliageActor = *It;
-		if (!FoliageActor) continue;
-		if (InstancesArray.Num() >= Limit) break;
-
-		const auto& FoliageInfoMap = FoliageActor->GetFoliageInfos();
-		for (const auto& Pair : FoliageInfoMap)
-		{
-			if (InstancesArray.Num() >= Limit) break;
-
-			UFoliageType* FoliageType = Pair.Key;
-			const FFoliageInfo& FoliageInfo = *Pair.Value;
-
-			if (!FoliageType) continue;
-
-			FString TypeName = FoliageType->GetName();
-
-			// Apply foliage type filter if specified
-			if (!FoliageTypeFilter.IsEmpty() && !TypeName.Contains(FoliageTypeFilter))
-			{
-				continue;
-			}
-
-			// Get the instanced static mesh component for mesh info
-			FString MeshName = TEXT("Unknown");
-			UFoliageType_InstancedStaticMesh* ISMType = Cast<UFoliageType_InstancedStaticMesh>(FoliageType);
-			if (ISMType && ISMType->Mesh)
-			{
-				MeshName = ISMType->Mesh->GetName();
-			}
-
-			// UE 5.7: Instances array is private; use the HISM component for transforms
-			UHierarchicalInstancedStaticMeshComponent* HISMComp = FoliageInfo.GetComponent();
-			if (!HISMComp) continue;
-
-			int32 NumInstances = HISMComp->GetInstanceCount();
-			for (int32 i = 0; i < NumInstances; ++i)
-			{
-				if (InstancesArray.Num() >= Limit) break;
-
-				FTransform InstanceTransform;
-				HISMComp->GetInstanceTransform(i, InstanceTransform, /*bWorldSpace=*/ true);
-				FVector InstanceLocation = InstanceTransform.GetLocation();
-				double DistSq = FVector::DistSquared(Center, InstanceLocation);
-
-				if (DistSq <= RadiusSq)
-				{
-					double Distance = FMath::Sqrt(DistSq);
-
-					TSharedPtr<FJsonObject> InstanceObj = MakeShared<FJsonObject>();
-					InstanceObj->SetStringField(TEXT("foliageType"), TypeName);
-					InstanceObj->SetStringField(TEXT("mesh"), MeshName);
-
-					TSharedPtr<FJsonObject> LocObj = MakeShared<FJsonObject>();
-					LocObj->SetNumberField(TEXT("x"), InstanceLocation.X);
-					LocObj->SetNumberField(TEXT("y"), InstanceLocation.Y);
-					LocObj->SetNumberField(TEXT("z"), InstanceLocation.Z);
-					InstanceObj->SetObjectField(TEXT("location"), LocObj);
-
-					InstanceObj->SetNumberField(TEXT("distance"), FMath::RoundToFloat(Distance * 10.0f) / 10.0f);
-
-					// Extract rotation and scale from the instance transform
-					FRotator InstanceRotation = InstanceTransform.Rotator();
-					TSharedPtr<FJsonObject> RotObj = MakeShared<FJsonObject>();
-					RotObj->SetNumberField(TEXT("pitch"), InstanceRotation.Pitch);
-					RotObj->SetNumberField(TEXT("yaw"), InstanceRotation.Yaw);
-					RotObj->SetNumberField(TEXT("roll"), InstanceRotation.Roll);
-					InstanceObj->SetObjectField(TEXT("rotation"), RotObj);
-
-					FVector InstanceScale = InstanceTransform.GetScale3D();
-					TSharedPtr<FJsonObject> ScaleObj = MakeShared<FJsonObject>();
-					ScaleObj->SetNumberField(TEXT("x"), InstanceScale.X);
-					ScaleObj->SetNumberField(TEXT("y"), InstanceScale.Y);
-					ScaleObj->SetNumberField(TEXT("z"), InstanceScale.Z);
-					InstanceObj->SetObjectField(TEXT("scale"), ScaleObj);
-
-					InstancesArray.Add(MakeShared<FJsonValueObject>(InstanceObj));
-				}
-			}
-		}
-	}
-
-	auto Result = MCPSuccess();
-
-	TSharedPtr<FJsonObject> CenterResult = MakeShared<FJsonObject>();
-	CenterResult->SetNumberField(TEXT("x"), CenterX);
-	CenterResult->SetNumberField(TEXT("y"), CenterY);
-	CenterResult->SetNumberField(TEXT("z"), CenterZ);
-
-	Result->SetObjectField(TEXT("center"), CenterResult);
-	Result->SetNumberField(TEXT("radius"), Radius);
-	Result->SetNumberField(TEXT("instanceCount"), InstancesArray.Num());
-	Result->SetNumberField(TEXT("limit"), Limit);
-	Result->SetArrayField(TEXT("instances"), InstancesArray);
-
-	if (!FoliageTypeFilter.IsEmpty())
-	{
-		Result->SetStringField(TEXT("foliageTypeFilter"), FoliageTypeFilter);
-	}
-
-	return MCPResult(Result);
-}
-
-TSharedPtr<FJsonValue> FFoliageHandlers::CreateFoliageLayer(const TSharedPtr<FJsonObject>& Params)
-{
-	FString AssetName;
-	if (auto Err = RequireString(Params, TEXT("name"), AssetName)) return Err;
-
-	FString PackagePath = OptionalString(Params, TEXT("packagePath"), TEXT("/Game/Foliage"));
-	FString MeshPath = OptionalString(Params, TEXT("meshPath"));
-	FString AssetType = OptionalString(Params, TEXT("assetType"), TEXT("FoliageType"));
-	const FString OnConflict = OptionalString(Params, TEXT("onConflict"), TEXT("skip"));
-
-	if (auto Hit = MCPCheckAssetExists(PackagePath, AssetName, OnConflict, *AssetType))
-	{
-		return Hit;
-	}
-
-	FString FullPath = PackagePath / AssetName;
-
-	auto Result = MakeShared<FJsonObject>();
-
-	if (AssetType == TEXT("LandscapeGrassType"))
-	{
-		// Create a LandscapeGrassType asset
-		FString PackageFullPath = PackagePath / AssetName;
-		UPackage* Package = CreatePackage(*PackageFullPath);
-		if (!Package)
-		{
-			return MCPError(FString::Printf(TEXT("Failed to create package: %s"), *PackageFullPath));
-		}
-
-		ULandscapeGrassType* GrassType = NewObject<ULandscapeGrassType>(Package, *AssetName, RF_Public | RF_Standalone);
-		if (!GrassType)
-		{
-			return MCPError(TEXT("Failed to create LandscapeGrassType object"));
-		}
-
-		// If a mesh path is provided, add it as a grass variety
-		if (!MeshPath.IsEmpty())
-		{
-			UStaticMesh* Mesh = LoadObject<UStaticMesh>(nullptr, *MeshPath);
-			if (Mesh)
-			{
-				FGrassVariety Variety;
-				Variety.GrassMesh = Mesh;
-				GrassType->GrassVarieties.Add(Variety);
-			}
-		}
-
-		// Notify asset registry
-		FAssetRegistryModule::AssetCreated(GrassType);
-		Package->MarkPackageDirty();
-
-		// Save the asset
-		UEditorAssetLibrary::SaveAsset(PackageFullPath, false);
-
-		Result->SetStringField(TEXT("path"), PackageFullPath);
-		Result->SetStringField(TEXT("name"), GrassType->GetName());
-		Result->SetStringField(TEXT("className"), GrassType->GetClass()->GetName());
-		Result->SetStringField(TEXT("assetType"), TEXT("LandscapeGrassType"));
-		if (!MeshPath.IsEmpty())
-		{
-			Result->SetStringField(TEXT("meshPath"), MeshPath);
-		}
-		Result->SetBoolField(TEXT("success"), true);
-		MCPSetCreated(Result);
-		MCPSetDeleteAssetRollback(Result, GrassType->GetPathName());
-	}
-	else
-	{
-		// Create a FoliageType_InstancedStaticMesh asset (default)
-		FString PackageFullPath = PackagePath / AssetName;
-		UPackage* Package = CreatePackage(*PackageFullPath);
-		if (!Package)
-		{
-			return MCPError(FString::Printf(TEXT("Failed to create package: %s"), *PackageFullPath));
-		}
-
-		UFoliageType_InstancedStaticMesh* FoliageType = NewObject<UFoliageType_InstancedStaticMesh>(
-			Package, *AssetName, RF_Public | RF_Standalone);
-		if (!FoliageType)
-		{
-			return MCPError(TEXT("Failed to create FoliageType object"));
-		}
-
-		// Set mesh if provided
-		if (!MeshPath.IsEmpty())
-		{
-			UStaticMesh* Mesh = LoadObject<UStaticMesh>(nullptr, *MeshPath);
-			if (Mesh)
-			{
-				FoliageType->Mesh = Mesh;
-			}
-		}
-
-		// Notify asset registry
-		FAssetRegistryModule::AssetCreated(FoliageType);
-		Package->MarkPackageDirty();
-
-		// Save the asset
-		UEditorAssetLibrary::SaveAsset(PackageFullPath, false);
-
-		Result->SetStringField(TEXT("path"), PackageFullPath);
-		Result->SetStringField(TEXT("name"), FoliageType->GetName());
-		Result->SetStringField(TEXT("className"), FoliageType->GetClass()->GetName());
-		Result->SetStringField(TEXT("assetType"), TEXT("FoliageType"));
-		if (!MeshPath.IsEmpty())
-		{
-			Result->SetStringField(TEXT("meshPath"), MeshPath);
-		}
-		Result->SetBoolField(TEXT("success"), true);
-		MCPSetCreated(Result);
-		MCPSetDeleteAssetRollback(Result, FoliageType->GetPathName());
-	}
-
-	return MCPResult(Result);
-}
-
 TSharedPtr<FJsonValue> FFoliageHandlers::SetFoliageTypeSettings(const TSharedPtr<FJsonObject>& Params)
 {
 	// Accept either foliageTypePath or foliageTypeName for lookup
@@ -583,7 +276,7 @@ TSharedPtr<FJsonValue> FFoliageHandlers::SetFoliageTypeSettings(const TSharedPtr
 	}
 	if (FoliageTypePath.IsEmpty())
 	{
-		return MCPError(TEXT("Missing 'foliageTypePath' or 'foliageTypeName' parameter"));
+		return MCPError(TEXT("Missing 'foliageTypePath' or 'foliageTypeName' parameter. To write the same settings to every type matching a predicate on an existing value, use foliage(batch_set_settings_where) instead of calling this once per asset (#988)."));
 	}
 
 	const TSharedPtr<FJsonObject>* SettingsObj = nullptr;
@@ -628,10 +321,20 @@ TSharedPtr<FJsonValue> FFoliageHandlers::SetFoliageTypeSettings(const TSharedPtr
 	// Apply settings via property reflection
 	TArray<FString> AppliedSettings;
 	TArray<FString> FailedSettings;
+	// Settings whose property already held the requested value. Writing one of
+	// those changed nothing, and a result that counted it as applied would
+	// report a no-op replay as a state change.
+	TArray<FString> UnchangedSettings;
+	// The previous values, captured BEFORE each write and in the same text form
+	// the settings parameter takes, so the record below is a call that restores
+	// them. Reading the properties back afterwards would only ever recover the
+	// values this call just installed.
+	TSharedPtr<FJsonObject> PreviousSettings = MakeShared<FJsonObject>();
+	int32 ChangedCount = 0;
 
 	for (const auto& KV : (*SettingsObj)->Values)
 	{
-		FString PropertyName = KV.Key;
+		FString PropertyName(*KV.Key);
 		FString PropertyValue;
 
 		// Convert the JSON value to a string for ImportText
@@ -665,6 +368,12 @@ TSharedPtr<FJsonValue> FFoliageHandlers::SetFoliageTypeSettings(const TSharedPtr
 		}
 
 		void* PropertyAddr = Property->ContainerPtrToValuePtr<void>(FoliageType);
+		// Exported with no default to compare against, so a value that happens
+		// to equal the class default still comes back in full rather than as
+		// the empty delta a struct property would otherwise write.
+		FString OldText;
+		Property->ExportText_Direct(OldText, PropertyAddr, nullptr, FoliageType, PPF_None);
+
 		const TCHAR* ImportResult = Property->ImportText_Direct(*PropertyValue, PropertyAddr, FoliageType, PPF_None);
 		if (ImportResult == nullptr)
 		{
@@ -673,17 +382,37 @@ TSharedPtr<FJsonValue> FFoliageHandlers::SetFoliageTypeSettings(const TSharedPtr
 		else
 		{
 			AppliedSettings.Add(PropertyName);
+			// Compare the exported forms rather than the caller's string: "1"
+			// and "1.000000" are the same float, and a text comparison against
+			// what was asked for would call that a change.
+			FString NewText;
+			Property->ExportText_Direct(NewText, PropertyAddr, nullptr, FoliageType, PPF_None);
+			if (NewText == OldText)
+			{
+				UnchangedSettings.Add(PropertyName);
+			}
+			else
+			{
+				++ChangedCount;
+				PreviousSettings->SetStringField(PropertyName, OldText);
+			}
 		}
 	}
 
-	// Mark the foliage type as dirty
-	FoliageType->MarkPackageDirty();
-
-	// Save the asset if it has a valid package path
-	FString PackagePath = FoliageType->GetPathName();
-	if (PackagePath.Contains(TEXT("/Game/")))
+	// Dirty and save only when a value actually moved. A call that wrote the
+	// values the asset already held has nothing to persist, and dirtying the
+	// package anyway would hand the user an unsaved asset for a no-op.
+	if (ChangedCount > 0)
 	{
-		UEditorAssetLibrary::SaveAsset(FoliageType->GetOutermost()->GetName(), false);
+		// Mark the foliage type as dirty
+		FoliageType->MarkPackageDirty();
+
+		// Save the asset if it has a valid package path
+		FString PackagePath = FoliageType->GetPathName();
+		if (PackagePath.Contains(TEXT("/Game/")))
+		{
+			UEditorAssetLibrary::SaveAsset(FoliageType->GetOutermost()->GetName(), false);
+		}
 	}
 
 	auto Result = MakeShared<FJsonObject>();
@@ -705,6 +434,38 @@ TSharedPtr<FJsonValue> FFoliageHandlers::SetFoliageTypeSettings(const TSharedPtr
 			FailedArray.Add(MakeShared<FJsonValueString>(S));
 		}
 		Result->SetArrayField(TEXT("failedSettings"), FailedArray);
+	}
+
+	if (UnchangedSettings.Num() > 0)
+	{
+		TArray<TSharedPtr<FJsonValue>> UnchangedArray;
+		for (const FString& S : UnchangedSettings)
+		{
+			UnchangedArray.Add(MakeShared<FJsonValueString>(S));
+		}
+		Result->SetArrayField(TEXT("unchangedSettings"), UnchangedArray);
+	}
+
+	if (ChangedCount > 0) MCPSetUpdated(Result);
+	Result->SetBoolField(TEXT("unchanged"), ChangedCount == 0);
+	Result->SetNumberField(TEXT("changedCount"), ChangedCount);
+
+	if (ChangedCount > 0)
+	{
+		// The inverse is this same action with the values that were there
+		// before. Only the properties that actually moved are listed: replaying
+		// the ones that did not would be a second no-op write, and a property
+		// whose import failed was never touched.
+		TSharedPtr<FJsonObject> Payload = MakeShared<FJsonObject>();
+		Payload->SetStringField(TEXT("foliageTypePath"), FoliageType->GetPathName());
+		Payload->SetObjectField(TEXT("settings"), PreviousSettings);
+		MCPSetRollback(Result, TEXT("set_foliage_type_settings"), Payload);
+	}
+	else
+	{
+		MCPSetNoRollback(Result, TEXT(
+			"No property value moved, so nothing was written to the foliage type and there is nothing to undo. "
+			"Anything listed in failedSettings was rejected before the write and never reached the asset."));
 	}
 
 	Result->SetBoolField(TEXT("success"), FailedSettings.Num() == 0);
@@ -758,7 +519,7 @@ TSharedPtr<FJsonValue> FFoliageHandlers::CreateFoliageType(const TSharedPtr<FJso
 	{
 		for (const auto& KV : (*SettingsObj)->Values)
 		{
-			FString PropertyName = KV.Key;
+			FString PropertyName(*KV.Key);
 			FString PropertyValue;
 
 			if (KV.Value->Type == EJson::String)

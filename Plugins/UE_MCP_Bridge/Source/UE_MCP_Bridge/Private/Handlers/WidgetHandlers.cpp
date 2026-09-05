@@ -1,6 +1,9 @@
 #include "WidgetHandlers.h"
 #include "HandlerRegistry.h"
 #include "HandlerUtils.h"
+#include "HandlerPagination.h"
+#include "HandlerAssetCreate.h"
+#include <type_traits>
 #include "AssetRegistry/AssetRegistryModule.h"
 #include "AssetToolsModule.h"
 #include "IAssetTools.h"
@@ -14,6 +17,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Blueprint/WidgetTree.h"
 #include "Components/Widget.h"
+#include "Components/PanelSlot.h"
 #include "Components/PanelWidget.h"
 #include "Components/TextBlock.h"
 #include "Components/Image.h"
@@ -46,7 +50,10 @@
 #include "MovieSceneSpawnable.h"
 #include "Dom/JsonObject.h"
 #include "Dom/JsonValue.h"
+#include "Layout/SlateRect.h"
+#include "Misc/App.h"
 #include "UObject/UnrealType.h"
+#include "UObject/UObjectIterator.h"
 #include "Editor.h"
 #include "EditorUtilitySubsystem.h"
 #include "EditorUtilityWidget.h"
@@ -54,31 +61,312 @@
 #include "EditorUtilityBlueprint.h"
 #include "Kismet2/KismetEditorUtilities.h"
 #include "Engine/Texture2D.h"
+#include "Engine/GameViewportClient.h"
 #include "Materials/MaterialInterface.h"
 #include "EngineUtils.h"
+#include "Widgets/SViewport.h"
+#include "UObject/SoftObjectPath.h"
+
+// ── WidgetBlueprint resolution (#972) ────────────────────────────────────────
+// See the contract and the mechanism note on MCPWidget in WidgetHandlers.h.
+// Everything here is defined exactly once, in this translation unit, and
+// declared in the shared header, because the module is a unity build and a
+// second file-local copy would be a redefinition on some grouping.
+namespace MCPWidget
+{
+
+/**
+ * "WidgetBlueprint'/Game/UI/WBP_Foo.WBP_Foo'", "/Game/UI/WBP_Foo",
+ * "/Game/UI/WBP_Foo.WBP_Foo" and "/Game/UI/WBP_Foo.WBP_Foo_C" all normalise to
+ * "/Game/UI/WBP_Foo.WBP_Foo". A path with no object part gets one inferred from
+ * the package name, which is the convention every asset in the content browser
+ * follows.
+ */
+static FString NormalizeWidgetBlueprintObjectPath(const FString& InAssetPath)
+{
+	FString Path = InAssetPath;
+	Path.TrimStartAndEndInline();
+	if (Path.IsEmpty()) return Path;
+
+	// "Class'/Game/...'" and "Class /Game/..." export forms.
+	int32 QuoteIndex = INDEX_NONE;
+	if (Path.FindChar(TCHAR('\''), QuoteIndex))
+	{
+		Path = Path.RightChop(QuoteIndex + 1);
+		Path.RemoveFromEnd(TEXT("'"));
+	}
+	else
+	{
+		int32 SpaceIndex = INDEX_NONE;
+		if (Path.FindChar(TCHAR(' '), SpaceIndex))
+		{
+			Path = Path.RightChop(SpaceIndex + 1);
+		}
+	}
+	Path.TrimStartAndEndInline();
+
+	// Subobject part ("Package.Asset:Inner") is not ours to resolve.
+	int32 ColonIndex = INDEX_NONE;
+	if (Path.FindChar(TCHAR(':'), ColonIndex))
+	{
+		Path = Path.Left(ColonIndex);
+	}
+
+	const int32 LastSlash = Path.Find(TEXT("/"), ESearchCase::CaseSensitive, ESearchDir::FromEnd);
+	const int32 LastDot = Path.Find(TEXT("."), ESearchCase::CaseSensitive, ESearchDir::FromEnd);
+	if (LastDot <= LastSlash)
+	{
+		// No object part. Infer it from the package name.
+		const FString AssetName = FPackageName::GetLongPackageAssetName(Path);
+		if (AssetName.IsEmpty()) return FString();
+		return Path + TEXT(".") + AssetName;
+	}
+
+	// "/Game/UI/WBP_Foo.WBP_Foo_C" names the generated class. Keep the trailing
+	// _C off the object path; the class is resolved from the blueprint anyway.
+	FString ObjectName = Path.RightChop(LastDot + 1);
+	if (ObjectName.EndsWith(TEXT("_C"), ESearchCase::CaseSensitive))
+	{
+		ObjectName.LeftChopInline(2);
+		Path = Path.Left(LastDot + 1) + ObjectName;
+	}
+	return Path;
+}
+
+/**
+ * Accept a candidate only if it is a WidgetBlueprint the editor still consults.
+ *
+ * RF_NewerVersionExists is the flag a package reload leaves on the object it
+ * replaced. Handing one of those back is exactly the failure #972 describes
+ * after asset(force_reload): every write lands on a corpse, the real asset
+ * never changes, and nothing reports an error. IsValid covers null and garbage.
+ */
+static UWidgetBlueprint* AsLiveWidgetBlueprint(UObject* Candidate, FString& OutFoundClass)
+{
+	if (!IsValid(Candidate)) return nullptr;
+	if (Candidate->HasAnyFlags(RF_NewerVersionExists)) return nullptr;
+
+	if (UWidgetBlueprint* AsBlueprint = Cast<UWidgetBlueprint>(Candidate))
+	{
+		return AsBlueprint;
+	}
+	// A caller who passed the generated class path gets the blueprint behind it.
+	if (UClass* AsClass = Cast<UClass>(Candidate))
+	{
+		if (UWidgetBlueprint* Generated = Cast<UWidgetBlueprint>(AsClass->ClassGeneratedBy))
+		{
+			return Generated;
+		}
+	}
+	OutFoundClass = Candidate->GetClass()->GetName();
+	return nullptr;
+}
+
+/** True when the AssetRegistry or the filesystem says the asset is really there. */
+static bool WidgetBlueprintAssetExists(const FString& ObjectPath, const FString& PackageName)
+{
+	if (!PackageName.IsEmpty() && FPackageName::DoesPackageExist(PackageName))
+	{
+		return true;
+	}
+	// An asset created this session and not yet saved has no file, so the
+	// registry is the only witness. Never load anything to answer this.
+	if (FAssetRegistryModule* ARM =
+		FModuleManager::GetModulePtr<FAssetRegistryModule>(TEXT("AssetRegistry")))
+	{
+		const FAssetData Data = ARM->Get().GetAssetByObjectPath(FSoftObjectPath(ObjectPath));
+		if (Data.IsValid()) return true;
+	}
+	return false;
+}
+
+FWidgetBlueprintResolve ResolveWidgetBlueprint(const FString& AssetPath)
+{
+	FWidgetBlueprintResolve Out;
+	Out.ObjectPath = NormalizeWidgetBlueprintObjectPath(AssetPath);
+	if (Out.ObjectPath.IsEmpty())
+	{
+		Out.Failure = EWidgetBlueprintResolveFailure::NotFound;
+		return Out;
+	}
+
+	const FString PackageName = FPackageName::ObjectPathToPackageName(Out.ObjectPath);
+	Out.bAssetExists = WidgetBlueprintAssetExists(Out.ObjectPath, PackageName);
+
+	// Step 1. The object hash, first and cheapest. An asset already in memory
+	// answers here without the AssetRegistry round trip UEditorAssetLibrary
+	// makes, which is the step that was intermittently returning null.
+	if (UWidgetBlueprint* Live =
+		AsLiveWidgetBlueprint(FindObject<UObject>(nullptr, *Out.ObjectPath), Out.FoundClass))
+	{
+		Out.Blueprint = Live;
+		return Out;
+	}
+
+	// Step 2. The historical path. Kept because it understands more path
+	// spellings than the object hash does and it is what every other handler
+	// in this plugin uses.
+	if (UWidgetBlueprint* Live =
+		AsLiveWidgetBlueprint(UEditorAssetLibrary::LoadAsset(AssetPath), Out.FoundClass))
+	{
+		Out.Blueprint = Live;
+		return Out;
+	}
+
+	// Step 3. Load the object directly, bypassing the registry entirely. Only
+	// worth attempting when something really is there: StaticLoadObject on a
+	// path with no package behind it can force a blocking package search.
+	if (Out.bAssetExists)
+	{
+		if (UWidgetBlueprint* Live =
+			AsLiveWidgetBlueprint(LoadObject<UObject>(nullptr, *Out.ObjectPath), Out.FoundClass))
+		{
+			Out.Blueprint = Live;
+			return Out;
+		}
+
+		// Step 4. "Failed to find object 'Object /Game/x/WBP_Foo.WBP_Foo'" in
+		// the log means the package resolved but the object lookup inside it
+		// did not. Load the package explicitly and look again.
+		if (!PackageName.IsEmpty())
+		{
+			if (UPackage* Package = LoadPackage(nullptr, *PackageName, LOAD_None))
+			{
+				Package->FullyLoad();
+				const FString ObjectName = FPackageName::ObjectPathToObjectName(Out.ObjectPath);
+				if (UWidgetBlueprint* Live =
+					AsLiveWidgetBlueprint(FindObject<UObject>(Package, *ObjectName), Out.FoundClass))
+				{
+					Out.Blueprint = Live;
+					return Out;
+				}
+			}
+		}
+	}
+
+	if (!Out.FoundClass.IsEmpty())
+	{
+		Out.Failure = EWidgetBlueprintResolveFailure::WrongType;
+	}
+	else if (Out.bAssetExists)
+	{
+		Out.Failure = EWidgetBlueprintResolveFailure::Unresolvable;
+	}
+	else
+	{
+		Out.Failure = EWidgetBlueprintResolveFailure::NotFound;
+	}
+	return Out;
+}
+
+TSharedPtr<FJsonValue> WidgetBlueprintResolveError(
+	const FString& AssetPath,
+	const FWidgetBlueprintResolve& Resolved)
+{
+	switch (Resolved.Failure)
+	{
+	case EWidgetBlueprintResolveFailure::WrongType:
+		return MCPError(FString::Printf(
+			TEXT("'%s' is a %s, not a WidgetBlueprint."),
+			*AssetPath, *Resolved.FoundClass));
+
+	case EWidgetBlueprintResolveFailure::Unresolvable:
+		// The distinction the caller needs: the asset is there, so retrying or
+		// reloading the bridge is the move. Renaming or re-creating it is not.
+		return MCPError(FString::Printf(
+			TEXT("'%s' exists but could not be resolved to a live WidgetBlueprint on this call. ")
+			TEXT("The object handle went stale (a package reload or a GC pass replaced it), the asset is not missing. ")
+			TEXT("Retry the call; if it keeps failing, editor(action=\"reload_bridge\") clears it."),
+			*AssetPath));
+
+	case EWidgetBlueprintResolveFailure::NotFound:
+	default:
+		return MCPError(FString::Printf(
+			TEXT("No asset exists at '%s'. Nothing of that name is in the AssetRegistry and no package of that name is on disk. ")
+			TEXT("Check the path with widget(action=\"list\") or asset(action=\"search\")."),
+			*AssetPath));
+	}
+}
+
+UWidgetBlueprint* ResolveWidgetBlueprintOrError(
+	const FString& AssetPath,
+	TSharedPtr<FJsonValue>& OutError)
+{
+	const FWidgetBlueprintResolve Resolved = ResolveWidgetBlueprint(AssetPath);
+	if (!Resolved.Blueprint)
+	{
+		OutError = WidgetBlueprintResolveError(AssetPath, Resolved);
+	}
+	return Resolved.Blueprint;
+}
+
+TSharedPtr<FJsonValue> MissingWidgetTreeError(const FString& AssetPath)
+{
+	return MCPError(FString::Printf(
+		TEXT("WidgetBlueprint '%s' resolved but has no WidgetTree. The asset is loaded and broken, not missing; ")
+		TEXT("open it in the editor or re-create it."),
+		*AssetPath));
+}
+
+}
 
 void FWidgetHandlers::RegisterHandlers(FMCPHandlerRegistry& Registry)
 {
 	Registry.RegisterHandler(TEXT("list_widget_blueprints"), &ListWidgetBlueprints);
 	Registry.RegisterHandler(TEXT("create_widget_blueprint"), &CreateWidgetBlueprint);
 	Registry.RegisterHandler(TEXT("read_widget_tree"), &ReadWidgetTree);
+	Registry.RegisterHandler(TEXT("extract_widget_subtree"), &ExtractWidgetSubtree);
 	Registry.RegisterHandler(TEXT("create_editor_utility_widget"), &CreateEditorUtilityWidget);
 	Registry.RegisterHandler(TEXT("create_editor_utility_blueprint"), &CreateEditorUtilityBlueprint);
-	Registry.RegisterHandler(TEXT("search_widget_by_name"), &SearchWidgetByName);
-	Registry.RegisterHandler(TEXT("get_widget_properties"), &GetWidgetProperties);
 	Registry.RegisterHandler(TEXT("get_widget_details"), &GetWidgetProperties);
+	Registry.RegisterHandler(TEXT("get_widget_properties"), &GetWidgetFullProperties);
+	Registry.RegisterHandler(TEXT("list_widget_bindings"), &ListWidgetBindings);
+	Registry.RegisterHandler(TEXT("clear_widget_binding"), &ClearWidgetBinding);
 	Registry.RegisterHandler(TEXT("set_widget_property"), &SetWidgetProperty);
+	Registry.RegisterHandler(TEXT("set_widget_style"), &SetWidgetStyle);
+	Registry.RegisterHandler(TEXT("bulk_set_widget_properties"), &BulkSetWidgetProperties);
+	Registry.RegisterHandler(TEXT("reorder_child"), &ReorderChild);
 	Registry.RegisterHandler(TEXT("read_widget_animations"), &ReadWidgetAnimations);
 	Registry.RegisterHandler(TEXT("run_editor_utility_widget"), &RunEditorUtilityWidget);
 	Registry.RegisterHandler(TEXT("run_editor_utility_blueprint"), &RunEditorUtilityBlueprint);
 	Registry.RegisterHandler(TEXT("add_widget"), &AddWidget);
 	Registry.RegisterHandler(TEXT("remove_widget"), &RemoveWidget);
 	Registry.RegisterHandler(TEXT("move_widget"), &MoveWidget);
+	Registry.RegisterHandler(TEXT("set_root_widget"), &SetRoot);
+	Registry.RegisterHandler(TEXT("wrap_root_widget"), &WrapRoot);
 	Registry.RegisterHandler(TEXT("list_widget_classes"), &ListWidgetClasses);
 	Registry.RegisterHandler(TEXT("list_runtime_widgets"), &ListRuntimeWidgets);
 	Registry.RegisterHandler(TEXT("get_runtime_widget"), &GetRuntimeWidget);
+	Registry.RegisterHandler(TEXT("inspect_runtime_instances"), &InspectRuntimeInstances);
 	// #161: Runtime delegate inspection
 	Registry.RegisterHandler(TEXT("get_runtime_delegates"), &GetRuntimeDelegates);
+	Registry.RegisterHandler(TEXT("add_to_viewport"), &AddWidgetToViewport);
+	Registry.RegisterHandler(TEXT("invoke_runtime_function"), &InvokeRuntimeWidgetFunction);
+
+	// UMG animation authoring, navigation rules, focus and accessibility.
+	// Bodies live in WidgetHandlers_Animation.cpp.
+	Registry.RegisterHandler(TEXT("create_widget_animation"), &CreateWidgetAnimation);
+	Registry.RegisterHandler(TEXT("delete_widget_animation"), &DeleteWidgetAnimation);
+	Registry.RegisterHandler(TEXT("get_widget_animation"), &GetWidgetAnimation);
+	Registry.RegisterHandler(TEXT("add_widget_animation_track"), &AddWidgetAnimationTrack);
+	Registry.RegisterHandler(TEXT("remove_widget_animation_track"), &RemoveWidgetAnimationTrack);
+	Registry.RegisterHandler(TEXT("add_widget_animation_key"), &AddWidgetAnimationKey);
+	Registry.RegisterHandler(TEXT("remove_widget_animation_key"), &RemoveWidgetAnimationKey);
+	Registry.RegisterHandler(TEXT("add_widget_animation_event_key"), &AddWidgetAnimationEventKey);
+	Registry.RegisterHandler(TEXT("remove_widget_animation_event_key"), &RemoveWidgetAnimationEventKey);
+	Registry.RegisterHandler(TEXT("bind_widget_animation_event"), &BindWidgetAnimationEvent);
+	Registry.RegisterHandler(TEXT("unbind_widget_animation_event"), &UnbindWidgetAnimationEvent);
+	Registry.RegisterHandler(TEXT("set_widget_navigation"), &SetWidgetNavigation);
+	Registry.RegisterHandler(TEXT("clear_widget_navigation"), &ClearWidgetNavigation);
+	Registry.RegisterHandler(TEXT("restore_widget_navigation"), &RestoreWidgetNavigation);
+	Registry.RegisterHandler(TEXT("audit_widget_focus_chain"), &AuditWidgetFocusChain);
+	Registry.RegisterHandler(TEXT("audit_widget_accessibility"), &AuditWidgetAccessibility);
+	Registry.RegisterHandler(TEXT("get_runtime_focus_path"), &GetRuntimeFocusPath);
+	Registry.RegisterHandler(TEXT("set_runtime_focus"), &SetRuntimeFocus);
+
+	// CommonUI. Bodies live in WidgetHandlers_CommonUI.cpp.
+	Registry.RegisterHandler(TEXT("get_bind_widget_contract"), &GetBindWidgetContract);
+	Registry.RegisterHandler(TEXT("audit_commonui"), &AuditCommonUI);
 }
 
 UWidget* FWidgetHandlers::FindWidgetByNameRecursive(UWidget* Root, const FString& WidgetName)
@@ -111,24 +399,39 @@ TSharedPtr<FJsonValue> FWidgetHandlers::ListWidgetBlueprints(const TSharedPtr<FJ
 {
 	bool bRecursive = OptionalBool(Params, TEXT("recursive"), true);
 
+	// T3: paged.
+	MCPPagination::FPageRequest Page;
+	if (auto Err = MCPPagination::ReadPageRequest(
+			Params,
+			FString::Printf(TEXT("list_widget_blueprints|recursive=%d"), bRecursive ? 1 : 0),
+			/*DefaultLimit*/ 200, /*MaxLimit*/ 2000, Page))
+	{
+		return Err;
+	}
+
 	IAssetRegistry& AssetRegistry = FModuleManager::LoadModuleChecked<FAssetRegistryModule>(TEXT("AssetRegistry")).Get();
 
 	TArray<FAssetData> AssetDataList;
 	AssetRegistry.GetAssetsByClass(FTopLevelAssetPath(TEXT("/Script/UMGEditor"), TEXT("WidgetBlueprint")), AssetDataList, bRecursive);
 
-	TArray<TSharedPtr<FJsonValue>> AssetsArray;
+	TArray<MCPPagination::FPageRow> Rows;
+	Rows.Reserve(AssetDataList.Num());
 	for (const FAssetData& AssetData : AssetDataList)
 	{
 		TSharedPtr<FJsonObject> AssetObj = MakeShared<FJsonObject>();
 		AssetObj->SetStringField(TEXT("name"), AssetData.AssetName.ToString());
 		AssetObj->SetStringField(TEXT("path"), AssetData.GetObjectPathString());
 		AssetObj->SetStringField(TEXT("packagePath"), AssetData.PackagePath.ToString());
-		AssetsArray.Add(MakeShared<FJsonValueObject>(AssetObj));
+		// The asset's object path is the page anchor: two folders can each hold
+		// a WBP_HUD, and a page boundary has to name exactly one of them.
+		Rows.Add({ AssetData.GetObjectPathString(), MakeShared<FJsonValueObject>(AssetObj) });
 	}
+	// The registry returns assets in scan order, which is not a contract.
+	Rows.Sort([](const MCPPagination::FPageRow& A, const MCPPagination::FPageRow& B)
+		{ return A.Id < B.Id; });
 
 	auto Result = MCPSuccess();
-	Result->SetArrayField(TEXT("assets"), AssetsArray);
-	Result->SetNumberField(TEXT("count"), AssetsArray.Num());
+	MCPPagination::EmitPage(Page, Rows, TEXT("assets"), Result);
 
 	return MCPResult(Result);
 }
@@ -142,12 +445,7 @@ TSharedPtr<FJsonValue> FWidgetHandlers::CreateWidgetBlueprint(const TSharedPtr<F
 	const FString OnConflict = OptionalString(Params, TEXT("onConflict"), TEXT("skip"));
 	FString ParentClassName = OptionalString(Params, TEXT("parentClass"), TEXT("UserWidget"));
 
-	if (auto Existing = MCPCheckAssetExists(PackagePath, Name, OnConflict, TEXT("WidgetBlueprint")))
-	{
-		return Existing;
-	}
-
-	// (#134) Resolve parentClass string — accept short names ("UserWidget"),
+	// (#134) Resolve parentClass string - accept short names ("UserWidget"),
 	// short names with U prefix, and full class paths. Default to UUserWidget
 	// only when the caller didn't pass a parentClass.
 	UClass* ParentClass = nullptr;
@@ -165,26 +463,27 @@ TSharedPtr<FJsonValue> FWidgetHandlers::CreateWidgetBlueprint(const TSharedPtr<F
 		return MCPError(FString::Printf(TEXT("parentClass '%s' is not a UUserWidget subclass"), *ParentClassName));
 	}
 
-	FAssetToolsModule& AssetToolsModule = FModuleManager::LoadModuleChecked<FAssetToolsModule>(TEXT("AssetTools"));
-	IAssetTools& AssetTools = AssetToolsModule.Get();
-
 	UWidgetBlueprintFactory* WidgetFactory = NewObject<UWidgetBlueprintFactory>();
 	WidgetFactory->ParentClass = ParentClass;
 
-	UObject* NewAsset = AssetTools.CreateAsset(Name, PackagePath, UWidgetBlueprint::StaticClass(), WidgetFactory);
-	if (!NewAsset)
-	{
-		return MCPError(TEXT("Failed to create WidgetBlueprint"));
-	}
+	auto Created = MCPCreateAssetIdempotent<UWidgetBlueprint>(Name, PackagePath, OnConflict, TEXT("WidgetBlueprint"), WidgetFactory);
+	if (Created.EarlyReturn) return Created.EarlyReturn;
 
-	UEditorAssetLibrary::SaveAsset(NewAsset->GetPathName());
+	// #728: a project can name a default root widget class, so the factory can
+	// hand back a blueprint that already owns a widget. Give it its entry in
+	// WidgetVariableNameToGuidMap before the asset reaches disk, rather than
+	// leaving the first compile to report the missing one.
+	const MCPWidgetGuidMap::FSyncReport GuidSync = MCPWidgetGuidMap::Sync(Created.Asset);
+
+	UEditorAssetLibrary::SaveAsset(Created.Asset->GetPathName());
 
 	auto Result = MCPSuccess();
 	MCPSetCreated(Result);
-	Result->SetStringField(TEXT("path"), NewAsset->GetPathName());
+	Result->SetStringField(TEXT("path"), Created.Asset->GetPathName());
 	Result->SetStringField(TEXT("name"), Name);
 	Result->SetStringField(TEXT("parentClass"), ParentClass->GetPathName());
-	MCPSetDeleteAssetRollback(Result, NewAsset->GetPathName());
+	MCPSetWidgetGuidOutcome(Result, GuidSync, Created.Asset->GetPathName());
+	MCPSetDeleteAssetRollback(Result, Created.Asset->GetPathName());
 
 	return MCPResult(Result);
 }
@@ -194,12 +493,9 @@ TSharedPtr<FJsonValue> FWidgetHandlers::ReadWidgetTree(const TSharedPtr<FJsonObj
 	FString AssetPath;
 	if (auto Err = RequireStringAlt(Params, TEXT("assetPath"), TEXT("path"), AssetPath)) return Err;
 
-	UObject* LoadedAsset = UEditorAssetLibrary::LoadAsset(AssetPath);
-	UWidgetBlueprint* WidgetBP = Cast<UWidgetBlueprint>(LoadedAsset);
-	if (!WidgetBP)
-	{
-		return MCPError(FString::Printf(TEXT("Failed to load WidgetBlueprint at '%s'"), *AssetPath));
-	}
+	TSharedPtr<FJsonValue> ResolveError;
+	UWidgetBlueprint* WidgetBP = MCPWidget::ResolveWidgetBlueprintOrError(AssetPath, ResolveError);
+	if (!WidgetBP) return ResolveError;
 
 	auto Result = MCPSuccess();
 
@@ -262,10 +558,6 @@ TSharedPtr<FJsonValue> FWidgetHandlers::CreateEditorUtilityWidget(const TSharedP
 	}
 
 	const FString OnConflict = OptionalString(Params, TEXT("onConflict"), TEXT("skip"));
-	if (auto Existing = MCPCheckAssetExists(PackagePath, AssetName, OnConflict, TEXT("EditorUtilityWidgetBlueprint")))
-	{
-		return Existing;
-	}
 
 	UClass* EUWBClass = FindObject<UClass>(nullptr, TEXT("/Script/Blutility.EditorUtilityWidgetBlueprint"));
 	if (!EUWBClass)
@@ -273,26 +565,29 @@ TSharedPtr<FJsonValue> FWidgetHandlers::CreateEditorUtilityWidget(const TSharedP
 		return MCPError(TEXT("EditorUtilityWidgetBlueprint class not found. Enable Blutility plugin."));
 	}
 
-	FAssetToolsModule& AssetToolsModule = FModuleManager::LoadModuleChecked<FAssetToolsModule>(TEXT("AssetTools"));
-	IAssetTools& AssetTools = AssetToolsModule.Get();
-
 	UWidgetBlueprintFactory* WidgetFactory = NewObject<UWidgetBlueprintFactory>();
 	WidgetFactory->ParentClass = UUserWidget::StaticClass();
 	WidgetFactory->BlueprintType = BPTYPE_Normal;
 
-	UObject* NewAsset = AssetTools.CreateAsset(AssetName, PackagePath, EUWBClass, WidgetFactory);
-	if (!NewAsset)
+	auto Created = MCPCreateAssetIdempotent<UObject>(AssetName, PackagePath, OnConflict, TEXT("EditorUtilityWidgetBlueprint"), EUWBClass, WidgetFactory);
+	if (Created.EarlyReturn) return Created.EarlyReturn;
+
+	// #728: an editor utility widget is a WidgetBlueprint too, and a project
+	// that names a default root widget class has the factory build one here.
+	MCPWidgetGuidMap::FSyncReport GuidSync;
+	if (UWidgetBlueprint* CreatedWidgetBP = Cast<UWidgetBlueprint>(Created.Asset))
 	{
-		return MCPError(TEXT("Failed to create EditorUtilityWidgetBlueprint"));
+		GuidSync = MCPWidgetGuidMap::Sync(CreatedWidgetBP);
 	}
 
-	UEditorAssetLibrary::SaveAsset(NewAsset->GetPathName());
+	UEditorAssetLibrary::SaveAsset(Created.Asset->GetPathName());
 
 	auto Result = MCPSuccess();
 	MCPSetCreated(Result);
-	Result->SetStringField(TEXT("path"), NewAsset->GetPathName());
+	Result->SetStringField(TEXT("path"), Created.Asset->GetPathName());
 	Result->SetStringField(TEXT("name"), AssetName);
-	MCPSetDeleteAssetRollback(Result, NewAsset->GetPathName());
+	MCPSetWidgetGuidOutcome(Result, GuidSync, Created.Asset->GetPathName());
+	MCPSetDeleteAssetRollback(Result, Created.Asset->GetPathName());
 
 	return MCPResult(Result);
 }
@@ -311,10 +606,6 @@ TSharedPtr<FJsonValue> FWidgetHandlers::CreateEditorUtilityBlueprint(const TShar
 	}
 
 	const FString OnConflict = OptionalString(Params, TEXT("onConflict"), TEXT("skip"));
-	if (auto Existing = MCPCheckAssetExists(PackagePath, AssetName, OnConflict, TEXT("EditorUtilityBlueprint")))
-	{
-		return Existing;
-	}
 
 	UClass* EUBClass = FindObject<UClass>(nullptr, TEXT("/Script/Blutility.EditorUtilityBlueprint"));
 	if (!EUBClass)
@@ -322,876 +613,36 @@ TSharedPtr<FJsonValue> FWidgetHandlers::CreateEditorUtilityBlueprint(const TShar
 		return MCPError(TEXT("EditorUtilityBlueprint class not found. Enable Blutility plugin."));
 	}
 
-	FAssetToolsModule& AssetToolsModule = FModuleManager::LoadModuleChecked<FAssetToolsModule>(TEXT("AssetTools"));
-	IAssetTools& AssetTools = AssetToolsModule.Get();
+	auto Created = MCPCreateAssetIdempotent<UObject>(AssetName, PackagePath, OnConflict, TEXT("EditorUtilityBlueprint"), EUBClass, nullptr);
+	if (Created.EarlyReturn) return Created.EarlyReturn;
 
-	UObject* NewAsset = AssetTools.CreateAsset(AssetName, PackagePath, EUBClass, nullptr);
-	if (!NewAsset)
-	{
-		return MCPError(TEXT("Failed to create EditorUtilityBlueprint"));
-	}
-
-	UEditorAssetLibrary::SaveAsset(NewAsset->GetPathName());
+	UEditorAssetLibrary::SaveAsset(Created.Asset->GetPathName());
 
 	auto Result = MCPSuccess();
 	MCPSetCreated(Result);
-	Result->SetStringField(TEXT("path"), NewAsset->GetPathName());
+	Result->SetStringField(TEXT("path"), Created.Asset->GetPathName());
 	Result->SetStringField(TEXT("name"), AssetName);
-	MCPSetDeleteAssetRollback(Result, NewAsset->GetPathName());
+	MCPSetDeleteAssetRollback(Result, Created.Asset->GetPathName());
 
 	return MCPResult(Result);
 }
-
-TSharedPtr<FJsonValue> FWidgetHandlers::SearchWidgetByName(const TSharedPtr<FJsonObject>& Params)
-{
-	FString AssetPath;
-	if (auto Err = RequireStringAlt(Params, TEXT("assetPath"), TEXT("path"), AssetPath)) return Err;
-
-	FString WidgetName;
-	if (auto Err = RequireString(Params, TEXT("widgetName"), WidgetName)) return Err;
-
-	UObject* LoadedAsset = UEditorAssetLibrary::LoadAsset(AssetPath);
-	UWidgetBlueprint* WidgetBP = Cast<UWidgetBlueprint>(LoadedAsset);
-	if (!WidgetBP)
-	{
-		return MCPError(FString::Printf(TEXT("Failed to load WidgetBlueprint at '%s'"), *AssetPath));
-	}
-
-	if (!WidgetBP->WidgetTree)
-	{
-		return MCPError(TEXT("WidgetTree is null"));
-	}
-
-	// Search recursively from root
-	UWidget* RootWidget = WidgetBP->WidgetTree->RootWidget;
-	UWidget* FoundWidget = FindWidgetByNameRecursive(RootWidget, WidgetName);
-
-	// Also search all widgets in the tree (handles named widgets not in visual tree)
-	if (!FoundWidget)
-	{
-		WidgetBP->WidgetTree->ForEachWidget([&](UWidget* Widget)
-		{
-			if (Widget && Widget->GetName() == WidgetName)
-			{
-				FoundWidget = Widget;
-			}
-		});
-	}
-
-	if (!FoundWidget)
-	{
-		return MCPError(FString::Printf(TEXT("Widget not found: '%s'"), *WidgetName));
-	}
-
-	TSharedPtr<FJsonObject> WidgetObj = MakeShared<FJsonObject>();
-	WidgetObj->SetStringField(TEXT("name"), FoundWidget->GetName());
-	WidgetObj->SetStringField(TEXT("class"), FoundWidget->GetClass()->GetName());
-	WidgetObj->SetBoolField(TEXT("isVisible"), FoundWidget->IsVisible());
-
-	// Check if it has a parent
-	UPanelWidget* Parent = FoundWidget->GetParent();
-	if (Parent)
-	{
-		WidgetObj->SetStringField(TEXT("parent"), Parent->GetName());
-		WidgetObj->SetStringField(TEXT("parentClass"), Parent->GetClass()->GetName());
-	}
-
-	// Check if it's a panel and report child count
-	UPanelWidget* AsPanel = Cast<UPanelWidget>(FoundWidget);
-	if (AsPanel)
-	{
-		WidgetObj->SetNumberField(TEXT("childCount"), AsPanel->GetChildrenCount());
-	}
-
-	auto Result = MCPSuccess();
-	Result->SetObjectField(TEXT("widget"), WidgetObj);
-
-	return MCPResult(Result);
-}
-
-TSharedPtr<FJsonValue> FWidgetHandlers::GetWidgetProperties(const TSharedPtr<FJsonObject>& Params)
-{
-	FString AssetPath;
-	if (auto Err = RequireStringAlt(Params, TEXT("assetPath"), TEXT("path"), AssetPath)) return Err;
-
-	FString WidgetName;
-	if (auto Err = RequireString(Params, TEXT("widgetName"), WidgetName)) return Err;
-
-	UObject* LoadedAsset = UEditorAssetLibrary::LoadAsset(AssetPath);
-	UWidgetBlueprint* WidgetBP = Cast<UWidgetBlueprint>(LoadedAsset);
-	if (!WidgetBP)
-	{
-		return MCPError(FString::Printf(TEXT("Failed to load WidgetBlueprint at '%s'"), *AssetPath));
-	}
-
-	if (!WidgetBP->WidgetTree)
-	{
-		return MCPError(TEXT("WidgetTree is null"));
-	}
-
-	// Find the widget
-	UWidget* FoundWidget = nullptr;
-	WidgetBP->WidgetTree->ForEachWidget([&](UWidget* Widget)
-	{
-		if (Widget && Widget->GetName() == WidgetName)
-		{
-			FoundWidget = Widget;
-		}
-	});
-
-	if (!FoundWidget)
-	{
-		return MCPError(FString::Printf(TEXT("Widget not found: '%s'"), *WidgetName));
-	}
-
-	TSharedPtr<FJsonObject> PropsObj = MakeShared<FJsonObject>();
-	PropsObj->SetStringField(TEXT("name"), FoundWidget->GetName());
-	PropsObj->SetStringField(TEXT("class"), FoundWidget->GetClass()->GetName());
-	PropsObj->SetBoolField(TEXT("isVisible"), FoundWidget->IsVisible());
-
-	// Type-specific properties
-	if (UTextBlock* TextBlock = Cast<UTextBlock>(FoundWidget))
-	{
-		PropsObj->SetStringField(TEXT("text"), TextBlock->GetText().ToString());
-		PropsObj->SetStringField(TEXT("widgetType"), TEXT("TextBlock"));
-
-		// Font info
-		FSlateFontInfo FontInfo = TextBlock->GetFont();
-		PropsObj->SetStringField(TEXT("fontFamily"), FontInfo.FontObject ? FontInfo.FontObject->GetName() : TEXT(""));
-		PropsObj->SetNumberField(TEXT("fontSize"), FontInfo.Size);
-
-		// Color
-		FLinearColor Color = TextBlock->GetColorAndOpacity().GetSpecifiedColor();
-		TSharedPtr<FJsonObject> ColorObj = MakeShared<FJsonObject>();
-		ColorObj->SetNumberField(TEXT("r"), Color.R);
-		ColorObj->SetNumberField(TEXT("g"), Color.G);
-		ColorObj->SetNumberField(TEXT("b"), Color.B);
-		ColorObj->SetNumberField(TEXT("a"), Color.A);
-		PropsObj->SetObjectField(TEXT("color"), ColorObj);
-	}
-	else if (UImage* Image = Cast<UImage>(FoundWidget))
-	{
-		PropsObj->SetStringField(TEXT("widgetType"), TEXT("Image"));
-
-		// Brush info
-		const FSlateBrush& Brush = Image->GetBrush();
-		TSharedPtr<FJsonObject> BrushObj = MakeShared<FJsonObject>();
-		BrushObj->SetStringField(TEXT("resourceName"), Brush.GetResourceName().ToString());
-		BrushObj->SetNumberField(TEXT("imageSizeX"), Brush.ImageSize.X);
-		BrushObj->SetNumberField(TEXT("imageSizeY"), Brush.ImageSize.Y);
-		BrushObj->SetStringField(TEXT("drawAs"), StaticEnum<ESlateBrushDrawType::Type>()->GetNameStringByValue((int64)Brush.DrawAs));
-		BrushObj->SetStringField(TEXT("tiling"), StaticEnum<ESlateBrushTileType::Type>()->GetNameStringByValue((int64)Brush.Tiling));
-		PropsObj->SetObjectField(TEXT("brush"), BrushObj);
-
-		// Color tint
-		FLinearColor Tint = Image->GetColorAndOpacity();
-		TSharedPtr<FJsonObject> TintObj = MakeShared<FJsonObject>();
-		TintObj->SetNumberField(TEXT("r"), Tint.R);
-		TintObj->SetNumberField(TEXT("g"), Tint.G);
-		TintObj->SetNumberField(TEXT("b"), Tint.B);
-		TintObj->SetNumberField(TEXT("a"), Tint.A);
-		PropsObj->SetObjectField(TEXT("colorAndOpacity"), TintObj);
-	}
-	else if (UButton* Button = Cast<UButton>(FoundWidget))
-	{
-		PropsObj->SetStringField(TEXT("widgetType"), TEXT("Button"));
-
-		// Button style
-		const FButtonStyle& Style = Button->GetStyle();
-		TSharedPtr<FJsonObject> StyleObj = MakeShared<FJsonObject>();
-
-		// Normal brush
-		StyleObj->SetStringField(TEXT("normalResourceName"), Style.Normal.GetResourceName().ToString());
-		StyleObj->SetStringField(TEXT("hoveredResourceName"), Style.Hovered.GetResourceName().ToString());
-		StyleObj->SetStringField(TEXT("pressedResourceName"), Style.Pressed.GetResourceName().ToString());
-
-		PropsObj->SetObjectField(TEXT("style"), StyleObj);
-
-		// Color
-		FLinearColor BtnColor = Button->GetColorAndOpacity();
-		TSharedPtr<FJsonObject> BtnColorObj = MakeShared<FJsonObject>();
-		BtnColorObj->SetNumberField(TEXT("r"), BtnColor.R);
-		BtnColorObj->SetNumberField(TEXT("g"), BtnColor.G);
-		BtnColorObj->SetNumberField(TEXT("b"), BtnColor.B);
-		BtnColorObj->SetNumberField(TEXT("a"), BtnColor.A);
-		PropsObj->SetObjectField(TEXT("colorAndOpacity"), BtnColorObj);
-	}
-	else if (UProgressBar* ProgressBar = Cast<UProgressBar>(FoundWidget))
-	{
-		PropsObj->SetStringField(TEXT("widgetType"), TEXT("ProgressBar"));
-		PropsObj->SetNumberField(TEXT("percent"), ProgressBar->GetPercent());
-
-		// Fill color
-		FLinearColor FillColor = ProgressBar->GetFillColorAndOpacity();
-		TSharedPtr<FJsonObject> FillObj = MakeShared<FJsonObject>();
-		FillObj->SetNumberField(TEXT("r"), FillColor.R);
-		FillObj->SetNumberField(TEXT("g"), FillColor.G);
-		FillObj->SetNumberField(TEXT("b"), FillColor.B);
-		FillObj->SetNumberField(TEXT("a"), FillColor.A);
-		PropsObj->SetObjectField(TEXT("fillColor"), FillObj);
-	}
-	else if (UCheckBox* CheckBox = Cast<UCheckBox>(FoundWidget))
-	{
-		PropsObj->SetStringField(TEXT("widgetType"), TEXT("CheckBox"));
-		PropsObj->SetBoolField(TEXT("isChecked"), CheckBox->IsChecked());
-	}
-	else if (USlider* Slider = Cast<USlider>(FoundWidget))
-	{
-		PropsObj->SetStringField(TEXT("widgetType"), TEXT("Slider"));
-		PropsObj->SetNumberField(TEXT("value"), Slider->GetValue());
-		PropsObj->SetNumberField(TEXT("minValue"), Slider->GetMinValue());
-		PropsObj->SetNumberField(TEXT("maxValue"), Slider->GetMaxValue());
-	}
-	else if (UEditableTextBox* EditableText = Cast<UEditableTextBox>(FoundWidget))
-	{
-		PropsObj->SetStringField(TEXT("widgetType"), TEXT("EditableTextBox"));
-		PropsObj->SetStringField(TEXT("text"), EditableText->GetText().ToString());
-		PropsObj->SetStringField(TEXT("hintText"), EditableText->GetHintText().ToString());
-	}
-	else if (UComboBoxString* ComboBox = Cast<UComboBoxString>(FoundWidget))
-	{
-		PropsObj->SetStringField(TEXT("widgetType"), TEXT("ComboBoxString"));
-		PropsObj->SetStringField(TEXT("selectedOption"), ComboBox->GetSelectedOption());
-		PropsObj->SetNumberField(TEXT("optionCount"), ComboBox->GetOptionCount());
-
-		TArray<TSharedPtr<FJsonValue>> OptionsArray;
-		for (int32 i = 0; i < ComboBox->GetOptionCount(); ++i)
-		{
-			OptionsArray.Add(MakeShared<FJsonValueString>(ComboBox->GetOptionAtIndex(i)));
-		}
-		PropsObj->SetArrayField(TEXT("options"), OptionsArray);
-	}
-	else
-	{
-		PropsObj->SetStringField(TEXT("widgetType"), FoundWidget->GetClass()->GetName());
-	}
-
-	// Common slot info via reflection
-	UPanelWidget* ParentWidget = FoundWidget->GetParent();
-	if (ParentWidget)
-	{
-		PropsObj->SetStringField(TEXT("parentName"), ParentWidget->GetName());
-		PropsObj->SetStringField(TEXT("parentClass"), ParentWidget->GetClass()->GetName());
-	}
-
-	// #107: dump Slot layout properties (anchors, position, padding, alignment, etc.) via reflection
-	if (UPanelSlot* Slot = FoundWidget->Slot)
-	{
-		TSharedPtr<FJsonObject> SlotObj = MakeShared<FJsonObject>();
-		SlotObj->SetStringField(TEXT("class"), Slot->GetClass()->GetName());
-
-		TSharedPtr<FJsonObject> SlotProps = MakeShared<FJsonObject>();
-		for (TFieldIterator<FProperty> It(Slot->GetClass()); It; ++It)
-		{
-			FProperty* Prop = *It;
-			if (!Prop) continue;
-			// Skip CPF_Edit check - include all reflected slot properties
-			FString ValueStr;
-			const void* ValuePtr = Prop->ContainerPtrToValuePtr<void>(Slot);
-			Prop->ExportText_Direct(ValueStr, ValuePtr, ValuePtr, Slot, PPF_None);
-			if (!ValueStr.IsEmpty())
-			{
-				SlotProps->SetStringField(Prop->GetName(), ValueStr);
-			}
-		}
-		SlotObj->SetObjectField(TEXT("properties"), SlotProps);
-		PropsObj->SetObjectField(TEXT("slot"), SlotObj);
-	}
-
-	auto Result = MCPSuccess();
-	Result->SetObjectField(TEXT("properties"), PropsObj);
-
-	return MCPResult(Result);
-}
-
-TSharedPtr<FJsonValue> FWidgetHandlers::SetWidgetProperty(const TSharedPtr<FJsonObject>& Params)
-{
-	FString AssetPath;
-	if (auto Err = RequireStringAlt(Params, TEXT("assetPath"), TEXT("path"), AssetPath)) return Err;
-
-	FString WidgetName;
-	if (auto Err = RequireString(Params, TEXT("widgetName"), WidgetName)) return Err;
-
-	FString PropertyName;
-	if (auto Err = RequireString(Params, TEXT("propertyName"), PropertyName)) return Err;
-
-	FString PropertyValue;
-	if (auto Err = RequireStringAlt(Params, TEXT("propertyValue"), TEXT("value"), PropertyValue)) return Err;
-
-	UObject* LoadedAsset = UEditorAssetLibrary::LoadAsset(AssetPath);
-	UWidgetBlueprint* WidgetBP = Cast<UWidgetBlueprint>(LoadedAsset);
-	if (!WidgetBP)
-	{
-		return MCPError(FString::Printf(TEXT("Failed to load WidgetBlueprint at '%s'"), *AssetPath));
-	}
-
-	if (!WidgetBP->WidgetTree)
-	{
-		return MCPError(TEXT("WidgetTree is null"));
-	}
-
-	// Find the widget
-	UWidget* FoundWidget = nullptr;
-	WidgetBP->WidgetTree->ForEachWidget([&](UWidget* Widget)
-	{
-		if (Widget && Widget->GetName() == WidgetName)
-		{
-			FoundWidget = Widget;
-		}
-	});
-
-	if (!FoundWidget)
-	{
-		return MCPError(FString::Printf(TEXT("Widget not found: '%s'"), *WidgetName));
-	}
-
-	bool bPropertySet = false;
-
-	// Handle well-known properties by type
-	if (UTextBlock* TextBlock = Cast<UTextBlock>(FoundWidget))
-	{
-		if (PropertyName == TEXT("text") || PropertyName == TEXT("Text"))
-		{
-			TextBlock->SetText(FText::FromString(PropertyValue));
-			bPropertySet = true;
-		}
-		else if (PropertyName == TEXT("fontSize"))
-		{
-			FSlateFontInfo FontInfo = TextBlock->GetFont();
-			FontInfo.Size = FCString::Atoi(*PropertyValue);
-			TextBlock->SetFont(FontInfo);
-			bPropertySet = true;
-		}
-	}
-	else if (UImage* Image = Cast<UImage>(FoundWidget))
-	{
-		if (PropertyName == TEXT("colorAndOpacity") || PropertyName == TEXT("tint"))
-		{
-			// Expect "R,G,B,A" format
-			TArray<FString> Components;
-			PropertyValue.ParseIntoArray(Components, TEXT(","));
-			if (Components.Num() >= 3)
-			{
-				float R = FCString::Atof(*Components[0]);
-				float G = FCString::Atof(*Components[1]);
-				float B = FCString::Atof(*Components[2]);
-				float A = Components.Num() >= 4 ? FCString::Atof(*Components[3]) : 1.0f;
-				Image->SetColorAndOpacity(FLinearColor(R, G, B, A));
-				bPropertySet = true;
-			}
-		}
-		// (#159) Brush fields — ImageSize, Tint, DrawAs, Tiling, Margin, ResourceObject
-		else if (PropertyName.StartsWith(TEXT("brush.")))
-		{
-			FString Field = PropertyName.Mid(6); // strip "brush."
-			FSlateBrush Brush = Image->GetBrush();
-			if (Field == TEXT("imageSize") || Field == TEXT("ImageSize"))
-			{
-				TArray<FString> Parts;
-				PropertyValue.ParseIntoArray(Parts, TEXT(","));
-				if (Parts.Num() >= 2)
-				{
-					Brush.ImageSize = FVector2D(FCString::Atof(*Parts[0]), FCString::Atof(*Parts[1]));
-					Image->SetBrush(Brush);
-					bPropertySet = true;
-				}
-			}
-			else if (Field == TEXT("tint") || Field == TEXT("Tint") || Field == TEXT("tintColor"))
-			{
-				TArray<FString> Parts;
-				PropertyValue.ParseIntoArray(Parts, TEXT(","));
-				if (Parts.Num() >= 3)
-				{
-					float R = FCString::Atof(*Parts[0]);
-					float G = FCString::Atof(*Parts[1]);
-					float B = FCString::Atof(*Parts[2]);
-					float A = Parts.Num() >= 4 ? FCString::Atof(*Parts[3]) : 1.0f;
-					Brush.TintColor = FSlateColor(FLinearColor(R, G, B, A));
-					Image->SetBrush(Brush);
-					bPropertySet = true;
-				}
-			}
-			else if (Field == TEXT("drawAs") || Field == TEXT("DrawAs"))
-			{
-				const FString V = PropertyValue.ToLower();
-				if (V == TEXT("image"))         { Brush.DrawAs = ESlateBrushDrawType::Image; bPropertySet = true; }
-				else if (V == TEXT("box"))      { Brush.DrawAs = ESlateBrushDrawType::Box;   bPropertySet = true; }
-				else if (V == TEXT("border"))   { Brush.DrawAs = ESlateBrushDrawType::Border; bPropertySet = true; }
-				else if (V == TEXT("noddrawtype") || V == TEXT("none") || V == TEXT("notype")) { Brush.DrawAs = ESlateBrushDrawType::NoDrawType; bPropertySet = true; }
-				if (bPropertySet) Image->SetBrush(Brush);
-			}
-			else if (Field == TEXT("tiling") || Field == TEXT("Tiling"))
-			{
-				const FString V = PropertyValue.ToLower();
-				if (V == TEXT("notile") || V == TEXT("none")) { Brush.Tiling = ESlateBrushTileType::NoTile; bPropertySet = true; }
-				else if (V == TEXT("horizontal") || V == TEXT("h")) { Brush.Tiling = ESlateBrushTileType::Horizontal; bPropertySet = true; }
-				else if (V == TEXT("vertical") || V == TEXT("v"))   { Brush.Tiling = ESlateBrushTileType::Vertical;   bPropertySet = true; }
-				else if (V == TEXT("both") || V == TEXT("xy"))      { Brush.Tiling = ESlateBrushTileType::Both;       bPropertySet = true; }
-				if (bPropertySet) Image->SetBrush(Brush);
-			}
-			else if (Field == TEXT("margin") || Field == TEXT("Margin"))
-			{
-				TArray<FString> Parts;
-				PropertyValue.ParseIntoArray(Parts, TEXT(","));
-				if (Parts.Num() == 1)
-				{
-					float V = FCString::Atof(*Parts[0]);
-					Brush.Margin = FMargin(V);
-					Image->SetBrush(Brush);
-					bPropertySet = true;
-				}
-				else if (Parts.Num() >= 4)
-				{
-					Brush.Margin = FMargin(FCString::Atof(*Parts[0]), FCString::Atof(*Parts[1]),
-					                        FCString::Atof(*Parts[2]), FCString::Atof(*Parts[3]));
-					Image->SetBrush(Brush);
-					bPropertySet = true;
-				}
-			}
-			else if (Field == TEXT("resourceObject") || Field == TEXT("ResourceObject") || Field == TEXT("texture"))
-			{
-				// Accept a texture/material asset path.
-				UObject* Resource = LoadObject<UObject>(nullptr, *PropertyValue);
-				if (Resource)
-				{
-					if (UTexture2D* Tex = Cast<UTexture2D>(Resource))
-					{
-						Image->SetBrushFromTexture(Tex, false);
-						bPropertySet = true;
-					}
-					else if (UMaterialInterface* Mat = Cast<UMaterialInterface>(Resource))
-					{
-						Image->SetBrushFromMaterial(Mat);
-						bPropertySet = true;
-					}
-					else
-					{
-						Brush.SetResourceObject(Resource);
-						Image->SetBrush(Brush);
-						bPropertySet = true;
-					}
-				}
-			}
-		}
-	}
-	else if (UProgressBar* ProgressBar = Cast<UProgressBar>(FoundWidget))
-	{
-		if (PropertyName == TEXT("percent") || PropertyName == TEXT("Percent"))
-		{
-			ProgressBar->SetPercent(FCString::Atof(*PropertyValue));
-			bPropertySet = true;
-		}
-		else if (PropertyName == TEXT("fillColor") || PropertyName == TEXT("FillColorAndOpacity"))
-		{
-			TArray<FString> Components;
-			PropertyValue.ParseIntoArray(Components, TEXT(","));
-			if (Components.Num() >= 3)
-			{
-				float R = FCString::Atof(*Components[0]);
-				float G = FCString::Atof(*Components[1]);
-				float B = FCString::Atof(*Components[2]);
-				float A = Components.Num() >= 4 ? FCString::Atof(*Components[3]) : 1.0f;
-				ProgressBar->SetFillColorAndOpacity(FLinearColor(R, G, B, A));
-				bPropertySet = true;
-			}
-		}
-	}
-	else if (UCheckBox* CheckBox = Cast<UCheckBox>(FoundWidget))
-	{
-		if (PropertyName == TEXT("isChecked") || PropertyName == TEXT("IsChecked"))
-		{
-			bool bChecked = PropertyValue.ToBool();
-			CheckBox->SetIsChecked(bChecked);
-			bPropertySet = true;
-		}
-	}
-	else if (USlider* Slider = Cast<USlider>(FoundWidget))
-	{
-		if (PropertyName == TEXT("value") || PropertyName == TEXT("Value"))
-		{
-			Slider->SetValue(FCString::Atof(*PropertyValue));
-			bPropertySet = true;
-		}
-	}
-	else if (UEditableTextBox* EditableText = Cast<UEditableTextBox>(FoundWidget))
-	{
-		if (PropertyName == TEXT("text") || PropertyName == TEXT("Text"))
-		{
-			EditableText->SetText(FText::FromString(PropertyValue));
-			bPropertySet = true;
-		}
-	}
-	// (#135) SizeBox overrides: UMG 5.1+ requires the Set*Override accessors so the
-	// paired bOverride_ flag is toggled on — ImportText on the raw property doesn't do this.
-	if (!bPropertySet)
-	{
-		if (USizeBox* SizeBox = Cast<USizeBox>(FoundWidget))
-		{
-			const float V = FCString::Atof(*PropertyValue);
-			const FString& N = PropertyName;
-			if (N == TEXT("WidthOverride") || N == TEXT("widthOverride"))       { SizeBox->SetWidthOverride(V);       bPropertySet = true; }
-			else if (N == TEXT("HeightOverride") || N == TEXT("heightOverride")) { SizeBox->SetHeightOverride(V);      bPropertySet = true; }
-			else if (N == TEXT("MinDesiredWidth") || N == TEXT("minDesiredWidth"))   { SizeBox->SetMinDesiredWidth(V);   bPropertySet = true; }
-			else if (N == TEXT("MinDesiredHeight") || N == TEXT("minDesiredHeight")) { SizeBox->SetMinDesiredHeight(V);  bPropertySet = true; }
-			else if (N == TEXT("MaxDesiredWidth") || N == TEXT("maxDesiredWidth"))   { SizeBox->SetMaxDesiredWidth(V);   bPropertySet = true; }
-			else if (N == TEXT("MaxDesiredHeight") || N == TEXT("maxDesiredHeight")) { SizeBox->SetMaxDesiredHeight(V);  bPropertySet = true; }
-			else if (N == TEXT("clearWidthOverride"))  { SizeBox->ClearWidthOverride();  bPropertySet = true; }
-			else if (N == TEXT("clearHeightOverride")) { SizeBox->ClearHeightOverride(); bPropertySet = true; }
-		}
-	}
-
-	// ── Slot properties (slot.anchors, slot.alignment, slot.position, slot.autoSize, slot.*) ──
-	if (!bPropertySet && PropertyName.StartsWith(TEXT("slot.")))
-	{
-		UPanelSlot* Slot = FoundWidget->Slot;
-		if (Slot)
-		{
-			FString SlotPropName = PropertyName.Mid(5); // strip "slot."
-
-			// Well-known CanvasPanelSlot properties
-			UCanvasPanelSlot* CanvasSlot = Cast<UCanvasPanelSlot>(Slot);
-			if (CanvasSlot)
-			{
-				if (SlotPropName == TEXT("anchors") || SlotPropName == TEXT("Anchors"))
-				{
-					// Format: "minX,minY,maxX,maxY"  e.g. "0.5,0.5,0.5,0.5" for center
-					TArray<FString> Parts;
-					PropertyValue.ParseIntoArray(Parts, TEXT(","));
-					if (Parts.Num() >= 2)
-					{
-						FAnchors Anchors;
-						Anchors.Minimum = FVector2D(FCString::Atof(*Parts[0]), FCString::Atof(*Parts[1]));
-						Anchors.Maximum = Parts.Num() >= 4
-							? FVector2D(FCString::Atof(*Parts[2]), FCString::Atof(*Parts[3]))
-							: Anchors.Minimum;
-						CanvasSlot->SetAnchors(Anchors);
-						bPropertySet = true;
-					}
-				}
-				else if (SlotPropName == TEXT("alignment") || SlotPropName == TEXT("Alignment"))
-				{
-					// Format: "x,y"  e.g. "0.5,0.5"
-					TArray<FString> Parts;
-					PropertyValue.ParseIntoArray(Parts, TEXT(","));
-					if (Parts.Num() >= 2)
-					{
-						CanvasSlot->SetAlignment(FVector2D(FCString::Atof(*Parts[0]), FCString::Atof(*Parts[1])));
-						bPropertySet = true;
-					}
-				}
-				else if (SlotPropName == TEXT("position") || SlotPropName == TEXT("Position"))
-				{
-					// Format: "x,y"
-					TArray<FString> Parts;
-					PropertyValue.ParseIntoArray(Parts, TEXT(","));
-					if (Parts.Num() >= 2)
-					{
-						CanvasSlot->SetPosition(FVector2D(FCString::Atof(*Parts[0]), FCString::Atof(*Parts[1])));
-						bPropertySet = true;
-					}
-				}
-				else if (SlotPropName == TEXT("size") || SlotPropName == TEXT("Size"))
-				{
-					// Format: "x,y"
-					TArray<FString> Parts;
-					PropertyValue.ParseIntoArray(Parts, TEXT(","));
-					if (Parts.Num() >= 2)
-					{
-						CanvasSlot->SetSize(FVector2D(FCString::Atof(*Parts[0]), FCString::Atof(*Parts[1])));
-						bPropertySet = true;
-					}
-				}
-				else if (SlotPropName == TEXT("autoSize") || SlotPropName == TEXT("AutoSize"))
-				{
-					CanvasSlot->SetAutoSize(PropertyValue.ToBool());
-					bPropertySet = true;
-				}
-				else if (SlotPropName == TEXT("zOrder") || SlotPropName == TEXT("ZOrder"))
-				{
-					CanvasSlot->SetZOrder(FCString::Atoi(*PropertyValue));
-					bPropertySet = true;
-				}
-			}
-
-			// ── HorizontalBoxSlot / VerticalBoxSlot ──
-			auto TryBoxSlotProps = [&](UPanelSlot* BoxSlot) -> bool
-			{
-				if (SlotPropName == TEXT("padding") || SlotPropName == TEXT("Padding"))
-				{
-					// "L,T,R,B" or uniform "N"
-					TArray<FString> Parts;
-					PropertyValue.ParseIntoArray(Parts, TEXT(","));
-					FMargin Margin;
-					if (Parts.Num() == 1)
-					{
-						float V = FCString::Atof(*Parts[0]);
-						Margin = FMargin(V);
-					}
-					else if (Parts.Num() >= 4)
-					{
-						Margin = FMargin(FCString::Atof(*Parts[0]), FCString::Atof(*Parts[1]),
-										  FCString::Atof(*Parts[2]), FCString::Atof(*Parts[3]));
-					}
-					else return false;
-
-					if (UHorizontalBoxSlot* HSlot = Cast<UHorizontalBoxSlot>(BoxSlot))
-						HSlot->SetPadding(Margin);
-					else if (UVerticalBoxSlot* VSlot = Cast<UVerticalBoxSlot>(BoxSlot))
-						VSlot->SetPadding(Margin);
-					else if (UOverlaySlot* OSlot = Cast<UOverlaySlot>(BoxSlot))
-						OSlot->SetPadding(Margin);
-					else return false;
-					return true;
-				}
-				if (SlotPropName == TEXT("hAlign") || SlotPropName == TEXT("HorizontalAlignment") || SlotPropName == TEXT("horizontalAlignment"))
-				{
-					EHorizontalAlignment Align = EHorizontalAlignment::HAlign_Fill;
-					FString Val = PropertyValue.ToLower();
-					if (Val == TEXT("left"))        Align = EHorizontalAlignment::HAlign_Left;
-					else if (Val == TEXT("center"))  Align = EHorizontalAlignment::HAlign_Center;
-					else if (Val == TEXT("right"))   Align = EHorizontalAlignment::HAlign_Right;
-					else if (Val == TEXT("fill"))    Align = EHorizontalAlignment::HAlign_Fill;
-
-					if (UHorizontalBoxSlot* HSlot = Cast<UHorizontalBoxSlot>(BoxSlot))
-						HSlot->SetHorizontalAlignment(Align);
-					else if (UVerticalBoxSlot* VSlot = Cast<UVerticalBoxSlot>(BoxSlot))
-						VSlot->SetHorizontalAlignment(Align);
-					else if (UOverlaySlot* OSlot = Cast<UOverlaySlot>(BoxSlot))
-						OSlot->SetHorizontalAlignment(Align);
-					else return false;
-					return true;
-				}
-				if (SlotPropName == TEXT("vAlign") || SlotPropName == TEXT("VerticalAlignment") || SlotPropName == TEXT("verticalAlignment"))
-				{
-					EVerticalAlignment Align = EVerticalAlignment::VAlign_Fill;
-					FString Val = PropertyValue.ToLower();
-					if (Val == TEXT("top"))          Align = EVerticalAlignment::VAlign_Top;
-					else if (Val == TEXT("center"))  Align = EVerticalAlignment::VAlign_Center;
-					else if (Val == TEXT("bottom"))  Align = EVerticalAlignment::VAlign_Bottom;
-					else if (Val == TEXT("fill"))    Align = EVerticalAlignment::VAlign_Fill;
-
-					if (UHorizontalBoxSlot* HSlot = Cast<UHorizontalBoxSlot>(BoxSlot))
-						HSlot->SetVerticalAlignment(Align);
-					else if (UVerticalBoxSlot* VSlot = Cast<UVerticalBoxSlot>(BoxSlot))
-						VSlot->SetVerticalAlignment(Align);
-					else if (UOverlaySlot* OSlot = Cast<UOverlaySlot>(BoxSlot))
-						OSlot->SetVerticalAlignment(Align);
-					else return false;
-					return true;
-				}
-				if (SlotPropName == TEXT("sizeRule") || SlotPropName == TEXT("SizeRule"))
-				{
-					FString Val = PropertyValue.ToLower();
-					ESlateSizeRule::Type Rule = (Val == TEXT("fill")) ? ESlateSizeRule::Fill : ESlateSizeRule::Automatic;
-					if (UHorizontalBoxSlot* HSlot = Cast<UHorizontalBoxSlot>(BoxSlot))
-					{
-						FSlateChildSize Size = HSlot->GetSize();
-						Size.SizeRule = Rule;
-						HSlot->SetSize(Size);
-					}
-					else if (UVerticalBoxSlot* VSlot = Cast<UVerticalBoxSlot>(BoxSlot))
-					{
-						FSlateChildSize Size = VSlot->GetSize();
-						Size.SizeRule = Rule;
-						VSlot->SetSize(Size);
-					}
-					else return false;
-					return true;
-				}
-				if (SlotPropName == TEXT("sizeValue") || SlotPropName == TEXT("SizeValue") || SlotPropName == TEXT("fillWeight"))
-				{
-					float Value = FCString::Atof(*PropertyValue);
-					if (UHorizontalBoxSlot* HSlot = Cast<UHorizontalBoxSlot>(BoxSlot))
-					{
-						FSlateChildSize Size = HSlot->GetSize();
-						Size.Value = Value;
-						HSlot->SetSize(Size);
-					}
-					else if (UVerticalBoxSlot* VSlot = Cast<UVerticalBoxSlot>(BoxSlot))
-					{
-						FSlateChildSize Size = VSlot->GetSize();
-						Size.Value = Value;
-						VSlot->SetSize(Size);
-					}
-					else return false;
-					return true;
-				}
-				return false;
-			};
-
-			if (!bPropertySet && (Cast<UHorizontalBoxSlot>(Slot) || Cast<UVerticalBoxSlot>(Slot) || Cast<UOverlaySlot>(Slot)))
-			{
-				bPropertySet = TryBoxSlotProps(Slot);
-			}
-
-			// Generic slot reflection fallback
-			if (!bPropertySet)
-			{
-				FProperty* SlotProp = Slot->GetClass()->FindPropertyByName(FName(*SlotPropName));
-				if (SlotProp)
-				{
-					void* SlotValuePtr = SlotProp->ContainerPtrToValuePtr<void>(Slot);
-					if (SlotProp->ImportText_Direct(*PropertyValue, SlotValuePtr, Slot, PPF_None))
-					{
-						bPropertySet = true;
-					}
-				}
-			}
-		}
-	}
-
-	// Fallback: try to set via UObject reflection
-	if (!bPropertySet)
-	{
-		FProperty* Prop = FoundWidget->GetClass()->FindPropertyByName(FName(*PropertyName));
-		if (Prop)
-		{
-			void* ValuePtr = Prop->ContainerPtrToValuePtr<void>(FoundWidget);
-			if (Prop->ImportText_Direct(*PropertyValue, ValuePtr, FoundWidget, PPF_None))
-			{
-				bPropertySet = true;
-			}
-		}
-	}
-
-	if (bPropertySet)
-	{
-		// Mark package dirty and save
-		WidgetBP->MarkPackageDirty();
-		FKismetEditorUtilities::CompileBlueprint(WidgetBP);
-		UEditorAssetLibrary::SaveAsset(AssetPath);
-
-		auto Result = MCPSuccess();
-		Result->SetStringField(TEXT("widgetName"), WidgetName);
-		Result->SetStringField(TEXT("propertyName"), PropertyName);
-		Result->SetStringField(TEXT("propertyValue"), PropertyValue);
-
-		return MCPResult(Result);
-	}
-	else
-	{
-		return MCPError(FString::Printf(TEXT("Failed to set property '%s' on widget '%s'. Property not found or value format invalid."), *PropertyName, *WidgetName));
-	}
-}
-
-TSharedPtr<FJsonValue> FWidgetHandlers::ReadWidgetAnimations(const TSharedPtr<FJsonObject>& Params)
-{
-	FString AssetPath;
-	if (auto Err = RequireStringAlt(Params, TEXT("assetPath"), TEXT("path"), AssetPath)) return Err;
-
-	UObject* LoadedAsset = UEditorAssetLibrary::LoadAsset(AssetPath);
-	UWidgetBlueprint* WidgetBP = Cast<UWidgetBlueprint>(LoadedAsset);
-	if (!WidgetBP)
-	{
-		return MCPError(FString::Printf(TEXT("Failed to load WidgetBlueprint at '%s'"), *AssetPath));
-	}
-
-	TArray<TSharedPtr<FJsonValue>> AnimationsArray;
-
-	for (UWidgetAnimation* Animation : WidgetBP->Animations)
-	{
-		if (!Animation) continue;
-
-		TSharedPtr<FJsonObject> AnimObj = MakeShared<FJsonObject>();
-		AnimObj->SetStringField(TEXT("name"), Animation->GetName());
-		AnimObj->SetStringField(TEXT("displayName"), Animation->GetDisplayLabel().IsEmpty() ? Animation->GetName() : Animation->GetDisplayLabel());
-
-		UMovieScene* MovieScene = Animation->GetMovieScene();
-		if (MovieScene)
-		{
-			// Duration / range
-			FFrameRate TickResolution = MovieScene->GetTickResolution();
-			FFrameRate DisplayRate = MovieScene->GetDisplayRate();
-			TRange<FFrameNumber> PlaybackRange = MovieScene->GetPlaybackRange();
-
-			if (PlaybackRange.HasLowerBound() && PlaybackRange.HasUpperBound())
-			{
-				double StartSeconds = TickResolution.AsSeconds(PlaybackRange.GetLowerBoundValue());
-				double EndSeconds = TickResolution.AsSeconds(PlaybackRange.GetUpperBoundValue());
-				AnimObj->SetNumberField(TEXT("startTime"), StartSeconds);
-				AnimObj->SetNumberField(TEXT("endTime"), EndSeconds);
-				AnimObj->SetNumberField(TEXT("duration"), EndSeconds - StartSeconds);
-			}
-
-			AnimObj->SetNumberField(TEXT("displayRate"), DisplayRate.Numerator);
-
-			// Tracks (bindings)
-			TArray<TSharedPtr<FJsonValue>> BindingsArray;
-			const UMovieScene* ConstMovieScene = MovieScene;
-			const TArray<FMovieSceneBinding>& Bindings = ConstMovieScene->GetBindings();
-			for (const FMovieSceneBinding& Binding : Bindings)
-			{
-				TSharedPtr<FJsonObject> BindingObj = MakeShared<FJsonObject>();
-
-				// FMovieSceneBinding::GetName() is deprecated; look up the name from possessable/spawnable instead
-				FGuid ObjectGuid = Binding.GetObjectGuid();
-				FString BindingName;
-				FMovieScenePossessable* Possessable = MovieScene->FindPossessable(ObjectGuid);
-				if (Possessable)
-				{
-					BindingName = Possessable->GetName();
-				}
-				else
-				{
-					FMovieSceneSpawnable* Spawnable = MovieScene->FindSpawnable(ObjectGuid);
-					if (Spawnable)
-					{
-						BindingName = Spawnable->GetName();
-					}
-				}
-
-				BindingObj->SetStringField(TEXT("name"), BindingName);
-				BindingObj->SetStringField(TEXT("id"), ObjectGuid.ToString());
-
-				TArray<TSharedPtr<FJsonValue>> TracksArray;
-				for (UMovieSceneTrack* Track : Binding.GetTracks())
-				{
-					if (!Track) continue;
-					TSharedPtr<FJsonObject> TrackObj = MakeShared<FJsonObject>();
-					TrackObj->SetStringField(TEXT("name"), Track->GetDisplayName().ToString());
-					TrackObj->SetStringField(TEXT("class"), Track->GetClass()->GetName());
-					TrackObj->SetNumberField(TEXT("sectionCount"), Track->GetAllSections().Num());
-					TracksArray.Add(MakeShared<FJsonValueObject>(TrackObj));
-				}
-				BindingObj->SetArrayField(TEXT("tracks"), TracksArray);
-
-				BindingsArray.Add(MakeShared<FJsonValueObject>(BindingObj));
-			}
-			AnimObj->SetArrayField(TEXT("bindings"), BindingsArray);
-
-			// Master tracks (non-bound tracks)
-			TArray<TSharedPtr<FJsonValue>> MasterTracksArray;
-			for (UMovieSceneTrack* Track : MovieScene->GetTracks())
-			{
-				if (!Track) continue;
-				TSharedPtr<FJsonObject> TrackObj = MakeShared<FJsonObject>();
-				TrackObj->SetStringField(TEXT("name"), Track->GetDisplayName().ToString());
-				TrackObj->SetStringField(TEXT("class"), Track->GetClass()->GetName());
-				MasterTracksArray.Add(MakeShared<FJsonValueObject>(TrackObj));
-			}
-			AnimObj->SetArrayField(TEXT("masterTracks"), MasterTracksArray);
-		}
-
-		AnimationsArray.Add(MakeShared<FJsonValueObject>(AnimObj));
-	}
-
-	auto Result = MCPSuccess();
-	Result->SetArrayField(TEXT("animations"), AnimationsArray);
-	Result->SetNumberField(TEXT("count"), AnimationsArray.Num());
-
-	return MCPResult(Result);
-}
-
 TSharedPtr<FJsonValue> FWidgetHandlers::RunEditorUtilityWidget(const TSharedPtr<FJsonObject>& Params)
 {
 	FString AssetPath;
 	if (auto Err = RequireStringAlt(Params, TEXT("assetPath"), TEXT("path"), AssetPath)) return Err;
 
-	UObject* LoadedAsset = UEditorAssetLibrary::LoadAsset(AssetPath);
-	UEditorUtilityWidgetBlueprint* EUWidget = Cast<UEditorUtilityWidgetBlueprint>(LoadedAsset);
+	// UEditorUtilityWidgetBlueprint derives from UWidgetBlueprint, so it goes
+	// through the same revalidating resolver and gets the same stale-handle
+	// recovery every other widget action gets (#972).
+	TSharedPtr<FJsonValue> ResolveError;
+	UWidgetBlueprint* ResolvedBP = MCPWidget::ResolveWidgetBlueprintOrError(AssetPath, ResolveError);
+	if (!ResolvedBP) return ResolveError;
+	UEditorUtilityWidgetBlueprint* EUWidget = Cast<UEditorUtilityWidgetBlueprint>(ResolvedBP);
 	if (!EUWidget)
 	{
-		return MCPError(FString::Printf(TEXT("Failed to load EditorUtilityWidgetBlueprint at '%s'"), *AssetPath));
+		return MCPError(FString::Printf(
+			TEXT("'%s' is a %s, not an EditorUtilityWidgetBlueprint."),
+			*AssetPath, *ResolvedBP->GetClass()->GetName()));
 	}
 
 	UEditorUtilitySubsystem* Subsystem = GEditor->GetEditorSubsystem<UEditorUtilitySubsystem>();
@@ -1200,13 +651,17 @@ TSharedPtr<FJsonValue> FWidgetHandlers::RunEditorUtilityWidget(const TSharedPtr<
 		return MCPError(TEXT("EditorUtilitySubsystem not available"));
 	}
 
-	// No rollback: destructive/external — opens a dockable tab in the editor.
+	// No rollback: destructive/external - opens a dockable tab in the editor.
 	Subsystem->SpawnAndRegisterTab(EUWidget);
 
 	auto Result = MCPSuccess();
 	MCPSetUpdated(Result);
 	Result->SetStringField(TEXT("assetPath"), AssetPath);
 	Result->SetStringField(TEXT("name"), EUWidget->GetName());
+	Result->SetBoolField(TEXT("rollbackPossible"), false);
+	Result->SetStringField(TEXT("rollbackNote"),
+		TEXT("This spawns and registers an editor tab, and the widget's own construction script runs inside it. No action closes that tab, ")
+		TEXT("and nothing here knows what the widget did once it was open, so there is nothing to undo and no action that would undo it."));
 
 	return MCPResult(Result);
 }
@@ -1229,13 +684,17 @@ TSharedPtr<FJsonValue> FWidgetHandlers::RunEditorUtilityBlueprint(const TSharedP
 		return MCPError(TEXT("EditorUtilitySubsystem not available"));
 	}
 
-	// No rollback: destructive/external — runs an editor utility script.
+	// No rollback: destructive/external - runs an editor utility script.
 	Subsystem->TryRun(LoadedAsset);
 
 	auto Result = MCPSuccess();
 	MCPSetUpdated(Result);
 	Result->SetStringField(TEXT("assetPath"), AssetPath);
 	Result->SetStringField(TEXT("name"), EUBlueprint->GetName());
+	Result->SetBoolField(TEXT("rollbackPossible"), false);
+	Result->SetStringField(TEXT("rollbackNote"),
+		TEXT("This runs a user-authored editor script. What it changed is decided by the blueprint, not by this action, so nothing here ")
+		TEXT("can name an inverse. Undo it the way the script's own author would."));
 
 	return MCPResult(Result);
 }
@@ -1292,7 +751,95 @@ static UClass* ResolveWidgetClass(const FString& ClassName)
 		return GuessClass;
 	}
 
+	// #576: custom user widget BP classes live in content and aren't loaded yet,
+	// so FindObject misses them. LoadObject a content path (with or without the
+	// generated-class _C suffix), or load the WidgetBlueprint and take its class.
+	if (ClassName.StartsWith(TEXT("/")))
+	{
+		if (UClass* PathClass = LoadObject<UClass>(nullptr, *ClassName))
+		{
+			if (PathClass->IsChildOf(UWidget::StaticClass())) return PathClass;
+		}
+		const FString WithC = ClassName.EndsWith(TEXT("_C")) ? ClassName : (ClassName + TEXT("_C"));
+		if (UClass* GenClass = LoadObject<UClass>(nullptr, *WithC))
+		{
+			if (GenClass->IsChildOf(UWidget::StaticClass())) return GenClass;
+		}
+		if (UObject* Asset = LoadObject<UObject>(nullptr, *ClassName))
+		{
+			if (UBlueprint* BP = Cast<UBlueprint>(Asset))
+			{
+				if (BP->GeneratedClass && BP->GeneratedClass->IsChildOf(UWidget::StaticClass()))
+				{
+					return BP->GeneratedClass;
+				}
+			}
+		}
+	}
+
+	// Nothing above knows about any module but UMG, so a widget from CommonUI or
+	// from the project's own C++ could be reached only by its full /Script path.
+	// Scan the loaded UWidget subclasses by short name, which is the same set
+	// widget(list_classes) reports, so a name a caller read there resolves here.
+	// Only an unambiguous match is accepted: two modules defining the same class
+	// name is a real possibility and guessing between them would silently build
+	// the wrong tree. The caller then passes the full path, which the branches
+	// above resolve exactly.
+	{
+		UClass* Match = nullptr;
+		int32 MatchCount = 0;
+		for (TObjectIterator<UClass> It; It; ++It)
+		{
+			UClass* Candidate = *It;
+			if (!Candidate->IsChildOf(UWidget::StaticClass())) continue;
+			if (!Candidate->GetName().Equals(ClassName, ESearchCase::IgnoreCase)) continue;
+			if (!Match) Match = Candidate;
+			++MatchCount;
+		}
+		if (MatchCount == 1) return Match;
+	}
+
 	return nullptr;
+}
+
+/**
+ * Compile state of a Widget Blueprint as a stable string (#799). A caller that
+ * gets `created: true` still needs to know whether the asset it just changed
+ * compiles, so the mutation handlers report this alongside the outcome.
+ */
+static FString WidgetCompileStatusString(const UWidgetBlueprint* WidgetBP)
+{
+	if (!WidgetBP) return TEXT("unknown");
+	switch (WidgetBP->Status.GetValue())
+	{
+	case BS_UpToDate:             return TEXT("upToDate");
+	case BS_UpToDateWithWarnings: return TEXT("upToDateWithWarnings");
+	case BS_Dirty:                return TEXT("dirty");
+	case BS_Error:                return TEXT("error");
+	case BS_BeingCreated:         return TEXT("beingCreated");
+	default:                      return TEXT("unknown");
+	}
+}
+
+/** Stamp compile state onto a mutation result, and withdraw the success claim
+ *  when the blueprint no longer compiles (#799). */
+static void MCPSetWidgetCompileOutcome(
+	TSharedPtr<FJsonObject> Result,
+	const UWidgetBlueprint* WidgetBP,
+	const FString& AssetPath,
+	const FString& WhatHappened)
+{
+	const FString CompileStatus = WidgetCompileStatusString(WidgetBP);
+	Result->SetStringField(TEXT("compileStatus"), CompileStatus);
+	if (CompileStatus == TEXT("error"))
+	{
+		// The mutation is already on disk, so keep reporting what landed, but a
+		// blueprint that no longer compiles is not a success.
+		Result->SetBoolField(TEXT("success"), false);
+		Result->SetStringField(TEXT("error"), FString::Printf(
+			TEXT("%s and saved, but '%s' no longer compiles - open the blueprint's compiler results for the cause."),
+			*WhatHappened, *AssetPath));
+	}
 }
 
 TSharedPtr<FJsonValue> FWidgetHandlers::AddWidget(const TSharedPtr<FJsonObject>& Params)
@@ -1312,19 +859,30 @@ TSharedPtr<FJsonValue> FWidgetHandlers::AddWidget(const TSharedPtr<FJsonObject>&
 	FString ParentWidgetName = OptionalString(Params, TEXT("parentWidgetName"));
 
 	// ── Load the WidgetBlueprint ──
-	UObject* LoadedAsset = UEditorAssetLibrary::LoadAsset(AssetPath);
-	UWidgetBlueprint* WidgetBP = Cast<UWidgetBlueprint>(LoadedAsset);
-	if (!WidgetBP)
+	TSharedPtr<FJsonValue> ResolveError;
+	UWidgetBlueprint* WidgetBP = MCPWidget::ResolveWidgetBlueprintOrError(AssetPath, ResolveError);
+	if (!WidgetBP) return ResolveError;
+
+	if (!WidgetBP->WidgetTree) return MCPWidget::MissingWidgetTreeError(AssetPath);
+
+	// ── Resolve the UClass ──
+	UClass* WClass = ResolveWidgetClass(WidgetClassName);
+	if (!WClass)
 	{
-		return MCPError(FString::Printf(TEXT("Failed to load WidgetBlueprint at '%s'"), *AssetPath));
+		return MCPError(FString::Printf(
+			TEXT("Unknown widget class '%s'. Short names of loaded UWidget subclasses resolve (TextBlock, ")
+			TEXT("CanvasPanel, Image, Button, and every widget a loaded plugin adds), as does a full path ")
+			TEXT("(/Script/UMG.TextBlock, /Script/CommonUI.CommonButtonBase) or a Widget Blueprint path. ")
+			TEXT("List what this editor actually has with widget(list_classes), optionally filtered by ")
+			TEXT("`module` or `filter`. A class from a plugin that is off does not exist until the plugin ")
+			TEXT("is enabled with project(enable_plugin) and the editor restarts."), *WidgetClassName));
 	}
 
-	if (!WidgetBP->WidgetTree)
-	{
-		return MCPError(TEXT("WidgetTree is null"));
-	}
-
-	// Idempotency: if widget with this name already exists, return existed
+	// Idempotency by assetPath + widgetName: a caller that retries after an
+	// ambiguous result (a client-side timeout on a call the editor actually
+	// completed) gets the same answer instead of a duplicate widget (#799).
+	// The class is compared too, so a name that already belongs to something
+	// else is reported rather than passed off as the requested widget.
 	if (!WidgetName.IsEmpty())
 	{
 		UWidget* Existing = nullptr;
@@ -1334,20 +892,28 @@ TSharedPtr<FJsonValue> FWidgetHandlers::AddWidget(const TSharedPtr<FJsonObject>&
 		});
 		if (Existing)
 		{
+			if (Existing->GetClass() != WClass)
+			{
+				return MCPError(FString::Printf(
+					TEXT("Widget '%s' already exists in '%s' as a %s, not a %s. Pick another widgetName or remove the existing widget first."),
+					*WidgetName, *AssetPath, *Existing->GetClass()->GetName(), *WClass->GetName()));
+			}
+
 			auto ExistingResult = MCPSuccess();
 			MCPSetExisted(ExistingResult);
 			ExistingResult->SetStringField(TEXT("widgetName"), WidgetName);
+			ExistingResult->SetStringField(TEXT("requestedWidgetName"), WidgetName);
+			ExistingResult->SetStringField(TEXT("persistedWidgetName"), WidgetName);
+			ExistingResult->SetBoolField(TEXT("renamed"), false);
 			ExistingResult->SetStringField(TEXT("widgetClass"), Existing->GetClass()->GetName());
 			ExistingResult->SetStringField(TEXT("assetPath"), AssetPath);
+			if (UPanelWidget* ExistingParent = Existing->GetParent())
+			{
+				ExistingResult->SetStringField(TEXT("parentWidgetName"), ExistingParent->GetName());
+			}
+			ExistingResult->SetBoolField(TEXT("isRoot"), WidgetBP->WidgetTree->RootWidget == Existing);
 			return MCPResult(ExistingResult);
 		}
-	}
-
-	// ── Resolve the UClass ──
-	UClass* WClass = ResolveWidgetClass(WidgetClassName);
-	if (!WClass)
-	{
-		return MCPError(FString::Printf(TEXT("Unknown widget class '%s'. Use short names like TextBlock, CanvasPanel, Image, Button, etc."), *WidgetClassName));
 	}
 
 	// ── Construct the widget ──
@@ -1390,7 +956,7 @@ TSharedPtr<FJsonValue> FWidgetHandlers::AddWidget(const TSharedPtr<FJsonObject>&
 	}
 	else if (WidgetBP->WidgetTree->RootWidget == nullptr)
 	{
-		// No root yet — make this the root widget
+		// No root yet - make this the root widget
 		WidgetBP->WidgetTree->RootWidget = NewWidget;
 		bIsRoot = true;
 	}
@@ -1408,30 +974,58 @@ TSharedPtr<FJsonValue> FWidgetHandlers::AddWidget(const TSharedPtr<FJsonObject>&
 		}
 	}
 
-	// Register widget GUID so the compiler doesn't assert
-	if (!WidgetBP->WidgetVariableNameToGuidMap.Contains(NewWidget->GetFName()))
+	// ── Save ──
+	// Read the name back off the widget after the compile, not before: the
+	// compile is what settles the name the asset is saved with (#799).
+	TWeakObjectPtr<UWidget> AddedWidget(NewWidget);
+	FString PersistedName = NewWidget->GetName();
+
+	WidgetBP->MarkPackageDirty();
+
+	// #728: the WidgetBlueprintCompiler ensures every widget it generates a
+	// variable for owns an entry in WidgetVariableNameToGuidMap ("Widget [X]
+	// was added but did not get a GUID"). CompileChecked writes the entries
+	// first, compiles, then writes them again because the compile can rename a
+	// widget whose requested name collided, and refuses to compile at all when
+	// an entry could not be written (#799).
+	const MCPWidgetGuidMap::FSyncReport GuidSync = MCPWidgetGuidMap::CompileChecked(WidgetBP);
+	if (!GuidSync.bCompiled)
 	{
-		WidgetBP->WidgetVariableNameToGuidMap.Add(NewWidget->GetFName(), FGuid::NewGuid());
+		return MCPWidgetGuidMap::BlockedError(AssetPath, GuidSync);
 	}
 
-	// ── Save ──
-	WidgetBP->MarkPackageDirty();
-	FKismetEditorUtilities::CompileBlueprint(WidgetBP);
+	if (AddedWidget.IsValid())
+	{
+		PersistedName = AddedWidget->GetName();
+	}
+
 	UEditorAssetLibrary::SaveAsset(AssetPath);
 
 	auto Result = MCPSuccess();
 	MCPSetCreated(Result);
-	Result->SetStringField(TEXT("widgetName"), NewWidget->GetName());
+	Result->SetStringField(TEXT("widgetName"), PersistedName);
+	// Both names, always: the requested one is what a caller retries with, the
+	// persisted one is what the asset actually holds (#799).
+	Result->SetStringField(TEXT("persistedWidgetName"), PersistedName);
+	if (!WidgetName.IsEmpty())
+	{
+		Result->SetStringField(TEXT("requestedWidgetName"), WidgetName);
+		Result->SetBoolField(TEXT("renamed"), !WidgetName.Equals(PersistedName, ESearchCase::CaseSensitive));
+	}
+	Result->SetStringField(TEXT("assetPath"), AssetPath);
 	Result->SetStringField(TEXT("widgetClass"), WClass->GetName());
 	Result->SetBoolField(TEXT("isRoot"), bIsRoot);
 	if (!ParentWidgetName.IsEmpty())
 	{
 		Result->SetStringField(TEXT("parentWidgetName"), ParentWidgetName);
 	}
+	MCPSetWidgetGuidOutcome(Result, GuidSync, AssetPath);
+	MCPSetWidgetCompileOutcome(Result, WidgetBP, AssetPath,
+		FString::Printf(TEXT("Widget '%s' was added"), *PersistedName));
 
 	TSharedPtr<FJsonObject> Payload = MakeShared<FJsonObject>();
 	Payload->SetStringField(TEXT("assetPath"), AssetPath);
-	Payload->SetStringField(TEXT("widgetName"), NewWidget->GetName());
+	Payload->SetStringField(TEXT("widgetName"), PersistedName);
 	MCPSetRollback(Result, TEXT("remove_widget"), Payload);
 
 	return MCPResult(Result);
@@ -1445,17 +1039,11 @@ TSharedPtr<FJsonValue> FWidgetHandlers::RemoveWidget(const TSharedPtr<FJsonObjec
 	FString WidgetName;
 	if (auto Err = RequireString(Params, TEXT("widgetName"), WidgetName)) return Err;
 
-	UObject* LoadedAsset = UEditorAssetLibrary::LoadAsset(AssetPath);
-	UWidgetBlueprint* WidgetBP = Cast<UWidgetBlueprint>(LoadedAsset);
-	if (!WidgetBP)
-	{
-		return MCPError(FString::Printf(TEXT("Failed to load WidgetBlueprint at '%s'"), *AssetPath));
-	}
+	TSharedPtr<FJsonValue> ResolveError;
+	UWidgetBlueprint* WidgetBP = MCPWidget::ResolveWidgetBlueprintOrError(AssetPath, ResolveError);
+	if (!WidgetBP) return ResolveError;
 
-	if (!WidgetBP->WidgetTree)
-	{
-		return MCPError(TEXT("WidgetTree is null"));
-	}
+	if (!WidgetBP->WidgetTree) return MCPWidget::MissingWidgetTreeError(AssetPath);
 
 	// Find the widget
 	UWidget* FoundWidget = nullptr;
@@ -1469,41 +1057,156 @@ TSharedPtr<FJsonValue> FWidgetHandlers::RemoveWidget(const TSharedPtr<FJsonObjec
 
 	if (!FoundWidget)
 	{
-		// Idempotent: nothing to delete
+		// A widget detached from its parent by an older build is still owned by
+		// the WidgetTree, so the compiler still generates a variable for it and
+		// still names it in the designer. The walk above cannot see one, which
+		// is exactly the asset an agent is trying to clean up here, so look
+		// through the tree's own contents before answering "already deleted".
+		TArray<UObject*> Owned;
+		MCPGetDirectSubobjects(WidgetBP->WidgetTree, Owned);
+		for (UObject* Object : Owned)
+		{
+			UWidget* Orphan = Cast<UWidget>(Object);
+			if (Orphan && Orphan->GetName() == WidgetName)
+			{
+				FoundWidget = Orphan;
+				break;
+			}
+		}
+	}
+
+	if (!FoundWidget)
+	{
+		// Idempotent: nothing to delete. An asset last touched by an older build
+		// can still carry the GUID entry of a widget that is already gone, and
+		// this is the call an agent makes after the compiler complains about
+		// that name, so clear the dead metadata here too (#799).
+		const MCPWidgetGuidMap::FSyncReport PruneOnly = MCPWidgetGuidMap::Sync(WidgetBP);
+		if (PruneOnly.Pruned > 0 || PruneOnly.Added > 0)
+		{
+			WidgetBP->MarkPackageDirty();
+			UEditorAssetLibrary::SaveAsset(AssetPath);
+		}
+
 		auto AlreadyResult = MCPSuccess();
 		AlreadyResult->SetBoolField(TEXT("alreadyDeleted"), true);
 		AlreadyResult->SetStringField(TEXT("widgetName"), WidgetName);
 		AlreadyResult->SetStringField(TEXT("assetPath"), AssetPath);
+		MCPSetWidgetGuidOutcome(AlreadyResult, PruneOnly, AssetPath);
 		return MCPResult(AlreadyResult);
 	}
 
 	FString RemovedClass = FoundWidget->GetClass()->GetName();
-
-	// Remove from parent if parented
-	UPanelWidget* Parent = FoundWidget->GetParent();
-	if (Parent)
+	// Captured for the rollback, before the removal takes the links apart. The
+	// class travels as its full path rather than its short name, because
+	// add_widget resolves a path exactly while a short name has to be unique
+	// among every loaded UWidget subclass - and a widget's own generated class
+	// (WBP_Foo_C) is exactly the case a short name can miss.
+	const FString RemovedClassPath = FoundWidget->GetClass()->GetPathName();
+	const UPanelWidget* RemovedParent = FoundWidget->GetParent();
+	const FString RemovedParentName = RemovedParent ? RemovedParent->GetName() : FString();
+	const bool bRemovedWasRoot = (WidgetBP->WidgetTree->RootWidget == FoundWidget);
+	int32 RemovedChildCount = 0;
+	if (const UPanelWidget* RemovedPanel = Cast<UPanelWidget>(FoundWidget))
 	{
-		Parent->RemoveChild(FoundWidget);
+		RemovedChildCount = RemovedPanel->GetChildrenCount();
 	}
 
-	// If this was the root widget, clear it
+	// Hand the removal to the engine FIRST, while the parent link is still
+	// intact: UWidgetTree::RemoveWidget detaches the widget from its parent
+	// itself and only then drops the tree's own bookkeeping for it. Clearing
+	// the parent (or the root pointer) beforehand makes that call a no-op,
+	// which is how a widget ends up half removed.
+	WidgetBP->WidgetTree->RemoveWidget(FoundWidget);
+
+	// Whatever the engine did not do, do here.
 	if (WidgetBP->WidgetTree->RootWidget == FoundWidget)
 	{
 		WidgetBP->WidgetTree->RootWidget = nullptr;
 	}
+	if (UPanelWidget* StillParented = FoundWidget->GetParent())
+	{
+		StillParented->RemoveChild(FoundWidget);
+	}
 
-	// Remove from widget tree
-	WidgetBP->WidgetTree->RemoveWidget(FoundWidget);
+	// #728: unparenting is not removal. The WidgetBlueprintCompiler generates a
+	// variable for every widget the WidgetTree OWNS, so a detached widget still
+	// outered to the tree is still compiled, still needs a GUID entry, and
+	// still holds its name against a later add of the same name. Move the whole
+	// removed subtree out of the tree so it stops being part of the blueprint.
+	int32 Evicted = 0;
+	const TArray<FName> Stuck = MCPWidgetGuidMap::EvictUnreachableWidgets(WidgetBP, Evicted);
+	if (Stuck.Num() > 0)
+	{
+		TArray<FString> StuckNames;
+		for (const FName& Name : Stuck) StuckNames.Add(Name.ToString());
+		return MCPError(FString::Printf(
+			TEXT("Removed '%s' from the hierarchy of '%s' but could not move %s out of the WidgetTree, ")
+			TEXT("so the blueprint still owns it. Nothing was compiled or saved: compiling in that state ")
+			TEXT("leaves the asset reporting a failure in the UMG editor."),
+			*WidgetName, *AssetPath, *FString::Join(StuckNames, TEXT(", "))));
+	}
 
 	WidgetBP->MarkPackageDirty();
-	FKismetEditorUtilities::CompileBlueprint(WidgetBP);
+	MCPWidgetGuidMap::FSyncReport GuidSync = MCPWidgetGuidMap::CompileChecked(WidgetBP);
+	if (!GuidSync.bCompiled)
+	{
+		return MCPWidgetGuidMap::BlockedError(AssetPath, GuidSync);
+	}
+	GuidSync.Evicted = Evicted;
 	UEditorAssetLibrary::SaveAsset(AssetPath);
 
 	auto Result = MCPSuccess();
 	Result->SetBoolField(TEXT("deleted"), true);
 	Result->SetStringField(TEXT("widgetName"), WidgetName);
 	Result->SetStringField(TEXT("widgetClass"), RemovedClass);
-	// No rollback: remove_widget is destructive (would need to snapshot widget tree to reverse).
+	Result->SetStringField(TEXT("assetPath"), AssetPath);
+	Result->SetStringField(TEXT("widgetClassPath"), RemovedClassPath);
+	Result->SetStringField(TEXT("previousParentWidgetName"), RemovedParentName);
+	Result->SetBoolField(TEXT("wasRoot"), bRemovedWasRoot);
+	Result->SetNumberField(TEXT("removedChildCount"), RemovedChildCount);
+	MCPSetWidgetGuidOutcome(Result, GuidSync, AssetPath);
+	MCPSetWidgetCompileOutcome(Result, WidgetBP, AssetPath,
+		FString::Printf(TEXT("Widget '%s' was removed"), *WidgetName));
+
+	// add_widget puts a widget of the same class back under the same parent and
+	// under the same name: the removal evicted the old object into the transient
+	// package, so the name is free again. What it cannot put back is the state
+	// that lived on the removed widget - its property values, its slot layout,
+	// its bindings and its whole subtree, all of which went with it. An empty
+	// parentWidgetName means "no parent", which is what add_widget needs to see
+	// to make the replacement the root again.
+	TSharedPtr<FJsonObject> Payload = MakeShared<FJsonObject>();
+	Payload->SetStringField(TEXT("assetPath"), AssetPath);
+	Payload->SetStringField(TEXT("widgetClass"), RemovedClassPath);
+	Payload->SetStringField(TEXT("widgetName"), WidgetName);
+	if (!RemovedParentName.IsEmpty())
+	{
+		Payload->SetStringField(TEXT("parentWidgetName"), RemovedParentName);
+	}
+	MCPSetRollback(Result, TEXT("add_widget"), Payload);
+	Result->SetBoolField(TEXT("rollbackLossy"), true);
+
+	FString Placement;
+	if (!RemovedParentName.IsEmpty())
+	{
+		Placement = FString::Printf(TEXT("under '%s'"), *RemovedParentName);
+	}
+	else if (bRemovedWasRoot)
+	{
+		Placement = TEXT("as the tree root, which is where add_widget puts a widget when the tree has no root");
+	}
+	else
+	{
+		Placement = TEXT("under the tree root - it had no parent panel when it was removed, and add_widget with no parentWidgetName ")
+			TEXT("parents to the root rather than leaving it detached");
+	}
+
+	Result->SetStringField(TEXT("rollbackNote"), FString::Printf(
+		TEXT("widget(add_widget) restores a DEFAULT %s named '%s' %s. Its property values, its slot layout, its designer bindings and its ")
+		TEXT("%d direct child widget(s) are NOT restored - the removal moved that whole subtree out of the Widget Blueprint. ")
+		TEXT("Read the subtree with widget(read_tree) or widget(get_properties) before removing if any of it matters."),
+		*RemovedClass, *WidgetName, *Placement, RemovedChildCount));
 
 	return MCPResult(Result);
 }
@@ -1519,12 +1222,10 @@ TSharedPtr<FJsonValue> FWidgetHandlers::MoveWidget(const TSharedPtr<FJsonObject>
 	FString NewParentName;
 	if (auto Err = RequireStringAlt(Params, TEXT("newParentWidgetName"), TEXT("parentWidgetName"), NewParentName)) return Err;
 
-	UObject* LoadedAsset = UEditorAssetLibrary::LoadAsset(AssetPath);
-	UWidgetBlueprint* WidgetBP = Cast<UWidgetBlueprint>(LoadedAsset);
-	if (!WidgetBP || !WidgetBP->WidgetTree)
-	{
-		return MCPError(FString::Printf(TEXT("Failed to load WidgetBlueprint at '%s'"), *AssetPath));
-	}
+	TSharedPtr<FJsonValue> ResolveError;
+	UWidgetBlueprint* WidgetBP = MCPWidget::ResolveWidgetBlueprintOrError(AssetPath, ResolveError);
+	if (!WidgetBP) return ResolveError;
+	if (!WidgetBP->WidgetTree) return MCPWidget::MissingWidgetTreeError(AssetPath);
 
 	// Find the widget to move
 	UWidget* WidgetToMove = nullptr;
@@ -1551,6 +1252,39 @@ TSharedPtr<FJsonValue> FWidgetHandlers::MoveWidget(const TSharedPtr<FJsonObject>
 		return MCPError(FString::Printf(TEXT("New parent '%s' (%s) is not a panel widget"), *NewParentName, *NewParentRaw->GetClass()->GetName()));
 	}
 
+	// #315: refuse self-parenting and cyclic moves. Walking the WBP root chain
+	// down from the new parent and stopping at WidgetToMove would let the move
+	// succeed silently while orphaning the entire subtree (read_tree returns
+	// empty, the asset cannot reload). Reject before mutating.
+	if (NewParentPanel == WidgetToMove)
+	{
+		return MCPError(FString::Printf(
+			TEXT("Refusing cyclic move: cannot reparent '%s' into itself"), *WidgetName));
+	}
+	{
+		UWidget* Ancestor = NewParentPanel;
+		while (Ancestor)
+		{
+			if (Ancestor == WidgetToMove)
+			{
+				return MCPError(FString::Printf(
+					TEXT("Refusing cyclic move: '%s' is an ancestor of '%s' (would create a cycle)"),
+					*WidgetName, *NewParentName));
+			}
+			Ancestor = Ancestor->GetParent();
+		}
+	}
+
+	// #315: moving the root widget into any other panel orphans the tree (the
+	// move clears RootWidget then adds it as a child with no root above it).
+	// Use the dedicated wrap/set_root action for that workflow (#365).
+	if (WidgetBP->WidgetTree->RootWidget == WidgetToMove)
+	{
+		return MCPError(FString::Printf(
+			TEXT("Cannot move the root widget '%s' via move_widget - use widget(set_root) or widget(wrap_root) instead"),
+			*WidgetName));
+	}
+
 	// Idempotency: already child of the target parent?
 	UPanelWidget* OldParent = WidgetToMove->GetParent();
 	FString OldParentName = OldParent ? OldParent->GetName() : TEXT("(root)");
@@ -1570,17 +1304,20 @@ TSharedPtr<FJsonValue> FWidgetHandlers::MoveWidget(const TSharedPtr<FJsonObject>
 		OldParent->RemoveChild(WidgetToMove);
 	}
 
-	// If it was the root, clear root
-	if (WidgetBP->WidgetTree->RootWidget == WidgetToMove)
-	{
-		WidgetBP->WidgetTree->RootWidget = nullptr;
-	}
-
 	// Add to new parent
 	NewParentPanel->AddChild(WidgetToMove);
 
 	WidgetBP->MarkPackageDirty();
-	FKismetEditorUtilities::CompileBlueprint(WidgetBP);
+	// A reparent changes nothing about which widgets the blueprint owns, but it
+	// is still a compile, and the compiler ensures on any widget it generates a
+	// variable for without a GUID entry - including one an earlier build left
+	// unregistered. Compiling through CompileChecked repairs that instead of
+	// turning this call into the one that reports the failure (#728).
+	const MCPWidgetGuidMap::FSyncReport GuidSync = MCPWidgetGuidMap::CompileChecked(WidgetBP);
+	if (!GuidSync.bCompiled)
+	{
+		return MCPWidgetGuidMap::BlockedError(AssetPath, GuidSync);
+	}
 	UEditorAssetLibrary::SaveAsset(AssetPath);
 
 	auto Result = MCPSuccess();
@@ -1588,6 +1325,7 @@ TSharedPtr<FJsonValue> FWidgetHandlers::MoveWidget(const TSharedPtr<FJsonObject>
 	Result->SetStringField(TEXT("widgetName"), WidgetName);
 	Result->SetStringField(TEXT("oldParent"), OldParentName);
 	Result->SetStringField(TEXT("newParent"), NewParentName);
+	MCPSetWidgetGuidOutcome(Result, GuidSync, AssetPath);
 
 	// Rollback: move back to old parent if it was a panel
 	if (OldParent)
@@ -1602,75 +1340,456 @@ TSharedPtr<FJsonValue> FWidgetHandlers::MoveWidget(const TSharedPtr<FJsonObject>
 	return MCPResult(Result);
 }
 
-TSharedPtr<FJsonValue> FWidgetHandlers::ListWidgetClasses(const TSharedPtr<FJsonObject>& Params)
+// #365: replace the WBP's RootWidget with an existing widget by name. The
+// previous root is removed from the tree along with its descendants. Used
+// when an authoring step needs to swap a placeholder root (e.g. the
+// auto-created CanvasPanel) for a different layout.
+TSharedPtr<FJsonValue> FWidgetHandlers::SetRoot(const TSharedPtr<FJsonObject>& Params)
 {
-	struct FWidgetClassInfo { FString Name; FString Category; };
-	TArray<FWidgetClassInfo> Classes = {
-		// Panels / containers
-		{ TEXT("CanvasPanel"),       TEXT("Panel") },
-		{ TEXT("HorizontalBox"),     TEXT("Panel") },
-		{ TEXT("VerticalBox"),       TEXT("Panel") },
-		{ TEXT("Overlay"),           TEXT("Panel") },
-		{ TEXT("GridPanel"),         TEXT("Panel") },
-		{ TEXT("UniformGridPanel"),  TEXT("Panel") },
-		{ TEXT("WidgetSwitcher"),    TEXT("Panel") },
-		{ TEXT("ScrollBox"),         TEXT("Panel") },
-		{ TEXT("SizeBox"),           TEXT("Panel") },
-		{ TEXT("ScaleBox"),          TEXT("Panel") },
-		{ TEXT("Border"),            TEXT("Panel") },
-		// Common widgets
-		{ TEXT("TextBlock"),         TEXT("Common") },
-		{ TEXT("RichTextBlock"),     TEXT("Common") },
-		{ TEXT("Image"),             TEXT("Common") },
-		{ TEXT("Button"),            TEXT("Common") },
-		{ TEXT("CheckBox"),          TEXT("Input") },
-		{ TEXT("Slider"),            TEXT("Input") },
-		{ TEXT("EditableTextBox"),   TEXT("Input") },
-		{ TEXT("ComboBoxString"),    TEXT("Input") },
-		{ TEXT("ProgressBar"),       TEXT("Common") },
-		{ TEXT("Spacer"),            TEXT("Common") },
-	};
+	FString AssetPath;
+	if (auto Err = RequireStringAlt(Params, TEXT("assetPath"), TEXT("path"), AssetPath)) return Err;
 
-	TArray<TSharedPtr<FJsonValue>> ClassesArray;
-	for (const FWidgetClassInfo& Info : Classes)
+	FString WidgetName;
+	if (auto Err = RequireString(Params, TEXT("widgetName"), WidgetName)) return Err;
+
+	TSharedPtr<FJsonValue> ResolveError;
+	UWidgetBlueprint* WidgetBP = MCPWidget::ResolveWidgetBlueprintOrError(AssetPath, ResolveError);
+	if (!WidgetBP) return ResolveError;
+	if (!WidgetBP->WidgetTree) return MCPWidget::MissingWidgetTreeError(AssetPath);
+
+	UWidget* NewRoot = nullptr;
+	WidgetBP->WidgetTree->ForEachWidget([&](UWidget* W)
 	{
-		FString FullPath = FString::Printf(TEXT("/Script/UMG.%s"), *Info.Name);
-		UClass* WClass = FindObject<UClass>(nullptr, *FullPath);
-		bool bIsPanel = WClass && WClass->IsChildOf(UPanelWidget::StaticClass());
+		if (W && W->GetName() == WidgetName) NewRoot = W;
+	});
+	if (!NewRoot)
+	{
+		return MCPError(FString::Printf(TEXT("Widget not found: '%s'"), *WidgetName));
+	}
 
-		TSharedPtr<FJsonObject> Obj = MakeShared<FJsonObject>();
-		Obj->SetStringField(TEXT("name"), Info.Name);
-		Obj->SetStringField(TEXT("category"), Info.Category);
-		Obj->SetBoolField(TEXT("isPanel"), bIsPanel);
-		Obj->SetBoolField(TEXT("available"), WClass != nullptr);
+	UWidget* OldRoot = WidgetBP->WidgetTree->RootWidget;
+	if (OldRoot == NewRoot)
+	{
+		auto Noop = MCPSuccess();
+		MCPSetExisted(Noop);
+		Noop->SetStringField(TEXT("rootWidget"), WidgetName);
+		return MCPResult(Noop);
+	}
 
-		// Slot properties hint
-		if (bIsPanel)
+	WidgetBP->Modify();
+	WidgetBP->WidgetTree->Modify();
+
+	// Detach NewRoot from its current parent so the engine doesn't keep it as
+	// a descendant of whatever was hosting it (avoids leaving the new root
+	// double-parented when AddChild later reassigns it elsewhere).
+	if (UPanelWidget* CurrentParent = NewRoot->GetParent())
+	{
+		CurrentParent->RemoveChild(NewRoot);
+	}
+
+	WidgetBP->WidgetTree->RootWidget = NewRoot;
+
+	// #728: the previous root and its descendants are out of the hierarchy, but
+	// the WidgetTree still owns them, and ownership is what makes the compiler
+	// generate a variable for a widget. Move them out so the swap actually
+	// removes them, rather than leaving a subtree that compiles into variables
+	// nothing can reach. The new root was detached from its parent above, so it
+	// is reachable from the new root pointer and is never swept up here.
+	const FString PreviousRootName = OldRoot ? OldRoot->GetName() : FString(TEXT("(none)"));
+	int32 Evicted = 0;
+	const TArray<FName> Stuck = MCPWidgetGuidMap::EvictUnreachableWidgets(WidgetBP, Evicted);
+	if (Stuck.Num() > 0)
+	{
+		TArray<FString> StuckNames;
+		for (const FName& Name : Stuck) StuckNames.Add(Name.ToString());
+		return MCPError(FString::Printf(
+			TEXT("'%s' is the new root of '%s' but %s could not be moved out of the WidgetTree, so the ")
+			TEXT("blueprint still owns the old subtree. Nothing was compiled or saved: compiling in that ")
+			TEXT("state leaves the asset reporting a failure in the UMG editor."),
+			*WidgetName, *AssetPath, *FString::Join(StuckNames, TEXT(", "))));
+	}
+
+	WidgetBP->MarkPackageDirty();
+	MCPWidgetGuidMap::FSyncReport GuidSync = MCPWidgetGuidMap::CompileChecked(WidgetBP);
+	if (!GuidSync.bCompiled)
+	{
+		return MCPWidgetGuidMap::BlockedError(AssetPath, GuidSync);
+	}
+	GuidSync.Evicted = Evicted;
+	UEditorAssetLibrary::SaveAsset(AssetPath);
+
+	auto Result = MCPSuccess();
+	MCPSetUpdated(Result);
+	Result->SetStringField(TEXT("rootWidget"), WidgetName);
+	Result->SetStringField(TEXT("previousRoot"), PreviousRootName);
+	Result->SetNumberField(TEXT("evictedWidgets"), Evicted);
+	MCPSetWidgetGuidOutcome(Result, GuidSync, AssetPath);
+
+	// No inverse, and naming one would be a lie. Swapping the root moves the old
+	// root and everything under it OUT of the WidgetTree and into the transient
+	// package under fresh unique names, so nothing in the asset answers to
+	// '<previousRoot>' any more and set_root_widget replayed with that name
+	// would fail on "Widget not found". Rebuilding the old subtree would take
+	// one add_widget per widget plus every property it carried, which is not one
+	// call and not something this action captured.
+	Result->SetBoolField(TEXT("rollbackPossible"), false);
+	Result->SetStringField(TEXT("rollbackNote"), FString::Printf(
+		TEXT("Swapping the root evicted the previous root '%s' and %d widget(s) with it out of the Widget Blueprint, so no call can name ")
+		TEXT("them again. Read the tree with widget(read_tree) BEFORE a root swap if it has to be recoverable, or use widget(wrap_root) ")
+		TEXT("instead, which keeps the old root as a child and does emit an inverse."),
+		*PreviousRootName, Evicted));
+	return MCPResult(Result);
+}
+
+// #365: insert a new container around the current root - mirrors UMG's
+// "Wrap With" context-menu action. The current root becomes a child of the
+// new wrapping widget.
+TSharedPtr<FJsonValue> FWidgetHandlers::WrapRoot(const TSharedPtr<FJsonObject>& Params)
+{
+	FString AssetPath;
+	if (auto Err = RequireStringAlt(Params, TEXT("assetPath"), TEXT("path"), AssetPath)) return Err;
+
+	FString WrapperClassName;
+	if (auto Err = RequireStringAlt(Params, TEXT("wrapperClass"), TEXT("widgetClass"), WrapperClassName)) return Err;
+
+	TSharedPtr<FJsonValue> ResolveError;
+	UWidgetBlueprint* WidgetBP = MCPWidget::ResolveWidgetBlueprintOrError(AssetPath, ResolveError);
+	if (!WidgetBP) return ResolveError;
+	if (!WidgetBP->WidgetTree) return MCPWidget::MissingWidgetTreeError(AssetPath);
+
+	UWidget* OldRoot = WidgetBP->WidgetTree->RootWidget;
+	if (!OldRoot)
+	{
+		return MCPError(TEXT("WBP has no root widget yet - use add_widget to set a root first"));
+	}
+
+	UClass* WrapperCls = FindClassByShortName(WrapperClassName);
+	if (!WrapperCls)
+	{
+		return MCPError(FString::Printf(TEXT("Widget class not found: %s"), *WrapperClassName));
+	}
+	if (!WrapperCls->IsChildOf(UPanelWidget::StaticClass()))
+	{
+		return MCPError(FString::Printf(
+			TEXT("Wrapper class '%s' is not a UPanelWidget - cannot host children"), *WrapperClassName));
+	}
+
+	const FString NewName = OptionalString(Params, TEXT("wrapperName"));
+
+	WidgetBP->Modify();
+	WidgetBP->WidgetTree->Modify();
+
+	UPanelWidget* Wrapper = Cast<UPanelWidget>(WidgetBP->WidgetTree->ConstructWidget<UWidget>(
+		WrapperCls, NewName.IsEmpty() ? NAME_None : FName(*NewName)));
+	if (!Wrapper)
+	{
+		return MCPError(TEXT("Failed to construct wrapper widget"));
+	}
+
+	// Widgets the tree OWNS but no longer reaches from the root. They matter
+	// because the rollback below runs set_root_widget, and that action calls
+	// EvictUnreachableWidgets, which sweeps every unreachable widget rather
+	// than only the wrapper this call is about to create. A blueprint already
+	// carrying an orphan would lose it permanently on rollback, so it is
+	// counted here and reported rather than glossed over. Counted BEFORE the
+	// wrap, since the wrap changes what the root reaches.
+	int32 PreExistingOrphans = 0;
+	{
+		TSet<const UObject*> Reachable;
+		WidgetBP->WidgetTree->ForEachWidget([&Reachable](UWidget* Widget)
 		{
-			if (Info.Name == TEXT("CanvasPanel"))
-				Obj->SetStringField(TEXT("slotProperties"), TEXT("slot.anchors, slot.alignment, slot.position, slot.size, slot.autoSize, slot.zOrder"));
-			else if (Info.Name == TEXT("HorizontalBox") || Info.Name == TEXT("VerticalBox"))
-				Obj->SetStringField(TEXT("slotProperties"), TEXT("slot.padding, slot.hAlign, slot.vAlign, slot.sizeRule (auto|fill), slot.fillWeight"));
-			else if (Info.Name == TEXT("Overlay"))
-				Obj->SetStringField(TEXT("slotProperties"), TEXT("slot.padding, slot.hAlign, slot.vAlign"));
+			if (Widget) { Reachable.Add(Widget); }
+		});
+		for (const auto& Binding : WidgetBP->WidgetTree->NamedSlotBindings)
+		{
+			if (!Binding.Value) continue;
+			Reachable.Add(Binding.Value);
+			UWidgetTree::ForWidgetAndChildren(Binding.Value, [&Reachable](UWidget* Widget)
+			{
+				if (Widget) { Reachable.Add(Widget); }
+			});
 		}
+		TArray<UObject*> Owned;
+		MCPGetDirectSubobjects(WidgetBP->WidgetTree, Owned);
+		for (UObject* Object : Owned)
+		{
+			UWidget* Widget = Cast<UWidget>(Object);
+			// The wrapper is excluded by POINTER IDENTITY, not by name: a rename
+			// cannot break this test. ConstructWidget above already outered the
+			// wrapper to the tree, so it shows up in the owned set, and it is not
+			// the root yet, so the reachability walk above cannot reach it. Without
+			// this exclusion this call's own new widget would be counted as a
+			// pre-existing orphan.
+			if (Widget && Widget != Wrapper && !Reachable.Contains(Widget)) { ++PreExistingOrphans; }
+		}
+	}
 
-		ClassesArray.Add(MakeShared<FJsonValueObject>(Obj));
+	WidgetBP->WidgetTree->RootWidget = Wrapper;
+	Wrapper->AddChild(OldRoot);
+
+	TWeakObjectPtr<UPanelWidget> AddedWrapper(Wrapper);
+	// Read BEFORE the compile, for the same reason the child's name is: if the
+	// compile replaces the widget objects the weak pointer goes stale, and the
+	// fallback has to be the name this call knew rather than a dereference of a
+	// raw pointer that is exactly what went stale.
+	FString WrapperName = Wrapper->GetName();
+	// Held the same way, and for the same reason: the compile below can
+	// replace the widget objects, so the name is read back off a weak pointer
+	// rather than off a raw one that may no longer be the live widget.
+	TWeakObjectPtr<UWidget> WrappedChild(OldRoot);
+	FString WrappedChildName = OldRoot->GetName();
+
+	WidgetBP->MarkPackageDirty();
+	// #728: the wrapper is a new widget variable and needs a GUID before the
+	// compile that checks for one. CompileChecked writes it, compiles, then
+	// writes it again under whatever name the compile settled on.
+	const MCPWidgetGuidMap::FSyncReport GuidSync = MCPWidgetGuidMap::CompileChecked(WidgetBP);
+	if (!GuidSync.bCompiled)
+	{
+		return MCPWidgetGuidMap::BlockedError(AssetPath, GuidSync);
+	}
+	UEditorAssetLibrary::SaveAsset(AssetPath);
+
+	if (WrappedChild.IsValid())
+	{
+		WrappedChildName = WrappedChild->GetName();
+	}
+	if (AddedWrapper.IsValid())
+	{
+		WrapperName = AddedWrapper->GetName();
 	}
 
 	auto Result = MCPSuccess();
-	Result->SetArrayField(TEXT("classes"), ClassesArray);
-	Result->SetNumberField(TEXT("count"), ClassesArray.Num());
+	MCPSetCreated(Result);
+	Result->SetStringField(TEXT("wrapperName"), WrapperName);
+	Result->SetStringField(TEXT("wrapperClass"), WrapperCls->GetName());
+	Result->SetStringField(TEXT("wrappedChild"), WrappedChildName);
+	MCPSetWidgetGuidOutcome(Result, GuidSync, AssetPath);
+
+	// Rooting the wrapped child again is the inverse: set_root_widget detaches
+	// the new root from its parent (the wrapper) first, then evicts whatever
+	// the tree no longer reaches, and the wrapper is what that is.
+	//
+	// It is only EXACT when the tree held no orphan already, because the
+	// eviction sweeps every unreachable widget rather than the wrapper alone.
+	// An orphan that was there before this call is reachable from nothing
+	// after the rollback either, so it goes with the wrapper.
+	Result->SetNumberField(TEXT("preExistingOrphans"), PreExistingOrphans);
+	TSharedPtr<FJsonObject> Payload = MakeShared<FJsonObject>();
+	Payload->SetStringField(TEXT("assetPath"), AssetPath);
+	Payload->SetStringField(TEXT("widgetName"), WrappedChildName);
+	MCPSetRollback(Result, TEXT("set_root_widget"), Payload);
+	Result->SetBoolField(TEXT("rollbackLossy"), PreExistingOrphans > 0);
+	if (PreExistingOrphans > 0)
+	{
+		Result->SetStringField(TEXT("rollbackNote"), FString::Printf(
+			TEXT("This Widget Blueprint already owns %d widget(s) the tree does not reach from its root. The rollback runs ")
+			TEXT("widget(set_root), which moves EVERY unreachable widget out of the blueprint, so those %d would be lost along with ")
+			TEXT("the wrapper this call created. Clear them first with widget(remove_widget), or accept the loss."),
+			PreExistingOrphans, PreExistingOrphans));
+	}
+	return MCPResult(Result);
+}
+
+TSharedPtr<FJsonValue> FWidgetHandlers::ListWidgetClasses(const TSharedPtr<FJsonObject>& Params)
+{
+	// This used to be a hardcoded array of 21 UMG names, which made every widget
+	// outside UMG invisible: a caller could not learn that CommonButtonBase, or
+	// the project's own C++ widget, existed at all, and add_widget's short-name
+	// resolution only ever looked in /Script/UMG. So the answer is now the real
+	// set of loaded UWidget subclasses, grouped by the module that defines them.
+	//
+	// "Loaded" is the honest word and the result says so. A Widget Blueprint
+	// class that nothing has touched this session is not in memory; find those
+	// with widget(list) or asset(search). A class from a disabled plugin does
+	// not exist at all until project(enable_plugin) and a restart.
+	const FString Filter = OptionalString(Params, TEXT("filter"));
+	const FString ModuleFilter = OptionalString(Params, TEXT("module"));
+	const bool bIncludeAbstract = OptionalBool(Params, TEXT("includeAbstract"), false);
+	const bool bIncludeBlueprint = OptionalBool(Params, TEXT("includeBlueprint"), false);
+
+	// T3: paged. Every loaded UWidget subclass is enumerated here, which on a
+	// project with UMG, CommonUI and its own widget module runs to four figures.
+	// It used to stop at `limit` rows and set `truncated`, which told a caller
+	// there were more without giving it any way to read them.
+	MCPPagination::FPageRequest Page;
+	if (auto Err = MCPPagination::ReadPageRequest(
+			Params,
+			FString::Printf(TEXT("list_widget_classes|filter=%s|module=%s|includeAbstract=%d|includeBlueprint=%d"),
+				*Filter, *ModuleFilter, bIncludeAbstract ? 1 : 0, bIncludeBlueprint ? 1 : 0),
+			/*DefaultLimit*/ 300, /*MaxLimit*/ 5000, Page))
+	{
+		return Err;
+	}
+
+	// The slot a panel gives its children is the one thing a name does not tell
+	// you, and it is what the next call has to write. Kept from the old curated
+	// list, now attached to whatever panel the enumeration finds.
+	auto SlotHintFor = [](UClass* PanelClass) -> FString
+	{
+		for (UClass* C = PanelClass; C; C = C->GetSuperClass())
+		{
+			const FString Name = C->GetName();
+			if (Name == TEXT("CanvasPanel"))
+				return TEXT("slot.anchors, slot.alignment, slot.position, slot.size, slot.autoSize, slot.zOrder");
+			if (Name == TEXT("HorizontalBox") || Name == TEXT("VerticalBox") || Name == TEXT("ScrollBox"))
+				return TEXT("slot.padding, slot.hAlign, slot.vAlign, slot.sizeRule (auto|fill), slot.fillWeight");
+			if (Name == TEXT("Overlay") || Name == TEXT("Border") || Name == TEXT("SizeBox") || Name == TEXT("ScaleBox"))
+				return TEXT("slot.padding, slot.hAlign, slot.vAlign");
+			if (Name == TEXT("GridPanel") || Name == TEXT("UniformGridPanel"))
+				return TEXT("slot.row, slot.column, slot.rowSpan, slot.columnSpan, slot.padding, slot.hAlign, slot.vAlign");
+			if (Name == TEXT("WidgetSwitcher"))
+				return TEXT("slot.padding, slot.hAlign, slot.vAlign");
+		}
+		return FString();
+	};
+
+	struct FRow { UClass* Class = nullptr; FString Module; };
+	TArray<FRow> Rows;
+	int32 TotalWidgetClasses = 0;
+
+	for (TObjectIterator<UClass> It; It; ++It)
+	{
+		UClass* Candidate = *It;
+		if (!Candidate->IsChildOf(UWidget::StaticClass())) continue;
+		if (Candidate == UWidget::StaticClass()) continue;
+		++TotalWidgetClasses;
+
+		const bool bIsBlueprint = Candidate->ClassGeneratedBy != nullptr;
+		if (bIsBlueprint && !bIncludeBlueprint) continue;
+		if (Candidate->HasAnyClassFlags(CLASS_Abstract) && !bIncludeAbstract) continue;
+		// Deprecated and editor-hidden classes are not offers a caller should act on.
+		if (Candidate->HasAnyClassFlags(CLASS_Deprecated | CLASS_NewerVersionExists)) continue;
+
+		// The package a class lives in IS its module for a native class
+		// (/Script/UMG), and its content path for a Blueprint one.
+		FString Module = Candidate->GetOutermost()->GetName();
+		Module.RemoveFromStart(TEXT("/Script/"));
+
+		if (!ModuleFilter.IsEmpty() && !Module.Contains(ModuleFilter, ESearchCase::IgnoreCase)) continue;
+		if (!Filter.IsEmpty() && !Candidate->GetName().Contains(Filter, ESearchCase::IgnoreCase)) continue;
+
+		Rows.Add({ Candidate, MoveTemp(Module) });
+	}
+
+	// TObjectIterator walks the object hash, whose order is not a contract, so
+	// the rows are sorted before paging. The class PATH is the last tiebreak:
+	// two modules can each define a Button, and without it those two swap
+	// places between calls and no anchor can resume into the sequence.
+	Rows.Sort([](const FRow& A, const FRow& B)
+	{
+		if (A.Module != B.Module) return A.Module < B.Module;
+		if (A.Class->GetName() != B.Class->GetName()) return A.Class->GetName() < B.Class->GetName();
+		return A.Class->GetPathName() < B.Class->GetPathName();
+	});
+
+	TArray<MCPPagination::FPageRow> PageRows;
+	PageRows.Reserve(Rows.Num());
+	TSet<FString> ModulesSeen;
+	for (const FRow& Row : Rows)
+	{
+		const bool bIsPanel = Row.Class->IsChildOf(UPanelWidget::StaticClass());
+		ModulesSeen.Add(Row.Module);
+
+		TSharedPtr<FJsonObject> Obj = MakeShared<FJsonObject>();
+		Obj->SetStringField(TEXT("name"), Row.Class->GetName());
+		Obj->SetStringField(TEXT("path"), Row.Class->GetPathName());
+		Obj->SetStringField(TEXT("module"), Row.Module);
+		Obj->SetStringField(TEXT("parentClass"), Row.Class->GetSuperClass() ? Row.Class->GetSuperClass()->GetName() : FString());
+		Obj->SetBoolField(TEXT("isPanel"), bIsPanel);
+		Obj->SetBoolField(TEXT("isUserWidget"), Row.Class->IsChildOf(UUserWidget::StaticClass()));
+		Obj->SetBoolField(TEXT("isAbstract"), Row.Class->HasAnyClassFlags(CLASS_Abstract));
+		Obj->SetBoolField(TEXT("isBlueprint"), Row.Class->ClassGeneratedBy != nullptr);
+		// A UserWidget subclass takes its children through BindWidget properties
+		// rather than through AddChild, which is why add_widget cannot parent
+		// into one. widget(get_bind_widget_contract) reports what it wants.
+		Obj->SetBoolField(TEXT("acceptsChildren"), bIsPanel);
+#if WITH_EDITOR
+		const FString Category = Row.Class->GetMetaData(TEXT("Category"));
+		if (!Category.IsEmpty()) Obj->SetStringField(TEXT("category"), Category);
+#endif
+		if (bIsPanel)
+		{
+			const FString Hint = SlotHintFor(Row.Class);
+			if (!Hint.IsEmpty()) Obj->SetStringField(TEXT("slotProperties"), Hint);
+		}
+
+		// The class PATH is the page anchor, not the short name.
+		PageRows.Add({ Row.Class->GetPathName(), MakeShared<FJsonValueObject>(Obj) });
+	}
+
+	// Every module the WHOLE listing covers, not just this page's, because it
+	// is what a caller narrows the next query with.
+	TArray<FString> ModuleList = ModulesSeen.Array();
+	ModuleList.Sort();
+
+	auto Result = MCPSuccess();
+	Result->SetNumberField(TEXT("matched"), PageRows.Num());
+	Result->SetNumberField(TEXT("totalLoadedWidgetClasses"), TotalWidgetClasses);
+	Result->SetArrayField(TEXT("modules"), MCPStringListToJson(ModuleList));
+	MCPPagination::EmitPage(Page, PageRows, TEXT("classes"), Result);
+	Result->SetStringField(TEXT("note"), TEXT(
+		"Loaded classes only. A Widget Blueprint class nothing has opened this session is absent from "
+		"this list; find those with widget(list). A class from a disabled plugin does not exist at all "
+		"until project(enable_plugin) and an editor restart. Pass the `name` of any row to "
+		"widget(add_widget) as widgetClass, or the `path` when two modules share a name."));
 
 	return MCPResult(Result);
 }
 
 // ─────────────────────────────────────────────────────────────
-// #160  Runtime widget inspection — live PIE UUserWidget probing
+// #160  Runtime widget inspection - live PIE UUserWidget probing
 // ─────────────────────────────────────────────────────────────
 namespace WidgetRuntime_Internal
 {
-	static UWorld* ResolveRuntimeWorld()
+	// These names are deliberately widget-specific. This namespace is opened with
+	// a block-scope using-directive at several call sites, which injects its names
+	// into the global namespace at exactly the point where a unity-blob neighbour's
+	// anonymous-namespace definitions live. GasHandlers_Runtime.cpp defines a
+	// ResolveRuntimeWorld and EditorHandlers_PIERuntime.cpp a VectorJson; those
+	// pairs resolved as overloads only by arity and by the absence of an implicit
+	// FVector/FVector2D conversion. audit:unity cannot see this class of collision,
+	// because it walks anonymous-namespace bodies only.
+	struct FDerivedClipState
+	{
+		bool bHasRect = false;
+		bool bAlwaysClip = false;
+		FSlateRect Rect;
+		FString SourcePath;
+	};
+
+	struct FRuntimeLayoutSample
+	{
+		FVector2D DesiredSize = FVector2D::ZeroVector;
+		FVector2D LocalSize = FVector2D::ZeroVector;
+		FVector2D AbsoluteSize = FVector2D::ZeroVector;
+		FVector2D AbsolutePosition = FVector2D::ZeroVector;
+		FSlateRect RenderRect;
+		FString SlotSignature;
+		bool bHasCanvasSlot = false;
+		bool bCanvasAutoSize = false;
+		FAnchors CanvasAnchors;
+		FMargin CanvasOffsets;
+	};
+
+	// Per-call state for the optional layout pass. Bundled into one struct so the
+	// recursive walk keeps a readable signature, and so a call that did not ask
+	// for layout can skip the whole block by checking a single flag.
+	struct FRuntimeScanContext
+	{
+		bool bIncludeLayout = false;
+		TOptional<FSlateRect> ViewportRect;
+		const TMap<FString, FRuntimeLayoutSample>* PreviousSamples = nullptr;
+		TMap<FString, FRuntimeLayoutSample> CurrentSamples;
+		int32 WarningCount = 0;
+		int32 ChangedNodeCount = 0;
+	};
+
+	static TMap<FString, TMap<FString, FRuntimeLayoutSample>> PreviousLayoutCaptures;
+	static TMap<FString, uint64> PreviousLayoutCaptureFrames;
+	static uint64 LayoutCaptureSequence = 0;
+
+	static UWorld* ResolveWidgetRuntimeWorld()
 	{
 		if (!GEditor) return nullptr;
 		FWorldContext* PIE = GEditor->GetPIEWorldContext();
@@ -1705,12 +1824,227 @@ namespace WidgetRuntime_Internal
 		return TEXT("Unknown");
 	}
 
-	static TSharedPtr<FJsonObject> BuildRuntimeNode(UWidget* Widget, int32 Depth, int32 MaxDepth)
+	static TSharedPtr<FJsonObject> WidgetVector2DJson(const FVector2D& Value)
+	{
+		TSharedPtr<FJsonObject> Obj = MakeShared<FJsonObject>();
+		Obj->SetNumberField(TEXT("x"), Value.X);
+		Obj->SetNumberField(TEXT("y"), Value.Y);
+		return Obj;
+	}
+
+	static TSharedPtr<FJsonObject> RectJson(const FSlateRect& Rect)
+	{
+		TSharedPtr<FJsonObject> Obj = MakeShared<FJsonObject>();
+		Obj->SetNumberField(TEXT("left"), Rect.Left);
+		Obj->SetNumberField(TEXT("top"), Rect.Top);
+		Obj->SetNumberField(TEXT("right"), Rect.Right);
+		Obj->SetNumberField(TEXT("bottom"), Rect.Bottom);
+		Obj->SetNumberField(TEXT("width"), Rect.Right - Rect.Left);
+		Obj->SetNumberField(TEXT("height"), Rect.Bottom - Rect.Top);
+		Obj->SetBoolField(TEXT("valid"), Rect.IsValid());
+		return Obj;
+	}
+
+	static TSharedPtr<FJsonObject> MarginJson(const FMargin& Margin)
+	{
+		TSharedPtr<FJsonObject> Obj = MakeShared<FJsonObject>();
+		Obj->SetNumberField(TEXT("left"), Margin.Left);
+		Obj->SetNumberField(TEXT("top"), Margin.Top);
+		Obj->SetNumberField(TEXT("right"), Margin.Right);
+		Obj->SetNumberField(TEXT("bottom"), Margin.Bottom);
+		return Obj;
+	}
+
+	static FString ClippingToString(EWidgetClipping Clipping)
+	{
+		if (const UEnum* Enum = StaticEnum<EWidgetClipping>())
+		{
+			return Enum->GetNameStringByValue(static_cast<int64>(Clipping));
+		}
+		return TEXT("Unknown");
+	}
+
+	static TSharedPtr<FJsonObject> BuildSlotJson(UWidget* Widget, FString& OutSignature)
+	{
+		UPanelSlot* Slot = Widget ? Widget->Slot : nullptr;
+		if (!Slot)
+		{
+			OutSignature.Reset();
+			return nullptr;
+		}
+
+		TSharedPtr<FJsonObject> SlotObj = MakeShared<FJsonObject>();
+		SlotObj->SetStringField(TEXT("class"), Slot->GetClass()->GetName());
+
+		TSharedPtr<FJsonObject> Properties = MakeShared<FJsonObject>();
+		TArray<FString> SignatureParts;
+		for (TFieldIterator<FProperty> It(Slot->GetClass()); It; ++It)
+		{
+			FProperty* Property = *It;
+			FString Value;
+			const void* ValuePtr = Property->ContainerPtrToValuePtr<void>(Slot);
+			Property->ExportText_Direct(Value, ValuePtr, ValuePtr, Slot, PPF_None);
+			Properties->SetStringField(Property->GetName(), Value);
+			SignatureParts.Add(Property->GetName() + TEXT("=") + Value);
+		}
+		SignatureParts.Sort();
+		OutSignature = FString::Join(SignatureParts, TEXT("|"));
+		SlotObj->SetObjectField(TEXT("properties"), Properties);
+
+		if (UCanvasPanelSlot* CanvasSlot = Cast<UCanvasPanelSlot>(Slot))
+		{
+			const FAnchors Anchors = CanvasSlot->GetAnchors();
+			const FMargin Offsets = CanvasSlot->GetOffsets();
+			const FVector2D Alignment = CanvasSlot->GetAlignment();
+			TSharedPtr<FJsonObject> Canvas = MakeShared<FJsonObject>();
+			TSharedPtr<FJsonObject> AnchorsObj = MakeShared<FJsonObject>();
+			AnchorsObj->SetObjectField(TEXT("minimum"), WidgetVector2DJson(Anchors.Minimum));
+			AnchorsObj->SetObjectField(TEXT("maximum"), WidgetVector2DJson(Anchors.Maximum));
+			AnchorsObj->SetBoolField(TEXT("stretchedHorizontally"), !FMath::IsNearlyEqual(Anchors.Minimum.X, Anchors.Maximum.X));
+			AnchorsObj->SetBoolField(TEXT("stretchedVertically"), !FMath::IsNearlyEqual(Anchors.Minimum.Y, Anchors.Maximum.Y));
+			Canvas->SetObjectField(TEXT("anchors"), AnchorsObj);
+			Canvas->SetObjectField(TEXT("offsets"), MarginJson(Offsets));
+			Canvas->SetObjectField(TEXT("alignment"), WidgetVector2DJson(Alignment));
+			Canvas->SetBoolField(TEXT("autoSize"), CanvasSlot->GetAutoSize());
+			Canvas->SetNumberField(TEXT("zOrder"), CanvasSlot->GetZOrder());
+			SlotObj->SetObjectField(TEXT("canvas"), Canvas);
+		}
+
+		return SlotObj;
+	}
+
+	static void AddWarning(
+		TArray<TSharedPtr<FJsonValue>>& Warnings,
+		const FString& Code,
+		const FString& Severity,
+		const FString& Message)
+	{
+		TSharedPtr<FJsonObject> Warning = MakeShared<FJsonObject>();
+		Warning->SetStringField(TEXT("code"), Code);
+		Warning->SetStringField(TEXT("severity"), Severity);
+		Warning->SetStringField(TEXT("message"), Message);
+		Warnings.Add(MakeShared<FJsonValueObject>(Warning));
+	}
+
+	static bool VectorNearlyEqual(const FVector2D& A, const FVector2D& B, double Tolerance = 0.05)
+	{
+		return A.Equals(B, Tolerance);
+	}
+
+	static FDerivedClipState ResolveClipState(
+		UWidget* Widget,
+		const FString& WidgetPath,
+		const FGeometry& Geometry,
+		const FVector2D& DesiredSize,
+		const FDerivedClipState& ParentClip)
+	{
+		FDerivedClipState Result = ParentClip;
+		const EWidgetClipping Clipping = Widget->GetClipping();
+		const FSlateRect WidgetBounds = Geometry.GetRenderBoundingRect();
+
+		bool bApplyOwnBounds = false;
+		bool bIntersectParent = true;
+		bool bAlwaysClip = ParentClip.bAlwaysClip;
+		switch (Clipping)
+		{
+			case EWidgetClipping::ClipToBounds:
+				bApplyOwnBounds = true;
+				break;
+			case EWidgetClipping::ClipToBoundsWithoutIntersecting:
+				bApplyOwnBounds = true;
+				bIntersectParent = ParentClip.bAlwaysClip;
+				break;
+			case EWidgetClipping::ClipToBoundsAlways:
+				bApplyOwnBounds = true;
+				bAlwaysClip = true;
+				break;
+			case EWidgetClipping::OnDemand:
+			{
+				const FVector2D LocalSize = Geometry.GetLocalSize();
+				bApplyOwnBounds = DesiredSize.X > LocalSize.X + 0.05 || DesiredSize.Y > LocalSize.Y + 0.05;
+				break;
+			}
+			case EWidgetClipping::Inherit:
+			default:
+				break;
+		}
+
+		if (bApplyOwnBounds)
+		{
+			Result.bHasRect = true;
+			Result.bAlwaysClip = bAlwaysClip;
+			Result.SourcePath = WidgetPath;
+			if (ParentClip.bHasRect && bIntersectParent)
+			{
+				Result.Rect = ParentClip.Rect.IntersectionWith(WidgetBounds);
+			}
+			else
+			{
+				Result.Rect = WidgetBounds;
+			}
+		}
+		return Result;
+	}
+
+	// Seed lets the caller start from the hosting UUserWidget's clip state, which
+	// is not reachable through GetParent() from a widget-tree root.
+	static FDerivedClipState ResolveAncestorClipState(
+		UWidget* Widget,
+		const FDerivedClipState& Seed = FDerivedClipState(),
+		const FString& PathPrefix = FString())
+	{
+		TArray<UWidget*> Ancestors;
+		for (UPanelWidget* Parent = Widget ? Widget->GetParent() : nullptr; Parent; Parent = Parent->GetParent())
+		{
+			Ancestors.Add(Parent);
+		}
+
+		FDerivedClipState Result = Seed;
+		FString AncestorPath = PathPrefix;
+		for (int32 Index = Ancestors.Num() - 1; Index >= 0; --Index)
+		{
+			UWidget* Ancestor = Ancestors[Index];
+			AncestorPath += TEXT("/") + Ancestor->GetName();
+			Result = ResolveClipState(
+				Ancestor,
+				AncestorPath,
+				Ancestor->GetCachedGeometry(),
+				Ancestor->GetDesiredSize(),
+				Result);
+		}
+		return Result;
+	}
+
+	static double ResolveAncestorOpacity(UWidget* Widget, double Seed = 1.0)
+	{
+		double Result = Seed;
+		for (UPanelWidget* Parent = Widget ? Widget->GetParent() : nullptr; Parent; Parent = Parent->GetParent())
+		{
+			Result *= Parent->GetRenderOpacity();
+		}
+		return Result;
+	}
+
+	static TSharedPtr<FJsonObject> BuildRuntimeNode(
+		UWidget* Widget,
+		int32 Depth,
+		int32 MaxDepth,
+		const FString& WidgetPath,
+		const FDerivedClipState& ParentClip,
+		double ParentEffectiveOpacity,
+		FRuntimeScanContext& Ctx)
 	{
 		if (!Widget) return nullptr;
 		TSharedPtr<FJsonObject> Obj = MakeShared<FJsonObject>();
 		Obj->SetStringField(TEXT("name"), Widget->GetName());
 		Obj->SetStringField(TEXT("class"), Widget->GetClass()->GetName());
+		if (Ctx.bIncludeLayout)
+		{
+			// Named widgetPath, not path: everywhere else in this category
+			// "path" is the asset path, and one name meaning two things inside
+			// the same tool is what #798 was filed about.
+			Obj->SetStringField(TEXT("widgetPath"), WidgetPath);
+		}
 		Obj->SetStringField(TEXT("visibility"), VisibilityToString(Widget->GetVisibility()));
 		Obj->SetBoolField(TEXT("isVisible"), Widget->IsVisible());
 
@@ -1745,6 +2079,269 @@ namespace WidgetRuntime_Internal
 			Obj->SetNumberField(TEXT("value"), Slider->GetValue());
 		}
 
+		// #592: style properties needed to verify visuals at runtime, not just
+		// tree/text. RenderOpacity applies to every UWidget; ColorAndOpacity and
+		// Border tint are per-type.
+		{
+			auto ColorJson = [](const FLinearColor& C)
+			{
+				TSharedPtr<FJsonObject> O = MakeShared<FJsonObject>();
+				O->SetNumberField(TEXT("r"), C.R); O->SetNumberField(TEXT("g"), C.G);
+				O->SetNumberField(TEXT("b"), C.B); O->SetNumberField(TEXT("a"), C.A);
+				return O;
+			};
+			Obj->SetNumberField(TEXT("renderOpacity"), Widget->GetRenderOpacity());
+			if (UTextBlock* TextW = Cast<UTextBlock>(Widget))
+			{
+				Obj->SetObjectField(TEXT("colorAndOpacity"), ColorJson(TextW->GetColorAndOpacity().GetSpecifiedColor()));
+			}
+			else if (UImage* ImgW = Cast<UImage>(Widget))
+			{
+				Obj->SetObjectField(TEXT("colorAndOpacity"), ColorJson(ImgW->GetColorAndOpacity()));
+			}
+			else if (UBorder* BorderW = Cast<UBorder>(Widget))
+			{
+				Obj->SetObjectField(TEXT("brushColor"), ColorJson(BorderW->GetBrushColor()));
+				Obj->SetObjectField(TEXT("contentColorAndOpacity"), ColorJson(BorderW->GetContentColorAndOpacity()));
+			}
+		}
+
+		// Layout diagnostics are opt-in: the geometry, slot reflection and delta
+		// blocks below multiply the size of a get_runtime payload, and only a caller
+		// debugging layout needs them.
+		FDerivedClipState EffectiveClip = ParentClip;
+		double EffectiveOpacity = ParentEffectiveOpacity;
+		if (Ctx.bIncludeLayout)
+		{
+			const bool bHasCachedSlateWidget = Widget->GetCachedWidget().IsValid();
+			const FGeometry& Geometry = Widget->GetCachedGeometry();
+			const FVector2D DesiredSize = Widget->GetDesiredSize();
+			const FVector2D LocalSize = Geometry.GetLocalSize();
+			const FVector2D AbsoluteSize = Geometry.GetAbsoluteSize();
+			const FSlateRect LayoutRect = Geometry.GetLayoutBoundingRect();
+			const FSlateRect RenderRect = Geometry.GetRenderBoundingRect();
+			const FVector2D AbsolutePosition(RenderRect.Left, RenderRect.Top);
+			const FWidgetTransform& RenderTransform = Widget->GetRenderTransform();
+			EffectiveClip = ResolveClipState(Widget, WidgetPath, Geometry, DesiredSize, ParentClip);
+			EffectiveOpacity = ParentEffectiveOpacity * Widget->GetRenderOpacity();
+
+			TSharedPtr<FJsonObject> GeometryObj = MakeShared<FJsonObject>();
+			GeometryObj->SetBoolField(TEXT("hasCachedSlateWidget"), bHasCachedSlateWidget);
+			GeometryObj->SetObjectField(TEXT("desiredSize"), WidgetVector2DJson(DesiredSize));
+			GeometryObj->SetObjectField(TEXT("localSize"), WidgetVector2DJson(LocalSize));
+			GeometryObj->SetObjectField(TEXT("absoluteSize"), WidgetVector2DJson(AbsoluteSize));
+			GeometryObj->SetObjectField(TEXT("absolutePosition"), WidgetVector2DJson(AbsolutePosition));
+			GeometryObj->SetObjectField(TEXT("layoutBoundingRect"), RectJson(LayoutRect));
+			GeometryObj->SetObjectField(TEXT("renderBoundingRect"), RectJson(RenderRect));
+			GeometryObj->SetNumberField(TEXT("accumulatedLayoutScale"), Geometry.GetAccumulatedLayoutTransform().GetScale());
+			Obj->SetObjectField(TEXT("geometry"), GeometryObj);
+
+			TSharedPtr<FJsonObject> TransformObj = MakeShared<FJsonObject>();
+			TransformObj->SetObjectField(TEXT("translation"), WidgetVector2DJson(RenderTransform.Translation));
+			TransformObj->SetObjectField(TEXT("scale"), WidgetVector2DJson(RenderTransform.Scale));
+			TransformObj->SetObjectField(TEXT("shear"), WidgetVector2DJson(RenderTransform.Shear));
+			TransformObj->SetNumberField(TEXT("angleDegrees"), RenderTransform.Angle);
+			TransformObj->SetObjectField(TEXT("pivot"), WidgetVector2DJson(Widget->GetRenderTransformPivot()));
+			Obj->SetObjectField(TEXT("renderTransform"), TransformObj);
+
+			TSharedPtr<FJsonObject> ClipObj = MakeShared<FJsonObject>();
+			ClipObj->SetStringField(TEXT("authoredMode"), ClippingToString(Widget->GetClipping()));
+			ClipObj->SetBoolField(TEXT("hasDerivedEffectiveRect"), EffectiveClip.bHasRect);
+			ClipObj->SetBoolField(TEXT("alwaysClip"), EffectiveClip.bAlwaysClip);
+			if (EffectiveClip.bHasRect)
+			{
+				ClipObj->SetObjectField(TEXT("derivedEffectiveRect"), RectJson(EffectiveClip.Rect));
+				ClipObj->SetStringField(TEXT("sourcePath"), EffectiveClip.SourcePath);
+				bool bOverlapping = false;
+				const FSlateRect VisibleRect = RenderRect.IntersectionWith(EffectiveClip.Rect, bOverlapping);
+				const bool bFullyClipped = !bOverlapping || VisibleRect.IsEmpty();
+				const bool bPartiallyClipped = !bFullyClipped && VisibleRect.GetArea() + 0.05f < RenderRect.GetArea();
+				ClipObj->SetBoolField(TEXT("fullyClipped"), bFullyClipped);
+				ClipObj->SetBoolField(TEXT("partiallyClipped"), bPartiallyClipped);
+				ClipObj->SetObjectField(TEXT("visibleRect"), RectJson(VisibleRect));
+			}
+			else
+			{
+				ClipObj->SetBoolField(TEXT("fullyClipped"), false);
+				ClipObj->SetBoolField(TEXT("partiallyClipped"), false);
+			}
+			ClipObj->SetStringField(
+				TEXT("derivation"),
+				TEXT("Computed from UMG clipping modes and cached render bounds; use a native Widget Reflector snapshot for paint-element clip stacks."));
+			Obj->SetObjectField(TEXT("clipping"), ClipObj);
+
+			TSharedPtr<FJsonObject> ViewportObj = MakeShared<FJsonObject>();
+			ViewportObj->SetBoolField(TEXT("available"), Ctx.ViewportRect.IsSet());
+			if (Ctx.ViewportRect.IsSet())
+			{
+				ViewportObj->SetObjectField(TEXT("rect"), RectJson(Ctx.ViewportRect.GetValue()));
+				bool bOverlapsViewport = false;
+				const FSlateRect ViewportIntersection =
+					RenderRect.IntersectionWith(Ctx.ViewportRect.GetValue(), bOverlapsViewport);
+				const bool bOutsideViewport = !bOverlapsViewport || ViewportIntersection.IsEmpty();
+				const bool bPartiallyOutsideViewport =
+					!bOutsideViewport && ViewportIntersection.GetArea() + 0.05f < RenderRect.GetArea();
+				ViewportObj->SetBoolField(TEXT("overlaps"), bOverlapsViewport);
+				ViewportObj->SetBoolField(TEXT("fullyOutside"), bOutsideViewport);
+				ViewportObj->SetBoolField(TEXT("partiallyOutside"), bPartiallyOutsideViewport);
+				ViewportObj->SetObjectField(TEXT("intersectionRect"), RectJson(ViewportIntersection));
+			}
+			Obj->SetObjectField(TEXT("viewport"), ViewportObj);
+
+			if (UPanelWidget* Parent = Widget->GetParent())
+			{
+				const FSlateRect ParentRect = Parent->GetCachedGeometry().GetRenderBoundingRect();
+				TSharedPtr<FJsonObject> ParentLayout = MakeShared<FJsonObject>();
+				ParentLayout->SetStringField(TEXT("name"), Parent->GetName());
+				ParentLayout->SetStringField(TEXT("class"), Parent->GetClass()->GetName());
+				ParentLayout->SetObjectField(TEXT("renderBoundingRect"), RectJson(ParentRect));
+				bool bOverlapsParent = false;
+				RenderRect.IntersectionWith(ParentRect, bOverlapsParent);
+				ParentLayout->SetBoolField(TEXT("overlapsParentBounds"), bOverlapsParent);
+				ParentLayout->SetBoolField(
+					TEXT("extendsOutsideParentBounds"),
+					RenderRect.Left < ParentRect.Left - 0.05f ||
+					RenderRect.Top < ParentRect.Top - 0.05f ||
+					RenderRect.Right > ParentRect.Right + 0.05f ||
+					RenderRect.Bottom > ParentRect.Bottom + 0.05f);
+				Obj->SetObjectField(TEXT("parentLayout"), ParentLayout);
+			}
+
+			FString SlotSignature;
+			if (TSharedPtr<FJsonObject> SlotObj = BuildSlotJson(Widget, SlotSignature))
+			{
+				Obj->SetObjectField(TEXT("slot"), SlotObj);
+			}
+
+			FRuntimeLayoutSample Sample;
+			Sample.DesiredSize = DesiredSize;
+			Sample.LocalSize = LocalSize;
+			Sample.AbsoluteSize = AbsoluteSize;
+			Sample.AbsolutePosition = AbsolutePosition;
+			Sample.RenderRect = RenderRect;
+			Sample.SlotSignature = SlotSignature;
+			if (UCanvasPanelSlot* CanvasSlot = Cast<UCanvasPanelSlot>(Widget->Slot))
+			{
+				Sample.bHasCanvasSlot = true;
+				Sample.bCanvasAutoSize = CanvasSlot->GetAutoSize();
+				Sample.CanvasAnchors = CanvasSlot->GetAnchors();
+				Sample.CanvasOffsets = CanvasSlot->GetOffsets();
+			}
+			Ctx.CurrentSamples.Add(WidgetPath, Sample);
+
+			TArray<TSharedPtr<FJsonValue>> Warnings;
+			if (!bHasCachedSlateWidget)
+			{
+				AddWarning(
+					Warnings,
+					TEXT("geometry_unavailable"),
+					TEXT("warning"),
+					TEXT("The Slate widget has not been constructed or painted, so cached geometry may be empty or stale."));
+			}
+			if (DesiredSize.X > LocalSize.X + 0.5 || DesiredSize.Y > LocalSize.Y + 0.5)
+			{
+				AddWarning(
+					Warnings,
+					TEXT("desired_size_exceeds_allocation"),
+					TEXT("info"),
+					FString::Printf(
+						TEXT("Desired size %.2fx%.2f exceeds allocated local size %.2fx%.2f; clipping or compression may occur."),
+						DesiredSize.X,
+						DesiredSize.Y,
+						LocalSize.X,
+						LocalSize.Y));
+			}
+			if (Sample.bHasCanvasSlot)
+			{
+				const bool bStretchX = !FMath::IsNearlyEqual(Sample.CanvasAnchors.Minimum.X, Sample.CanvasAnchors.Maximum.X);
+				const bool bStretchY = !FMath::IsNearlyEqual(Sample.CanvasAnchors.Minimum.Y, Sample.CanvasAnchors.Maximum.Y);
+				if (!Sample.bCanvasAutoSize && bStretchX && !FMath::IsNearlyZero(Sample.CanvasOffsets.Right))
+				{
+					AddWarning(
+						Warnings,
+						TEXT("stretched_canvas_right_is_margin"),
+						TEXT("info"),
+						TEXT("This Canvas slot is horizontally stretched: Offsets.Right is a right margin, not a width."));
+				}
+				if (!Sample.bCanvasAutoSize && bStretchY && !FMath::IsNearlyZero(Sample.CanvasOffsets.Bottom))
+				{
+					AddWarning(
+						Warnings,
+						TEXT("stretched_canvas_bottom_is_margin"),
+						TEXT("warning"),
+						TEXT("This Canvas slot is vertically stretched: Offsets.Bottom is a bottom margin, not a height. SetSize can therefore make height position-dependent."));
+				}
+			}
+
+			TSharedPtr<FJsonObject> DeltaObj = MakeShared<FJsonObject>();
+			bool bChanged = false;
+			if (Ctx.PreviousSamples)
+			{
+				if (const FRuntimeLayoutSample* Previous = Ctx.PreviousSamples->Find(WidgetPath))
+				{
+					const FVector2D PositionDelta = Sample.AbsolutePosition - Previous->AbsolutePosition;
+					const FVector2D LocalSizeDelta = Sample.LocalSize - Previous->LocalSize;
+					const FVector2D AbsoluteSizeDelta = Sample.AbsoluteSize - Previous->AbsoluteSize;
+					const FVector2D DesiredSizeDelta = Sample.DesiredSize - Previous->DesiredSize;
+					const bool bSlotChanged = Sample.SlotSignature != Previous->SlotSignature;
+					bChanged =
+						!VectorNearlyEqual(PositionDelta, FVector2D::ZeroVector) ||
+						!VectorNearlyEqual(LocalSizeDelta, FVector2D::ZeroVector) ||
+						!VectorNearlyEqual(AbsoluteSizeDelta, FVector2D::ZeroVector) ||
+						!VectorNearlyEqual(DesiredSizeDelta, FVector2D::ZeroVector) ||
+						bSlotChanged;
+					DeltaObj->SetBoolField(TEXT("hasPreviousCapture"), true);
+					DeltaObj->SetBoolField(TEXT("changed"), bChanged);
+					DeltaObj->SetObjectField(TEXT("absolutePositionDelta"), WidgetVector2DJson(PositionDelta));
+					DeltaObj->SetObjectField(TEXT("localSizeDelta"), WidgetVector2DJson(LocalSizeDelta));
+					DeltaObj->SetObjectField(TEXT("absoluteSizeDelta"), WidgetVector2DJson(AbsoluteSizeDelta));
+					DeltaObj->SetObjectField(TEXT("desiredSizeDelta"), WidgetVector2DJson(DesiredSizeDelta));
+					DeltaObj->SetBoolField(TEXT("slotPropertiesChanged"), bSlotChanged);
+					if (bChanged)
+					{
+						++Ctx.ChangedNodeCount;
+					}
+
+					if (Sample.bHasCanvasSlot && Previous->bHasCanvasSlot)
+					{
+						const bool bStretchY =
+							!FMath::IsNearlyEqual(Sample.CanvasAnchors.Minimum.Y, Sample.CanvasAnchors.Maximum.Y);
+						const bool bMovedVertically = !FMath::IsNearlyZero(PositionDelta.Y, 0.25);
+						const bool bHeightChanged = !FMath::IsNearlyZero(LocalSizeDelta.Y, 0.25);
+						const bool bInverseMovement =
+							FMath::IsNearlyEqual(LocalSizeDelta.Y, -PositionDelta.Y, 1.0);
+						if (bStretchY && !Sample.bCanvasAutoSize && bMovedVertically && bHeightChanged && bInverseMovement)
+						{
+							AddWarning(
+								Warnings,
+								TEXT("position_dependent_canvas_height"),
+								TEXT("error"),
+								FString::Printf(
+									TEXT("Moving the widget by %.2f px changed its height by %.2f px in the opposite direction. A vertically stretched Canvas slot is treating Bottom as a margin."),
+									PositionDelta.Y,
+									LocalSizeDelta.Y));
+						}
+					}
+				}
+				else
+				{
+					DeltaObj->SetBoolField(TEXT("hasPreviousCapture"), false);
+					DeltaObj->SetBoolField(TEXT("changed"), false);
+					DeltaObj->SetStringField(TEXT("reason"), TEXT("Widget path was not present in the previous capture."));
+				}
+			}
+			else
+			{
+				DeltaObj->SetBoolField(TEXT("hasPreviousCapture"), false);
+				DeltaObj->SetBoolField(TEXT("changed"), false);
+				DeltaObj->SetStringField(TEXT("reason"), TEXT("This is the baseline capture for the runtime widget instance."));
+			}
+			Obj->SetObjectField(TEXT("deltaSincePreviousCapture"), DeltaObj);
+			Obj->SetNumberField(TEXT("effectiveRenderOpacity"), EffectiveOpacity);
+			Obj->SetArrayField(TEXT("diagnostics"), Warnings);
+			Ctx.WarningCount += Warnings.Num();
+		}
+
 		if (Depth >= MaxDepth) return Obj;
 
 		if (UPanelWidget* Panel = Cast<UPanelWidget>(Widget))
@@ -1752,7 +2349,16 @@ namespace WidgetRuntime_Internal
 			TArray<TSharedPtr<FJsonValue>> ChildrenArr;
 			for (int32 i = 0; i < Panel->GetChildrenCount(); ++i)
 			{
-				TSharedPtr<FJsonObject> ChildObj = BuildRuntimeNode(Panel->GetChildAt(i), Depth + 1, MaxDepth);
+				UWidget* Child = Panel->GetChildAt(i);
+				const FString ChildPath = WidgetPath + TEXT("/") + (Child ? Child->GetName() : FString::Printf(TEXT("child_%d"), i));
+				TSharedPtr<FJsonObject> ChildObj = BuildRuntimeNode(
+					Child,
+					Depth + 1,
+					MaxDepth,
+					ChildPath,
+					EffectiveClip,
+					EffectiveOpacity,
+					Ctx);
 				if (ChildObj.IsValid())
 				{
 					ChildrenArr.Add(MakeShared<FJsonValueObject>(ChildObj));
@@ -1765,7 +2371,16 @@ namespace WidgetRuntime_Internal
 			// Nested UUserWidget: descend into its WidgetTree's root.
 			if (User->WidgetTree && User->WidgetTree->RootWidget)
 			{
-				TSharedPtr<FJsonObject> RootObj = BuildRuntimeNode(User->WidgetTree->RootWidget, Depth + 1, MaxDepth);
+				UWidget* RootWidget = User->WidgetTree->RootWidget;
+				const FString RootPath = WidgetPath + TEXT("/root:") + RootWidget->GetName();
+				TSharedPtr<FJsonObject> RootObj = BuildRuntimeNode(
+					RootWidget,
+					Depth + 1,
+					MaxDepth,
+					RootPath,
+					EffectiveClip,
+					EffectiveOpacity,
+					Ctx);
 				if (RootObj.IsValid())
 				{
 					Obj->SetObjectField(TEXT("root"), RootObj);
@@ -1781,7 +2396,7 @@ TSharedPtr<FJsonValue> FWidgetHandlers::ListRuntimeWidgets(const TSharedPtr<FJso
 {
 	using namespace WidgetRuntime_Internal;
 
-	UWorld* World = ResolveRuntimeWorld();
+	UWorld* World = ResolveWidgetRuntimeWorld();
 	if (!World)
 	{
 		return MCPError(TEXT("No PIE world available. Is Play-In-Editor running?"));
@@ -1792,7 +2407,18 @@ TSharedPtr<FJsonValue> FWidgetHandlers::ListRuntimeWidgets(const TSharedPtr<FJso
 	const FString NamePrefix  = OptionalString(Params, TEXT("namePrefix"), TEXT(""));
 	const bool bInViewportOnly = OptionalBool(Params, TEXT("viewportOnly"), false);
 
-	TArray<TSharedPtr<FJsonValue>> WidgetsArr;
+	// T3: paged.
+	MCPPagination::FPageRequest Page;
+	if (auto Err = MCPPagination::ReadPageRequest(
+			Params,
+			FString::Printf(TEXT("list_runtime_widgets|classFilter=%s|namePrefix=%s|viewportOnly=%d"),
+				*ClassFilter, *NamePrefix, bInViewportOnly ? 1 : 0),
+			/*DefaultLimit*/ 200, /*MaxLimit*/ 2000, Page))
+	{
+		return Err;
+	}
+
+	TArray<MCPPagination::FPageRow> Rows;
 	for (TObjectIterator<UUserWidget> It; It; ++It)
 	{
 		UUserWidget* Widget = *It;
@@ -1819,13 +2445,20 @@ TSharedPtr<FJsonValue> FWidgetHandlers::ListRuntimeWidgets(const TSharedPtr<FJso
 			Obj->SetStringField(TEXT("rootWidgetName"), Widget->WidgetTree->RootWidget->GetName());
 			Obj->SetStringField(TEXT("rootWidgetClass"), Widget->WidgetTree->RootWidget->GetClass()->GetName());
 		}
-		WidgetsArr.Add(MakeShared<FJsonValueObject>(Obj));
+		// The widget instance's OBJECT PATH is the page anchor. Two PIE widgets
+		// can share a display name, and only the path names one of them.
+		Rows.Add({ Widget->GetPathName(), MakeShared<FJsonValueObject>(Obj) });
 	}
+
+	// TObjectIterator walks the object hash, whose order is not a contract and
+	// which moves as widgets are constructed and torn down during play, so the
+	// rows are sorted by path before paging.
+	Rows.Sort([](const MCPPagination::FPageRow& A, const MCPPagination::FPageRow& B)
+		{ return A.Id < B.Id; });
 
 	auto Result = MCPSuccess();
 	Result->SetStringField(TEXT("world"), World->GetName());
-	Result->SetArrayField(TEXT("widgets"), WidgetsArr);
-	Result->SetNumberField(TEXT("count"), WidgetsArr.Num());
+	MCPPagination::EmitPage(Page, Rows, TEXT("widgets"), Result);
 	return MCPResult(Result);
 }
 
@@ -1833,7 +2466,7 @@ TSharedPtr<FJsonValue> FWidgetHandlers::GetRuntimeWidget(const TSharedPtr<FJsonO
 {
 	using namespace WidgetRuntime_Internal;
 
-	UWorld* World = ResolveRuntimeWorld();
+	UWorld* World = ResolveWidgetRuntimeWorld();
 	if (!World)
 	{
 		return MCPError(TEXT("No PIE world available. Is Play-In-Editor running?"));
@@ -1850,6 +2483,7 @@ TSharedPtr<FJsonValue> FWidgetHandlers::GetRuntimeWidget(const TSharedPtr<FJsonO
 
 	const int32 MaxDepth = OptionalInt(Params, TEXT("maxDepth"), 6);
 	const FString ChildName = OptionalString(Params, TEXT("childName"), TEXT(""));
+	const bool bIncludeLayout = OptionalBool(Params, TEXT("includeLayout"), false);
 
 	UUserWidget* Found = nullptr;
 	for (TObjectIterator<UUserWidget> It; It; ++It)
@@ -1876,28 +2510,106 @@ TSharedPtr<FJsonValue> FWidgetHandlers::GetRuntimeWidget(const TSharedPtr<FJsonO
 	Result->SetStringField(TEXT("visibility"), VisibilityToString(Found->GetVisibility()));
 	Result->SetBoolField(TEXT("inViewport"), Found->IsInViewport());
 
-	if (Found->WidgetTree && Found->WidgetTree->RootWidget)
+	// `tree` stays rooted at the widget-tree root (or the named child) exactly as
+	// before, so existing consumers keep indexing the same node and maxDepth keeps
+	// counting from the same place. The hosting UUserWidget is reported separately
+	// under `host` when layout diagnostics are requested.
+	UWidget* ScanRoot = nullptr;
+	if (!ChildName.IsEmpty())
 	{
-		UWidget* ScanRoot = Found->WidgetTree->RootWidget;
-		if (!ChildName.IsEmpty())
+		if (!Found->WidgetTree)
 		{
-			// Search the widget tree for the named child.
-			UWidget* Target = nullptr;
-			Found->WidgetTree->ForEachWidget([&](UWidget* W)
-			{
-				if (W && W->GetName() == ChildName && !Target)
-				{
-					Target = W;
-				}
-			});
-			if (!Target)
-			{
-				return MCPError(FString::Printf(TEXT("Child widget '%s' not found inside '%s'"), *ChildName, *Found->GetName()));
-			}
-			ScanRoot = Target;
+			return MCPError(FString::Printf(
+				TEXT("Runtime widget '%s' has no UMG WidgetTree, so childName cannot be resolved."),
+				*Found->GetName()));
 		}
 
-		TSharedPtr<FJsonObject> Tree = BuildRuntimeNode(ScanRoot, 0, MaxDepth);
+		// Search the widget tree for the named child.
+		UWidget* Target = nullptr;
+		Found->WidgetTree->ForEachWidget([&](UWidget* W)
+		{
+			if (W && W->GetName() == ChildName && !Target)
+			{
+				Target = W;
+			}
+		});
+		if (!Target)
+		{
+			return MCPError(FString::Printf(TEXT("Child widget '%s' not found inside '%s'"), *ChildName, *Found->GetName()));
+		}
+		ScanRoot = Target;
+	}
+	else if (Found->WidgetTree)
+	{
+		ScanRoot = Found->WidgetTree->RootWidget;
+	}
+
+	FRuntimeScanContext Ctx;
+	Ctx.bIncludeLayout = bIncludeLayout;
+
+	FString CaptureKey;
+	TOptional<uint64> PreviousFrame;
+	FDerivedClipState HostClip;
+	double HostOpacity = 1.0;
+	if (bIncludeLayout)
+	{
+		Result->SetNumberField(TEXT("instanceId"), Found->GetUniqueID());
+
+		CaptureKey =
+			World->GetName() + TEXT("|") + Found->GetPathName() + TEXT("|") +
+			FString::FromInt(Found->GetUniqueID()) + TEXT("|") +
+			(ChildName.IsEmpty() ? TEXT("<root>") : ChildName);
+		Ctx.PreviousSamples = PreviousLayoutCaptures.Find(CaptureKey);
+		if (const uint64* Frame = PreviousLayoutCaptureFrames.Find(CaptureKey))
+		{
+			PreviousFrame = *Frame;
+		}
+
+		if (UGameViewportClient* ViewportClient = World->GetGameViewport())
+		{
+			if (TSharedPtr<SViewport> ViewportWidget = ViewportClient->GetGameViewportWidget())
+			{
+				Ctx.ViewportRect = ViewportWidget->GetCachedGeometry().GetRenderBoundingRect();
+			}
+		}
+
+		// The host UUserWidget is not a UPanelWidget parent, so its geometry,
+		// clipping and opacity are unreachable from the tree root by GetParent().
+		// Capture it once and seed the tree walk with it. Passing MaxDepth as the
+		// starting depth stops the walk after this node, so the subtree is not
+		// duplicated under `host`.
+		TSharedPtr<FJsonObject> HostNode = BuildRuntimeNode(
+			Found,
+			MaxDepth,
+			MaxDepth,
+			Found->GetName(),
+			ResolveAncestorClipState(Found),
+			ResolveAncestorOpacity(Found),
+			Ctx);
+		if (HostNode.IsValid())
+		{
+			Result->SetObjectField(TEXT("host"), HostNode);
+		}
+		HostClip = ResolveClipState(
+			Found,
+			Found->GetName(),
+			Found->GetCachedGeometry(),
+			Found->GetDesiredSize(),
+			ResolveAncestorClipState(Found));
+		HostOpacity = ResolveAncestorOpacity(Found) * Found->GetRenderOpacity();
+	}
+
+	if (ScanRoot)
+	{
+		const FString ScanPath = Found->GetName() + TEXT("/") + ScanRoot->GetName();
+		TSharedPtr<FJsonObject> Tree = BuildRuntimeNode(
+			ScanRoot,
+			0,
+			MaxDepth,
+			ScanPath,
+			ResolveAncestorClipState(ScanRoot, HostClip, Found->GetName()),
+			ResolveAncestorOpacity(ScanRoot, HostOpacity),
+			Ctx);
 		if (Tree.IsValid())
 		{
 			Result->SetObjectField(TEXT("tree"), Tree);
@@ -1908,17 +2620,261 @@ TSharedPtr<FJsonValue> FWidgetHandlers::GetRuntimeWidget(const TSharedPtr<FJsonO
 		Result->SetStringField(TEXT("tree"), TEXT("empty"));
 	}
 
+	if (bIncludeLayout)
+	{
+		TSharedPtr<FJsonObject> Capture = MakeShared<FJsonObject>();
+		Capture->SetNumberField(TEXT("sequence"), static_cast<double>(++LayoutCaptureSequence));
+		Capture->SetNumberField(TEXT("frame"), static_cast<double>(GFrameCounter));
+		Capture->SetNumberField(TEXT("timeSeconds"), FApp::GetCurrentTime());
+		Capture->SetBoolField(TEXT("isBaseline"), Ctx.PreviousSamples == nullptr);
+		Capture->SetNumberField(TEXT("nodeCount"), Ctx.CurrentSamples.Num());
+		Capture->SetNumberField(TEXT("changedNodeCount"), Ctx.ChangedNodeCount);
+		Capture->SetNumberField(TEXT("diagnosticCount"), Ctx.WarningCount);
+		Capture->SetBoolField(TEXT("hasViewportGeometry"), Ctx.ViewportRect.IsSet());
+		if (Ctx.ViewportRect.IsSet())
+		{
+			Capture->SetObjectField(TEXT("viewportRect"), RectJson(Ctx.ViewportRect.GetValue()));
+		}
+		if (PreviousFrame.IsSet())
+		{
+			Capture->SetNumberField(TEXT("previousFrame"), static_cast<double>(PreviousFrame.GetValue()));
+		}
+		Capture->SetStringField(
+			TEXT("usage"),
+			TEXT("Call widget.get_runtime again with includeLayout after moving, resizing, toggling, or changing resolution to populate deltaSincePreviousCapture."));
+		Result->SetObjectField(TEXT("layoutCapture"), Capture);
+
+		PreviousLayoutCaptures.Add(CaptureKey, MoveTemp(Ctx.CurrentSamples));
+		PreviousLayoutCaptureFrames.Add(CaptureKey, GFrameCounter);
+		if (PreviousLayoutCaptures.Num() > 64)
+		{
+			PreviousLayoutCaptures.Reset();
+			PreviousLayoutCaptureFrames.Reset();
+		}
+	}
+
 	return MCPResult(Result);
 }
 
 // ─────────────────────────────────────────────────────────────
-// #161  Runtime delegate inspection — list FMulticastDelegateProperty fields on a live UUserWidget
+// #602  Instantiate a WidgetBlueprint into the live PIE viewport.
+// ─────────────────────────────────────────────────────────────
+TSharedPtr<FJsonValue> FWidgetHandlers::AddWidgetToViewport(const TSharedPtr<FJsonObject>& Params)
+{
+	using namespace WidgetRuntime_Internal;
+	UWorld* World = ResolveWidgetRuntimeWorld();
+	if (!World)
+	{
+		return MCPError(TEXT("No PIE world available. Start Play-In-Editor first (editor pie_control action=play)."));
+	}
+
+	FString AssetPath;
+	if (auto Err = RequireStringAlt(Params, TEXT("assetPath"), TEXT("widgetBlueprintPath"), AssetPath)) return Err;
+
+	// Resolve the WidgetBlueprint's generated UUserWidget class.
+	UClass* WidgetClass = LoadClass<UUserWidget>(nullptr, *AssetPath);
+	if (!WidgetClass)
+	{
+		if (UWidgetBlueprint* WBP = LoadObject<UWidgetBlueprint>(nullptr, *AssetPath))
+		{
+			WidgetClass = WBP->GeneratedClass;
+		}
+		else if (!AssetPath.EndsWith(TEXT("_C")))
+		{
+			WidgetClass = LoadClass<UUserWidget>(nullptr, *(AssetPath + TEXT("_C")));
+		}
+	}
+	if (!WidgetClass || !WidgetClass->IsChildOf(UUserWidget::StaticClass()))
+	{
+		return MCPError(FString::Printf(TEXT("Could not resolve a UserWidget class from '%s'"), *AssetPath));
+	}
+
+	APlayerController* PC = World->GetFirstPlayerController();
+	UUserWidget* Widget = PC
+		? CreateWidget<UUserWidget>(PC, WidgetClass)
+		: CreateWidget<UUserWidget>(World, WidgetClass);
+	if (!Widget)
+	{
+		return MCPError(TEXT("CreateWidget returned null"));
+	}
+	const int32 ZOrder = OptionalInt(Params, TEXT("zOrder"), 0);
+	Widget->AddToViewport(ZOrder);
+
+	auto Result = MCPSuccess();
+	MCPSetCreated(Result);
+	Result->SetStringField(TEXT("assetPath"), AssetPath);
+	Result->SetStringField(TEXT("instanceName"), Widget->GetName());
+	Result->SetStringField(TEXT("class"), WidgetClass->GetName());
+	Result->SetBoolField(TEXT("inViewport"), Widget->IsInViewport());
+	Result->SetNumberField(TEXT("zOrder"), ZOrder);
+	// The bridge registers no action that takes a widget back off the viewport,
+	// so there is no inverse call to name. What this created is a transient PIE
+	// object that dies with the PIE session; nothing on disk changed.
+	Result->SetBoolField(TEXT("rollbackPossible"), false);
+	Result->SetStringField(TEXT("rollbackNote"),
+		TEXT("No action removes a widget from the viewport, so there is no inverse to run. The instance is transient PIE state: it goes ")
+		TEXT("away when Play-In-Editor stops, and nothing on disk was changed by this call."));
+	return MCPResult(Result);
+}
+
+// ─────────────────────────────────────────────────────────────
+// #559  Fire a UFUNCTION or a child-widget interaction on a live PIE UUserWidget.
+//   Params: widgetName|className (locate the UserWidget), functionName
+//   (a parameterless UFUNCTION on the widget), OR childName (+ optional value,
+//   functionName, commitMethod) to drive an interactive child widget (#812).
+// ─────────────────────────────────────────────────────────────
+TSharedPtr<FJsonValue> FWidgetHandlers::InvokeRuntimeWidgetFunction(const TSharedPtr<FJsonObject>& Params)
+{
+	using namespace WidgetRuntime_Internal;
+	UWorld* World = ResolveWidgetRuntimeWorld();
+	if (!World)
+	{
+		return MCPError(TEXT("No PIE world available. Is Play-In-Editor running?"));
+	}
+
+	FString WidgetName = OptionalString(Params, TEXT("widgetName"));
+	FString ClassFilter = OptionalString(Params, TEXT("className"));
+	if (WidgetName.IsEmpty() && ClassFilter.IsEmpty())
+	{
+		return MCPError(TEXT("Provide widgetName (exact instance name) or className (first match)."));
+	}
+
+	UUserWidget* Found = nullptr;
+	for (TObjectIterator<UUserWidget> It; It; ++It)
+	{
+		UUserWidget* Widget = *It;
+		if (!IsValid(Widget) || Widget->HasAnyFlags(RF_ClassDefaultObject | RF_ArchetypeObject)) continue;
+		if (Widget->GetWorld() != World) continue;
+		if (!WidgetName.IsEmpty() && Widget->GetName() != WidgetName) continue;
+		if (!ClassFilter.IsEmpty() && !Widget->GetClass()->GetName().Contains(ClassFilter)) continue;
+		Found = Widget;
+		break;
+	}
+	if (!Found)
+	{
+		return MCPError(TEXT("Runtime widget not found. Try list_runtime_widgets."));
+	}
+
+	const FString ChildName = OptionalString(Params, TEXT("childName"));
+	const FString FunctionName = OptionalString(Params, TEXT("functionName"));
+
+	// Child-interaction path: childName names an interactive child widget. The
+	// simulation lives in WidgetHandlers_Interaction.cpp and covers buttons,
+	// checkboxes, sliders, spin boxes, text entry and combo boxes (#812).
+	// functionName, when given here, selects which of the child's delegates to
+	// fire rather than naming a UFUNCTION on the parent.
+	if (!ChildName.IsEmpty())
+	{
+		UWidget* Target = nullptr;
+		if (Found->WidgetTree)
+		{
+			Found->WidgetTree->ForEachWidget([&](UWidget* W)
+			{
+				if (W && W->GetName() == ChildName && !Target) Target = W;
+			});
+		}
+		if (!Target)
+		{
+			return MCPError(FString::Printf(TEXT("Child widget '%s' not found inside '%s'"), *ChildName, *Found->GetName()));
+		}
+
+		auto Result = MCPSuccess();
+		Result->SetStringField(TEXT("widget"), Found->GetName());
+		Result->SetStringField(TEXT("child"), ChildName);
+		if (TSharedPtr<FJsonValue> Err = SimulateRuntimeChildInteraction(Target, Params, Result))
+		{
+			return Err;
+		}
+		// Whether the widget's own value moved. The interactions that carry a
+		// value record what it was and what it became, so this is a reading
+		// rather than an assumption; a click has neither, and gets no flag.
+		//
+		// It says nothing about the blueprint behind the widget. The delegate
+		// is broadcast whether or not the value moved, deliberately, because
+		// re-driving a slider to the value it already holds is still a request
+		// to run the graph. So `valueUnchanged` is about the widget, and the
+		// graph ran either way.
+		//
+		// Compared on the JSON type the interaction wrote rather than through a
+		// string or number accessor: a text field holding "42" and one holding
+		// "042" are different text, and a numeric accessor would call them the
+		// same value.
+		const TSharedPtr<FJsonValue> Before = Result->TryGetField(TEXT("previousValue"));
+		const TSharedPtr<FJsonValue> After = Result->TryGetField(TEXT("value"));
+		if (Before.IsValid() && After.IsValid())
+		{
+			bool bSameValue = false;
+			if (Before->Type == EJson::Number && After->Type == EJson::Number)
+			{
+				bSameValue = Before->AsNumber() == After->AsNumber();
+			}
+			else if (Before->Type == EJson::String && After->Type == EJson::String)
+			{
+				bSameValue = Before->AsString().Equals(After->AsString(), ESearchCase::CaseSensitive);
+			}
+			Result->SetBoolField(TEXT("valueUnchanged"), bSameValue);
+		}
+		else
+		{
+			// A click, a hover, a press: an event, not a state write. Firing it
+			// twice is two events rather than one repeated change, so there is
+			// no value to compare and no no-op to report.
+			Result->SetStringField(TEXT("idempotencyNote"),
+				TEXT("This interaction delivers an event rather than writing a value, so there is nothing to compare "
+				     "against and no valueUnchanged is reported. Sending it twice fires the delegate twice."));
+		}
+
+		// A simulated click, commit or value change fires the child's delegates,
+		// and what those handlers then do is decided by the running blueprint.
+		// Nothing here knows what changed, so nothing here can name an inverse.
+		Result->SetBoolField(TEXT("rollbackPossible"), false);
+		Result->SetStringField(TEXT("rollbackNote"),
+			TEXT("This fires the child widget's delegates in the live PIE session, and what the bound handlers do is the running game's ")
+			TEXT("business. The effects are not captured and no action reverses them."));
+		return MCPResult(Result);
+	}
+
+	// UFUNCTION path: call a parameterless function on the UserWidget.
+	if (FunctionName.IsEmpty())
+	{
+		return MCPError(TEXT("Provide functionName (parameterless UFUNCTION) or childName (button click)."));
+	}
+	UFunction* Func = Found->FindFunction(FName(*FunctionName));
+	if (!Func)
+	{
+		return MCPError(FString::Printf(TEXT("Function '%s' not found on widget '%s'"), *FunctionName, *Found->GetClass()->GetName()));
+	}
+	if (Func->NumParms != 0)
+	{
+		return MCPError(FString::Printf(TEXT("Function '%s' takes %d parameter(s); only parameterless functions are supported here"), *FunctionName, Func->NumParms));
+	}
+	Found->ProcessEvent(Func, nullptr);
+
+	auto Result = MCPSuccess();
+	Result->SetStringField(TEXT("widget"), Found->GetName());
+	Result->SetStringField(TEXT("invoked"), FunctionName);
+	// No valueUnchanged here either: calling a UFUNCTION is an invocation, not a
+	// write of a value this action chose, so there is no before and after to
+	// compare. Whether the function did anything the second time is the
+	// function's own business.
+	Result->SetStringField(TEXT("idempotencyNote"),
+		TEXT("This calls a function rather than setting a value, so no unchanged flag is reported. Calling it twice "
+		     "runs it twice, and whether the second run does anything is decided inside the function."));
+	Result->SetBoolField(TEXT("rollbackPossible"), false);
+	Result->SetStringField(TEXT("rollbackNote"),
+		TEXT("This calls a UFUNCTION the widget's author wrote. What it changed is the function's business, not this action's, so there is ")
+		TEXT("nothing captured to restore and no inverse to name."));
+	return MCPResult(Result);
+}
+
+// ─────────────────────────────────────────────────────────────
+// #161  Runtime delegate inspection - list FMulticastDelegateProperty fields on a live UUserWidget
 // ─────────────────────────────────────────────────────────────
 TSharedPtr<FJsonValue> FWidgetHandlers::GetRuntimeDelegates(const TSharedPtr<FJsonObject>& Params)
 {
 	using namespace WidgetRuntime_Internal;
 
-	UWorld* World = ResolveRuntimeWorld();
+	UWorld* World = ResolveWidgetRuntimeWorld();
 	if (!World)
 	{
 		return MCPError(TEXT("No PIE world available. Is Play-In-Editor running?"));

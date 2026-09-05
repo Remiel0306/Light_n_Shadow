@@ -1,0 +1,43 @@
+{
+  "tools": [
+    "project",
+    "asset",
+    "blueprint",
+    "level",
+    "material",
+    "animation",
+    "landscape",
+    "pcg",
+    "foliage",
+    "niagara",
+    "audio",
+    "widget",
+    "editor",
+    "reflection",
+    "gameplay",
+    "gas",
+    "networking",
+    "demo",
+    "feedback",
+    "statetree",
+    "chooser",
+    "plugins",
+    "epic",
+    "fab",
+    "dataflow",
+    "conversation",
+    "flow"
+  ],
+  "doorExists": {
+    "raw": "MCP error -32602: Tool assets not found"
+  },
+  "playerRead": {
+    "raw": "Error [TASK_FAILED]: 'read_blueprint' needs a running editor and none answered on port 9877 (default). The connection attempt said: Failed to connect to editor bridge at ws://127.0.0.1:9877: connect ECONNREFUSED 127.0.0.1:9877 Start one with editor(action='start_editor'), which blocks until the bridge answers. 51 actions do not need an editor at all, including the engine symbol index, the C++ correctness checks, the project config and source readers, and the build. project(action='list_available_actions') lists them.\nMACHINE_ERROR={\"code\":\"NOT_CONNECTED\",\"outcome\":\"failed\",\"method\":\"read_blueprint\",\"editorConnected\":false,\"port\":9877,\"offlineActionCount\":51}"
+  },
+  "imcRead": {
+    "raw": "MCP error -32602: Tool assets not found"
+  },
+  "searchIA": {
+    "raw": "MCP error -32602: Tool assets not found"
+  }
+}

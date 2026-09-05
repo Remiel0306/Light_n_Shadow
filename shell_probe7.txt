@@ -1,0 +1,25 @@
+﻿LogWindows: Failed to load 'aqProf.dll' (GetLastError=126)
+LogWindows: Failed to load 'VtuneApi.dll' (GetLastError=126)
+LogWindows: Failed to load 'VtuneApi32e.dll' (GetLastError=126)
+LogTrace: Display: Control listening on port 36370
+  Running Internal UnrealHeaderTool "D:\Unreal Engine\Light_n_Shadow\Light_and_Shadow.uproject" "D:\Unreal Engine\Light_n_Shadow\Intermediate\Build\Win64\Light_and_ShadowEditor\Development\Light_and_ShadowEditor.uhtmanifest" -WarningsAsErrors -installed
+UbaServer - Listening on 0.0.0.0:1345
+[1/200] Compile [x64] SharedPCH.CoreUObject.Project.ValApi.ValExpApi.Cpp20.cpp
+[3/200] Compile [x64] MCPEngineStatus.cpp
+[4/200] Compile [x64] MCPEngineStatusTests.cpp
+[5/200] Compile [x64] Module.UE_MCP_BridgeStatus.cpp
+[6/200] Compile [x64] UE_MCP_BridgeStatusModule.cpp
+[9/200] Compile [x64] Light_and_Shadow.cpp
+[10/200] Compile [x64] Module.Light_and_Shadow.gen.cpp
+[11/200] Compile [x64] ShadowLinkLibrary.cpp
+[12/200] Compile [x64] WallClimbTestWall.cpp
+[13/200] Compile [x64] WallMovementBlueprintLibrary.cpp
+[14/200] Compile [x64] WallMovementComponent.cpp
+[17/200] Compile [x64] ActorSelectorTests.cpp
+[18/200] Compile [x64] AnimationControlRigTimelineTests.cpp
+[19/200] Compile [x64] AnimationHandlers.cpp
+[20/200] Compile [x64] AnimationHandlers_ControlRig.cpp
+[21/200] Compile [x64] AnimationHandlers_ControlRigSequencer.cpp
+[22/200] Compile [x64] AnimationHandlers_Depth.cpp
+[23/200] Compile [x64] AnimationHandlers_IKRetargeterAuthoring.cpp
+26566

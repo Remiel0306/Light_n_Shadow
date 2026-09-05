@@ -37,102 +37,21 @@
 #include "Dom/JsonObject.h"
 #include "Dom/JsonValue.h"
 #include "Editor.h"
+#include "Editor/Transactor.h"
 #include "EditorScriptingUtilities/Public/EditorAssetLibrary.h"
 #include "Engine/Texture.h"
 #include "Engine/Texture2D.h"
 #include "Engine/TextureRenderTarget2D.h"
 #include "ImageUtils.h"
-
-
-TSharedPtr<FJsonValue> FMaterialHandlers::CreateMaterialFromTexture(const TSharedPtr<FJsonObject>& Params)
-{
-	FString TexturePath;
-	if (auto Err = RequireString(Params, TEXT("texturePath"), TexturePath)) return Err;
-
-	FString MaterialName = OptionalString(Params, TEXT("materialName"));
-	if (MaterialName.IsEmpty())
-	{
-		FString TextureName = FPaths::GetBaseFilename(TexturePath);
-		MaterialName = TEXT("M_") + TextureName;
-	}
-
-	FString PackagePath = OptionalString(Params, TEXT("packagePath"), TEXT("/Game/Materials"));
-	const FString OnConflict = OptionalString(Params, TEXT("onConflict"), TEXT("skip"));
-
-	if (auto Existing = MCPCheckAssetExists(PackagePath, MaterialName, OnConflict, TEXT("Material")))
-	{
-		return Existing;
-	}
-
-	// Load the texture
-	UTexture* Texture = Cast<UTexture>(StaticLoadObject(UTexture::StaticClass(), nullptr, *TexturePath));
-	if (!Texture)
-	{
-		Texture = Cast<UTexture>(StaticLoadObject(UTexture::StaticClass(), nullptr,
-			*(TEXT("Texture2D'") + TexturePath + TEXT("'"))));
-	}
-	if (!Texture)
-	{
-		return MCPError(FString::Printf(TEXT("Failed to load texture at '%s'"), *TexturePath));
-	}
-
-	UE_LOG(LogMCPBridge, Log, TEXT("[UE-MCP] CreateMaterialFromTexture: texture=%s materialName=%s packagePath=%s"), *TexturePath, *MaterialName, *PackagePath);
-
-	// Create the material
-	FAssetToolsModule& AssetToolsModule = FModuleManager::LoadModuleChecked<FAssetToolsModule>(TEXT("AssetTools"));
-	IAssetTools& AssetTools = AssetToolsModule.Get();
-
-	UMaterialFactoryNew* MaterialFactory = NewObject<UMaterialFactoryNew>();
-	UObject* NewAsset = AssetTools.CreateAsset(MaterialName, PackagePath, UMaterial::StaticClass(), MaterialFactory);
-
-	if (!NewAsset)
-	{
-		return MCPError(TEXT("Failed to create material asset"));
-	}
-
-	UMaterial* NewMaterial = Cast<UMaterial>(NewAsset);
-	if (!NewMaterial)
-	{
-		return MCPError(TEXT("Created asset is not a material"));
-	}
-
-	NewMaterial->PreEditChange(nullptr);
-
-	// Create a TextureSample expression
-	UMaterialExpressionTextureSample* TextureSampleExpr = NewObject<UMaterialExpressionTextureSample>(NewMaterial);
-	TextureSampleExpr->Texture = Texture;
-	TextureSampleExpr->MaterialExpressionEditorX = -300;
-	TextureSampleExpr->MaterialExpressionEditorY = 0;
-
-	// Add expression to material
-	NewMaterial->GetExpressionCollection().AddExpression(TextureSampleExpr);
-
-	// Connect the RGB output (index 0) to the BaseColor input
-	if (UMaterialEditorOnlyData* EOD = NewMaterial->GetEditorOnlyData())
-	{
-		EOD->BaseColor.Connect(0, TextureSampleExpr);
-	}
-
-	NewMaterial->PostEditChange();
-
-	// Save the package
-	SaveAssetPackage(NewMaterial);
-
-	auto Result = MCPSuccess();
-	MCPSetCreated(Result);
-	Result->SetStringField(TEXT("materialPath"), NewMaterial->GetPathName());
-	Result->SetStringField(TEXT("materialName"), MaterialName);
-	Result->SetStringField(TEXT("texturePath"), Texture->GetPathName());
-	Result->SetStringField(TEXT("packagePath"), PackagePath);
-	Result->SetNumberField(TEXT("expressionCount"), NewMaterial->GetExpressions().Num());
-	MCPSetDeleteAssetRollback(Result, NewMaterial->GetPathName());
-
-	return MCPResult(Result);
-}
+#include "ThumbnailRendering/ThumbnailManager.h"
+#include "ThumbnailRendering/ThumbnailRenderer.h"
+#include "CanvasTypes.h"
+#include "RenderingThread.h"
+#include "TextureResource.h"
 
 
 // ===========================================================================
-// v0.7.9 — Material depth
+// v0.7.9 - Material depth
 // ===========================================================================
 
 TSharedPtr<FJsonValue> FMaterialHandlers::DuplicateMaterial(const TSharedPtr<FJsonObject>& Params)
@@ -142,10 +61,19 @@ TSharedPtr<FJsonValue> FMaterialHandlers::DuplicateMaterial(const TSharedPtr<FJs
 	FString DestinationPath;
 	if (auto Err = RequireString(Params, TEXT("destinationPath"), DestinationPath)) return Err;
 
-	UObject* Duplicated = UEditorAssetLibrary::DuplicateAsset(SourcePath, DestinationPath);
+	const FString DestinationPackagePath = FPackageName::ObjectPathToPackageName(DestinationPath);
+	FString DestinationDirectory;
+	FString DestinationAssetName;
+	if (DestinationPackagePath.Split(TEXT("/"), &DestinationDirectory, &DestinationAssetName, ESearchCase::CaseSensitive, ESearchDir::FromEnd)
+		&& !UEditorAssetLibrary::DoesDirectoryExist(DestinationDirectory))
+	{
+		UEditorAssetLibrary::MakeDirectory(DestinationDirectory);
+	}
+
+	UObject* Duplicated = UEditorAssetLibrary::DuplicateAsset(SourcePath, DestinationPackagePath);
 	if (!Duplicated)
 	{
-		return MCPError(FString::Printf(TEXT("Failed to duplicate '%s' -> '%s'"), *SourcePath, *DestinationPath));
+		return MCPError(FString::Printf(TEXT("Failed to duplicate '%s' -> '%s'"), *SourcePath, *DestinationPackagePath));
 	}
 
 	TSharedPtr<FJsonObject> Result = MCPSuccess();
@@ -155,7 +83,6 @@ TSharedPtr<FJsonValue> FMaterialHandlers::DuplicateMaterial(const TSharedPtr<FJs
 	MCPSetDeleteAssetRollback(Result, Duplicated->GetPathName());
 	return MCPResult(Result);
 }
-
 
 TSharedPtr<FJsonValue> FMaterialHandlers::ValidateMaterial(const TSharedPtr<FJsonObject>& Params)
 {
@@ -183,6 +110,7 @@ TSharedPtr<FJsonValue> FMaterialHandlers::ValidateMaterial(const TSharedPtr<FJso
 	while (Stack.Num() > 0)
 	{
 		UMaterialExpression* Expr = Stack.Pop();
+#if UE_MCP_HAS_5_5_API
 		for (FExpressionInputIterator It{ Expr }; It; ++It)
 		{
 			if (It->Expression && !Referenced.Contains(It->Expression))
@@ -191,6 +119,18 @@ TSharedPtr<FJsonValue> FMaterialHandlers::ValidateMaterial(const TSharedPtr<FJso
 				Stack.Add(It->Expression);
 			}
 		}
+#else
+		// FExpressionInputIterator was added in 5.5; on 5.4 use the legacy GetInput(i) loop.
+		for (int32 InputIdx = 0, InputCount = Expr->GetInputs().Num(); InputIdx < InputCount; ++InputIdx)
+		{
+			FExpressionInput* In = Expr->GetInput(InputIdx);
+			if (In && In->Expression && !Referenced.Contains(In->Expression))
+			{
+				Referenced.Add(In->Expression);
+				Stack.Add(In->Expression);
+			}
+		}
+#endif
 	}
 
 	auto AllExpressions = Material->GetExpressions();
@@ -217,6 +157,36 @@ TSharedPtr<FJsonValue> FMaterialHandlers::ValidateMaterial(const TSharedPtr<FJso
 				Issue->SetStringField(TEXT("expression"), Expr->GetName());
 				Issues.Add(MakeShared<FJsonValueObject>(Issue));
 			}
+
+			// #318 gap 7: UV type sanity check. TextureSample.Coordinates expects
+			// a 2-channel UV vector. Wiring a 3-channel world-position (or any
+			// non-UV3D-sized source) into it compiles but samples garbage. The
+			// silent failure mode is hours of "why does my texture look wrong"
+			// debugging. Flag the obvious cases - WorldPosition / ObjectPosition
+			// / ActorPosition / CameraPosition wired into Coordinates.
+			if (TS->Coordinates.Expression)
+			{
+				UMaterialExpression* CoordSrc = TS->Coordinates.Expression;
+				const FString SrcClass = CoordSrc->GetClass()->GetName();
+				static const TArray<FString> ThreeDPositionSources = {
+					TEXT("MaterialExpressionWorldPosition"),
+					TEXT("MaterialExpressionObjectPositionWS"),
+					TEXT("MaterialExpressionActorPositionWS"),
+					TEXT("MaterialExpressionCameraPositionWS"),
+				};
+				if (ThreeDPositionSources.Contains(SrcClass))
+				{
+					TSharedPtr<FJsonObject> Issue = MakeShared<FJsonObject>();
+					Issue->SetStringField(TEXT("kind"), TEXT("uv_type_mismatch"));
+					Issue->SetStringField(TEXT("expression"), Expr->GetName());
+					Issue->SetStringField(TEXT("input"), TEXT("Coordinates"));
+					Issue->SetStringField(TEXT("sourceClass"), SrcClass);
+					Issue->SetStringField(TEXT("message"), FString::Printf(
+						TEXT("TextureSample '%s' Coordinates wired from %s. The Coordinates pin expects a 2-channel UV. Use a TextureCoordinate node or extract the XY channels via ComponentMask."),
+						*Expr->GetName(), *SrcClass));
+					Issues.Add(MakeShared<FJsonValueObject>(Issue));
+				}
+			}
 		}
 	}
 
@@ -241,7 +211,7 @@ TSharedPtr<FJsonValue> FMaterialHandlers::GetMaterialShaderStats(const TSharedPt
 	TSharedPtr<FJsonObject> Result = MCPSuccess();
 	Result->SetStringField(TEXT("assetPath"), AssetPath);
 
-	// Texture sampler usage — count texture-sample expressions directly.
+	// Texture sampler usage - count texture-sample expressions directly.
 	int32 NumTextures = 0;
 	for (UMaterialExpression* Expr : Material->GetExpressions())
 	{
@@ -285,7 +255,7 @@ TSharedPtr<FJsonValue> FMaterialHandlers::ExportMaterialGraph(const TSharedPtr<F
 		Node->SetNumberField(TEXT("posX"), Expr->MaterialExpressionEditorX);
 		Node->SetNumberField(TEXT("posY"), Expr->MaterialExpressionEditorY);
 
-		// Scalar / vector constants — capture literal
+		// Scalar / vector constants - capture literal
 		if (UMaterialExpressionConstant* C = Cast<UMaterialExpressionConstant>(Expr))
 		{
 			Node->SetNumberField(TEXT("value"), C->R);
@@ -341,8 +311,33 @@ TSharedPtr<FJsonValue> FMaterialHandlers::ExportMaterialGraph(const TSharedPtr<F
 
 TSharedPtr<FJsonValue> FMaterialHandlers::ImportMaterialGraph(const TSharedPtr<FJsonObject>& Params)
 {
-	// Delegates to BuildMaterialGraph — same JSON spec format.
-	return BuildMaterialGraph(Params);
+	// Delegates to BuildMaterialGraph - same JSON spec format, same effect.
+	TSharedPtr<FJsonValue> Delegated = BuildMaterialGraph(Params);
+
+	// Say so on THIS action's own result. import_material_graph is registered
+	// separately, so a caller reading its response never sees build_material_graph
+	// and would otherwise have to infer where the answer came from. The inverse
+	// verdict is restated here rather than left implicit for the same reason:
+	// this action has no inverse either, and it is not obvious that an action
+	// named "import" is additive rather than a replace.
+	const TSharedPtr<FJsonObject>* AsObject = nullptr;
+	if (Delegated.IsValid() && Delegated->TryGetObject(AsObject) && AsObject && (*AsObject).IsValid())
+	{
+		bool bSucceeded = false;
+		if ((*AsObject)->TryGetBoolField(TEXT("success"), bSucceeded) && bSucceeded)
+		{
+			// TryGet, not Get: FJsonObject::GetStringField on an absent key is a
+			// hard failure, and this must not turn a healthy import into one.
+			FString DelegatedNote;
+			(*AsObject)->TryGetStringField(TEXT("rollbackNote"), DelegatedNote);
+			(*AsObject)->SetStringField(TEXT("aliasOf"), TEXT("build_material_graph"));
+			(*AsObject)->SetBoolField(TEXT("rollbackPossible"), false);
+			(*AsObject)->SetStringField(TEXT("rollbackNote"), FString::Printf(
+				TEXT("import_material_graph is build_material_graph under another name, and it ADDS to the graph rather than replacing it: there is no replace mode that could be handed a snapshot of the previous graph, and no bulk delete for material expressions, so no single call undoes it. %s"),
+				*DelegatedNote));
+		}
+	}
+	return Delegated;
 }
 
 
@@ -373,6 +368,7 @@ TSharedPtr<FJsonValue> FMaterialHandlers::BuildMaterialGraph(const TSharedPtr<FJ
 	};
 
 	int32 Created = 0;
+	TArray<TSharedPtr<FJsonValue>> CreatedExpressionNames;
 	for (const TSharedPtr<FJsonValue>& V : *NodesArr)
 	{
 		const TSharedPtr<FJsonObject>* NodeObj = nullptr;
@@ -384,6 +380,7 @@ TSharedPtr<FJsonValue> FMaterialHandlers::BuildMaterialGraph(const TSharedPtr<FJ
 		Expr->MaterialExpressionEditorX = (*NodeObj)->GetNumberField(TEXT("posX"));
 		Expr->MaterialExpressionEditorY = (*NodeObj)->GetNumberField(TEXT("posY"));
 		ByName.Add(Name, Expr);
+		CreatedExpressionNames.Add(MakeShared<FJsonValueString>(Expr->GetName()));
 		++Created;
 
 		// Apply literal values where we can.
@@ -400,9 +397,12 @@ TSharedPtr<FJsonValue> FMaterialHandlers::BuildMaterialGraph(const TSharedPtr<FJ
 		}
 	}
 
-	// Property connections.
+	// Property connections. Each one overwrites whatever the property carried,
+	// so record the displaced binding: it is the half of the change that no
+	// single inverse call can put back.
 	const TArray<TSharedPtr<FJsonValue>>* PropArr = nullptr;
 	int32 Connections = 0;
+	TArray<TSharedPtr<FJsonValue>> OverwrittenProperties;
 	if (Params->TryGetArrayField(TEXT("propertyConnections"), PropArr))
 	{
 		for (const TSharedPtr<FJsonValue>& V : *PropArr)
@@ -417,6 +417,14 @@ TSharedPtr<FJsonValue> FMaterialHandlers::BuildMaterialGraph(const TSharedPtr<FJ
 			if (!Found || !*Found) continue;
 			FExpressionInput* In = Material->GetExpressionInputForProperty(Prop);
 			if (!In) continue;
+			if (In->Expression)
+			{
+				TSharedPtr<FJsonObject> Displaced = MakeShared<FJsonObject>();
+				Displaced->SetStringField(TEXT("property"), PropName);
+				Displaced->SetStringField(TEXT("previousFrom"), In->Expression->GetName());
+				Displaced->SetNumberField(TEXT("previousOutputIndex"), In->OutputIndex);
+				OverwrittenProperties.Add(MakeShared<FJsonValueObject>(Displaced));
+			}
 			In->Expression = *Found;
 			In->OutputIndex = (int32)(*ConnObj)->GetNumberField(TEXT("outputIndex"));
 			++Connections;
@@ -433,6 +441,21 @@ TSharedPtr<FJsonValue> FMaterialHandlers::BuildMaterialGraph(const TSharedPtr<FJ
 	Result->SetStringField(TEXT("assetPath"), AssetPath);
 	Result->SetNumberField(TEXT("expressionsCreated"), Created);
 	Result->SetNumberField(TEXT("connectionsMade"), Connections);
+	Result->SetArrayField(TEXT("createdExpressions"), CreatedExpressionNames);
+	Result->SetArrayField(TEXT("overwrittenProperties"), OverwrittenProperties);
+
+	// No inverse. This call creates an arbitrary number of expressions and
+	// rewrites an arbitrary number of property inputs, and a rollback record
+	// carries exactly one call. There is no bulk delete for material
+	// expressions, and this action has no replace mode that could be handed a
+	// snapshot of the previous graph (the PCG twin, import_pcg_graph, does have
+	// one and is reversible for that reason). Inventing a single
+	// delete_material_expression here would undo one node out of many and
+	// leave the rest, which is worse than saying so.
+	Result->SetBoolField(TEXT("rollbackPossible"), false);
+	Result->SetStringField(TEXT("rollbackNote"), FString::Printf(
+		TEXT("No single call undoes this: %d expression(s) were created and %d property connection(s) written. Undo it by hand with one delete_material_expression per name in createdExpressions, then reconnect anything listed in overwrittenProperties with connect_to_material_property. Wrapping the build in begin_transaction / end_transaction gives a one-step undo instead."),
+		Created, Connections));
 	return MCPResult(Result);
 }
 
@@ -461,31 +484,69 @@ TSharedPtr<FJsonValue> FMaterialHandlers::RenderMaterialPreview(const TSharedPtr
 		return MCPError(TEXT("Failed to initialize render target"));
 	}
 
-	// Fall back to a simple stats-only response if we can't render here;
-	// full preview requires a scene + view which is non-trivial on the game thread.
-	// For the v0.7.9 implementation we emit a placeholder PNG derived from base color
-	// so agents get a deterministic file out while full thumbnail rendering is wired.
+	// #668: render a REAL lit preview using the engine's own material thumbnail
+	// renderer (a lit sphere with the material, the same image the Content
+	// Browser shows) - which correctly lit-renders any shading model including
+	// Substrate, instead of the flat base-color swatch.
 	TArray<FColor> Pixels;
-	Pixels.Init(FColor(128, 128, 128, 255), Width * Height);
+	FString Mode = TEXT("base_color_approximation");
+	bool bLitRendered = false;
 
-	// Crude sampling of base color expression for a solid-color preview.
-	FExpressionInput* BaseIn = Material->GetExpressionInputForProperty(MP_BaseColor);
-	if (BaseIn && BaseIn->Expression)
+	FThumbnailRenderingInfo* RenderInfo = UThumbnailManager::Get().GetRenderingInfo(Material);
+	if (RenderInfo && RenderInfo->Renderer)
 	{
-		if (UMaterialExpressionConstant3Vector* C3 = Cast<UMaterialExpressionConstant3Vector>(BaseIn->Expression))
+		FCanvas Canvas(RTResource, nullptr, FGameTime::GetTimeSinceAppStart(), GMaxRHIFeatureLevel);
+		RenderInfo->Renderer->Draw(Material, 0, 0, Width, Height, RTResource, &Canvas, false);
+		Canvas.Flush_GameThread();
+		FlushRenderingCommands();
+		FReadSurfaceDataFlags ReadFlags(RCM_UNorm, CubeFace_MAX);
+		if (RTResource->ReadPixels(Pixels, ReadFlags) && Pixels.Num() == Width * Height)
 		{
-			FColor Col(
-				FMath::Clamp(FMath::RoundToInt(C3->Constant.R * 255.f), 0, 255),
-				FMath::Clamp(FMath::RoundToInt(C3->Constant.G * 255.f), 0, 255),
-				FMath::Clamp(FMath::RoundToInt(C3->Constant.B * 255.f), 0, 255),
-				255);
-			for (FColor& P : Pixels) P = Col;
+			bLitRendered = true;
+			Mode = TEXT("lit_thumbnail");
 		}
 	}
 
+	if (!bLitRendered)
+	{
+		// Fallback: flat base-color swatch if the thumbnail renderer is unavailable.
+		Pixels.Init(FColor(128, 128, 128, 255), Width * Height);
+		FExpressionInput* BaseIn = Material->GetExpressionInputForProperty(MP_BaseColor);
+		if (BaseIn && BaseIn->Expression)
+		{
+			if (UMaterialExpressionConstant3Vector* C3 = Cast<UMaterialExpressionConstant3Vector>(BaseIn->Expression))
+			{
+				FColor Col(
+					FMath::Clamp(FMath::RoundToInt(C3->Constant.R * 255.f), 0, 255),
+					FMath::Clamp(FMath::RoundToInt(C3->Constant.G * 255.f), 0, 255),
+					FMath::Clamp(FMath::RoundToInt(C3->Constant.B * 255.f), 0, 255),
+					255);
+				for (FColor& P : Pixels) P = Col;
+			}
+		}
+	}
+
+	// Whether the destination already held a file decides what this call did to
+	// the disk: created one, or replaced one whose bytes are not recoverable.
+	const bool bOverwroteExistingFile = FPaths::FileExists(OutputPath);
+
 	TArray<uint8> Compressed;
 	FImageUtils::ThumbnailCompressImageArray(Width, Height, Pixels, Compressed);
-	if (!FFileHelper::SaveArrayToFile(Compressed, *OutputPath))
+
+	// Whether the render actually changed anything on disk. A replayed call
+	// against an unchanged material produces the same bytes, and saying so is
+	// the difference between "wrote a file" and "the file already said this".
+	bool bBytesIdentical = false;
+	if (bOverwroteExistingFile)
+	{
+		TArray<uint8> Existing;
+		if (FFileHelper::LoadFileToArray(Existing, *OutputPath))
+		{
+			bBytesIdentical = Existing == Compressed;
+		}
+	}
+
+	if (!bBytesIdentical && !FFileHelper::SaveArrayToFile(Compressed, *OutputPath))
 	{
 		return MCPError(FString::Printf(TEXT("Failed to write PNG: %s"), *OutputPath));
 	}
@@ -495,8 +556,27 @@ TSharedPtr<FJsonValue> FMaterialHandlers::RenderMaterialPreview(const TSharedPtr
 	Result->SetStringField(TEXT("outputPath"), OutputPath);
 	Result->SetNumberField(TEXT("width"), Width);
 	Result->SetNumberField(TEXT("height"), Height);
-	Result->SetStringField(TEXT("mode"), TEXT("base_color_approximation"));
-	// No rollback: destructive/external (writes a file to disk).
+	Result->SetBoolField(TEXT("litRendered"), bLitRendered);
+	Result->SetStringField(TEXT("mode"), Mode);
+	Result->SetBoolField(TEXT("overwroteExistingFile"), bOverwroteExistingFile && !bBytesIdentical);
+	if (bBytesIdentical) Result->SetBoolField(TEXT("unchanged"), true);
+	else MCPSetUpdated(Result);
+
+	// No inverse. The effect is a file on disk outside the project, and the
+	// bridge has no action that deletes an arbitrary path (delete_asset works
+	// on content-browser assets). The material itself is untouched.
+	Result->SetBoolField(TEXT("rollbackPossible"), false);
+	if (bBytesIdentical)
+	{
+		Result->SetStringField(TEXT("rollbackNote"),
+			TEXT("The file at outputPath already held exactly these bytes, so nothing was written and there is nothing to undo."));
+	}
+	else
+	{
+		Result->SetStringField(TEXT("rollbackNote"), bOverwroteExistingFile
+			? TEXT("This replaced a different file that existed at outputPath. Its previous bytes were not kept and no bridge action deletes or restores an arbitrary file path, so there is no inverse. No project asset was modified.")
+			: TEXT("This wrote a new file at outputPath. No bridge action deletes an arbitrary file path, so there is no inverse. No project asset was modified."));
+	}
 	return MCPResult(Result);
 }
 
@@ -505,10 +585,34 @@ TSharedPtr<FJsonValue> FMaterialHandlers::BeginMaterialTransaction(const TShared
 {
 	const FString Label = OptionalString(Params, TEXT("label"), TEXT("MCP Material Edit"));
 	if (!GEditor) return MCPError(TEXT("GEditor not available"));
-	// No rollback: transaction lifecycle; paired end_material_transaction is the natural counterpart.
-	GEditor->BeginTransaction(FText::FromString(Label));
+	// Refuse BEFORE opening anything. UEditorEngine::BeginTransaction
+	// dereferences GEditor->Trans without checking it, so a check placed after
+	// the call is only reachable past the crash it describes. The editor twin
+	// (begin_editor_transaction) guards in the same place for the same reason.
+	if (!GEditor->Trans)
+	{
+		return MCPError(TEXT("No transaction buffer: GEditor->Trans is null. The editor was started without an undo buffer (a commandlet or -notransactions session), so transactions are unavailable in this process."));
+	}
+
+	const bool bWasActive = GEditor->Trans->IsActive();
+	const int32 Idx = GEditor->BeginTransaction(FText::FromString(Label));
+
 	TSharedPtr<FJsonObject> Result = MCPSuccess();
 	Result->SetStringField(TEXT("label"), Label);
+	Result->SetNumberField(TEXT("transactionIndex"), Idx);
+	// A transaction opened inside another one only nests: the undo step is not
+	// recorded until the outermost end. Saying so is what stops a caller reading
+	// this as "a fresh undo step starts here".
+	Result->SetBoolField(TEXT("nested"), bWasActive);
+
+	// Rollback: abort the transaction rather than commit it. This is the same
+	// inverse the editor twin (begin_editor_transaction) emits, and the reason
+	// cancel exists at all - a flow that fails after this call unwinds to the
+	// state before it instead of committing half an edit.
+	TSharedPtr<FJsonObject> Payload = MakeShared<FJsonObject>();
+	Payload->SetNumberField(TEXT("index"), Idx);
+	MCPSetRollback(Result, TEXT("cancel_editor_transaction"), Payload);
+	Result->SetBoolField(TEXT("rollbackLossy"), false);
 	return MCPResult(Result);
 }
 
@@ -516,9 +620,55 @@ TSharedPtr<FJsonValue> FMaterialHandlers::BeginMaterialTransaction(const TShared
 TSharedPtr<FJsonValue> FMaterialHandlers::EndMaterialTransaction(const TSharedPtr<FJsonObject>& Params)
 {
 	if (!GEditor) return MCPError(TEXT("GEditor not available"));
-	// No rollback: lifecycle op.
+
+	// Refuse BEFORE ending anything: UEditorEngine::EndTransaction dereferences
+	// GEditor->Trans unconditionally, so a check after the call is unreachable.
+	UTransactor* Trans = GEditor->Trans;
+	if (!Trans)
+	{
+		return MCPError(TEXT("No transaction buffer: GEditor->Trans is null. The editor was started without an undo buffer (a commandlet or -notransactions session), so transactions are unavailable in this process."));
+	}
+
+	if (!Trans->IsActive())
+	{
+		// Ending when nothing is open is the idempotent replay of a flow that
+		// already ended. Reported rather than errored, matching the editor twin.
+		TSharedPtr<FJsonObject> NoOp = MCPSuccess();
+		NoOp->SetBoolField(TEXT("wasActive"), false);
+		NoOp->SetBoolField(TEXT("committed"), false);
+		NoOp->SetBoolField(TEXT("unchanged"), true);
+		NoOp->SetBoolField(TEXT("rollbackPossible"), false);
+		NoOp->SetStringField(TEXT("rollbackNote"),
+			TEXT("No transaction was open, so nothing was committed and there is nothing to undo."));
+		return MCPResult(NoOp);
+	}
+
 	const int32 Idx = GEditor->EndTransaction();
+	const bool bStillNested = Trans->IsActive();
+
 	TSharedPtr<FJsonObject> Result = MCPSuccess();
+	MCPSetUpdated(Result);
 	Result->SetNumberField(TEXT("transactionIndex"), Idx);
+	Result->SetBoolField(TEXT("wasActive"), true);
+	Result->SetBoolField(TEXT("committed"), true);
+	Result->SetBoolField(TEXT("stillNested"), bStillNested);
+
+	if (!bStillNested)
+	{
+		// The inverse of committing is undoing the step just recorded. Only
+		// once the nest is fully closed, because before that the step does not
+		// exist in the buffer yet and an undo would reverse someone else's.
+		TSharedPtr<FJsonObject> Payload = MakeShared<FJsonObject>();
+		Payload->SetNumberField(TEXT("steps"), 1);
+		Payload->SetStringField(TEXT("direction"), TEXT("undo"));
+		MCPSetRollback(Result, TEXT("undo_redo_steps"), Payload);
+		Result->SetBoolField(TEXT("rollbackLossy"), false);
+	}
+	else
+	{
+		Result->SetBoolField(TEXT("rollbackPossible"), false);
+		Result->SetStringField(TEXT("rollbackNote"),
+			TEXT("This closed one nesting level and an outer transaction is still open, so no undo step has been recorded yet. Undoing here would reverse whatever step precedes the open transaction, which is not what this call did. Close the outermost level first."));
+	}
 	return MCPResult(Result);
 }

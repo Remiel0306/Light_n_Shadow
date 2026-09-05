@@ -12,147 +12,79 @@
 
 void FSplineHandlers::RegisterHandlers(FMCPHandlerRegistry& Registry)
 {
-	Registry.RegisterHandler(TEXT("create_spline_actor"), &CreateSplineActor);
-	Registry.RegisterHandler(TEXT("read_spline"), &ReadSpline);
 	Registry.RegisterHandler(TEXT("get_spline_info"), &ReadSpline);
 	Registry.RegisterHandler(TEXT("set_spline_points"), &SetSplinePoints);
-}
-
-TSharedPtr<FJsonValue> FSplineHandlers::CreateSplineActor(const TSharedPtr<FJsonObject>& Params)
-{
-	REQUIRE_EDITOR_WORLD(World);
-
-	const FString Label = OptionalString(Params, TEXT("label"));
-	const FString OnConflict = OptionalString(Params, TEXT("onConflict"), TEXT("skip"));
-
-	if (!Label.IsEmpty())
-	{
-		for (TActorIterator<AActor> It(World); It; ++It)
-		{
-			if (It->GetActorLabel() == Label)
-			{
-				if (OnConflict == TEXT("error"))
-				{
-					return MCPError(FString::Printf(TEXT("Spline actor '%s' already exists"), *Label));
-				}
-				auto Existing = MCPSuccess();
-				MCPSetExisted(Existing);
-				Existing->SetStringField(TEXT("actorLabel"), Label);
-				return MCPResult(Existing);
-			}
-		}
-	}
-
-	FVector Location = FVector::ZeroVector;
-	const TSharedPtr<FJsonObject>* LocationObj = nullptr;
-	if (Params->TryGetObjectField(TEXT("location"), LocationObj))
-	{
-		(*LocationObj)->TryGetNumberField(TEXT("x"), Location.X);
-		(*LocationObj)->TryGetNumberField(TEXT("y"), Location.Y);
-		(*LocationObj)->TryGetNumberField(TEXT("z"), Location.Z);
-	}
-
-	FTransform SpawnTransform(FRotator::ZeroRotator, Location);
-	AActor* NewActor = World->SpawnActor<AActor>(AActor::StaticClass(), SpawnTransform);
-	if (!NewActor)
-	{
-		return MCPError(TEXT("Failed to spawn actor"));
-	}
-
-	// Add a root scene component if none exists
-	USceneComponent* RootComp = NewObject<USceneComponent>(NewActor, TEXT("DefaultSceneRoot"));
-	RootComp->RegisterComponent();
-	NewActor->SetRootComponent(RootComp);
-
-	// Add the spline component
-	USplineComponent* SplineComp = NewObject<USplineComponent>(NewActor, TEXT("SplineComponent"));
-	SplineComp->SetupAttachment(RootComp);
-	SplineComp->RegisterComponent();
-	NewActor->AddInstanceComponent(SplineComp);
-
-	if (!Label.IsEmpty())
-	{
-		NewActor->SetActorLabel(Label);
-	}
-
-	// Optionally set closed loop
-	bool bClosedLoop = OptionalBool(Params, TEXT("closedLoop"), false);
-	if (Params->HasField(TEXT("closedLoop")))
-	{
-		SplineComp->SetClosedLoop(bClosedLoop);
-	}
-
-	// Optionally set initial points from array
-	const TArray<TSharedPtr<FJsonValue>>* PointsArray = nullptr;
-	if (Params->TryGetArrayField(TEXT("points"), PointsArray) && PointsArray->Num() > 0)
-	{
-		SplineComp->ClearSplinePoints(false);
-		for (int32 i = 0; i < PointsArray->Num(); ++i)
-		{
-			const TSharedPtr<FJsonObject>* PointObj = nullptr;
-			if ((*PointsArray)[i]->TryGetObject(PointObj))
-			{
-				FVector Point = FVector::ZeroVector;
-				(*PointObj)->TryGetNumberField(TEXT("x"), Point.X);
-				(*PointObj)->TryGetNumberField(TEXT("y"), Point.Y);
-				(*PointObj)->TryGetNumberField(TEXT("z"), Point.Z);
-				SplineComp->AddSplinePoint(Point, ESplineCoordinateSpace::World, false);
-			}
-		}
-		SplineComp->UpdateSpline();
-	}
-
-	const FString FinalLabel = NewActor->GetActorLabel();
-
-	auto Result = MCPSuccess();
-	MCPSetCreated(Result);
-	Result->SetStringField(TEXT("actorLabel"), FinalLabel);
-	Result->SetStringField(TEXT("actorName"), NewActor->GetName());
-	Result->SetNumberField(TEXT("splinePointCount"), SplineComp->GetNumberOfSplinePoints());
-	Result->SetBoolField(TEXT("closedLoop"), SplineComp->IsClosedLoop());
-
-	TSharedPtr<FJsonObject> Payload = MakeShared<FJsonObject>();
-	Payload->SetStringField(TEXT("actorLabel"), FinalLabel);
-	MCPSetRollback(Result, TEXT("delete_actor"), Payload);
-
-	return MCPResult(Result);
 }
 
 TSharedPtr<FJsonValue> FSplineHandlers::ReadSpline(const TSharedPtr<FJsonObject>& Params)
 {
 	FString ActorLabel;
-	if (auto Err = RequireString(Params, TEXT("actorLabel"), ActorLabel)) return Err;
+	if (auto Err = RequireStringAlt(Params, TEXT("actorLabel"), TEXT("actorPath"), ActorLabel)) return Err;
 
-	REQUIRE_EDITOR_WORLD(World);
+	// #553: support editor or PIE world so runtime spline state is readable.
+	const FString WorldScope = OptionalString(Params, TEXT("world"), TEXT("editor"));
+	UWorld* World = ResolveWorldFromParams(Params, *WorldScope);
+	if (!World) return MCPError(TEXT("World not available"));
 
-	// Find actor by label
-	AActor* Actor = nullptr;
-	for (TActorIterator<AActor> ActorIt(World); ActorIt; ++ActorIt)
+	// #983: this is the action the report came in on. A level with several
+	// copy-pasted road Blueprints all labelled the same thing answered with
+	// whichever one the actor iterator reached first.
+	FMCPActorSelector ActorSel;
+	ActorSel.Match = EMCPActorMatch::LabelOrName;
+	ActorSel.WorldLabel = World->IsGameWorld() ? TEXT("PIE") : TEXT("editor");
+	TSharedPtr<FJsonValue> ActorErr;
+	AActor* Actor = MCPResolveActor(World, Params, ActorErr, ActorSel);
+	if (!Actor) return ActorErr;
+	ActorLabel = Actor->GetActorLabel();
+
+	// #553: optional componentName to target a specific (custom) spline component
+	// when an actor has more than one. Custom spline subclasses derive from
+	// USplineComponent, so FindComponentByClass still resolves them.
+	USplineComponent* SplineComp = nullptr;
+	const FString ComponentName = OptionalString(Params, TEXT("componentName"));
+	if (!ComponentName.IsEmpty())
 	{
-		if ((*ActorIt)->GetActorLabel() == ActorLabel)
+		TArray<USplineComponent*> Comps;
+		Actor->GetComponents<USplineComponent>(Comps);
+		for (USplineComponent* C : Comps)
 		{
-			Actor = *ActorIt;
-			break;
+			if (C && C->GetName() == ComponentName) { SplineComp = C; break; }
 		}
 	}
-
-	if (!Actor)
+	else
 	{
-		return MCPError(FString::Printf(TEXT("Actor not found: %s"), *ActorLabel));
+		SplineComp = Actor->FindComponentByClass<USplineComponent>();
 	}
-
-	// Find spline component
-	USplineComponent* SplineComp = Actor->FindComponentByClass<USplineComponent>();
 	if (!SplineComp)
 	{
-		return MCPError(FString::Printf(TEXT("Actor '%s' does not have a SplineComponent"), *ActorLabel));
+		return MCPError(FString::Printf(TEXT("Actor '%s' has no matching SplineComponent"), *ActorLabel));
 	}
 
 	auto Result = MCPSuccess();
 	Result->SetStringField(TEXT("actorLabel"), ActorLabel);
+	Result->SetStringField(TEXT("actorPath"), Actor->GetPathName());
+	Result->SetStringField(TEXT("componentName"), SplineComp->GetName());
+	Result->SetStringField(TEXT("componentClass"), SplineComp->GetClass()->GetName());
 	Result->SetNumberField(TEXT("splinePointCount"), SplineComp->GetNumberOfSplinePoints());
 	Result->SetBoolField(TEXT("closedLoop"), SplineComp->IsClosedLoop());
 	Result->SetNumberField(TEXT("splineLength"), SplineComp->GetSplineLength());
+
+	// #555: project a world point onto the spline. Returns the closest location,
+	// the input key, distance along the spline, and the perpendicular distance.
+	if (Params->HasField(TEXT("projectPoint")))
+	{
+		const FVector P = OptionalVec3(Params, TEXT("projectPoint"), FVector::ZeroVector);
+		const FVector Closest = SplineComp->FindLocationClosestToWorldLocation(P, ESplineCoordinateSpace::World);
+		const float InputKey = SplineComp->FindInputKeyClosestToWorldLocation(P);
+		const float DistAlong = SplineComp->GetDistanceAlongSplineAtSplineInputKey(InputKey);
+		TSharedPtr<FJsonObject> Proj = MakeShared<FJsonObject>();
+		Proj->SetObjectField(TEXT("closestLocation"), MCPVec3ToJsonObject(Closest));
+		Proj->SetNumberField(TEXT("inputKey"), InputKey);
+		Proj->SetNumberField(TEXT("distanceAlongSpline"), DistAlong);
+		Proj->SetNumberField(TEXT("distanceToSpline"), FVector::Dist(P, Closest));
+		Proj->SetObjectField(TEXT("tangent"), MCPVec3ToJsonObject(SplineComp->GetTangentAtDistanceAlongSpline(DistAlong, ESplineCoordinateSpace::World)));
+		Result->SetObjectField(TEXT("projection"), Proj);
+	}
 
 	// Return all control points with world-space locations
 	TArray<TSharedPtr<FJsonValue>> PointsArray;
@@ -214,7 +146,7 @@ TSharedPtr<FJsonValue> FSplineHandlers::ReadSpline(const TSharedPtr<FJsonObject>
 TSharedPtr<FJsonValue> FSplineHandlers::SetSplinePoints(const TSharedPtr<FJsonObject>& Params)
 {
 	FString ActorLabel;
-	if (auto Err = RequireString(Params, TEXT("actorLabel"), ActorLabel)) return Err;
+	if (auto Err = RequireStringAlt(Params, TEXT("actorLabel"), TEXT("actorPath"), ActorLabel)) return Err;
 
 	const TArray<TSharedPtr<FJsonValue>>* PointsArray = nullptr;
 	if (!Params->TryGetArrayField(TEXT("points"), PointsArray))
@@ -224,21 +156,10 @@ TSharedPtr<FJsonValue> FSplineHandlers::SetSplinePoints(const TSharedPtr<FJsonOb
 
 	REQUIRE_EDITOR_WORLD(World);
 
-	// Find actor by label
-	AActor* Actor = nullptr;
-	for (TActorIterator<AActor> ActorIt(World); ActorIt; ++ActorIt)
-	{
-		if ((*ActorIt)->GetActorLabel() == ActorLabel)
-		{
-			Actor = *ActorIt;
-			break;
-		}
-	}
-
-	if (!Actor)
-	{
-		return MCPError(FString::Printf(TEXT("Actor not found: %s"), *ActorLabel));
-	}
+	TSharedPtr<FJsonValue> ActorErr;
+	AActor* Actor = MCPResolveActor(World, Params, ActorErr);
+	if (!Actor) return ActorErr;
+	ActorLabel = Actor->GetActorLabel();
 
 	// Find spline component
 	USplineComponent* SplineComp = Actor->FindComponentByClass<USplineComponent>();
@@ -288,12 +209,14 @@ TSharedPtr<FJsonValue> FSplineHandlers::SetSplinePoints(const TSharedPtr<FJsonOb
 	auto Result = MCPSuccess();
 	MCPSetUpdated(Result);
 	Result->SetStringField(TEXT("actorLabel"), ActorLabel);
+	Result->SetStringField(TEXT("actorPath"), Actor->GetPathName());
 	Result->SetNumberField(TEXT("splinePointCount"), SplineComp->GetNumberOfSplinePoints());
 	Result->SetBoolField(TEXT("closedLoop"), SplineComp->IsClosedLoop());
 	Result->SetNumberField(TEXT("splineLength"), SplineComp->GetSplineLength());
 
 	TSharedPtr<FJsonObject> Payload = MakeShared<FJsonObject>();
 	Payload->SetStringField(TEXT("actorLabel"), ActorLabel);
+	Payload->SetStringField(TEXT("actorPath"), Actor->GetPathName());
 	Payload->SetArrayField(TEXT("points"), PrevPoints);
 	Payload->SetBoolField(TEXT("closedLoop"), bPrevClosedLoop);
 	MCPSetRollback(Result, TEXT("set_spline_points"), Payload);

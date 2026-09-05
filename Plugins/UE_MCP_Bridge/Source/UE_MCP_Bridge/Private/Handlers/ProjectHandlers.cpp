@@ -1,6 +1,7 @@
 #include "ProjectHandlers.h"
 #include "HandlerRegistry.h"
 #include "HandlerUtils.h"
+#include "HandlerPagination.h"
 
 #include "Dom/JsonObject.h"
 #include "Dom/JsonValue.h"
@@ -15,7 +16,7 @@
 #include "GameProjectGenerationModule.h"
 #include "ModuleDescriptor.h" // FModuleContextInfo + EHostType
 
-// Live Coding — Win64 only, guarded by PLATFORM_WINDOWS
+// Live Coding - Win64 only, guarded by PLATFORM_WINDOWS
 #if PLATFORM_WINDOWS
 #include "ILiveCodingModule.h"
 #endif
@@ -98,26 +99,31 @@ void FProjectHandlers::RegisterHandlers(FMCPHandlerRegistry& Registry)
 	// live_coding_compile(wait=true) can also exceed 30s on a full rebuild.
 	Registry.RegisterHandlerWithTimeout(TEXT("live_coding_compile"), &LiveCodingCompile, 300.0f);
 	Registry.RegisterHandler(TEXT("live_coding_status"), &LiveCodingStatus);
+
+	// Plugin enablement. Bodies live in ProjectHandlers_Plugins.cpp.
+	Registry.RegisterHandler(TEXT("list_available_plugins"), &ListAvailablePlugins);
+	Registry.RegisterHandler(TEXT("enable_plugin"), &EnablePlugin);
+	Registry.RegisterHandler(TEXT("disable_plugin"), &DisablePlugin);
 }
 
 // ─── create_cpp_class ────────────────────────────────────────────────
 // Creates a new native UCLASS in the project by calling the same engine
 // API that backs the editor's "File -> New C++ Class" dialog
 // (GameProjectUtils::AddCodeToProject). Generated .h/.cpp come from the
-// engine templates — byte-for-byte identical to what a human gets via
+// engine templates - byte-for-byte identical to what a human gets via
 // the dialog. Agents can then call write_cpp_file to fill in additional
 // UPROPERTYs/UFUNCTIONs and build_project to compile.
 //
 // Params:
 //   className    required. Must be C++-valid. Prefix handled by
 //                FNewClassInfo based on parent (A for Actor, U for UObject,
-//                etc.) — omit the prefix.
+//                etc.) - omit the prefix.
 //   parentClass  optional. Path or short name. Defaults to UObject.
 //                Examples: "Actor", "ActorComponent", "/Script/UMG.UserWidget".
 //   moduleName   optional. Target game module. Defaults to the project's
 //                first module (usually the primary runtime module).
 //   classDomain  optional. "public" | "private" | "classes". Default "public".
-//   subPath      optional. Nested folder under public/private — e.g.
+//   subPath      optional. Nested folder under public/private - e.g.
 //                "Gameplay/Abilities". Default: root of the domain folder.
 TSharedPtr<FJsonValue> FProjectHandlers::CreateCppClass(const TSharedPtr<FJsonObject>& Params)
 {
@@ -133,7 +139,7 @@ TSharedPtr<FJsonValue> FProjectHandlers::CreateCppClass(const TSharedPtr<FJsonOb
 	if (!ParentClass)
 	{
 		return MCPError(FString::Printf(
-			TEXT("Could not resolve parentClass '%s' — pass a /Script/<Module>.<Class> path or a loaded native class name"),
+			TEXT("Could not resolve parentClass '%s' - pass a /Script/<Module>.<Class> path or a loaded native class name"),
 			*ParentClassStr));
 	}
 
@@ -145,7 +151,7 @@ TSharedPtr<FJsonValue> FProjectHandlers::CreateCppClass(const TSharedPtr<FJsonOb
 		return MCPError(TEXT("Project has no C++ modules to add the class to. Add at least one code file through the editor first, or create a module manually."));
 	}
 
-	// Copy by value — AddCodeToProject_Internal may reset/repopulate the
+	// Copy by value - AddCodeToProject_Internal may reset/repopulate the
 	// module cache, which would invalidate any reference we held into
 	// the engine's TArray<FModuleContextInfo>.
 	FModuleContextInfo SelectedModule;
@@ -219,7 +225,7 @@ TSharedPtr<FJsonValue> FProjectHandlers::CreateCppClass(const TSharedPtr<FJsonOb
 	// Hand off to the engine. Returns Succeeded | InvalidInput |
 	// FailedToAddCode | FailedToHotReload. FailedToHotReload means the
 	// files were written but live-coding/hot-reload couldn't pick up the
-	// new UCLASS — a full editor restart + UBT build is needed.
+	// new UCLASS - a full editor restart + UBT build is needed.
 	FString OutHeader, OutCpp;
 	FText OutFail;
 	GameProjectUtils::EReloadStatus OutReload = GameProjectUtils::EReloadStatus::NotReloaded;
@@ -277,37 +283,59 @@ TSharedPtr<FJsonValue> FProjectHandlers::CreateCppClass(const TSharedPtr<FJsonOb
 		Result->SetStringField(TEXT("note"),
 			TEXT("Files written but the new UCLASS is not yet live. Trigger build_project (or live_coding_compile for existing-class edits) and restart the editor for UE to register the new type."));
 	}
+
+	// AddCodeToProject writes two source files and may regenerate the IDE
+	// project files. The bridge registers no action that deletes a source file,
+	// so there is nothing to name as an inverse, and naming one that does not
+	// exist would only make a flow fail differently.
+	Result->SetBoolField(TEXT("rollbackPossible"), false);
+	Result->SetStringField(TEXT("rollbackNote"), TEXT(
+		"No action deletes a project source file, so writing a new class has no inverse call. Undoing it means "
+		"deleting the reported headerPath and cppPath outside the bridge and rebuilding; the project files this "
+		"regenerated are rebuilt from the source tree either way."));
 	return MCPResult(Result);
 }
 
 // ─── list_project_modules ────────────────────────────────────────────
 // Enumerates the current project's native modules (name, host type,
 // source path). Feed moduleName from here into create_cpp_class.
-TSharedPtr<FJsonValue> FProjectHandlers::ListProjectModules(const TSharedPtr<FJsonObject>& /*Params*/)
+TSharedPtr<FJsonValue> FProjectHandlers::ListProjectModules(const TSharedPtr<FJsonObject>& Params)
 {
+	// T3: paged.
+	MCPPagination::FPageRequest Page;
+	if (auto Err = MCPPagination::ReadPageRequest(
+			Params, TEXT("list_project_modules"), /*DefaultLimit*/ 200, /*MaxLimit*/ 2000, Page))
+	{
+		return Err;
+	}
+
 	FGameProjectGenerationModule& GPM = FGameProjectGenerationModule::Get();
 	const TArray<FModuleContextInfo>& Modules = GPM.GetCurrentProjectModules();
 
-	TArray<TSharedPtr<FJsonValue>> Arr;
+	TArray<MCPPagination::FPageRow> Rows;
+	Rows.Reserve(Modules.Num());
 	for (const FModuleContextInfo& M : Modules)
 	{
 		TSharedPtr<FJsonObject> Obj = MakeShared<FJsonObject>();
 		Obj->SetStringField(TEXT("name"), M.ModuleName);
 		Obj->SetStringField(TEXT("hostType"), HostTypeToString(M.ModuleType));
 		Obj->SetStringField(TEXT("sourcePath"), M.ModuleSourcePath);
-		Arr.Add(MakeShared<FJsonValueObject>(Obj));
+		// The module name is the page anchor: unique within a project, and
+		// unchanged while the module is declared.
+		Rows.Add({ M.ModuleName, MakeShared<FJsonValueObject>(Obj) });
 	}
+	// The .uproject's declaration order carries meaning (the primary game
+	// module is first), so the rows are deliberately NOT sorted.
 
 	auto Result = MCPSuccess();
-	Result->SetArrayField(TEXT("modules"), Arr);
-	Result->SetNumberField(TEXT("count"), Arr.Num());
+	MCPPagination::EmitPage(Page, Rows, TEXT("modules"), Result);
 	return MCPResult(Result);
 }
 
 // ─── live_coding_compile ─────────────────────────────────────────────
 // Triggers Live Coding compile (equivalent to Ctrl+Alt+F11 in the editor).
 // Live Coding hot-patches method bodies of EXISTING classes without an
-// editor restart — fast iteration on UFUNCTION implementations. It does
+// editor restart - fast iteration on UFUNCTION implementations. It does
 // NOT reliably pick up brand-new UCLASSes; use build_project +
 // editor restart for that.
 //
@@ -361,6 +389,17 @@ TSharedPtr<FJsonValue> FProjectHandlers::LiveCodingCompile(const TSharedPtr<FJso
 	Result->SetBoolField(TEXT("accepted"), bAccepted);
 	Result->SetBoolField(TEXT("waited"), bWait);
 	Result->SetStringField(TEXT("result"), CompileResultString(CompileResult));
+	// Idempotency: Live Coding answers this itself. NoChanges means nothing was
+	// patched, which is exactly what a replayed call reports.
+	Result->SetBoolField(TEXT("unchanged"), CompileResult == ELiveCodingCompileResult::NoChanges);
+
+	// A compile has no inverse. Live Coding hot-patches the loaded module from
+	// source that is already on disk; nothing un-patches it, and the previous
+	// machine code is not retained to restore from.
+	Result->SetBoolField(TEXT("rollbackPossible"), false);
+	Result->SetStringField(TEXT("rollbackNote"), TEXT(
+		"Live Coding patches the running module from source already on disk. There is no inverse action: nothing "
+		"un-patches a module, and the pre-patch code is not retained. Revert the source and compile again instead."));
 	return MCPResult(Result);
 #else
 	return MCPError(TEXT("Live Coding is only available on Windows. Use build_project on other platforms."));

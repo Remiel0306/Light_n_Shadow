@@ -1,0 +1,64 @@
+{
+  "status": {
+    "mode": "disconnected",
+    "editorConnected": false,
+    "editorTarget": {
+      "projectPath": null,
+      "port": 9877,
+      "portSource": "default"
+    },
+    "project": null,
+    "flows": [
+      {
+        "name": "niagara_fire",
+        "description": "Build a fire Niagara system from scratch (spawn rate, upward velocity, HDR orange colour) and verify it emits. A 0-to-1 best-practice starting point, not a demo. Lands at /Game/VFX/Fire/NS_Fire; override name/packagePath via params."
+      },
+      {
+        "name": "beacon",
+        "description": "Demo - build a shrine scene from scratch: floor, pedestal, orb, five pillars, four materials (dark stone, brushed metal, warm stone, parameterized emissive), colored lights, and atmosphere"
+      },
+      {
+        "name": "texture_bomb",
+        "description": "Build a reusable MF_TextureBomb MaterialFunction (#491). Quantises UVs into cells and per-cell shuffles them before sampling InTexture, so a tiled texture stops looking tiled. Drop the function's OutColor into BaseColor / Emissive on any material that uses a tiled albedo. CellDensity input controls the cell frequency. Lives at /Game/Materials/Functions/MF_TextureBomb."
+      },
+      {
+        "name": "neon_shrine",
+        "description": "Build the full Neon Shrine demo scene end-to-end (19 steps). Driven by the demo.step handler shipped with the bridge plugin. Leaves the editor on /Game/Demo/DemoLevel; run neon_shrine_cleanup to wipe it."
+      },
+      {
+        "name": "neon_shrine_cleanup",
+        "description": "Wipe the Neon Shrine demo content. Switches the editor to /Game/MCP_Home first so you don't get stranded on Untitled."
+      }
+    ]
+  },
+  "engine": {
+    "running": true,
+    "processes": [
+      {
+        "pid": 36652,
+        "commandLine": "\"D:/UE_5.7/Engine/Binaries/Win64/UnrealEditor.exe\" \"D:\\Unreal Engine\\Light_n_Shadow\\Light_and_Shadow.uproject\" ",
+        "projectPath": "D:\\Unreal Engine\\Light_n_Shadow\\Light_and_Shadow.uproject",
+        "headless": false,
+        "responding": true,
+        "windowTitle": "Light_and_Shadow - Unreal Editor"
+      }
+    ],
+    "log": {
+      "logPath": null,
+      "secondsSinceWrite": null,
+      "phase": "unknown",
+      "blocking": false,
+      "lastLine": null,
+      "tail": [],
+      "errors": [],
+      "warnings": []
+    },
+    "snapshot": null,
+    "dialogs": [],
+    "processProbeFailed": false,
+    "runningEvidence": "process-table",
+    "snapshotSource": "none",
+    "summary": "Editor is up (unknown); log last written 0s ago.",
+    "blocked": false
+  }
+}

@@ -1,0 +1,45 @@
+﻿Light_and_Shadow_2.log 09/06/2026 01:11:48 25461
+Light_and_Shadow.log 09/06/2026 01:11:03 210294
+cef3.log 09/06/2026 01:10:59 3881
+Light_and_Shadow_2-backup-2026.09.04-17.45.06.log 09/05/2026 01:45:06 680034
+cef3-backup-2026.09.04-17.45.04.log 09/05/2026 01:45:04 7347
+{
+  "setp": {
+    "success": true,
+    "editor": "Light_and_Shadow",
+    "projectName": "Light_and_Shadow",
+    "contentDir": "D:\\Unreal Engine\\Light_n_Shadow\\Content",
+    "engineAssociation": "5.7",
+    "editorConnected": false,
+    "editorTarget": {
+      "projectPath": "D:\\Unreal Engine\\Light_n_Shadow\\Light_and_Shadow.uproject",
+      "port": 53642,
+      "portSource": "derived"
+    },
+    "editorUnreachable": "Failed to connect to editor bridge at ws://127.0.0.1:53642: connect ECONNREFUSED 127.0.0.1:53642",
+    "bridgeSetup": "Bridge already configured"
+  },
+  "status": {
+    "engine": {
+      "phase": "editor exited",
+      "blocked": false,
+      "secondsSinceLogWrite": 53.61905029296875,
+      "lastLogLine": "[2026.09.05-17.11.03:138][806]Log file closed, 09/06/26 01:11:03",
+      "recentErrors": [
+        "[2026.09.05-15.28.53:843][853]MapCheck: Error: Actor /Game/ThirdPerson/Lvl_ThirdPerson.BP_EnemySpotter-Ins2 references an actor in a different set of runtime data layers /Game/ThirdPerson/Lvl_ThirdPerson.BP_EnemyHunter-Ins2 ",
+        "[2026.09.05-15.28.53:843][853]MapCheck: Error: Actor /Game/ThirdPerson/Lvl_ThirdPerson.BP_EnemySpotter-Ins2 references an actor in a different set of runtime data layers /Game/ThirdPerson/Lvl_ThirdPerson.TP_Spotter_A2 ",
+        "[2026.09.05-15.28.53:843][853]MapCheck: Error: Actor /Game/ThirdPerson/Lvl_ThirdPerson.BP_EnemySpotter-Ins2 references an actor in a different set of runtime data layers /Game/ThirdPerson/Lvl_ThirdPerson.TP_Spotter_B2 ",
+        "[2026.09.05-15.28.53:843][853]MapCheck: Error: Actor /Game/ThirdPerson/Lvl_ThirdPerson.BP_EnemySpotter-Ins2 references an actor in a different set of runtime data layers /Game/ThirdPerson/Lvl_ThirdPerson.TP_Spotter_C2 ",
+        "[2026.09.05-15.48.33:250][397]MapCheck: Error: Actor /Game/ThirdPerson/Lvl_ThirdPerson.BP_EnemySpotter-Ins2 references an actor in a different set of runtime data layers /Game/ThirdPerson/Lvl_ThirdPerson.TP_Spotter_A2 "
+      ],
+      "hint": "editor(action='get_engine_state') runs the full out-of-process probe (process table, native dialogs)."
+    },
+    "pluginBuildStale": false,
+    "mode": "disconnected",
+    "editorConnected": false,
+    "editorTarget": {
+      "projectPath": "D:\\Unreal Engine\\Light_n_Shadow\\Light_and_Shadow.uproject",
+      "port": 53642,
+      "portSource": "derived"
+    },
+    "project": {
