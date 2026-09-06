@@ -1,0 +1,984 @@
+{
+  "graph": {
+    "success": true,
+    "path": "/Game/BluePrint/Player/BP_ThirdPersonCharacter",
+    "blueprintPath": "/Game/BluePrint/Player/BP_ThirdPersonCharacter.BP_ThirdPersonCharacter",
+    "isLevelScript": false,
+    "graphName": "EventGraph",
+    "nodes": [
+      {
+        "id": "1504756C4988F498D103A59938620775",
+        "class": "EdGraphNode_Comment",
+        "title": "Jump Input - Jump properties such as height, press-and-hold and multi-jump can be customized on the Character Movement Component.",
+        "posX": -2864,
+        "posY": -544,
+        "comment": "Jump Input - Jump properties such as height, press-and-hold and multi-jump can be customized on the Character Movement Component.",
+        "pins": []
+      },
+      {
+        "id": "7A1812914D4827894ADF35AF3D4C008D",
+        "class": "K2Node_EnhancedInputAction",
+        "title": "EnhancedInputAction IA_HoldBallCamC",
+        "posX": -2864,
+        "posY": 3648,
+        "comment": "",
+        "pins": [
+          {
+            "name": "Triggered",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "Started",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "Ongoing",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "Canceled",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "Completed",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "ActionValue",
+            "type": "bool",
+            "direction": "Output",
+            "defaultValue": "false",
+            "connected": false
+          },
+          {
+            "name": "ElapsedSeconds",
+            "type": "real",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "TriggeredSeconds",
+            "type": "real",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "InputAction",
+            "type": "object",
+            "direction": "Output",
+            "defaultValue": "IA_HoldBallCamC",
+            "defaultObject": "/Game/Input/Controller/IA_HoldBallCamC.IA_HoldBallCamC",
+            "connected": false
+          }
+        ]
+      },
+      {
+        "id": "2CF941754FB16ED9E65476980384309B",
+        "class": "K2Node_VariableSet",
+        "title": "Set bHolding",
+        "posX": -2592,
+        "posY": 6064,
+        "comment": "",
+        "pins": [
+          {
+            "name": "execute",
+            "type": "exec",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "then",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "bHolding",
+            "type": "bool",
+            "direction": "Input",
+            "defaultValue": "true",
+            "connected": false
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "Output_Get",
+            "type": "bool",
+            "direction": "Output",
+            "defaultValue": "false",
+            "connected": false
+          }
+        ]
+      },
+      {
+        "id": "44D67DC340C5775A75A491835405DD7A",
+        "class": "K2Node_VariableSet",
+        "title": "Set bHolding",
+        "posX": -2592,
+        "posY": 6160,
+        "comment": "",
+        "pins": [
+          {
+            "name": "execute",
+            "type": "exec",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "then",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "bHolding",
+            "type": "bool",
+            "direction": "Input",
+            "defaultValue": "false",
+            "connected": false
+          },
+          {
+            "name": "Output_Get",
+            "type": "bool",
+            "direction": "Output",
+            "defaultValue": "false",
+            "connected": false
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          }
+        ]
+      },
+      {
+        "id": "CBFC02284403E58D648741AE44C88A52",
+        "class": "K2Node_CustomEvent",
+        "title": "Update Hold\nCustom Event",
+        "posX": -2432,
+        "posY": 6528,
+        "comment": "",
+        "pins": [
+          {
+            "name": "OutputDelegate",
+            "type": "delegate",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "then",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          }
+        ]
+      },
+      {
+        "id": "7F4A46A24F155012701E5CA22C626349",
+        "class": "K2Node_DynamicCast",
+        "title": "Cast To BP_Level2HoldButton",
+        "posX": -976,
+        "posY": 6544,
+        "comment": "",
+        "pins": [
+          {
+            "name": "execute",
+            "type": "exec",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "then",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "CastFailed",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "Object",
+            "type": "Object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "AsBP Level 2Hold Button",
+            "type": "Object",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "bSuccess",
+            "type": "bool",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          }
+        ]
+      },
+      {
+        "id": "C607E82749C2F5F146A41ABBA0242977",
+        "class": "K2Node_VariableGet",
+        "title": "Get bHolding",
+        "posX": -816,
+        "posY": 6688,
+        "comment": "",
+        "pins": [
+          {
+            "name": "bHolding",
+            "type": "bool",
+            "direction": "Output",
+            "defaultValue": "false",
+            "connected": true
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          }
+        ]
+      },
+      {
+        "id": "BE303F324E4E3AFBA0F838B26103324E",
+        "class": "K2Node_VariableSet",
+        "title": "Set HoldProgress",
+        "posX": -304,
+        "posY": 6560,
+        "comment": "",
+        "pins": [
+          {
+            "name": "execute",
+            "type": "exec",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "then",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "HoldProgress",
+            "type": "real",
+            "direction": "Input",
+            "defaultValue": "0.0",
+            "connected": true
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "Output_Get",
+            "type": "real",
+            "direction": "Output",
+            "defaultValue": "0.0",
+            "connected": true
+          }
+        ]
+      },
+      {
+        "id": "55C1B93B4AE972D776F4AAACD687CED0",
+        "class": "K2Node_VariableGet",
+        "title": "Get HoldProgress",
+        "posX": -640,
+        "posY": 6656,
+        "comment": "",
+        "pins": [
+          {
+            "name": "HoldProgress",
+            "type": "real",
+            "direction": "Output",
+            "defaultValue": "0.0",
+            "connected": true
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          }
+        ]
+      },
+      {
+        "id": "7FB98E4B4FC8AF67257CFEAEC0FA4BAD",
+        "class": "K2Node_VariableSet",
+        "title": "Set HoldProgress",
+        "posX": 640,
+        "posY": 6432,
+        "comment": "",
+        "pins": [
+          {
+            "name": "execute",
+            "type": "exec",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "then",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "HoldProgress",
+            "type": "real",
+            "direction": "Input",
+            "defaultValue": "0.0",
+            "connected": false
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "Output_Get",
+            "type": "real",
+            "direction": "Output",
+            "defaultValue": "0.0",
+            "connected": false
+          }
+        ]
+      },
+      {
+        "id": "8D4E669F4D5E5D0F787681AAA125EAC3",
+        "class": "K2Node_VariableGet",
+        "title": "Get HoldProgress",
+        "posX": -608,
+        "posY": 6832,
+        "comment": "",
+        "pins": [
+          {
+            "name": "HoldProgress",
+            "type": "real",
+            "direction": "Output",
+            "defaultValue": "0.0",
+            "connected": true
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          }
+        ]
+      },
+      {
+        "id": "13304A20485A2C371C17F58D81A6BB6C",
+        "class": "K2Node_VariableSet",
+        "title": "Set HoldProgress",
+        "posX": 768,
+        "posY": 6784,
+        "comment": "",
+        "pins": [
+          {
+            "name": "execute",
+            "type": "exec",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "then",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "HoldProgress",
+            "type": "real",
+            "direction": "Input",
+            "defaultValue": "0.0",
+            "connected": true
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "Output_Get",
+            "type": "real",
+            "direction": "Output",
+            "defaultValue": "0.0",
+            "connected": true
+          }
+        ]
+      },
+      {
+        "id": "8489950D4E25857842D4968C59EE7CBD",
+        "class": "K2Node_VariableSet",
+        "title": "Set HoldProgress",
+        "posX": 1264,
+        "posY": 6720,
+        "comment": "",
+        "pins": [
+          {
+            "name": "execute",
+            "type": "exec",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "then",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "HoldProgress",
+            "type": "real",
+            "direction": "Input",
+            "defaultValue": "0.0",
+            "connected": false
+          },
+          {
+            "name": "Output_Get",
+            "type": "real",
+            "direction": "Output",
+            "defaultValue": "0.0",
+            "connected": false
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          }
+        ]
+      }
+    ],
+    "nodeCount": 13,
+    "totalNodeCount": 13,
+    "filtered": true,
+    "unfilteredNodeCount": 516,
+    "titleFilter": "Hold",
+    "offset": 0,
+    "limit": 13,
+    "hasMore": false,
+    "nextOffset": -1
+  },
+  "graph2": {
+    "success": true,
+    "path": "/Game/BluePrint/Player/BP_ThirdPersonCharacter",
+    "blueprintPath": "/Game/BluePrint/Player/BP_ThirdPersonCharacter.BP_ThirdPersonCharacter",
+    "isLevelScript": false,
+    "graphName": "EventGraph",
+    "nodes": [
+      {
+        "id": "28098DD6495963574A07BF80D4F7C5AE",
+        "class": "K2Node_EnhancedInputAction",
+        "title": "EnhancedInputAction IA_Level2BUtton",
+        "posX": -2944,
+        "posY": 6016,
+        "comment": "",
+        "pins": [
+          {
+            "name": "Triggered",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "Started",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "Ongoing",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "Canceled",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "Completed",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "ActionValue",
+            "type": "bool",
+            "direction": "Output",
+            "defaultValue": "false",
+            "connected": false
+          },
+          {
+            "name": "ElapsedSeconds",
+            "type": "real",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "TriggeredSeconds",
+            "type": "real",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "InputAction",
+            "type": "object",
+            "direction": "Output",
+            "defaultValue": "IA_Level2BUtton",
+            "defaultObject": "/Game/Input/Controller/IA_Level2BUtton.IA_Level2BUtton",
+            "connected": false
+          }
+        ]
+      },
+      {
+        "id": "7F4A46A24F155012701E5CA22C626349",
+        "class": "K2Node_DynamicCast",
+        "title": "Cast To BP_Level2HoldButton",
+        "posX": -976,
+        "posY": 6544,
+        "comment": "",
+        "pins": [
+          {
+            "name": "execute",
+            "type": "exec",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "then",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "CastFailed",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "Object",
+            "type": "Object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "AsBP Level 2Hold Button",
+            "type": "Object",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "bSuccess",
+            "type": "bool",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          }
+        ]
+      }
+    ],
+    "nodeCount": 2,
+    "totalNodeCount": 2,
+    "filtered": true,
+    "unfilteredNodeCount": 516,
+    "titleFilter": "Level2",
+    "offset": 0,
+    "limit": 2,
+    "hasMore": false,
+    "nextOffset": -1
+  },
+  "graph3": {
+    "success": true,
+    "path": "/Game/BluePrint/Player/BP_ThirdPersonCharacter",
+    "blueprintPath": "/Game/BluePrint/Player/BP_ThirdPersonCharacter.BP_ThirdPersonCharacter",
+    "isLevelScript": false,
+    "graphName": "EventGraph",
+    "nodes": [
+      {
+        "id": "28098DD6495963574A07BF80D4F7C5AE",
+        "class": "K2Node_EnhancedInputAction",
+        "title": "EnhancedInputAction IA_Level2BUtton",
+        "posX": -2944,
+        "posY": 6016,
+        "comment": "",
+        "pins": [
+          {
+            "name": "Triggered",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "Started",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "Ongoing",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "Canceled",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "Completed",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "ActionValue",
+            "type": "bool",
+            "direction": "Output",
+            "defaultValue": "false",
+            "connected": false
+          },
+          {
+            "name": "ElapsedSeconds",
+            "type": "real",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "TriggeredSeconds",
+            "type": "real",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "InputAction",
+            "type": "object",
+            "direction": "Output",
+            "defaultValue": "IA_Level2BUtton",
+            "defaultObject": "/Game/Input/Controller/IA_Level2BUtton.IA_Level2BUtton",
+            "connected": false
+          }
+        ]
+      }
+    ],
+    "nodeCount": 1,
+    "totalNodeCount": 1,
+    "filtered": true,
+    "unfilteredNodeCount": 516,
+    "titleFilter": "IA_Level2",
+    "offset": 0,
+    "limit": 1,
+    "hasMore": false,
+    "nextOffset": -1
+  },
+  "flow": {
+    "success": true,
+    "path": "/Game/BluePrint/Player/BP_ThirdPersonCharacter",
+    "blueprintPath": "/Game/BluePrint/Player/BP_ThirdPersonCharacter.BP_ThirdPersonCharacter",
+    "isLevelScript": false,
+    "graphName": "EventGraph",
+    "entryPoint": "Update Hold",
+    "entryId": "y_wCKEQD5Y1kh0GuRMiKUg",
+    "steps": [
+      {
+        "id": "y_wCKEQD5Y1kh0GuRMiKUg",
+        "class": "K2Node_CustomEvent",
+        "title": "Update Hold",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "_Mpgjk-pxG85YfeiW6zh9A"
+          }
+        ]
+      },
+      {
+        "id": "_Mpgjk-pxG85YfeiW6zh9A",
+        "class": "K2Node_CallFunction",
+        "title": "Line Trace By Channel",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "f0pGok8VUBJwHlyiLGJjSQ"
+          }
+        ]
+      },
+      {
+        "id": "f0pGok8VUBJwHlyiLGJjSQ",
+        "class": "K2Node_DynamicCast",
+        "title": "Cast To BP_Level2HoldButton",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "dW5biUTa-4553QW42OukJQ"
+          }
+        ]
+      },
+      {
+        "id": "dW5biUTa-4553QW42OukJQ",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "vjA_Mk5OOvug-DiyYQMyTg"
+          },
+          {
+            "pin": "else",
+            "toId": "WABbe0mZT-NJMtevCq4UoQ"
+          }
+        ]
+      },
+      {
+        "id": "vjA_Mk5OOvug-DiyYQMyTg",
+        "class": "K2Node_VariableSet",
+        "title": "Set HoldProgress",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "L8G3-U76wqaMkju7bQjavQ"
+          }
+        ]
+      },
+      {
+        "id": "WABbe0mZT-NJMtevCq4UoQ",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "i2P_kUuvpro94l6CoirlRQ"
+          },
+          {
+            "pin": "else",
+            "toId": "-7Tz0Us5wU_hLTWyOJxCFA"
+          }
+        ]
+      },
+      {
+        "id": "L8G3-U76wqaMkju7bQjavQ",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "GW2WaEI9B1095MGuZbL86Q"
+          }
+        ]
+      },
+      {
+        "id": "i2P_kUuvpro94l6CoirlRQ",
+        "class": "K2Node_VariableSet",
+        "title": "Set ReleaseTimer",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "9m4gxEljBv_WViiDvktaJQ"
+          }
+        ]
+      },
+      {
+        "id": "-7Tz0Us5wU_hLTWyOJxCFA",
+        "class": "K2Node_CallFunction",
+        "title": "Clear and Invalidate Timer by Handle",
+        "branches": []
+      },
+      {
+        "id": "GW2WaEI9B1095MGuZbL86Q",
+        "class": "K2Node_CallFunction",
+        "title": "Print String",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "f7mOS0_Ir2clfP6uwPpLrQ"
+          }
+        ]
+      },
+      {
+        "id": "9m4gxEljBv_WViiDvktaJQ",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "else",
+            "toId": "EzBKIEhaLDccF_WNgaa7bA"
+          }
+        ]
+      },
+      {
+        "id": "f7mOS0_Ir2clfP6uwPpLrQ",
+        "class": "K2Node_VariableSet",
+        "title": "Set HoldProgress",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "V_iDuU--dqRwlZijwirwCw"
+          }
+        ]
+      },
+      {
+        "id": "EzBKIEhaLDccF_WNgaa7bA",
+        "class": "K2Node_VariableSet",
+        "title": "Set HoldProgress",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "4R_MUE4NIdzOfMaxcmwUMg"
+          }
+        ]
+      },
+      {
+        "id": "V_iDuU--dqRwlZijwirwCw",
+        "class": "K2Node_VariableSet",
+        "title": "Set ReleaseTimer",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "0-TfW0LgIOz8-meNOMEjIQ"
+          }
+        ]
+      },
+      {
+        "id": "4R_MUE4NIdzOfMaxcmwUMg",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "hImVDU4lhXhC1JaMWe58vQ"
+          }
+        ]
+      },
+      {
+        "id": "0-TfW0LgIOz8-meNOMEjIQ",
+        "class": "K2Node_CallFunction",
+        "title": "Clear and Invalidate Timer by Handle",
+        "branches": []
+      },
+      {
+        "id": "hImVDU4lhXhC1JaMWe58vQ",
+        "class": "K2Node_VariableSet",
+        "title": "Set HoldProgress",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "k5WZe04othm4EsGZNh1U4Q"
+          }
+        ]
+      },
+      {
+        "id": "k5WZe04othm4EsGZNh1U4Q",
+        "class": "K2Node_VariableSet",
+        "title": "Set ReleaseTimer",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "fNrpvkSGuXVJLMmACboSaw"
+          }
+        ]
+      },
+      {
+        "id": "fNrpvkSGuXVJLMmACboSaw",
+        "class": "K2Node_CallFunction",
+        "title": "Clear and Invalidate Timer by Handle",
+        "branches": []
+      }
+    ],
+    "stepCount": 19
+  },
+  "summaryKeys": [
+    "success",
+    "path",
+    "blueprintPath",
+    "isLevelScript",
+    "graphName",
+    "schemaClass",
+    "graphType",
+    "nodes",
+    "execEdges",
+    "dataEdges",
+    "nodeCount"
+  ]
+}

@@ -1,0 +1,944 @@
+{
+  "setp": {
+    "success": true,
+    "editor": "Light_and_Shadow",
+    "projectName": "Light_and_Shadow",
+    "contentDir": "D:\\Unreal Engine\\Light_n_Shadow\\Content",
+    "engineAssociation": "5.7",
+    "editorConnected": true,
+    "editorTarget": {
+      "projectPath": "D:\\Unreal Engine\\Light_n_Shadow\\Light_and_Shadow.uproject",
+      "port": 53642,
+      "portSource": "lockfile"
+    },
+    "bridgeSetup": "Bridge setup: deployed C++ bridge plugin"
+  },
+  "status": {
+    "pluginBuildStale": true,
+    "pluginBuildWarning": "The compiled bridge plugin is OLDER than its source (MCPEngineStatus.h is minutes newer than the binary). Handlers added since the last build will answer \"Unknown method\" - that is a stale build, not a missing feature. Rebuild with: npm run build (stop the editor first).",
+    "mode": "live",
+    "editorConnected": true,
+    "editorTarget": {
+      "projectPath": "D:\\Unreal Engine\\Light_n_Shadow\\Light_and_Shadow.uproject",
+      "port": 53642,
+      "portSource": "lockfile"
+    },
+    "project": {
+      "name": "Light_and_Shadow",
+      "path": "D:\\Unreal Engine\\Light_n_Shadow\\Light_and_Shadow.uproject",
+      "contentDir": "D:\\Unreal Engine\\Light_n_Shadow\\Content",
+      "engineAssociation": "5.7",
+      "config": {
+        "contentRoots": [
+          "/Game/"
+        ],
+        "version": 1
+      }
+    },
+    "bridgeApiVersion": 1,
+    "flows": [
+      {
+        "name": "niagara_fire",
+        "description": "Build a fire Niagara system from scratch (spawn rate, upward velocity, HDR orange colour) and verify it emits. A 0-to-1 best-practice starting point, not a demo. Lands at /Game/VFX/Fire/NS_Fire; override name/packagePath via params."
+      },
+      {
+        "name": "beacon",
+        "description": "Demo - build a shrine scene from scratch: floor, pedestal, orb, five pillars, four materials (dark stone, brushed metal, warm stone, parameterized emissive), colored lights, and atmosphere"
+      },
+      {
+        "name": "texture_bomb",
+        "description": "Build a reusable MF_TextureBomb MaterialFunction (#491). Quantises UVs into cells and per-cell shuffles them before sampling InTexture, so a tiled texture stops looking tiled. Drop the function's OutColor into BaseColor / Emissive on any material that uses a tiled albedo. CellDensity input controls the cell frequency. Lives at /Game/Materials/Functions/MF_TextureBomb."
+      },
+      {
+        "name": "neon_shrine",
+        "description": "Build the full Neon Shrine demo scene end-to-end (19 steps). Driven by the demo.step handler shipped with the bridge plugin. Leaves the editor on /Game/Demo/DemoLevel; run neon_shrine_cleanup to wipe it."
+      },
+      {
+        "name": "neon_shrine_cleanup",
+        "description": "Wipe the Neon Shrine demo content. Switches the editor to /Game/MCP_Home first so you don't get stranded on Untitled."
+      }
+    ]
+  },
+  "vars": {
+    "success": true,
+    "path": "/Game/BluePrint/Player/BP_ThirdPersonCharacter",
+    "blueprintPath": "/Game/BluePrint/Player/BP_ThirdPersonCharacter.BP_ThirdPersonCharacter",
+    "isLevelScript": false,
+    "variables": [
+      {
+        "name": "Spline Mesh",
+        "type": "object",
+        "guid": "AA627FCB494A025C521B48BD09949E4C",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Projectail Timer",
+        "type": "struct",
+        "guid": "B94D81734883F91565E87C935CAB756A",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Last Focused Ball",
+        "type": "object",
+        "guid": "3EE6ED19499678CE82D28BB13C444F84",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "isWatchBall?",
+        "type": "bool",
+        "guid": "ACC44A3A47E22FA942849EB8EF559594",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Target Ball",
+        "type": "object",
+        "guid": "95DE48C042B76BD0DF2BC6BBD932BC0D",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Active Thrown Ball",
+        "type": "object",
+        "guid": "480DF93B401052A2157337B794BBEA0A",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Ball Counter",
+        "type": "int",
+        "guid": "8D9F457A492E24DD6ED80980FB9202CB",
+        "instanceEditable": true,
+        "editFlag": "EditAnywhere",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "isEnemyShadow?",
+        "type": "bool",
+        "guid": "6A3B3792446EFD1536A4858BBC4EEDE0",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Queue",
+        "type": "object",
+        "guid": "57A0085A42EA5B0EA38862AE5D6A7354",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Visted",
+        "type": "object",
+        "guid": "87C68DFF44F21745A324BDA15C61320C",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "ConnectedEnemies",
+        "type": "object",
+        "guid": "9D4BB37742509A167D777DA529067F7D",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Current",
+        "type": "object",
+        "guid": "4DCDE9E9423AB2E8FA20FFA4E2B288CF",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "isObjectShadow?",
+        "type": "bool",
+        "guid": "EF278AF14DD4E154E2C0AFA3258FD61C",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Camera Defult Loc",
+        "type": "struct",
+        "guid": "43644D044F78DD47E8631A9012309807",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Camera Defult Rot",
+        "type": "struct",
+        "guid": "33B796464FA21B7336B81EADBC340629",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Camera Defult Fov",
+        "type": "real",
+        "guid": "7288C25B4A709E025B4267ADA877495A",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "isXRayVision?",
+        "type": "bool",
+        "guid": "C6644AE04F4E562DAAC4A1B7CB88D3C6",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "isInBallCam?",
+        "type": "bool",
+        "guid": "02D067664EA38441245F21BBB78D1B9F",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "CameraYaw",
+        "type": "real",
+        "guid": "442165D84FF8F4E8B8BB31A0747C0BBC",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "CameraPitch",
+        "type": "real",
+        "guid": "3688E1534749F15686ACFB889084F945",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Look at Speed",
+        "type": "real",
+        "guid": "C9D049D64FDFE897663621ACF5C46E04",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Current Ball",
+        "type": "object",
+        "guid": "9E1BD5A6491980476DFC41B03D6063EC",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Ball Steer Strength",
+        "type": "real",
+        "guid": "F23EB79648D95C5D95E7F9B861A27DE8",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Max Steer Lateral",
+        "type": "real",
+        "guid": "8076EA5E46031699E1D2498A2CD41713",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Max Steer Vertical",
+        "type": "real",
+        "guid": "BAFC76AE4CF67E0A9BC801BD1CB26E8F",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Wall Move State",
+        "type": "byte",
+        "guid": "4A448EAF42799D8BB52CD183D1FF8040",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "WallJumpLockRemaining",
+        "type": "real",
+        "guid": "450DC85848756FB702696389B5B16482",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Wall Normal",
+        "type": "struct",
+        "guid": "EF043F334BCAE5F3FB2113B0F63DC2CC",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Wall Idle Timer",
+        "type": "real",
+        "guid": "81DD9C1843F0908339788698269EE337",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Wall Idle Before Slide",
+        "type": "real",
+        "guid": "77CEFE8E4E1E65FD5E156B9890978574",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "ActiveRadarNS",
+        "type": "object",
+        "guid": "62DF1A0F4288554F06F3BDA496EE2D8E",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "isRadarOpen",
+        "type": "bool",
+        "guid": "F3279EF44CFFA12FA1859CA1A43D62AC",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "RadarUpdateTimer",
+        "type": "struct",
+        "guid": "830915D24D37669F5ECFDAA8159B909D",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "ActiveRadarEnemies",
+        "type": "object",
+        "guid": "32A176FF433E278DF107F3ADFA8E9A9B",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Oringinal Spring Arm Length",
+        "type": "real",
+        "guid": "CA0C5D2442530BBAF29AA38BED8BF850",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Probe Radius",
+        "type": "real",
+        "guid": "0FC37DE04492EA87487919B0A2467517",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Min Arm Length",
+        "type": "real",
+        "guid": "D2F789A04E59482D051769BA0D69728A",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Max Left Offset",
+        "type": "real",
+        "guid": "781BDBFE4A02F60BD672C999CD291D72",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Retract For Full Offset",
+        "type": "real",
+        "guid": "1610B0A743BF6C381ACC89B47295FC67",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "bHolding",
+        "type": "bool",
+        "guid": "102A9FC948DD73EC32F74687ACFB9539",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "HoldProgress",
+        "type": "real",
+        "guid": "4C8FDAFD45617349D17C07BC9F7CD498",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "ReleaseTimer",
+        "type": "real",
+        "guid": "B6B880F241327481C6966CAB7B8848C7",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      },
+      {
+        "name": "Press Timer",
+        "type": "struct",
+        "guid": "CBDABDF84D669959D5AF518AB940D820",
+        "instanceEditable": false,
+        "editFlag": "EditDefaultsOnly",
+        "blueprintReadOnly": false,
+        "exposeOnSpawn": false
+      }
+    ],
+    "count": 43,
+    "pageOffset": 0,
+    "hasMore": false,
+    "total": 43,
+    "totalKnown": true
+  },
+  "flowUpdateHold": {
+    "success": true,
+    "path": "/Game/BluePrint/Player/BP_ThirdPersonCharacter",
+    "blueprintPath": "/Game/BluePrint/Player/BP_ThirdPersonCharacter.BP_ThirdPersonCharacter",
+    "isLevelScript": false,
+    "graphName": "EventGraph",
+    "entryPoint": "Update Hold",
+    "entryId": "y_wCKEQD5Y1kh0GuRMiKUg",
+    "steps": [
+      {
+        "id": "y_wCKEQD5Y1kh0GuRMiKUg",
+        "class": "K2Node_CustomEvent",
+        "title": "Update Hold",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "_Mpgjk-pxG85YfeiW6zh9A"
+          }
+        ]
+      },
+      {
+        "id": "_Mpgjk-pxG85YfeiW6zh9A",
+        "class": "K2Node_CallFunction",
+        "title": "Line Trace By Channel",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "f0pGok8VUBJwHlyiLGJjSQ"
+          }
+        ]
+      },
+      {
+        "id": "f0pGok8VUBJwHlyiLGJjSQ",
+        "class": "K2Node_DynamicCast",
+        "title": "Cast To BP_Level2HoldButton",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "dW5biUTa-4553QW42OukJQ"
+          }
+        ]
+      },
+      {
+        "id": "dW5biUTa-4553QW42OukJQ",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "vjA_Mk5OOvug-DiyYQMyTg"
+          },
+          {
+            "pin": "else",
+            "toId": "WABbe0mZT-NJMtevCq4UoQ"
+          }
+        ]
+      },
+      {
+        "id": "vjA_Mk5OOvug-DiyYQMyTg",
+        "class": "K2Node_VariableSet",
+        "title": "Set HoldProgress",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "L8G3-U76wqaMkju7bQjavQ"
+          }
+        ]
+      },
+      {
+        "id": "WABbe0mZT-NJMtevCq4UoQ",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "i2P_kUuvpro94l6CoirlRQ"
+          },
+          {
+            "pin": "else",
+            "toId": "-7Tz0Us5wU_hLTWyOJxCFA"
+          }
+        ]
+      },
+      {
+        "id": "L8G3-U76wqaMkju7bQjavQ",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "GW2WaEI9B1095MGuZbL86Q"
+          }
+        ]
+      },
+      {
+        "id": "i2P_kUuvpro94l6CoirlRQ",
+        "class": "K2Node_VariableSet",
+        "title": "Set ReleaseTimer",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "9m4gxEljBv_WViiDvktaJQ"
+          }
+        ]
+      },
+      {
+        "id": "-7Tz0Us5wU_hLTWyOJxCFA",
+        "class": "K2Node_CallFunction",
+        "title": "Clear and Invalidate Timer by Handle",
+        "branches": []
+      },
+      {
+        "id": "GW2WaEI9B1095MGuZbL86Q",
+        "class": "K2Node_CallFunction",
+        "title": "Print String",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "f7mOS0_Ir2clfP6uwPpLrQ"
+          }
+        ]
+      },
+      {
+        "id": "9m4gxEljBv_WViiDvktaJQ",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "else",
+            "toId": "EzBKIEhaLDccF_WNgaa7bA"
+          }
+        ]
+      },
+      {
+        "id": "f7mOS0_Ir2clfP6uwPpLrQ",
+        "class": "K2Node_VariableSet",
+        "title": "Set HoldProgress",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "V_iDuU--dqRwlZijwirwCw"
+          }
+        ]
+      },
+      {
+        "id": "EzBKIEhaLDccF_WNgaa7bA",
+        "class": "K2Node_VariableSet",
+        "title": "Set HoldProgress",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "4R_MUE4NIdzOfMaxcmwUMg"
+          }
+        ]
+      },
+      {
+        "id": "V_iDuU--dqRwlZijwirwCw",
+        "class": "K2Node_VariableSet",
+        "title": "Set ReleaseTimer",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "0-TfW0LgIOz8-meNOMEjIQ"
+          }
+        ]
+      },
+      {
+        "id": "4R_MUE4NIdzOfMaxcmwUMg",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "hImVDU4lhXhC1JaMWe58vQ"
+          }
+        ]
+      },
+      {
+        "id": "0-TfW0LgIOz8-meNOMEjIQ",
+        "class": "K2Node_CallFunction",
+        "title": "Clear and Invalidate Timer by Handle",
+        "branches": []
+      },
+      {
+        "id": "hImVDU4lhXhC1JaMWe58vQ",
+        "class": "K2Node_VariableSet",
+        "title": "Set HoldProgress",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "k5WZe04othm4EsGZNh1U4Q"
+          }
+        ]
+      },
+      {
+        "id": "k5WZe04othm4EsGZNh1U4Q",
+        "class": "K2Node_VariableSet",
+        "title": "Set ReleaseTimer",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "fNrpvkSGuXVJLMmACboSaw"
+          }
+        ]
+      },
+      {
+        "id": "fNrpvkSGuXVJLMmACboSaw",
+        "class": "K2Node_CallFunction",
+        "title": "Clear and Invalidate Timer by Handle",
+        "branches": []
+      }
+    ],
+    "stepCount": 19
+  },
+  "flowUpdateHold2": {
+    "success": false,
+    "error": "Entry node not found: UpdateHold"
+  },
+  "flow_IA_Level2Button": {
+    "success": false,
+    "error": "Entry node not found: IA_Level2Button"
+  },
+  "flow_IA_Level2DoorHold": {
+    "success": false,
+    "error": "Entry node not found: IA_Level2DoorHold"
+  },
+  "flow_EnhancedInputAction IA_Level2Button": {
+    "success": false,
+    "error": "Entry node not found: EnhancedInputAction IA_Level2Button"
+  },
+  "graphs": {
+    "success": true,
+    "path": "/Game/BluePrint/Player/BP_ThirdPersonCharacter",
+    "blueprintPath": "/Game/BluePrint/Player/BP_ThirdPersonCharacter.BP_ThirdPersonCharacter",
+    "isLevelScript": false,
+    "graphs": [
+      {
+        "name": "UserConstructionScript",
+        "selector": "UserConstructionScript",
+        "objectPath": "/Game/BluePrint/Player/BP_ThirdPersonCharacter.BP_ThirdPersonCharacter:UserConstructionScript",
+        "class": "EdGraph",
+        "nodeCount": 1,
+        "duplicateIndex": 0,
+        "duplicateCount": 1
+      },
+      {
+        "name": "Move",
+        "selector": "Move",
+        "objectPath": "/Game/BluePrint/Player/BP_ThirdPersonCharacter.BP_ThirdPersonCharacter:Move",
+        "class": "EdGraph",
+        "nodeCount": 13,
+        "duplicateIndex": 0,
+        "duplicateCount": 1
+      },
+      {
+        "name": "Aim",
+        "selector": "Aim",
+        "objectPath": "/Game/BluePrint/Player/BP_ThirdPersonCharacter.BP_ThirdPersonCharacter:Aim",
+        "class": "EdGraph",
+        "nodeCount": 7,
+        "duplicateIndex": 0,
+        "duplicateCount": 1
+      },
+      {
+        "name": "CheckWatchBall",
+        "selector": "CheckWatchBall",
+        "objectPath": "/Game/BluePrint/Player/BP_ThirdPersonCharacter.BP_ThirdPersonCharacter:CheckWatchBall",
+        "class": "EdGraph",
+        "nodeCount": 21,
+        "duplicateIndex": 0,
+        "duplicateCount": 1
+      },
+      {
+        "name": "Shadows Connect",
+        "selector": "Shadows Connect",
+        "objectPath": "/Game/BluePrint/Player/BP_ThirdPersonCharacter.BP_ThirdPersonCharacter:Shadows Connect",
+        "class": "EdGraph",
+        "nodeCount": 101,
+        "duplicateIndex": 0,
+        "duplicateCount": 1
+      },
+      {
+        "name": "Enter Ball Cam",
+        "selector": "Enter Ball Cam",
+        "objectPath": "/Game/BluePrint/Player/BP_ThirdPersonCharacter.BP_ThirdPersonCharacter:Enter Ball Cam",
+        "class": "EdGraph",
+        "nodeCount": 37,
+        "duplicateIndex": 0,
+        "duplicateCount": 1
+      },
+      {
+        "name": "Exit Ball Cam",
+        "selector": "Exit Ball Cam",
+        "objectPath": "/Game/BluePrint/Player/BP_ThirdPersonCharacter.BP_ThirdPersonCharacter:Exit Ball Cam",
+        "class": "EdGraph",
+        "nodeCount": 20,
+        "duplicateIndex": 0,
+        "duplicateCount": 1
+      },
+      {
+        "name": "Detect Wall",
+        "selector": "Detect Wall",
+        "objectPath": "/Game/BluePrint/Player/BP_ThirdPersonCharacter.BP_ThirdPersonCharacter:Detect Wall",
+        "class": "EdGraph",
+        "nodeCount": 43,
+        "duplicateIndex": 0,
+        "duplicateCount": 1
+      },
+      {
+        "name": "Enter Wall Idle",
+        "selector": "Enter Wall Idle",
+        "objectPath": "/Game/BluePrint/Player/BP_ThirdPersonCharacter.BP_ThirdPersonCharacter:Enter Wall Idle",
+        "class": "EdGraph",
+        "nodeCount": 6,
+        "duplicateIndex": 0,
+        "duplicateCount": 1
+      },
+      {
+        "name": "Enter Wall Run",
+        "selector": "Enter Wall Run",
+        "objectPath": "/Game/BluePrint/Player/BP_ThirdPersonCharacter.BP_ThirdPersonCharacter:Enter Wall Run",
+        "class": "EdGraph",
+        "nodeCount": 6,
+        "duplicateIndex": 0,
+        "duplicateCount": 1
+      },
+      {
+        "name": "Try Attach to Wall",
+        "selector": "Try Attach to Wall",
+        "objectPath": "/Game/BluePrint/Player/BP_ThirdPersonCharacter.BP_ThirdPersonCharacter:Try Attach to Wall",
+        "class": "EdGraph",
+        "nodeCount": 14,
+        "duplicateIndex": 0,
+        "duplicateCount": 1
+      },
+      {
+        "name": "Detach From Wall",
+        "selector": "Detach From Wall",
+        "objectPath": "/Game/BluePrint/Player/BP_ThirdPersonCharacter.BP_ThirdPersonCharacter:Detach From Wall",
+        "class": "EdGraph",
+        "nodeCount": 5,
+        "duplicateIndex": 0,
+        "duplicateCount": 1
+      },
+      {
+        "name": "Update Wall Idle",
+        "selector": "Update Wall Idle",
+        "objectPath": "/Game/BluePrint/Player/BP_ThirdPersonCharacter.BP_ThirdPersonCharacter:Update Wall Idle",
+        "class": "EdGraph",
+        "nodeCount": 18,
+        "duplicateIndex": 0,
+        "duplicateCount": 1
+      },
+      {
+        "name": "Get Camera Interp Speed",
+        "selector": "Get Camera Interp Speed",
+        "objectPath": "/Game/BluePrint/Player/BP_ThirdPersonCharacter.BP_ThirdPersonCharacter:Get Camera Interp Speed",
+        "class": "EdGraph",
+        "nodeCount": 6,
+        "duplicateIndex": 0,
+        "duplicateCount": 1
+      },
+      {
+        "name": "EventGraph",
+        "selector": "EventGraph",
+        "objectPath": "/Game/BluePrint/Player/BP_ThirdPersonCharacter.BP_ThirdPersonCharacter:EventGraph",
+        "class": "EdGraph",
+        "nodeCount": 516,
+        "duplicateIndex": 0,
+        "duplicateCount": 1
+      },
+      {
+        "name": "IsShadowLinkActive",
+        "selector": "IsShadowLinkActive",
+        "objectPath": "/Game/BluePrint/Player/BP_ThirdPersonCharacter.BP_ThirdPersonCharacter:IsShadowLinkActive",
+        "class": "EdGraph",
+        "nodeCount": 2,
+        "duplicateIndex": 0,
+        "duplicateCount": 1
+      },
+      {
+        "name": "GetShadowRole",
+        "selector": "GetShadowRole",
+        "objectPath": "/Game/BluePrint/Player/BP_ThirdPersonCharacter.BP_ThirdPersonCharacter:GetShadowRole",
+        "class": "EdGraph",
+        "nodeCount": 3,
+        "duplicateIndex": 0,
+        "duplicateCount": 1
+      },
+      {
+        "name": "GetShadowOwner",
+        "selector": "GetShadowOwner",
+        "objectPath": "/Game/BluePrint/Player/BP_ThirdPersonCharacter.BP_ThirdPersonCharacter:GetShadowOwner",
+        "class": "EdGraph",
+        "nodeCount": 3,
+        "duplicateIndex": 0,
+        "duplicateCount": 1
+      }
+    ]
+  },
+  "door": {
+    "success": true,
+    "path": "/Game/BluePrint/Object/BP_Level2HoldButton",
+    "blueprintPath": "/Game/BluePrint/Object/BP_Level2HoldButton.BP_Level2HoldButton",
+    "isLevelScript": false,
+    "className": "BP_Level2HoldButton",
+    "parentClass": "Actor",
+    "components": [
+      {
+        "name": "DefaultSceneRoot",
+        "class": "SceneComponent",
+        "relativeLocation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "relativeRotation": {
+          "pitch": 0,
+          "yaw": 0,
+          "roll": 0
+        },
+        "relativeScale3D": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "name": "Cube",
+        "class": "StaticMeshComponent",
+        "parent": "DefaultSceneRoot",
+        "relativeLocation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "relativeRotation": {
+          "pitch": 0,
+          "yaw": 0,
+          "roll": 0
+        },
+        "relativeScale3D": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        },
+        "staticMesh": "/Engine/BasicShapes/Cube.Cube",
+        "materials": [
+          "/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"
+        ]
+      },
+      {
+        "name": "Box",
+        "class": "BoxComponent",
+        "parent": "Cube",
+        "relativeLocation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "relativeRotation": {
+          "pitch": 0,
+          "yaw": 0,
+          "roll": 0
+        },
+        "relativeScale3D": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      }
+    ],
+    "actorTick": {
+      "bCanEverTick": false,
+      "bStartWithTickEnabled": true,
+      "TickInterval": 0
+    }
+  },
+  "door2": {
+    "success": false,
+    "error": "Blueprint not found: /Game/BluePrint/Object/BP_Level2DoorButton"
+  }
+}

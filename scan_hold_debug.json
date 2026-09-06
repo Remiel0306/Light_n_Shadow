@@ -1,0 +1,4168 @@
+{
+  "set": {
+    "success": true,
+    "editor": "Light_and_Shadow",
+    "projectName": "Light_and_Shadow",
+    "contentDir": "D:\\Unreal Engine\\Light_n_Shadow\\Content",
+    "engineAssociation": "5.7",
+    "editorConnected": true,
+    "editorTarget": {
+      "projectPath": "D:\\Unreal Engine\\Light_n_Shadow\\Light_and_Shadow.uproject",
+      "port": 53642,
+      "portSource": "lockfile"
+    },
+    "bridgeSetup": "Bridge already configured"
+  },
+  "flowUpdate": {
+    "success": true,
+    "path": "/Game/BluePrint/Player/BP_ThirdPersonCharacter",
+    "blueprintPath": "/Game/BluePrint/Player/BP_ThirdPersonCharacter.BP_ThirdPersonCharacter",
+    "isLevelScript": false,
+    "graphName": "EventGraph",
+    "entryPoint": "Update Hold",
+    "entryId": "y_wCKEQD5Y1kh0GuRMiKUg",
+    "steps": [
+      {
+        "id": "y_wCKEQD5Y1kh0GuRMiKUg",
+        "class": "K2Node_CustomEvent",
+        "title": "Update Hold",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "z2IvVkL8Bs9H_mSUWaPfzQ"
+          }
+        ]
+      },
+      {
+        "id": "z2IvVkL8Bs9H_mSUWaPfzQ",
+        "class": "K2Node_CallFunction",
+        "title": "Sphere Trace By Channel",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "f0pGok8VUBJwHlyiLGJjSQ"
+          }
+        ]
+      },
+      {
+        "id": "f0pGok8VUBJwHlyiLGJjSQ",
+        "class": "K2Node_DynamicCast",
+        "title": "Cast To BP_Level2HoldButton",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "dW5biUTa-4553QW42OukJQ"
+          },
+          {
+            "pin": "CastFailed",
+            "toId": "WABbe0mZT-NJMtevCq4UoQ"
+          }
+        ]
+      },
+      {
+        "id": "dW5biUTa-4553QW42OukJQ",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "z1wR4EKPUHj1hre-R2P2MA"
+          },
+          {
+            "pin": "else",
+            "toId": "WABbe0mZT-NJMtevCq4UoQ"
+          }
+        ]
+      },
+      {
+        "id": "WABbe0mZT-NJMtevCq4UoQ",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "i2P_kUuvpro94l6CoirlRQ"
+          },
+          {
+            "pin": "else",
+            "toId": "-7Tz0Us5wU_hLTWyOJxCFA"
+          }
+        ]
+      },
+      {
+        "id": "z1wR4EKPUHj1hre-R2P2MA",
+        "class": "K2Node_CallFunction",
+        "title": "Print String",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "vjA_Mk5OOvug-DiyYQMyTg"
+          }
+        ]
+      },
+      {
+        "id": "i2P_kUuvpro94l6CoirlRQ",
+        "class": "K2Node_VariableSet",
+        "title": "Set ReleaseTimer",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "9m4gxEljBv_WViiDvktaJQ"
+          }
+        ]
+      },
+      {
+        "id": "-7Tz0Us5wU_hLTWyOJxCFA",
+        "class": "K2Node_CallFunction",
+        "title": "Clear and Invalidate Timer by Handle",
+        "branches": []
+      },
+      {
+        "id": "vjA_Mk5OOvug-DiyYQMyTg",
+        "class": "K2Node_VariableSet",
+        "title": "Set HoldProgress",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "L8G3-U76wqaMkju7bQjavQ"
+          }
+        ]
+      },
+      {
+        "id": "9m4gxEljBv_WViiDvktaJQ",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "else",
+            "toId": "EzBKIEhaLDccF_WNgaa7bA"
+          }
+        ]
+      },
+      {
+        "id": "L8G3-U76wqaMkju7bQjavQ",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "GW2WaEI9B1095MGuZbL86Q"
+          }
+        ]
+      },
+      {
+        "id": "EzBKIEhaLDccF_WNgaa7bA",
+        "class": "K2Node_VariableSet",
+        "title": "Set HoldProgress",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "4R_MUE4NIdzOfMaxcmwUMg"
+          }
+        ]
+      },
+      {
+        "id": "GW2WaEI9B1095MGuZbL86Q",
+        "class": "K2Node_CallFunction",
+        "title": "Print String",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "f7mOS0_Ir2clfP6uwPpLrQ"
+          }
+        ]
+      },
+      {
+        "id": "4R_MUE4NIdzOfMaxcmwUMg",
+        "class": "K2Node_IfThenElse",
+        "title": "Branch",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "hImVDU4lhXhC1JaMWe58vQ"
+          }
+        ]
+      },
+      {
+        "id": "f7mOS0_Ir2clfP6uwPpLrQ",
+        "class": "K2Node_VariableSet",
+        "title": "Set HoldProgress",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "V_iDuU--dqRwlZijwirwCw"
+          }
+        ]
+      },
+      {
+        "id": "hImVDU4lhXhC1JaMWe58vQ",
+        "class": "K2Node_VariableSet",
+        "title": "Set HoldProgress",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "k5WZe04othm4EsGZNh1U4Q"
+          }
+        ]
+      },
+      {
+        "id": "V_iDuU--dqRwlZijwirwCw",
+        "class": "K2Node_VariableSet",
+        "title": "Set ReleaseTimer",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "0-TfW0LgIOz8-meNOMEjIQ"
+          }
+        ]
+      },
+      {
+        "id": "k5WZe04othm4EsGZNh1U4Q",
+        "class": "K2Node_VariableSet",
+        "title": "Set ReleaseTimer",
+        "branches": [
+          {
+            "pin": "then",
+            "toId": "fNrpvkSGuXVJLMmACboSaw"
+          }
+        ]
+      },
+      {
+        "id": "0-TfW0LgIOz8-meNOMEjIQ",
+        "class": "K2Node_CallFunction",
+        "title": "Clear and Invalidate Timer by Handle",
+        "branches": []
+      },
+      {
+        "id": "fNrpvkSGuXVJLMmACboSaw",
+        "class": "K2Node_CallFunction",
+        "title": "Clear and Invalidate Timer by Handle",
+        "branches": []
+      }
+    ],
+    "stepCount": 20
+  },
+  "holdNodes": {
+    "success": true,
+    "path": "/Game/BluePrint/Player/BP_ThirdPersonCharacter",
+    "blueprintPath": "/Game/BluePrint/Player/BP_ThirdPersonCharacter.BP_ThirdPersonCharacter",
+    "isLevelScript": false,
+    "graphName": "EventGraph",
+    "nodes": [
+      {
+        "id": "1504756C4988F498D103A59938620775",
+        "class": "EdGraphNode_Comment",
+        "title": "Jump Input - Jump properties such as height, press-and-hold and multi-jump can be customized on the Character Movement Component.",
+        "posX": -2864,
+        "posY": -544,
+        "comment": "Jump Input - Jump properties such as height, press-and-hold and multi-jump can be customized on the Character Movement Component.",
+        "pins": []
+      },
+      {
+        "id": "7A1812914D4827894ADF35AF3D4C008D",
+        "class": "K2Node_EnhancedInputAction",
+        "title": "EnhancedInputAction IA_HoldBallCamC",
+        "posX": -2864,
+        "posY": 3648,
+        "comment": "",
+        "pins": [
+          {
+            "name": "Triggered",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "Started",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "Ongoing",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "Canceled",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "Completed",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "ActionValue",
+            "type": "bool",
+            "direction": "Output",
+            "defaultValue": "false",
+            "connected": false
+          },
+          {
+            "name": "ElapsedSeconds",
+            "type": "real",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "TriggeredSeconds",
+            "type": "real",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "InputAction",
+            "type": "object",
+            "direction": "Output",
+            "defaultValue": "IA_HoldBallCamC",
+            "defaultObject": "/Game/Input/Controller/IA_HoldBallCamC.IA_HoldBallCamC",
+            "connected": false
+          }
+        ]
+      },
+      {
+        "id": "2CF941754FB16ED9E65476980384309B",
+        "class": "K2Node_VariableSet",
+        "title": "Set bHolding",
+        "posX": -2592,
+        "posY": 6064,
+        "comment": "",
+        "pins": [
+          {
+            "name": "execute",
+            "type": "exec",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "then",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "bHolding",
+            "type": "bool",
+            "direction": "Input",
+            "defaultValue": "true",
+            "connected": false
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "Output_Get",
+            "type": "bool",
+            "direction": "Output",
+            "defaultValue": "false",
+            "connected": false
+          }
+        ]
+      },
+      {
+        "id": "44D67DC340C5775A75A491835405DD7A",
+        "class": "K2Node_VariableSet",
+        "title": "Set bHolding",
+        "posX": -2592,
+        "posY": 6160,
+        "comment": "",
+        "pins": [
+          {
+            "name": "execute",
+            "type": "exec",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "then",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "bHolding",
+            "type": "bool",
+            "direction": "Input",
+            "defaultValue": "false",
+            "connected": false
+          },
+          {
+            "name": "Output_Get",
+            "type": "bool",
+            "direction": "Output",
+            "defaultValue": "false",
+            "connected": false
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          }
+        ]
+      },
+      {
+        "id": "CBFC02284403E58D648741AE44C88A52",
+        "class": "K2Node_CustomEvent",
+        "title": "Update Hold\nCustom Event",
+        "posX": -1920,
+        "posY": 6400,
+        "comment": "",
+        "pins": [
+          {
+            "name": "OutputDelegate",
+            "type": "delegate",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "then",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          }
+        ]
+      },
+      {
+        "id": "7F4A46A24F155012701E5CA22C626349",
+        "class": "K2Node_DynamicCast",
+        "title": "Cast To BP_Level2HoldButton",
+        "posX": -1008,
+        "posY": 6416,
+        "comment": "",
+        "pins": [
+          {
+            "name": "execute",
+            "type": "exec",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "then",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "CastFailed",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "Object",
+            "type": "Object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "AsBP Level 2Hold Button",
+            "type": "Object",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "bSuccess",
+            "type": "bool",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          }
+        ]
+      },
+      {
+        "id": "C607E82749C2F5F146A41ABBA0242977",
+        "class": "K2Node_VariableGet",
+        "title": "Get bHolding",
+        "posX": -848,
+        "posY": 6560,
+        "comment": "",
+        "pins": [
+          {
+            "name": "bHolding",
+            "type": "bool",
+            "direction": "Output",
+            "defaultValue": "false",
+            "connected": true
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          }
+        ]
+      },
+      {
+        "id": "BE303F324E4E3AFBA0F838B26103324E",
+        "class": "K2Node_VariableSet",
+        "title": "Set HoldProgress",
+        "posX": -336,
+        "posY": 6432,
+        "comment": "",
+        "pins": [
+          {
+            "name": "execute",
+            "type": "exec",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "then",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "HoldProgress",
+            "type": "real",
+            "direction": "Input",
+            "defaultValue": "0.0",
+            "connected": true
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "Output_Get",
+            "type": "real",
+            "direction": "Output",
+            "defaultValue": "0.0",
+            "connected": true
+          }
+        ]
+      },
+      {
+        "id": "55C1B93B4AE972D776F4AAACD687CED0",
+        "class": "K2Node_VariableGet",
+        "title": "Get HoldProgress",
+        "posX": -672,
+        "posY": 6528,
+        "comment": "",
+        "pins": [
+          {
+            "name": "HoldProgress",
+            "type": "real",
+            "direction": "Output",
+            "defaultValue": "0.0",
+            "connected": true
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          }
+        ]
+      },
+      {
+        "id": "7FB98E4B4FC8AF67257CFEAEC0FA4BAD",
+        "class": "K2Node_VariableSet",
+        "title": "Set HoldProgress",
+        "posX": 608,
+        "posY": 6304,
+        "comment": "",
+        "pins": [
+          {
+            "name": "execute",
+            "type": "exec",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "then",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "HoldProgress",
+            "type": "real",
+            "direction": "Input",
+            "defaultValue": "0.0",
+            "connected": false
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "Output_Get",
+            "type": "real",
+            "direction": "Output",
+            "defaultValue": "0.0",
+            "connected": false
+          }
+        ]
+      },
+      {
+        "id": "8D4E669F4D5E5D0F787681AAA125EAC3",
+        "class": "K2Node_VariableGet",
+        "title": "Get HoldProgress",
+        "posX": -640,
+        "posY": 6704,
+        "comment": "",
+        "pins": [
+          {
+            "name": "HoldProgress",
+            "type": "real",
+            "direction": "Output",
+            "defaultValue": "0.0",
+            "connected": true
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          }
+        ]
+      },
+      {
+        "id": "13304A20485A2C371C17F58D81A6BB6C",
+        "class": "K2Node_VariableSet",
+        "title": "Set HoldProgress",
+        "posX": 736,
+        "posY": 6656,
+        "comment": "",
+        "pins": [
+          {
+            "name": "execute",
+            "type": "exec",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "then",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "HoldProgress",
+            "type": "real",
+            "direction": "Input",
+            "defaultValue": "0.0",
+            "connected": true
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "Output_Get",
+            "type": "real",
+            "direction": "Output",
+            "defaultValue": "0.0",
+            "connected": true
+          }
+        ]
+      },
+      {
+        "id": "8489950D4E25857842D4968C59EE7CBD",
+        "class": "K2Node_VariableSet",
+        "title": "Set HoldProgress",
+        "posX": 1232,
+        "posY": 6592,
+        "comment": "",
+        "pins": [
+          {
+            "name": "execute",
+            "type": "exec",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "then",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "HoldProgress",
+            "type": "real",
+            "direction": "Input",
+            "defaultValue": "0.0",
+            "connected": false
+          },
+          {
+            "name": "Output_Get",
+            "type": "real",
+            "direction": "Output",
+            "defaultValue": "0.0",
+            "connected": false
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          }
+        ]
+      }
+    ],
+    "nodeCount": 13,
+    "totalNodeCount": 13,
+    "filtered": true,
+    "unfilteredNodeCount": 522,
+    "titleFilter": "Hold",
+    "offset": 0,
+    "limit": 13,
+    "hasMore": false,
+    "nextOffset": -1
+  },
+  "iaNodes": {
+    "success": true,
+    "path": "/Game/BluePrint/Player/BP_ThirdPersonCharacter",
+    "blueprintPath": "/Game/BluePrint/Player/BP_ThirdPersonCharacter.BP_ThirdPersonCharacter",
+    "isLevelScript": false,
+    "graphName": "EventGraph",
+    "nodes": [
+      {
+        "id": "28098DD6495963574A07BF80D4F7C5AE",
+        "class": "K2Node_EnhancedInputAction",
+        "title": "EnhancedInputAction IA_Level2BUtton",
+        "posX": -2944,
+        "posY": 6016,
+        "comment": "",
+        "pins": [
+          {
+            "name": "Triggered",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "Started",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "Ongoing",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "Canceled",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "Completed",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "ActionValue",
+            "type": "bool",
+            "direction": "Output",
+            "defaultValue": "false",
+            "connected": false
+          },
+          {
+            "name": "ElapsedSeconds",
+            "type": "real",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "TriggeredSeconds",
+            "type": "real",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "InputAction",
+            "type": "object",
+            "direction": "Output",
+            "defaultValue": "IA_Level2BUtton",
+            "defaultObject": "/Game/Input/Controller/IA_Level2BUtton.IA_Level2BUtton",
+            "connected": false
+          }
+        ]
+      },
+      {
+        "id": "7F4A46A24F155012701E5CA22C626349",
+        "class": "K2Node_DynamicCast",
+        "title": "Cast To BP_Level2HoldButton",
+        "posX": -1008,
+        "posY": 6416,
+        "comment": "",
+        "pins": [
+          {
+            "name": "execute",
+            "type": "exec",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "then",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "CastFailed",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "Object",
+            "type": "Object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "AsBP Level 2Hold Button",
+            "type": "Object",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "bSuccess",
+            "type": "bool",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          }
+        ]
+      }
+    ],
+    "nodeCount": 2,
+    "totalNodeCount": 2,
+    "filtered": true,
+    "unfilteredNodeCount": 522,
+    "titleFilter": "Level2",
+    "offset": 0,
+    "limit": 2,
+    "hasMore": false,
+    "nextOffset": -1
+  },
+  "timerNodes": {
+    "success": true,
+    "path": "/Game/BluePrint/Player/BP_ThirdPersonCharacter",
+    "blueprintPath": "/Game/BluePrint/Player/BP_ThirdPersonCharacter.BP_ThirdPersonCharacter",
+    "isLevelScript": false,
+    "graphName": "EventGraph",
+    "nodes": [
+      {
+        "id": "4FEAFC5A4E72AA1A45BE1EAB098560A9",
+        "class": "K2Node_CallFunction",
+        "title": "Set Timer by Event",
+        "posX": -4832,
+        "posY": -1456,
+        "comment": "",
+        "pins": [
+          {
+            "name": "execute",
+            "type": "exec",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "then",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "defaultObject": "/Script/Engine.Default__KismetSystemLibrary",
+            "connected": false
+          },
+          {
+            "name": "Delegate",
+            "type": "delegate",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "Time",
+            "type": "real",
+            "direction": "Input",
+            "defaultValue": "0.010000",
+            "connected": false
+          },
+          {
+            "name": "bLooping",
+            "type": "bool",
+            "direction": "Input",
+            "defaultValue": "true",
+            "connected": false
+          },
+          {
+            "name": "bMaxOncePerFrame",
+            "type": "bool",
+            "direction": "Input",
+            "defaultValue": "false",
+            "connected": false
+          },
+          {
+            "name": "InitialStartDelay",
+            "type": "real",
+            "direction": "Input",
+            "defaultValue": "0.000000",
+            "connected": false
+          },
+          {
+            "name": "InitialStartDelayVariance",
+            "type": "real",
+            "direction": "Input",
+            "defaultValue": "0.000000",
+            "connected": false
+          },
+          {
+            "name": "ReturnValue",
+            "type": "struct",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          }
+        ]
+      },
+      {
+        "id": "725EC4F84B79C3D856B0D38C7DDBFD32",
+        "class": "K2Node_VariableSet",
+        "title": "Set Projectail Timer",
+        "posX": -4512,
+        "posY": -1440,
+        "comment": "",
+        "pins": [
+          {
+            "name": "execute",
+            "type": "exec",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "then",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "Projectail Timer",
+            "type": "struct",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "Output_Get",
+            "type": "struct",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          }
+        ]
+      },
+      {
+        "id": "26FA48F54F53B95AE80428B0B0512237",
+        "class": "K2Node_VariableGet",
+        "title": "Get Projectail Timer",
+        "posX": 1840,
+        "posY": -576,
+        "comment": "",
+        "pins": [
+          {
+            "name": "Projectail Timer",
+            "type": "struct",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          }
+        ]
+      },
+      {
+        "id": "672459C84461322D46BEC68E29C39750",
+        "class": "K2Node_CallFunction",
+        "title": "Clear and Invalidate Timer by Handle",
+        "posX": 2048,
+        "posY": -768,
+        "comment": "",
+        "pins": [
+          {
+            "name": "execute",
+            "type": "exec",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "then",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "defaultObject": "/Script/Engine.Default__KismetSystemLibrary",
+            "connected": false
+          },
+          {
+            "name": "WorldContextObject",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "Handle",
+            "type": "struct",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          }
+        ]
+      },
+      {
+        "id": "FB29EE60467AC9624AB46D96AD4608DA",
+        "class": "K2Node_CallFunction",
+        "title": "Set Timer by Event",
+        "posX": -3712,
+        "posY": 3136,
+        "comment": "",
+        "pins": [
+          {
+            "name": "execute",
+            "type": "exec",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "then",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "defaultObject": "/Script/Engine.Default__KismetSystemLibrary",
+            "connected": false
+          },
+          {
+            "name": "Delegate",
+            "type": "delegate",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "Time",
+            "type": "real",
+            "direction": "Input",
+            "defaultValue": "0.010000",
+            "connected": false
+          },
+          {
+            "name": "bLooping",
+            "type": "bool",
+            "direction": "Input",
+            "defaultValue": "true",
+            "connected": false
+          },
+          {
+            "name": "bMaxOncePerFrame",
+            "type": "bool",
+            "direction": "Input",
+            "defaultValue": "false",
+            "connected": false
+          },
+          {
+            "name": "InitialStartDelay",
+            "type": "real",
+            "direction": "Input",
+            "defaultValue": "0.000000",
+            "connected": false
+          },
+          {
+            "name": "InitialStartDelayVariance",
+            "type": "real",
+            "direction": "Input",
+            "defaultValue": "0.000000",
+            "connected": false
+          },
+          {
+            "name": "ReturnValue",
+            "type": "struct",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          }
+        ]
+      },
+      {
+        "id": "6C6091A04260D40DE97DC29494B97A1E",
+        "class": "K2Node_VariableSet",
+        "title": "Set RadarUpdateTimer",
+        "posX": -3376,
+        "posY": 3152,
+        "comment": "",
+        "pins": [
+          {
+            "name": "execute",
+            "type": "exec",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "then",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "RadarUpdateTimer",
+            "type": "struct",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "Output_Get",
+            "type": "struct",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          }
+        ]
+      },
+      {
+        "id": "0916679B48A2762F4A1221A7DA4B75DB",
+        "class": "K2Node_CallFunction",
+        "title": "Clear and Invalidate Timer by Handle",
+        "posX": -6896,
+        "posY": 3792,
+        "comment": "",
+        "pins": [
+          {
+            "name": "execute",
+            "type": "exec",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "then",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "defaultObject": "/Script/Engine.Default__KismetSystemLibrary",
+            "connected": false
+          },
+          {
+            "name": "WorldContextObject",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "Handle",
+            "type": "struct",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          }
+        ]
+      },
+      {
+        "id": "5375E51744EC4A22D78694BDE2AC6E43",
+        "class": "K2Node_VariableGet",
+        "title": "Get RadarUpdateTimer",
+        "posX": -7120,
+        "posY": 3904,
+        "comment": "",
+        "pins": [
+          {
+            "name": "RadarUpdateTimer",
+            "type": "struct",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          }
+        ]
+      },
+      {
+        "id": "EF3634634580A2A5A2B6ADBDF2CB90C4",
+        "class": "K2Node_VariableSet",
+        "title": "Set ReleaseTimer",
+        "posX": -2368,
+        "posY": 6064,
+        "comment": "",
+        "pins": [
+          {
+            "name": "execute",
+            "type": "exec",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "then",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "ReleaseTimer",
+            "type": "real",
+            "direction": "Input",
+            "defaultValue": "0.0",
+            "connected": false
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "Output_Get",
+            "type": "real",
+            "direction": "Output",
+            "defaultValue": "0.0",
+            "connected": false
+          }
+        ]
+      },
+      {
+        "id": "B4AC13BC42722599CBC76BB79B1137F6",
+        "class": "K2Node_VariableSet",
+        "title": "Set ReleaseTimer",
+        "posX": -2368,
+        "posY": 6160,
+        "comment": "",
+        "pins": [
+          {
+            "name": "execute",
+            "type": "exec",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "then",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "ReleaseTimer",
+            "type": "real",
+            "direction": "Input",
+            "defaultValue": "0.0",
+            "connected": false
+          },
+          {
+            "name": "Output_Get",
+            "type": "real",
+            "direction": "Output",
+            "defaultValue": "0.0",
+            "connected": false
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          }
+        ]
+      },
+      {
+        "id": "57F883B94FBE76A4709598A3C22AF00B",
+        "class": "K2Node_VariableSet",
+        "title": "Set ReleaseTimer",
+        "posX": 864,
+        "posY": 6304,
+        "comment": "",
+        "pins": [
+          {
+            "name": "execute",
+            "type": "exec",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "then",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "ReleaseTimer",
+            "type": "real",
+            "direction": "Input",
+            "defaultValue": "0.0",
+            "connected": false
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "Output_Get",
+            "type": "real",
+            "direction": "Output",
+            "defaultValue": "0.0",
+            "connected": false
+          }
+        ]
+      },
+      {
+        "id": "D3E4DF5B42E020ECFCFA678D38C12321",
+        "class": "K2Node_CallFunction",
+        "title": "Clear and Invalidate Timer by Handle",
+        "posX": 1136,
+        "posY": 6288,
+        "comment": "",
+        "pins": [
+          {
+            "name": "execute",
+            "type": "exec",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "then",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "defaultObject": "/Script/Engine.Default__KismetSystemLibrary",
+            "connected": false
+          },
+          {
+            "name": "WorldContextObject",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "Handle",
+            "type": "struct",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          }
+        ]
+      },
+      {
+        "id": "6F0F6B3F459D72AED38308A26897F24C",
+        "class": "K2Node_VariableGet",
+        "title": "Get Press Timer",
+        "posX": 976,
+        "posY": 6400,
+        "comment": "",
+        "pins": [
+          {
+            "name": "Press Timer",
+            "type": "struct",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          }
+        ]
+      },
+      {
+        "id": "FBB4F3D14B39C14FE12D35B2389C4214",
+        "class": "K2Node_CallFunction",
+        "title": "Clear and Invalidate Timer by Handle",
+        "posX": -96,
+        "posY": 6784,
+        "comment": "",
+        "pins": [
+          {
+            "name": "execute",
+            "type": "exec",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "then",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "defaultObject": "/Script/Engine.Default__KismetSystemLibrary",
+            "connected": false
+          },
+          {
+            "name": "WorldContextObject",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "Handle",
+            "type": "struct",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          }
+        ]
+      },
+      {
+        "id": "F197EE6548D81A421264AC93DDD187CA",
+        "class": "K2Node_VariableGet",
+        "title": "Get Press Timer",
+        "posX": -272,
+        "posY": 6864,
+        "comment": "",
+        "pins": [
+          {
+            "name": "Press Timer",
+            "type": "struct",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          }
+        ]
+      },
+      {
+        "id": "8B63FF914BAFA6BA3DE25E82A22AE545",
+        "class": "K2Node_VariableSet",
+        "title": "Set ReleaseTimer",
+        "posX": 256,
+        "posY": 6624,
+        "comment": "",
+        "pins": [
+          {
+            "name": "execute",
+            "type": "exec",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "then",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "ReleaseTimer",
+            "type": "real",
+            "direction": "Input",
+            "defaultValue": "0.0",
+            "connected": true
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "Output_Get",
+            "type": "real",
+            "direction": "Output",
+            "defaultValue": "0.0",
+            "connected": true
+          }
+        ]
+      },
+      {
+        "id": "158EC53E460DB3E983513BAC94B7E8AB",
+        "class": "K2Node_VariableGet",
+        "title": "Get ReleaseTimer",
+        "posX": -96,
+        "posY": 6672,
+        "comment": "",
+        "pins": [
+          {
+            "name": "ReleaseTimer",
+            "type": "real",
+            "direction": "Output",
+            "defaultValue": "0.0",
+            "connected": true
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          }
+        ]
+      },
+      {
+        "id": "D2FDFBAF4546C48D57F98AB038FE8585",
+        "class": "K2Node_VariableGet",
+        "title": "Get ReleaseTimer",
+        "posX": 416,
+        "posY": 6832,
+        "comment": "",
+        "pins": [
+          {
+            "name": "ReleaseTimer",
+            "type": "real",
+            "direction": "Output",
+            "defaultValue": "0.0",
+            "connected": true
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          }
+        ]
+      },
+      {
+        "id": "9395997B4E28B619B812C199361D54E1",
+        "class": "K2Node_VariableSet",
+        "title": "Set ReleaseTimer",
+        "posX": 1472,
+        "posY": 6592,
+        "comment": "",
+        "pins": [
+          {
+            "name": "execute",
+            "type": "exec",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "then",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "ReleaseTimer",
+            "type": "real",
+            "direction": "Input",
+            "defaultValue": "0.0",
+            "connected": false
+          },
+          {
+            "name": "Output_Get",
+            "type": "real",
+            "direction": "Output",
+            "defaultValue": "0.0",
+            "connected": false
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          }
+        ]
+      },
+      {
+        "id": "7CDAE9BE4486B975492CC98009BA126B",
+        "class": "K2Node_CallFunction",
+        "title": "Clear and Invalidate Timer by Handle",
+        "posX": 1712,
+        "posY": 6576,
+        "comment": "",
+        "pins": [
+          {
+            "name": "execute",
+            "type": "exec",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "then",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "defaultObject": "/Script/Engine.Default__KismetSystemLibrary",
+            "connected": false
+          },
+          {
+            "name": "WorldContextObject",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "Handle",
+            "type": "struct",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          }
+        ]
+      },
+      {
+        "id": "63D127C24A6314C9E084579353C181E5",
+        "class": "K2Node_VariableGet",
+        "title": "Get Press Timer",
+        "posX": 1568,
+        "posY": 6688,
+        "comment": "",
+        "pins": [
+          {
+            "name": "Press Timer",
+            "type": "struct",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          }
+        ]
+      },
+      {
+        "id": "9C33A7614BED9CC7A3DF8EAEACC1F12F",
+        "class": "K2Node_CallFunction",
+        "title": "Clear and Invalidate Timer by Handle",
+        "posX": -1984,
+        "posY": 6048,
+        "comment": "",
+        "pins": [
+          {
+            "name": "execute",
+            "type": "exec",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "then",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "defaultObject": "/Script/Engine.Default__KismetSystemLibrary",
+            "connected": false
+          },
+          {
+            "name": "WorldContextObject",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "Handle",
+            "type": "struct",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          }
+        ]
+      },
+      {
+        "id": "DA526D9B4A2FD2134D0EEFB3C4D666D5",
+        "class": "K2Node_VariableGet",
+        "title": "Get Press Timer",
+        "posX": -2144,
+        "posY": 6112,
+        "comment": "",
+        "pins": [
+          {
+            "name": "Press Timer",
+            "type": "struct",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          }
+        ]
+      },
+      {
+        "id": "959181D5473185D0F2316C851D527815",
+        "class": "K2Node_CallFunction",
+        "title": "Set Timer by Event",
+        "posX": -1648,
+        "posY": 6048,
+        "comment": "",
+        "pins": [
+          {
+            "name": "execute",
+            "type": "exec",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "then",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "defaultObject": "/Script/Engine.Default__KismetSystemLibrary",
+            "connected": false
+          },
+          {
+            "name": "Delegate",
+            "type": "delegate",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "Time",
+            "type": "real",
+            "direction": "Input",
+            "defaultValue": "0.050000",
+            "connected": false
+          },
+          {
+            "name": "bLooping",
+            "type": "bool",
+            "direction": "Input",
+            "defaultValue": "true",
+            "connected": false
+          },
+          {
+            "name": "bMaxOncePerFrame",
+            "type": "bool",
+            "direction": "Input",
+            "defaultValue": "false",
+            "connected": false
+          },
+          {
+            "name": "InitialStartDelay",
+            "type": "real",
+            "direction": "Input",
+            "defaultValue": "0.000000",
+            "connected": false
+          },
+          {
+            "name": "InitialStartDelayVariance",
+            "type": "real",
+            "direction": "Input",
+            "defaultValue": "0.000000",
+            "connected": false
+          },
+          {
+            "name": "ReturnValue",
+            "type": "struct",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": true
+          }
+        ]
+      },
+      {
+        "id": "3FA4615D47F37E71682B7599CE9E09B6",
+        "class": "K2Node_VariableSet",
+        "title": "Set Press Timer",
+        "posX": -1312,
+        "posY": 6064,
+        "comment": "",
+        "pins": [
+          {
+            "name": "execute",
+            "type": "exec",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "then",
+            "type": "exec",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "Press Timer",
+            "type": "struct",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": true
+          },
+          {
+            "name": "self",
+            "type": "object",
+            "direction": "Input",
+            "defaultValue": "",
+            "connected": false
+          },
+          {
+            "name": "Output_Get",
+            "type": "struct",
+            "direction": "Output",
+            "defaultValue": "",
+            "connected": false
+          }
+        ]
+      }
+    ],
+    "nodeCount": 25,
+    "totalNodeCount": 25,
+    "filtered": true,
+    "unfilteredNodeCount": 522,
+    "titleFilter": "Timer",
+    "offset": 0,
+    "limit": 25,
+    "hasMore": false,
+    "nextOffset": -1
+  },
+  "button": {
+    "success": true,
+    "path": "/Game/BluePrint/Object/BP_Level2HoldButton",
+    "blueprintPath": "/Game/BluePrint/Object/BP_Level2HoldButton.BP_Level2HoldButton",
+    "isLevelScript": false,
+    "className": "BP_Level2HoldButton",
+    "parentClass": "Actor",
+    "components": [
+      {
+        "name": "DefaultSceneRoot",
+        "class": "SceneComponent",
+        "relativeLocation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "relativeRotation": {
+          "pitch": 0,
+          "yaw": 0,
+          "roll": 0
+        },
+        "relativeScale3D": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        },
+        "properties": [
+          {
+            "name": "AttachParent",
+            "type": "TObjectPtr<USceneComponent>",
+            "value": "None"
+          },
+          {
+            "name": "AttachSocketName",
+            "type": "FName",
+            "value": "None"
+          },
+          {
+            "name": "RelativeLocation",
+            "type": "FVector",
+            "value": "(X=0.000000,Y=0.000000,Z=0.000000)"
+          },
+          {
+            "name": "RelativeRotation",
+            "type": "FRotator",
+            "value": "(Pitch=0.000000,Yaw=0.000000,Roll=0.000000)"
+          },
+          {
+            "name": "RelativeScale3D",
+            "type": "FVector",
+            "value": "(X=1.000000,Y=1.000000,Z=1.000000)"
+          },
+          {
+            "name": "ComponentVelocity",
+            "type": "FVector",
+            "value": "(X=0.000000,Y=0.000000,Z=0.000000)"
+          },
+          {
+            "name": "bAbsoluteLocation",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bAbsoluteRotation",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bAbsoluteScale",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bVisible",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bShouldUpdatePhysicsVolume",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bHiddenInGame",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bBoundsChangeTriggersStreamingDataRebuild",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bUseAttachParentBound",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bComputeFastLocalBounds",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bComputeBoundsOnceForGame",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bComputedBoundsOnceForGame",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bIsNotRenderAttachmentRoot",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bVisualizeComponent",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "Mobility",
+            "type": "TEnumAsByte<EComponentMobility::Type>",
+            "value": "Movable"
+          },
+          {
+            "name": "DetailMode",
+            "type": "TEnumAsByte<EDetailMode>",
+            "value": "DM_Low"
+          },
+          {
+            "name": "PhysicsVolumeChangedDelegate",
+            "type": "FPhysicsVolumeChanged",
+            "value": "()"
+          },
+          {
+            "name": "PrimaryComponentTick",
+            "type": "FActorComponentTickFunction",
+            "value": "(TickGroup=TG_DuringPhysics,EndTickGroup=TG_PrePhysics,bTickEvenWhenPaused=False,bCanEverTick=False,bStartWithTickEnabled=True,bAllowTickOnDedicatedServer=True,TickInterval=0.000000)"
+          },
+          {
+            "name": "ComponentTags",
+            "type": "TArray",
+            "value": ""
+          },
+          {
+            "name": "AssetUserData",
+            "type": "TArray",
+            "value": ""
+          },
+          {
+            "name": "AssetUserDataEditorOnly",
+            "type": "TArray",
+            "value": ""
+          },
+          {
+            "name": "UCSSerializationIndex",
+            "type": "int32",
+            "value": "-1"
+          },
+          {
+            "name": "bNetAddressable",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bReplicateUsingRegisteredSubObjectList",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bReplicates",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bCreatedByConstructionScript",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bInstanceComponent",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bAutoActivate",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bEditableWhenInherited",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bCanEverAffectNavigation",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bIsEditorOnly",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bIsVisualizationComponent",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bNeedsUCSSerializationIndexEvaluted",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "CreationMethod",
+            "type": "EComponentCreationMethod",
+            "value": "Native"
+          },
+          {
+            "name": "OnComponentActivated",
+            "type": "FActorComponentActivatedSignature",
+            "value": "()"
+          },
+          {
+            "name": "OnComponentDeactivated",
+            "type": "FActorComponentDeactivateSignature",
+            "value": "()"
+          },
+          {
+            "name": "UCSModifiedProperties",
+            "type": "TArray",
+            "value": ""
+          }
+        ]
+      },
+      {
+        "name": "Cube",
+        "class": "StaticMeshComponent",
+        "parent": "DefaultSceneRoot",
+        "relativeLocation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "relativeRotation": {
+          "pitch": 0,
+          "yaw": 0,
+          "roll": 0
+        },
+        "relativeScale3D": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        },
+        "staticMesh": "/Engine/BasicShapes/Cube.Cube",
+        "materials": [
+          "/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"
+        ],
+        "properties": [
+          {
+            "name": "ForcedLodModel",
+            "type": "int32",
+            "value": "0"
+          },
+          {
+            "name": "MinLOD",
+            "type": "int32",
+            "value": "0"
+          },
+          {
+            "name": "SubDivisionStepSize",
+            "type": "int32",
+            "value": "32"
+          },
+          {
+            "name": "WireframeColorOverride",
+            "type": "FColor",
+            "value": "(B=255,G=255,R=255,A=255)"
+          },
+          {
+            "name": "StaticMesh",
+            "type": "TObjectPtr<UStaticMesh>",
+            "value": "/Script/Engine.StaticMesh'/Engine/BasicShapes/Cube.Cube'"
+          },
+          {
+            "name": "WorldPositionOffsetDisableDistance",
+            "type": "int32",
+            "value": "0"
+          },
+          {
+            "name": "bForceNaniteForMasked",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bDisallowNanite",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bForceDisableNanite",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bEvaluateWorldPositionOffset",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bWorldPositionOffsetWritesVelocity",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bEvaluateWorldPositionOffsetInRayTracing",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "StaticMeshImportVersion",
+            "type": "int32",
+            "value": "0"
+          },
+          {
+            "name": "bOverrideWireframeColor",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bOverrideMinLOD",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bDisallowMeshPaintPerInstance",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bIgnoreInstanceForTextureStreaming",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bOverrideLightMapRes",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bCastDistanceFieldIndirectShadow",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bOverrideDistanceFieldSelfShadowBias",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bUseSubDivisions",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bUseDefaultCollision",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bCustomOverrideVertexColorPerLOD",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bDisplayNaniteFallbackMesh",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bSortTriangles",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bReverseCulling",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bEnableVertexColorMeshPainting",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bEnableTextureColorMeshPainting",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bOverrideMeshPaintTextureCoordinateIndex",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bOverrideMeshPaintTextureResolution",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "OverriddenMeshPaintTextureCoordinateIndex",
+            "type": "int32",
+            "value": "0"
+          },
+          {
+            "name": "OverriddenMeshPaintTextureResolution",
+            "type": "int32",
+            "value": "0"
+          },
+          {
+            "name": "OverriddenLightMapRes",
+            "type": "int32",
+            "value": "64"
+          },
+          {
+            "name": "MeshPaintTexture",
+            "type": "TObjectPtr<UTexture>",
+            "value": "None"
+          },
+          {
+            "name": "MeshPaintTextureCooked",
+            "type": "TObjectPtr<UTexture>",
+            "value": "None"
+          },
+          {
+            "name": "MaterialCacheTileCount",
+            "type": "FIntPoint",
+            "value": "(X=8,Y=8)"
+          },
+          {
+            "name": "DistanceFieldIndirectShadowMinVisibility",
+            "type": "float",
+            "value": "0.100000"
+          },
+          {
+            "name": "DistanceFieldSelfShadowBias",
+            "type": "float",
+            "value": "0.000000"
+          },
+          {
+            "name": "StreamingDistanceMultiplier",
+            "type": "float",
+            "value": "1.000000"
+          },
+          {
+            "name": "NanitePixelProgrammableDistance",
+            "type": "float",
+            "value": "0.000000"
+          },
+          {
+            "name": "IrrelevantLights",
+            "type": "TArray",
+            "value": ""
+          },
+          {
+            "name": "StreamingTextureData",
+            "type": "TArray",
+            "value": ""
+          },
+          {
+            "name": "StaticMeshDerivedDataKey",
+            "type": "FString",
+            "value": ""
+          },
+          {
+            "name": "MaterialStreamingRelativeBoxes",
+            "type": "TArray",
+            "value": ""
+          },
+          {
+            "name": "LightmassSettings",
+            "type": "FLightmassPrimitiveSettings",
+            "value": "(bUseTwoSidedLighting=False,bShadowIndirectOnly=False,bUseEmissiveForStaticLighting=False,bUseVertexNormalForHemisphereGather=False,EmissiveLightFalloffExponent=8.000000,EmissiveLightExplicitInfluenceRadius=0.000000,EmissiveBoost=1.000000,DiffuseBoost=1.000000,FullyOccludedSamplesFraction=1.000000)"
+          },
+          {
+            "name": "OverrideMaterials",
+            "type": "TArray",
+            "value": "(\"/Script/Engine.Material'/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial'\")"
+          },
+          {
+            "name": "OverlayMaterial",
+            "type": "TObjectPtr<UMaterialInterface>",
+            "value": "None"
+          },
+          {
+            "name": "OverlayMaterialMaxDrawDistance",
+            "type": "float",
+            "value": "0.000000"
+          },
+          {
+            "name": "MaterialSlotsOverlayMaterial",
+            "type": "TArray",
+            "value": ""
+          },
+          {
+            "name": "bEnableMaterialParameterCaching",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "MinDrawDistance",
+            "type": "float",
+            "value": "0.000000"
+          },
+          {
+            "name": "LDMaxDrawDistance",
+            "type": "float",
+            "value": "0.000000"
+          },
+          {
+            "name": "CachedMaxDrawDistance",
+            "type": "float",
+            "value": "0.000000"
+          },
+          {
+            "name": "DepthPriorityGroup",
+            "type": "TEnumAsByte<ESceneDepthPriorityGroup>",
+            "value": "SDPG_World"
+          },
+          {
+            "name": "ViewOwnerDepthPriorityGroup",
+            "type": "TEnumAsByte<ESceneDepthPriorityGroup>",
+            "value": "SDPG_World"
+          },
+          {
+            "name": "IndirectLightingCacheQuality",
+            "type": "TEnumAsByte<EIndirectLightingCacheQuality>",
+            "value": "ILCQ_Point"
+          },
+          {
+            "name": "LightmapType",
+            "type": "ELightmapType",
+            "value": "Default"
+          },
+          {
+            "name": "HLODBatchingPolicy",
+            "type": "EHLODBatchingPolicy",
+            "value": "None"
+          },
+          {
+            "name": "ShadowCacheInvalidationBehavior",
+            "type": "EShadowCacheInvalidationBehavior",
+            "value": "Auto"
+          },
+          {
+            "name": "bEnableAutoLODGeneration",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bIsActorTextureStreamingBuiltData",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bIsValidTextureStreamingBuiltData",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bNeverDistanceCull",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bAlwaysCreatePhysicsState",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bGenerateOverlapEvents",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bMultiBodyOverlap",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bTraceComplexOnMove",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bReturnMaterialOnMove",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bUseViewOwnerDepthPriorityGroup",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bAllowCullDistanceVolume",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bVisibleInReflectionCaptures",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bVisibleInRealTimeSkyCaptures",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bVisibleInRayTracing",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bRenderInMainPass",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bRenderInDepthPass",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bReceivesDecals",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bHoldout",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bOwnerNoSee",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bOnlyOwnerSee",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bTreatAsBackgroundForOcclusion",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bUseAsOccluder",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bSelectable",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bWantsEditorEffects",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bConsiderForActorPlacementWhenHidden",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bForceMipStreaming",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bHasPerInstanceHitProxies",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "CastShadow",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bEmissiveLightSource",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bAffectDynamicIndirectLighting",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bAffectIndirectLightingWhileHidden",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bAffectDistanceFieldLighting",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bCastDynamicShadow",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bCastStaticShadow",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bCastVolumetricTranslucentShadow",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bCastContactShadow",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bSelfShadowOnly",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bCastFarShadow",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bCastInsetShadow",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bCastCinematicShadow",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bCastHiddenShadow",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bCastShadowAsTwoSided",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bLightAsIfStatic",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bLightAttachmentsAsGroup",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bExcludeFromLightAttachmentGroup",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bReceiveMobileCSMShadows",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bSingleSampleShadowFromStationaryLights",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bIgnoreRadialImpulse",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bIgnoreRadialForce",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bApplyImpulseOnDamage",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bReplicatePhysicsToAutonomousProxy",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bFillCollisionUnderneathForNavmesh",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bRasterizeAsFilledConvexVolume",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "AlwaysLoadOnClient",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "AlwaysLoadOnServer",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bUseEditorCompositing",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bRenderCustomDepth",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bVisibleInSceneCaptureOnly",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bHiddenInSceneCapture",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bRayTracingFarField",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bLumenHeightfield",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "FirstPersonPrimitiveType",
+            "type": "EFirstPersonPrimitiveType",
+            "value": "None"
+          },
+          {
+            "name": "bHasNoStreamableTextures",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bStaticWhenNotMoveable",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bHasCustomNavigableGeometry",
+            "type": "TEnumAsByte<EHasCustomNavigableGeometry::Type>",
+            "value": "Yes"
+          },
+          {
+            "name": "HitProxyPriority",
+            "type": "TEnumAsByte<EHitProxyPriority>",
+            "value": "HPP_World"
+          },
+          {
+            "name": "ExcludeForSpecificHLODLevels",
+            "type": "TArray",
+            "value": ""
+          },
+          {
+            "name": "CanBeCharacterBase",
+            "type": "TEnumAsByte<ECanBeCharacterBase>",
+            "value": "ECB_Yes"
+          },
+          {
+            "name": "bUseMaxLODAsImposter",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bBatchImpostersAsInstances",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "CanCharacterStepUpOn",
+            "type": "TEnumAsByte<ECanBeCharacterBase>",
+            "value": "ECB_Yes"
+          },
+          {
+            "name": "LightingChannels",
+            "type": "FLightingChannels",
+            "value": "(bChannel0=True,bChannel1=False,bChannel2=False)"
+          },
+          {
+            "name": "RayTracingGroupCullingPriority",
+            "type": "ERayTracingGroupCullingPriority",
+            "value": "CP_4_DEFAULT"
+          },
+          {
+            "name": "CustomDepthStencilWriteMask",
+            "type": "ERendererStencilMask",
+            "value": "ERSM_Default"
+          },
+          {
+            "name": "ExcludeFromHLODLevels",
+            "type": "uint8",
+            "value": "0"
+          },
+          {
+            "name": "RayTracingGroupId",
+            "type": "int32",
+            "value": "-1"
+          },
+          {
+            "name": "VisibilityId",
+            "type": "int32",
+            "value": "-1"
+          },
+          {
+            "name": "CustomDepthStencilValue",
+            "type": "int32",
+            "value": "0"
+          },
+          {
+            "name": "CustomPrimitiveData",
+            "type": "FCustomPrimitiveData",
+            "value": "(Data=)"
+          },
+          {
+            "name": "TranslucencySortPriority",
+            "type": "int32",
+            "value": "0"
+          },
+          {
+            "name": "TranslucencySortDistanceOffset",
+            "type": "float",
+            "value": "0.000000"
+          },
+          {
+            "name": "RuntimeVirtualTextures",
+            "type": "TArray",
+            "value": ""
+          },
+          {
+            "name": "VirtualTextureLodBias",
+            "type": "int8",
+            "value": "0"
+          },
+          {
+            "name": "VirtualTextureCullMips",
+            "type": "int8",
+            "value": "0"
+          },
+          {
+            "name": "VirtualTextureMinCoverage",
+            "type": "int8",
+            "value": "0"
+          },
+          {
+            "name": "VirtualTextureRenderPassType",
+            "type": "ERuntimeVirtualTextureMainPassType",
+            "value": "Exclusive"
+          },
+          {
+            "name": "BoundsScale",
+            "type": "float",
+            "value": "1.000000"
+          },
+          {
+            "name": "BodyInstance",
+            "type": "FBodyInstance",
+            "value": "(PositionSolverIterationCount=8,VelocitySolverIterationCount=2,ProjectionSolverIterationCount=1,ObjectType=ECC_WorldDynamic,CollisionEnabled=QueryAndPhysics,SleepFamily=Normal,DOFMode=Default,bUseCCD=False,bUseMACD=False,bAllowPartialIslandSleep=True,bIgnoreAnalyticCollisions=False,bNotifyRigidBodyCollision=False,bSmoothEdgeCollisions=False,bLockTranslation=True,bLockRotation=True,bLockXTranslation=False,bLockYTranslation=False,bLockZTranslation=False,bLockXRotation=False,bLockYRotation=False,bLockZRotation=False,bOverrideMaxAngularVelocity=False,bOverrideMaxDepenetrationVelocity=False,bOverrideWalkableSlopeOnInstance=False,bOverrideIterationCounts=False,bInterpolateWhenSubStepping=True,bInertiaConditioning=True,bOneWayInteraction=False,bOverrideSolverAsyncDeltaTime=False,SolverAsyncDeltaTime=0.016667,CollisionProfileName=\"BlockAllDynamic\",CollisionResponses=(ResponseArray=),MaxDepenetrationVelocity=0.000000,MassInKgOverride=100.000000,LinearDamping=0.010000,AngularDamping=0.000000,CustomDOFPlaneNormal=(X=0.000000,Y=0.000000,Z=0.000000),COMNudge=(X=0.000000,Y=0.000000,Z=0.000000),MassScale=1.000000,GravityGroupIndex=0,InertiaTensorScale=(X=1.000000,Y=1.000000,Z=1.000000),WalkableSlopeOverride=(WalkableSlopeBehavior=WalkableSlope_Default,WalkableSlopeAngle=0.000000),PhysMaterialOverride=None,MaxAngularVelocity=3600.000000,CustomSleepThresholdMultiplier=1.000000,StabilizationThresholdMultiplier=1.000000,PhysicsBlendWeight=0.000000,bSimulatePhysics=False,bOverrideMass=False,bEnableGravity=True,bUpdateKinematicFromSimulation=False,bGyroscopicTorqueEnabled=False,bAutoWeld=True,bStartAwake=True,bGenerateWakeEvents=False,bUpdateMassWhenScaleChanges=True)"
+          },
+          {
+            "name": "OnComponentHit",
+            "type": "FComponentHitSignature",
+            "value": "()"
+          },
+          {
+            "name": "OnComponentBeginOverlap",
+            "type": "FComponentBeginOverlapSignature",
+            "value": "()"
+          },
+          {
+            "name": "OnComponentEndOverlap",
+            "type": "FComponentEndOverlapSignature",
+            "value": "()"
+          },
+          {
+            "name": "OnComponentWake",
+            "type": "FComponentWakeSignature",
+            "value": "()"
+          },
+          {
+            "name": "OnComponentSleep",
+            "type": "FComponentSleepSignature",
+            "value": "()"
+          },
+          {
+            "name": "OnComponentPhysicsStateChanged",
+            "type": "FComponentPhysicsStateChanged",
+            "value": "()"
+          },
+          {
+            "name": "OnBeginCursorOver",
+            "type": "FComponentBeginCursorOverSignature",
+            "value": "()"
+          },
+          {
+            "name": "OnEndCursorOver",
+            "type": "FComponentEndCursorOverSignature",
+            "value": "()"
+          },
+          {
+            "name": "OnClicked",
+            "type": "FComponentOnClickedSignature",
+            "value": "()"
+          },
+          {
+            "name": "OnReleased",
+            "type": "FComponentOnReleasedSignature",
+            "value": "()"
+          },
+          {
+            "name": "OnInputTouchBegin",
+            "type": "FComponentOnInputTouchBeginSignature",
+            "value": "()"
+          },
+          {
+            "name": "OnInputTouchEnd",
+            "type": "FComponentOnInputTouchEndSignature",
+            "value": "()"
+          },
+          {
+            "name": "OnInputTouchEnter",
+            "type": "FComponentBeginTouchOverSignature",
+            "value": "()"
+          },
+          {
+            "name": "OnInputTouchLeave",
+            "type": "FComponentEndTouchOverSignature",
+            "value": "()"
+          },
+          {
+            "name": "LODParentPrimitive",
+            "type": "TObjectPtr<UPrimitiveComponent>",
+            "value": "None"
+          },
+          {
+            "name": "AttachParent",
+            "type": "TObjectPtr<USceneComponent>",
+            "value": "None"
+          },
+          {
+            "name": "AttachSocketName",
+            "type": "FName",
+            "value": "None"
+          },
+          {
+            "name": "RelativeLocation",
+            "type": "FVector",
+            "value": "(X=0.000000,Y=0.000000,Z=0.000000)"
+          },
+          {
+            "name": "RelativeRotation",
+            "type": "FRotator",
+            "value": "(Pitch=0.000000,Yaw=0.000000,Roll=0.000000)"
+          },
+          {
+            "name": "RelativeScale3D",
+            "type": "FVector",
+            "value": "(X=1.000000,Y=1.000000,Z=1.000000)"
+          },
+          {
+            "name": "ComponentVelocity",
+            "type": "FVector",
+            "value": "(X=0.000000,Y=0.000000,Z=0.000000)"
+          },
+          {
+            "name": "bAbsoluteLocation",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bAbsoluteRotation",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bAbsoluteScale",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bVisible",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bShouldUpdatePhysicsVolume",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bHiddenInGame",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bBoundsChangeTriggersStreamingDataRebuild",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bUseAttachParentBound",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bComputeFastLocalBounds",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bComputeBoundsOnceForGame",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bComputedBoundsOnceForGame",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bIsNotRenderAttachmentRoot",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bVisualizeComponent",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "Mobility",
+            "type": "TEnumAsByte<EComponentMobility::Type>",
+            "value": "Movable"
+          },
+          {
+            "name": "DetailMode",
+            "type": "TEnumAsByte<EDetailMode>",
+            "value": "DM_Low"
+          },
+          {
+            "name": "PhysicsVolumeChangedDelegate",
+            "type": "FPhysicsVolumeChanged",
+            "value": "()"
+          },
+          {
+            "name": "PrimaryComponentTick",
+            "type": "FActorComponentTickFunction",
+            "value": "(TickGroup=TG_DuringPhysics,EndTickGroup=TG_PrePhysics,bTickEvenWhenPaused=False,bCanEverTick=False,bStartWithTickEnabled=True,bAllowTickOnDedicatedServer=True,TickInterval=0.000000)"
+          },
+          {
+            "name": "ComponentTags",
+            "type": "TArray",
+            "value": ""
+          },
+          {
+            "name": "AssetUserData",
+            "type": "TArray",
+            "value": ""
+          },
+          {
+            "name": "AssetUserDataEditorOnly",
+            "type": "TArray",
+            "value": ""
+          },
+          {
+            "name": "UCSSerializationIndex",
+            "type": "int32",
+            "value": "-1"
+          },
+          {
+            "name": "bNetAddressable",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bReplicateUsingRegisteredSubObjectList",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bReplicates",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bCreatedByConstructionScript",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bInstanceComponent",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bAutoActivate",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bEditableWhenInherited",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bCanEverAffectNavigation",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bIsEditorOnly",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bIsVisualizationComponent",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bNeedsUCSSerializationIndexEvaluted",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "CreationMethod",
+            "type": "EComponentCreationMethod",
+            "value": "Native"
+          },
+          {
+            "name": "OnComponentActivated",
+            "type": "FActorComponentActivatedSignature",
+            "value": "()"
+          },
+          {
+            "name": "OnComponentDeactivated",
+            "type": "FActorComponentDeactivateSignature",
+            "value": "()"
+          },
+          {
+            "name": "UCSModifiedProperties",
+            "type": "TArray",
+            "value": ""
+          }
+        ]
+      },
+      {
+        "name": "Box",
+        "class": "BoxComponent",
+        "parent": "Cube",
+        "relativeLocation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "relativeRotation": {
+          "pitch": 0,
+          "yaw": 0,
+          "roll": 0
+        },
+        "relativeScale3D": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        },
+        "properties": [
+          {
+            "name": "BoxExtent",
+            "type": "FVector",
+            "value": "(X=32.000000,Y=32.000000,Z=32.000000)"
+          },
+          {
+            "name": "AreaClass",
+            "type": "TSubclassOf<UNavAreaBase>",
+            "value": "/Script/CoreUObject.Class'/Script/NavigationSystem.NavArea_Obstacle'"
+          },
+          {
+            "name": "ShapeColor",
+            "type": "FColor",
+            "value": "(B=157,G=149,R=223,A=255)"
+          },
+          {
+            "name": "bDrawOnlyIfSelected",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bShouldCollideWhenPlacing",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bDynamicObstacle",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bUseSystemDefaultObstacleAreaClass",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "AreaClassOverride",
+            "type": "TSubclassOf<UNavAreaBase>",
+            "value": "None"
+          },
+          {
+            "name": "LineThickness",
+            "type": "float",
+            "value": "0.000000"
+          },
+          {
+            "name": "MinDrawDistance",
+            "type": "float",
+            "value": "0.000000"
+          },
+          {
+            "name": "LDMaxDrawDistance",
+            "type": "float",
+            "value": "0.000000"
+          },
+          {
+            "name": "CachedMaxDrawDistance",
+            "type": "float",
+            "value": "0.000000"
+          },
+          {
+            "name": "DepthPriorityGroup",
+            "type": "TEnumAsByte<ESceneDepthPriorityGroup>",
+            "value": "SDPG_World"
+          },
+          {
+            "name": "ViewOwnerDepthPriorityGroup",
+            "type": "TEnumAsByte<ESceneDepthPriorityGroup>",
+            "value": "SDPG_World"
+          },
+          {
+            "name": "IndirectLightingCacheQuality",
+            "type": "TEnumAsByte<EIndirectLightingCacheQuality>",
+            "value": "ILCQ_Point"
+          },
+          {
+            "name": "LightmapType",
+            "type": "ELightmapType",
+            "value": "Default"
+          },
+          {
+            "name": "HLODBatchingPolicy",
+            "type": "EHLODBatchingPolicy",
+            "value": "None"
+          },
+          {
+            "name": "ShadowCacheInvalidationBehavior",
+            "type": "EShadowCacheInvalidationBehavior",
+            "value": "Auto"
+          },
+          {
+            "name": "bEnableAutoLODGeneration",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bIsActorTextureStreamingBuiltData",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bIsValidTextureStreamingBuiltData",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bNeverDistanceCull",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bAlwaysCreatePhysicsState",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bGenerateOverlapEvents",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bMultiBodyOverlap",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bTraceComplexOnMove",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bReturnMaterialOnMove",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bUseViewOwnerDepthPriorityGroup",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bAllowCullDistanceVolume",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bVisibleInReflectionCaptures",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bVisibleInRealTimeSkyCaptures",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bVisibleInRayTracing",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bRenderInMainPass",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bRenderInDepthPass",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bReceivesDecals",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bHoldout",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bOwnerNoSee",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bOnlyOwnerSee",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bTreatAsBackgroundForOcclusion",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bUseAsOccluder",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bSelectable",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bWantsEditorEffects",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bConsiderForActorPlacementWhenHidden",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bForceMipStreaming",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bHasPerInstanceHitProxies",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "CastShadow",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bEmissiveLightSource",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bAffectDynamicIndirectLighting",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bAffectIndirectLightingWhileHidden",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bAffectDistanceFieldLighting",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bCastDynamicShadow",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bCastStaticShadow",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bCastVolumetricTranslucentShadow",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bCastContactShadow",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bSelfShadowOnly",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bCastFarShadow",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bCastInsetShadow",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bCastCinematicShadow",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bCastHiddenShadow",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bCastShadowAsTwoSided",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bLightAsIfStatic",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bLightAttachmentsAsGroup",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bExcludeFromLightAttachmentGroup",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bReceiveMobileCSMShadows",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bSingleSampleShadowFromStationaryLights",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bIgnoreRadialImpulse",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bIgnoreRadialForce",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bApplyImpulseOnDamage",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bReplicatePhysicsToAutonomousProxy",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bFillCollisionUnderneathForNavmesh",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bRasterizeAsFilledConvexVolume",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "AlwaysLoadOnClient",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "AlwaysLoadOnServer",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bUseEditorCompositing",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bRenderCustomDepth",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bVisibleInSceneCaptureOnly",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bHiddenInSceneCapture",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bRayTracingFarField",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bLumenHeightfield",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "FirstPersonPrimitiveType",
+            "type": "EFirstPersonPrimitiveType",
+            "value": "None"
+          },
+          {
+            "name": "bHasNoStreamableTextures",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bStaticWhenNotMoveable",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bHasCustomNavigableGeometry",
+            "type": "TEnumAsByte<EHasCustomNavigableGeometry::Type>",
+            "value": "Yes"
+          },
+          {
+            "name": "HitProxyPriority",
+            "type": "TEnumAsByte<EHitProxyPriority>",
+            "value": "HPP_World"
+          },
+          {
+            "name": "ExcludeForSpecificHLODLevels",
+            "type": "TArray",
+            "value": ""
+          },
+          {
+            "name": "CanBeCharacterBase",
+            "type": "TEnumAsByte<ECanBeCharacterBase>",
+            "value": "ECB_Yes"
+          },
+          {
+            "name": "bUseMaxLODAsImposter",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bBatchImpostersAsInstances",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "CanCharacterStepUpOn",
+            "type": "TEnumAsByte<ECanBeCharacterBase>",
+            "value": "ECB_Yes"
+          },
+          {
+            "name": "LightingChannels",
+            "type": "FLightingChannels",
+            "value": "(bChannel0=True,bChannel1=False,bChannel2=False)"
+          },
+          {
+            "name": "RayTracingGroupCullingPriority",
+            "type": "ERayTracingGroupCullingPriority",
+            "value": "CP_4_DEFAULT"
+          },
+          {
+            "name": "CustomDepthStencilWriteMask",
+            "type": "ERendererStencilMask",
+            "value": "ERSM_Default"
+          },
+          {
+            "name": "ExcludeFromHLODLevels",
+            "type": "uint8",
+            "value": "0"
+          },
+          {
+            "name": "RayTracingGroupId",
+            "type": "int32",
+            "value": "-1"
+          },
+          {
+            "name": "VisibilityId",
+            "type": "int32",
+            "value": "-1"
+          },
+          {
+            "name": "CustomDepthStencilValue",
+            "type": "int32",
+            "value": "0"
+          },
+          {
+            "name": "CustomPrimitiveData",
+            "type": "FCustomPrimitiveData",
+            "value": "(Data=)"
+          },
+          {
+            "name": "TranslucencySortPriority",
+            "type": "int32",
+            "value": "0"
+          },
+          {
+            "name": "TranslucencySortDistanceOffset",
+            "type": "float",
+            "value": "0.000000"
+          },
+          {
+            "name": "RuntimeVirtualTextures",
+            "type": "TArray",
+            "value": ""
+          },
+          {
+            "name": "VirtualTextureLodBias",
+            "type": "int8",
+            "value": "0"
+          },
+          {
+            "name": "VirtualTextureCullMips",
+            "type": "int8",
+            "value": "0"
+          },
+          {
+            "name": "VirtualTextureMinCoverage",
+            "type": "int8",
+            "value": "0"
+          },
+          {
+            "name": "VirtualTextureRenderPassType",
+            "type": "ERuntimeVirtualTextureMainPassType",
+            "value": "Exclusive"
+          },
+          {
+            "name": "BoundsScale",
+            "type": "float",
+            "value": "1.000000"
+          },
+          {
+            "name": "BodyInstance",
+            "type": "FBodyInstance",
+            "value": "(PositionSolverIterationCount=8,VelocitySolverIterationCount=2,ProjectionSolverIterationCount=1,ObjectType=ECC_WorldStatic,CollisionEnabled=QueryOnly,SleepFamily=Normal,DOFMode=Default,bUseCCD=False,bUseMACD=False,bAllowPartialIslandSleep=True,bIgnoreAnalyticCollisions=False,bNotifyRigidBodyCollision=False,bSmoothEdgeCollisions=False,bLockTranslation=True,bLockRotation=True,bLockXTranslation=False,bLockYTranslation=False,bLockZTranslation=False,bLockXRotation=False,bLockYRotation=False,bLockZRotation=False,bOverrideMaxAngularVelocity=False,bOverrideMaxDepenetrationVelocity=False,bOverrideWalkableSlopeOnInstance=False,bOverrideIterationCounts=False,bInterpolateWhenSubStepping=True,bInertiaConditioning=True,bOneWayInteraction=False,bOverrideSolverAsyncDeltaTime=False,SolverAsyncDeltaTime=0.016667,CollisionProfileName=\"Custom\",CollisionResponses=(ResponseArray=((Channel=\"Visibility\",Response=ECR_Ignore),(Channel=\"Camera\",Response=ECR_Ignore))),MaxDepenetrationVelocity=0.000000,MassInKgOverride=100.000000,LinearDamping=0.010000,AngularDamping=0.000000,CustomDOFPlaneNormal=(X=0.000000,Y=0.000000,Z=0.000000),COMNudge=(X=0.000000,Y=0.000000,Z=0.000000),MassScale=1.000000,GravityGroupIndex=0,InertiaTensorScale=(X=1.000000,Y=1.000000,Z=1.000000),WalkableSlopeOverride=(WalkableSlopeBehavior=WalkableSlope_Default,WalkableSlopeAngle=0.000000),PhysMaterialOverride=None,MaxAngularVelocity=3600.000000,CustomSleepThresholdMultiplier=1.000000,StabilizationThresholdMultiplier=1.000000,PhysicsBlendWeight=0.000000,bSimulatePhysics=False,bOverrideMass=False,bEnableGravity=True,bUpdateKinematicFromSimulation=False,bGyroscopicTorqueEnabled=False,bAutoWeld=True,bStartAwake=True,bGenerateWakeEvents=False,bUpdateMassWhenScaleChanges=True)"
+          },
+          {
+            "name": "OnComponentHit",
+            "type": "FComponentHitSignature",
+            "value": "()"
+          },
+          {
+            "name": "OnComponentBeginOverlap",
+            "type": "FComponentBeginOverlapSignature",
+            "value": "()"
+          },
+          {
+            "name": "OnComponentEndOverlap",
+            "type": "FComponentEndOverlapSignature",
+            "value": "()"
+          },
+          {
+            "name": "OnComponentWake",
+            "type": "FComponentWakeSignature",
+            "value": "()"
+          },
+          {
+            "name": "OnComponentSleep",
+            "type": "FComponentSleepSignature",
+            "value": "()"
+          },
+          {
+            "name": "OnComponentPhysicsStateChanged",
+            "type": "FComponentPhysicsStateChanged",
+            "value": "()"
+          },
+          {
+            "name": "OnBeginCursorOver",
+            "type": "FComponentBeginCursorOverSignature",
+            "value": "()"
+          },
+          {
+            "name": "OnEndCursorOver",
+            "type": "FComponentEndCursorOverSignature",
+            "value": "()"
+          },
+          {
+            "name": "OnClicked",
+            "type": "FComponentOnClickedSignature",
+            "value": "()"
+          },
+          {
+            "name": "OnReleased",
+            "type": "FComponentOnReleasedSignature",
+            "value": "()"
+          },
+          {
+            "name": "OnInputTouchBegin",
+            "type": "FComponentOnInputTouchBeginSignature",
+            "value": "()"
+          },
+          {
+            "name": "OnInputTouchEnd",
+            "type": "FComponentOnInputTouchEndSignature",
+            "value": "()"
+          },
+          {
+            "name": "OnInputTouchEnter",
+            "type": "FComponentBeginTouchOverSignature",
+            "value": "()"
+          },
+          {
+            "name": "OnInputTouchLeave",
+            "type": "FComponentEndTouchOverSignature",
+            "value": "()"
+          },
+          {
+            "name": "LODParentPrimitive",
+            "type": "TObjectPtr<UPrimitiveComponent>",
+            "value": "None"
+          },
+          {
+            "name": "AttachParent",
+            "type": "TObjectPtr<USceneComponent>",
+            "value": "None"
+          },
+          {
+            "name": "AttachSocketName",
+            "type": "FName",
+            "value": "None"
+          },
+          {
+            "name": "RelativeLocation",
+            "type": "FVector",
+            "value": "(X=0.000000,Y=0.000000,Z=0.000000)"
+          },
+          {
+            "name": "RelativeRotation",
+            "type": "FRotator",
+            "value": "(Pitch=0.000000,Yaw=0.000000,Roll=-0.000000)"
+          },
+          {
+            "name": "RelativeScale3D",
+            "type": "FVector",
+            "value": "(X=1.000000,Y=1.000000,Z=1.000000)"
+          },
+          {
+            "name": "ComponentVelocity",
+            "type": "FVector",
+            "value": "(X=0.000000,Y=0.000000,Z=0.000000)"
+          },
+          {
+            "name": "bAbsoluteLocation",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bAbsoluteRotation",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bAbsoluteScale",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bVisible",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bShouldUpdatePhysicsVolume",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bHiddenInGame",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bBoundsChangeTriggersStreamingDataRebuild",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bUseAttachParentBound",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bComputeFastLocalBounds",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bComputeBoundsOnceForGame",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bComputedBoundsOnceForGame",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bIsNotRenderAttachmentRoot",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bVisualizeComponent",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "Mobility",
+            "type": "TEnumAsByte<EComponentMobility::Type>",
+            "value": "Movable"
+          },
+          {
+            "name": "DetailMode",
+            "type": "TEnumAsByte<EDetailMode>",
+            "value": "DM_Low"
+          },
+          {
+            "name": "PhysicsVolumeChangedDelegate",
+            "type": "FPhysicsVolumeChanged",
+            "value": "()"
+          },
+          {
+            "name": "PrimaryComponentTick",
+            "type": "FActorComponentTickFunction",
+            "value": "(TickGroup=TG_DuringPhysics,EndTickGroup=TG_PrePhysics,bTickEvenWhenPaused=False,bCanEverTick=False,bStartWithTickEnabled=True,bAllowTickOnDedicatedServer=True,TickInterval=0.000000)"
+          },
+          {
+            "name": "ComponentTags",
+            "type": "TArray",
+            "value": ""
+          },
+          {
+            "name": "AssetUserData",
+            "type": "TArray",
+            "value": ""
+          },
+          {
+            "name": "AssetUserDataEditorOnly",
+            "type": "TArray",
+            "value": ""
+          },
+          {
+            "name": "UCSSerializationIndex",
+            "type": "int32",
+            "value": "-1"
+          },
+          {
+            "name": "bNetAddressable",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bReplicateUsingRegisteredSubObjectList",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bReplicates",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bCreatedByConstructionScript",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bInstanceComponent",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bAutoActivate",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bEditableWhenInherited",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bCanEverAffectNavigation",
+            "type": "uint8",
+            "value": "True"
+          },
+          {
+            "name": "bIsEditorOnly",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bIsVisualizationComponent",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "bNeedsUCSSerializationIndexEvaluted",
+            "type": "uint8",
+            "value": "False"
+          },
+          {
+            "name": "CreationMethod",
+            "type": "EComponentCreationMethod",
+            "value": "Native"
+          },
+          {
+            "name": "OnComponentActivated",
+            "type": "FActorComponentActivatedSignature",
+            "value": "()"
+          },
+          {
+            "name": "OnComponentDeactivated",
+            "type": "FActorComponentDeactivateSignature",
+            "value": "()"
+          },
+          {
+            "name": "UCSModifiedProperties",
+            "type": "TArray",
+            "value": ""
+          }
+        ]
+      }
+    ],
+    "actorTick": {
+      "bCanEverTick": false,
+      "bStartWithTickEnabled": true,
+      "TickInterval": 0
+    }
+  },
+  "buttonCube": {
+    "raw": "Error [NOT_FOUND]: Unknown action 'get_component_properties' on 'blueprint'. Did you mean: read_component_properties, get_component_property, set_component_property, get_cdo_properties, get_component_collision? 138 actions available - project(action=\"describe_action\", category=\"blueprint\") lists them with their parameters, and project(action=\"search_tools\") searches by intent."
+  },
+  "buttonBox": {
+    "raw": "Error [NOT_FOUND]: Unknown action 'get_component_properties' on 'blueprint'. Did you mean: read_component_properties, get_component_property, set_component_property, get_cdo_properties, get_component_collision? 138 actions available - project(action=\"describe_action\", category=\"blueprint\") lists them with their parameters, and project(action=\"search_tools\") searches by intent."
+  },
+  "imc": {
+    "success": false,
+    "error": "Blueprint not found: /Game/Input/IMC_Player"
+  },
+  "ia": {
+    "raw": "Error [NOT_FOUND]: Unknown action 'get_details' on 'asset'. 207 actions available - project(action=\"describe_action\", category=\"asset\") lists them with their parameters, and project(action=\"search_tools\") searches by intent."
+  },
+  "ia2": {
+    "raw": "Error [NOT_FOUND]: Unknown action 'get_details' on 'asset'. 207 actions available - project(action=\"describe_action\", category=\"asset\") lists them with their parameters, and project(action=\"search_tools\") searches by intent."
+  },
+  "levelButtons": {
+    "success": true,
+    "actors": [
+      {
+        "label": "BP_Level2HoldButton",
+        "class": "BP_Level2HoldButton_C",
+        "path": "/Game/ThirdPerson/Lvl_ThirdPerson.Lvl_ThirdPerson:PersistentLevel.BP_Level2HoldButton_C_UAID_047C1636E0B024FF02_1674461111",
+        "location": {
+          "x": -4875,
+          "y": 23480,
+          "z": 505
+        },
+        "rotation": {
+          "pitch": 0,
+          "yaw": 0,
+          "roll": 0
+        },
+        "scale": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      }
+    ],
+    "count": 1
+  }
+}
